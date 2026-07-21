@@ -1,0 +1,16 @@
+{
+    "id": "com.natureglass.speedtest",
+    "name": "Speed Test",
+    "version": "1.0.1",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "zip_sha256": "34715a5078cd4ed20522a06dc53e445c155fc22e9bb1c12939141b015300635c",
+    "attestation": {
+        "ts": "2026-07-21T14:41:46+00:00",
+        "platforms": [
+            "switch",
+            "web"
+        ],
+        "zip_sha256": "34715a5078cd4ed20522a06dc53e445c155fc22e9bb1c12939141b015300635c"
+    },
+    "submitted_at": "2026-07-21T14:41:46+00:00"
+}
