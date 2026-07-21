@@ -539,7 +539,7 @@
   async function fetchTopLive(limit, after) {
     const query =
       'query TopStreams($limit: Int!, $after: Cursor) {' +
-      '  streams(first: $limit, after: $after) {' +
+      '  streams(first: $limit, after: $after, options: { sort: VIEWER_COUNT }) {' +
       '    edges { cursor node {' +
       '      id title viewersCount' +
       '      broadcaster { login displayName }' +
