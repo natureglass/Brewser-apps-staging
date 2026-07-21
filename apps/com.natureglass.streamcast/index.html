@@ -426,7 +426,8 @@
   const RECENTS_PATH = 'sdmc:/switch/brewser/webprofiles/default/twitch-recent.json';
   const RECENTS_MAX = 5;
   const APP_VERSION = 'slice4-async-mutate-repaint';
-  const TOP_LIVE_COUNT = 20;
+  const TOP_LIVE_COUNT = 10;   // channels shown on first load
+  const SHOW_MORE_COUNT = 5;   // extra channels added per "Show more"
   // "Show more" pagination for the Live-now list. We refetch the top N with a
   // growing limit (the existing streams(first:N) query -- no cursor gamble) and
   // append only channels not already shown; liveShown dedupes across pages.
@@ -933,6 +934,8 @@
         item.classList.remove('selected');
       }
     }
+    // Keep the sidebar title's live count ("LIVE NOW X") in step with the list.
+    sidebarTitleEl.textContent = 'Live now ' + Object.keys(liveShown).length;
   }
 
   function renderLiveChannels(list) {
@@ -1024,7 +1027,7 @@
     liveLoadingMore = true;
     const btn = document.getElementById('live-show-more');
     if (btn) { btn.textContent = 'Loading…'; btn.classList.add('is-loading'); }
-    liveLimit += TOP_LIVE_COUNT;
+    liveLimit += SHOW_MORE_COUNT;
     try {
       const list = await fetchTopLive(liveLimit);
       let added = 0;
