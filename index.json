@@ -1,92 +1,92 @@
 [
-    {
-        "id": "com.natureglass.fluiddynamics",
-        "name": "Fluid dynamics",
-        "version": "1.0.0",
-        "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
-        "updated_at": "2026-07-21T12:55:40Z",
-        "entry": "index.html",
-        "logo": "assets/appbanner.jpg",
-        "description": "<p>Fluid dynamics</p>"
-    },
-    {
-        "id": "com.natureglass.fractalzoom",
-        "name": "Fractal Zoom",
-        "version": "1.0.1",
-        "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
-        "updated_at": "2026-07-20T18:53:21Z",
-        "entry": "index.html",
-        "logo": "assets/appbanner.jpg",
-        "description": "<p>A Fracts app</p>"
-    },
-    {
-        "id": "com.natureglass.gravityballs",
-        "name": "Gravity Balls",
-        "version": "1.0.0",
-        "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
-        "updated_at": "2026-07-21T09:00:21Z",
-        "entry": "index.html",
-        "logo": "assets/appbanner.jpg",
-        "description": "<p>Gravity Balls</p>"
-    },
-    {
-        "id": "com.natureglass.midilab",
-        "name": "MIDI Lab",
-        "version": "1.0.0",
-        "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
-        "updated_at": "2026-07-20T14:37:31Z",
-        "entry": "index.html",
-        "logo": "assets/appbanner.jpg",
-        "description": "<p>MIDI Lab</p>"
-    },
-    {
-        "id": "com.natureglass.sensorsplayground",
-        "name": "Sensors Playground",
-        "version": "1.0.0",
-        "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
-        "updated_at": "2026-07-21T12:39:53Z",
-        "entry": "index.html",
-        "logo": "assets/appbanner.jpg",
-        "description": "<p>Sensors Playground</p>"
-    },
-    {
-        "id": "com.natureglass.spectraplay",
-        "name": "Spectra Play",
-        "version": "1.0.6",
-        "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
-        "updated_at": "2026-07-21T14:31:26Z",
-        "entry": "index.html",
-        "logo": "assets/appbanner.jpg",
-        "description": "<p>Spectra Play</p>"
-    },
-    {
-        "id": "com.natureglass.speedtest",
-        "name": "Speed Test",
-        "version": "1.0.0",
-        "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
-        "updated_at": "2026-07-20T20:07:52Z",
-        "entry": "index.html",
-        "logo": "assets/appbanner.jpg",
-        "description": "<p>Speed Test</p>"
-    },
-    {
-        "id": "com.natureglass.streamcast",
-        "name": "Stream Cast",
-        "version": "1.0.11",
-        "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
-        "updated_at": "2026-07-21T12:11:32Z",
-        "entry": "index.html",
-        "logo": "assets/appbanner.jpg",
-        "description": "<p>Stream Cast</p>"
-    },
-    {
-        "id": "com.natureglass.webgl2threejsdemos",
-        "name": "WebGL2 - ThreeJS Demos",
-        "version": "1.0.0",
-        "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
-        "updated_at": "2026-07-21T12:31:09Z",
-        "entry": "index.html",
-        "logo": "assets/appbanner.jpg",
-        "description": "<p>WebGL2 - ThreeJS Demos</p>"
-    }
+  {
+    "id": "com.natureglass.fluiddynamics",
+    "name": "Fluid dynamics",
+    "version": "1.0.0",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "updated_at": "2026-07-21T12:55:40Z",
+    "entry": "index.html",
+    "logo": "assets/appbanner.jpg",
+    "description": "<p>Fluid dynamics</p>"
+  },
+  {
+    "id": "com.natureglass.fractalzoom",
+    "name": "Fractal Zoom",
+    "version": "1.0.1",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "updated_at": "2026-07-20T18:53:21Z",
+    "entry": "index.html",
+    "logo": "assets/appbanner.jpg",
+    "description": "<p>A Fracts app</p>"
+  },
+  {
+    "id": "com.natureglass.gravityballs",
+    "name": "Gravity Balls",
+    "version": "1.0.0",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "updated_at": "2026-07-21T09:00:21Z",
+    "entry": "index.html",
+    "logo": "assets/appbanner.jpg",
+    "description": "<p>Gravity Balls</p>"
+  },
+  {
+    "id": "com.natureglass.midilab",
+    "name": "MIDI Lab",
+    "version": "1.0.0",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "updated_at": "2026-07-20T14:37:31Z",
+    "entry": "index.html",
+    "logo": "assets/appbanner.jpg",
+    "description": "<p>MIDI Lab</p>"
+  },
+  {
+    "id": "com.natureglass.sensorsplayground",
+    "name": "Sensors Playground",
+    "version": "1.0.0",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "updated_at": "2026-07-21T12:39:53Z",
+    "entry": "index.html",
+    "logo": "assets/appbanner.jpg",
+    "description": "<p>Sensors Playground</p>"
+  },
+  {
+    "id": "com.natureglass.spectraplay",
+    "name": "Spectra Play",
+    "version": "1.0.6",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "updated_at": "2026-07-21T14:31:26Z",
+    "entry": "index.html",
+    "logo": "assets/appbanner.jpg",
+    "description": "<p>Spectra Play</p>"
+  },
+  {
+    "id": "com.natureglass.speedtest",
+    "name": "Speed Test",
+    "version": "1.0.1",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "updated_at": "2026-07-21T14:42:05Z",
+    "entry": "index.html",
+    "logo": "assets/appbanner.jpg",
+    "description": "<p>Speed Test</p>"
+  },
+  {
+    "id": "com.natureglass.streamcast",
+    "name": "Stream Cast",
+    "version": "1.0.11",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "updated_at": "2026-07-21T12:11:32Z",
+    "entry": "index.html",
+    "logo": "assets/appbanner.jpg",
+    "description": "<p>Stream Cast</p>"
+  },
+  {
+    "id": "com.natureglass.webgl2threejsdemos",
+    "name": "WebGL2 - ThreeJS Demos",
+    "version": "1.0.0",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "updated_at": "2026-07-21T12:31:09Z",
+    "entry": "index.html",
+    "logo": "assets/appbanner.jpg",
+    "description": "<p>WebGL2 - ThreeJS Demos</p>"
+  }
 ]
