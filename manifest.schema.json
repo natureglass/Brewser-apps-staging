@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "$id": "https://brewser.tech/schema/manifest.json",
+  "title": "Brewser app manifest",
+  "description": "Canonical shape of every per-app manifest.json in the staging repo. Generated server-side by the Brewser Submissions plugin and validated in the staging workflow. Kept in sync manually — the plugin's Brewser_Sub_Manifest::build() is the generator and TEST_PLAN.md asserts its output validates against this file.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id", "name", "version", "description", "logo", "entry",
+    "categories", "permissions", "compatibility",
+    "allowed_origins", "developer", "license", "exitGame", "fullscreen"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^com\\.[a-z0-9]{3,32}\\.[a-z0-9]{2,48}$",
+      "description": "Reverse-DNS package id: com.<username>.<appslug>"
+    },
+    "name":        { "type": "string", "minLength": 1, "maxLength": 191 },
+    "version":     { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$" },
+    "description": { "type": "string", "minLength": 1, "maxLength": 2000 },
+    "logo":        { "type": "string", "minLength": 1, "maxLength": 191 },
+    "entry":       { "type": "string", "minLength": 1, "maxLength": 191 },
+    "categories":  { "type": "array", "minItems": 1, "items": { "type": "string" }, "uniqueItems": true },
+    "genre":       { "type": "array", "items": { "type": "string" }, "uniqueItems": true, "description": "Optional brewser_genre taxonomy terms mirrored from the submission." },
+    "features":    { "type": "array", "items": { "type": "string" }, "uniqueItems": true, "description": "Optional brewser_feature taxonomy terms mirrored from the submission." },
+    "tags":        { "type": "array", "items": { "type": "string" }, "uniqueItems": true, "description": "Optional free post tags mirrored from the submission." },
+    "permissions": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "compatibility": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "enum": ["switch", "web", "smartphone", "android"] },
+      "uniqueItems": true
+    },
+    "allowed_origins": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^https?://" },
+      "uniqueItems": true
+    },
+    "developer": { "type": "string", "minLength": 1, "maxLength": 191 },
+    "license":   {
+      "type": "string",
+      "enum": ["MIT", "Apache-2.0", "GPL-3.0", "BSD-3-Clause", "MPL-2.0", "CC0-1.0", "Proprietary"]
+    },
+    "exitGame":   { "type": "string", "minLength": 1 },
+    "fullscreen": { "type": "boolean" }
+  }
+}

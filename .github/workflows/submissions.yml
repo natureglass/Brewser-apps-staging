@@ -1,0 +1,236 @@
+name: Brewser submissions — deploy
+
+# Fires whenever the plugin's atomic push lands intake/<package-id>/... in the
+# staging repo. Each run is idempotent and self-healing: it processes EVERY
+# intake/*/submission.json present at checkout, not just paths in the trigger
+# commit. A straggler folder left by a previously failed run gets picked up by
+# the next run automatically.
+#
+# All heavy lifting lives in four helper scripts at the repo root under
+# scripts/  (validate_manifest.py, safe_unzip.py, upsert_index.py,
+# build_callback.py) and the JSON Schema at the repo root
+# (manifest.schema.json). See ./README.md for the secrets that must be
+# configured on the staging repo before this workflow does anything useful.
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'intake/**'
+  workflow_dispatch: {}
+
+# ONE global concurrency group. Two parallel deploys both fast-forwarding main
+# would race; serializing everything is the simplest thing that works, and our
+# submission volume is nowhere near where throughput matters.
+concurrency:
+  group: submissions-deploy
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      # Layout in this repo: helper scripts and the manifest schema live at
+      # the repo root (not nested under .github/workflows/).
+      SCHEMA_PATH: manifest.schema.json
+      SCRIPT_DIR:  scripts
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install jsonschema
+        run: python -m pip install --quiet 'jsonschema>=4.0'
+
+      - name: Configure git author
+        run: |
+          git config user.name  "brewser-submissions-bot"
+          git config user.email "brewser-submissions-bot@users.noreply.github.com"
+
+      - name: Sanity-check workflow assets
+        run: |
+          set -e
+          test -f "$SCHEMA_PATH"                     || { echo "missing $SCHEMA_PATH"; exit 1; }
+          test -f "$SCRIPT_DIR/validate_manifest.py" || { echo "missing validate_manifest.py"; exit 1; }
+          test -f "$SCRIPT_DIR/safe_unzip.py"        || { echo "missing safe_unzip.py"; exit 1; }
+          test -f "$SCRIPT_DIR/upsert_index.py"      || { echo "missing upsert_index.py"; exit 1; }
+          test -f "$SCRIPT_DIR/build_callback.py"    || { echo "missing build_callback.py"; exit 1; }
+
+      - name: Process every pending intake
+        env:
+          BREWSER_CALLBACK_URL:    ${{ secrets.BREWSER_CALLBACK_URL }}
+          BREWSER_CALLBACK_SECRET: ${{ secrets.BREWSER_CALLBACK_SECRET }}
+        run: |
+          set -uo pipefail
+
+          if [ ! -d intake ]; then
+            echo "No intake/ directory — nothing to deploy."
+            exit 0
+          fi
+
+          mapfile -t submissions < <(find intake -mindepth 2 -maxdepth 2 -name submission.json -print 2>/dev/null | sort)
+          if [ "${#submissions[@]}" -eq 0 ]; then
+            echo "No pending intake submissions."
+            exit 0
+          fi
+
+          overall_status=0
+
+          for sub_file in "${submissions[@]}"; do
+            intake_dir="$(dirname "$sub_file")"
+            pkg="$(basename "$intake_dir")"
+            manifest_file="$intake_dir/manifest.json"
+            zip_file="$intake_dir/bundle.zip"
+
+            echo "::group::$pkg"
+            result="ok"
+            error=""
+            version=""
+            zip_sha256=""
+
+            if [ ! -f "$manifest_file" ] || [ ! -f "$zip_file" ]; then
+              result="error"
+              error="intake is incomplete (missing manifest.json or bundle.zip)"
+            else
+              zip_sha256=$(python -c "import json; print(json.load(open('$sub_file'))['zip_sha256'])" 2>/dev/null || echo "")
+              version=$(python -c "import json; print(json.load(open('$sub_file'))['version'])" 2>/dev/null || echo "")
+
+              if [ -z "$zip_sha256" ] || [ -z "$version" ]; then
+                result="error"
+                error="submission.json missing zip_sha256 or version"
+              fi
+
+              if [ "$result" = "ok" ]; then
+                actual_sha=$(sha256sum "$zip_file" | awk '{print $1}')
+                if [ "$actual_sha" != "$zip_sha256" ]; then
+                  result="error"
+                  error="bundle.zip sha256 does not match submission.json"
+                fi
+              fi
+
+              if [ "$result" = "ok" ]; then
+                if ! python "$SCRIPT_DIR/validate_manifest.py" "$manifest_file" "$SCHEMA_PATH" 2> /tmp/schemaerr; then
+                  result="error"
+                  error="manifest failed schema: $(tr '\n' ' ' </tmp/schemaerr | head -c 500)"
+                fi
+              fi
+
+              if [ "$result" = "ok" ]; then
+                tmpdir="$(mktemp -d)"
+                if ! python "$SCRIPT_DIR/safe_unzip.py" "$zip_file" "$tmpdir" 2> /tmp/zerr; then
+                  result="error"
+                  error="unsafe zip: $(tr '\n' ' ' </tmp/zerr | head -c 500)"
+                else
+                  target="apps/$pkg"
+                  if [ -d "$target" ]; then
+                    git rm -rf "$target" >/dev/null
+                  fi
+                  mkdir -p "$target"
+                  # cp -a preserves times but no ownership issues on GH runners.
+                  cp -a "$tmpdir"/. "$target"/
+                  cp "$manifest_file" "$target/manifest.json"
+
+                  python "$SCRIPT_DIR/upsert_index.py" "$manifest_file" "$sub_file" index.json
+
+                  git rm -rf "$intake_dir" >/dev/null
+                  git add -A "$target" "index.json"
+
+                  # Capture HEAD BEFORE the commit so a "nothing to commit"
+                  # (or any other commit failure) doesn't let deploy_sha
+                  # inherit an earlier iteration's SHA and mis-report success.
+                  head_before="$(git rev-parse HEAD)"
+                  if git commit -m "deploy: ${pkg}@${version}"; then
+                    committed_sha="$(git rev-parse HEAD)"
+                    if [ "$committed_sha" = "$head_before" ]; then
+                      result="error"
+                      error="deploy produced no commit (nothing changed?)"
+                    fi
+                  else
+                    result="error"
+                    error="git commit failed"
+                  fi
+                fi
+              fi
+            fi
+
+            # Callback — one per submission, ok OR error. Skip if the shell
+            # secrets aren't configured; log a warning so the operator knows.
+            if [ -n "${BREWSER_CALLBACK_URL:-}" ] && [ -n "${BREWSER_CALLBACK_SECRET:-}" ]; then
+              deploy_sha=""
+              # Only report a deploy SHA when we actually produced a commit
+              # in THIS iteration.
+              if [ "$result" = "ok" ] && [ -n "${committed_sha:-}" ]; then
+                deploy_sha="$committed_sha"
+              fi
+              cb_dir="$(mktemp -d)"
+              # Secret via stdin so it never appears in the process list.
+              printf '%s' "$BREWSER_CALLBACK_SECRET" | \
+                python "$SCRIPT_DIR/build_callback.py" \
+                  --out-dir "$cb_dir" \
+                  "$pkg" "$version" "$zip_sha256" "$result" "$deploy_sha" "$error"
+
+              cb_body=$(cat "$cb_dir/body")
+              cb_ts=$(cat "$cb_dir/ts")
+              cb_sig=$(cat "$cb_dir/sig")
+
+              # --data-raw for JSON: --data strips '@'-prefixed values as
+              # file references; --data-raw sends the buffer as-is.
+              #
+              # curl -sS exits 0 on 4xx/5xx — only a transport error trips
+              # its exit code. Capture the HTTP status explicitly so a bad
+              # HMAC secret or a WP-side auth failure can't leave a stuck
+              # row with zero log breadcrumbs. Every callback outcome now
+              # produces exactly one visible line: ::notice:: on 2xx,
+              # ::warning:: on non-2xx or transport failure. Callback
+              # failure is a warning, not an error — the deploy itself
+              # already succeeded and the operator can heal the row via
+              # the plugin admin's Re-check action.
+              set +e
+              http_code=$(curl -sS --max-time 30 \
+                -o /tmp/cbresp -w '%{http_code}' \
+                -X POST \
+                -H "Content-Type: application/json" \
+                -H "X-Brewser-Signature: $cb_sig" \
+                -H "X-Brewser-Timestamp: $cb_ts" \
+                --data-raw "$cb_body" \
+                "$BREWSER_CALLBACK_URL")
+              curl_exit=$?
+              set -u
+              if [ "$curl_exit" -ne 0 ]; then
+                echo "::warning::callback for $pkg transport failure (curl exit $curl_exit): $(head -c 300 /tmp/cbresp)"
+              elif [ "$http_code" -ge 200 ] && [ "$http_code" -lt 300 ]; then
+                echo "::notice::callback ok for $pkg (HTTP $http_code)"
+              else
+                echo "::warning::callback for $pkg returned HTTP $http_code: $(head -c 300 /tmp/cbresp)"
+              fi
+              rm -rf "$cb_dir"
+            else
+              echo "::warning::BREWSER_CALLBACK_URL / BREWSER_CALLBACK_SECRET not set — skipping callback for $pkg"
+            fi
+
+            unset committed_sha
+
+            if [ "$result" != "ok" ]; then
+              overall_status=1
+              echo "::error::$pkg: $error"
+            fi
+            echo "::endgroup::"
+          done
+
+          # One push at the end — every successful commit rides on it. Do NOT
+          # let a network failure or lost race silently mask as a green build.
+          if ! git push origin HEAD:main; then
+            echo "::error::git push origin HEAD:main failed"
+            overall_status=1
+          fi
+
+          exit $overall_status
