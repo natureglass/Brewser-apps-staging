@@ -27,15 +27,5 @@
     "tags": [
         "Audio Player",
         "Visualizer"
-    ],
-    "buttonMapping": {
-        "up": "UP",
-        "down": "DOWN",
-        "left": "LEFT",
-        "right": "RIGHT",
-        "enter": "A",
-        "space": "B",
-        "z": "A",
-        "x": "B"
-    }
+    ]
 }
