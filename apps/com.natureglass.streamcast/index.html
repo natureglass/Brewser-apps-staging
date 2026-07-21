@@ -428,10 +428,12 @@
   const APP_VERSION = 'slice4-async-mutate-repaint';
   const TOP_LIVE_COUNT = 10;   // channels shown on first load
   const SHOW_MORE_COUNT = 5;   // extra channels added per "Show more"
-  // "Show more" pagination for the Live-now list. We refetch the top N with a
-  // growing limit (the existing streams(first:N) query -- no cursor gamble) and
-  // append only channels not already shown; liveShown dedupes across pages.
-  let liveLimit = TOP_LIVE_COUNT;
+  // "Show more" pagination for the Live-now list. Twitch caps streams(first:N) at
+  // 30 per request, so we page with a cursor (after:) instead: liveCursor points at
+  // the next page and liveHasMore is Twitch's hasNextPage. liveShown dedupes by
+  // login across pages (the ranking can shift between calls).
+  let liveCursor = null;
+  let liveHasMore = false;
   let liveShown = {};
   let liveLoadingMore = false;
 
@@ -534,18 +536,19 @@
     };
   }
 
-  async function fetchTopLive(limit) {
+  async function fetchTopLive(limit, after) {
     const query =
-      'query TopStreams($limit: Int!) {' +
-      '  streams(first: $limit) {' +
-      '    edges { node {' +
+      'query TopStreams($limit: Int!, $after: Cursor) {' +
+      '  streams(first: $limit, after: $after) {' +
+      '    edges { cursor node {' +
       '      id title viewersCount' +
       '      broadcaster { login displayName }' +
       '      game { id displayName }' +
       '    } }' +
+      '    pageInfo { hasNextPage }' +
       '  }' +
       '}';
-    log('POST gql.twitch.tv/gql (TopStreams limit=' + limit + ')');
+    log('POST gql.twitch.tv/gql (TopStreams first=' + limit + (after ? ' after=<cursor>' : '') + ')');
     // 15-second abort timeout so the sidebar UX doesn't hang forever
     // if the engine fetch chain regresses or the network stalls.
     const controller = new AbortController();
@@ -562,7 +565,7 @@
           'Content-Type': 'application/json',
           'user-agent': DESKTOP_UA,
         },
-        body: JSON.stringify({ query: query, variables: { limit: limit } }),
+        body: JSON.stringify({ query: query, variables: { limit: limit, after: after || null } }),
         signal: controller.signal,
       });
     } finally {
@@ -575,8 +578,13 @@
     }
     const json = await resp.json();
     clearTimeout(timeoutId);
-    const edges = (json && json.data && json.data.streams &&
-                   json.data.streams.edges) || [];
+    // Surface gql validation/errors (e.g. an unexpected schema change) in the log
+    // so a failed page is diagnosable rather than silently empty.
+    if (json && json.errors) {
+      log('  top-live gql errors: ' + JSON.stringify(json.errors).slice(0, 300));
+    }
+    const conn = (json && json.data && json.data.streams) || null;
+    const edges = (conn && conn.edges) || [];
     const items = edges
       .map(function (e) { return e && e.node; })
       .filter(function (n) { return n && n.broadcaster && n.broadcaster.login; })
@@ -589,7 +597,11 @@
           title: n.title || '',
         };
       });
-    return items;
+    // The LAST edge's cursor drives the next page; hasNextPage says one exists.
+    const lastEdge = edges.length ? edges[edges.length - 1] : null;
+    const cursor = (lastEdge && lastEdge.cursor) ? lastEdge.cursor : null;
+    const hasNext = !!(conn && conn.pageInfo && conn.pageInfo.hasNextPage) && !!cursor;
+    return { items: items, cursor: cursor, hasNext: hasNext };
   }
 
   async function fetchAccessToken(channel) {
@@ -902,13 +914,17 @@
     setLiveStatus('loading');
     sidebarTitleEl.classList.add('hidden');
     liveListEl.innerHTML = '';
-    liveLimit = TOP_LIVE_COUNT;
+    liveCursor = null;
+    liveHasMore = false;
     try {
-      const list = await fetchTopLive(TOP_LIVE_COUNT);
+      const page = await fetchTopLive(TOP_LIVE_COUNT, null);
+      const list = page.items;
       if (!list || list.length === 0) {
         setLiveStatus('error', 'No live streams found right now');
         return;
       }
+      liveCursor = page.cursor;
+      liveHasMore = page.hasNext;
       setLiveStatus('hidden');
       renderLiveChannels(list);
     } catch (err) {
@@ -953,7 +969,7 @@
       appendLiveItem(item);
     }
     // A full page back suggests there may be more -- offer "Show more".
-    renderShowMore(list.length >= liveLimit);
+    renderShowMore(liveHasMore);
     updateLiveSelection();
     log('rendered ' + Object.keys(liveShown).length + ' live items');
   }
@@ -1027,20 +1043,22 @@
     liveLoadingMore = true;
     const btn = document.getElementById('live-show-more');
     if (btn) { btn.textContent = 'Loading…'; btn.classList.add('is-loading'); }
-    liveLimit += SHOW_MORE_COUNT;
     try {
-      const list = await fetchTopLive(liveLimit);
+      const page = await fetchTopLive(SHOW_MORE_COUNT, liveCursor);
+      const list = page.items || [];
       let added = 0;
-      for (const item of (list || [])) {
+      for (const item of list) {
         const key = item.login.toLowerCase();
         if (liveShown[key]) continue;
         liveShown[key] = true;
         appendLiveItem(item);
         added++;
       }
+      liveCursor = page.cursor;
+      liveHasMore = page.hasNext;
       updateLiveSelection();
-      // More only if Twitch returned a full page AND we actually grew the list.
-      renderShowMore(!!list && list.length >= liveLimit && added > 0);
+      // Keep offering more only while Twitch reports another page.
+      renderShowMore(liveHasMore);
       log('show-more: +' + added + ' (total ' + Object.keys(liveShown).length + ')');
     } catch (err) {
       log('  show-more fetch FAILED: ' + (err && err.message ? err.message : err));
