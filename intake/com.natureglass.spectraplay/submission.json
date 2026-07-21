@@ -1,0 +1,16 @@
+{
+    "id": "com.natureglass.spectraplay",
+    "name": "Spectra Play",
+    "version": "1.0.4",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "zip_sha256": "97b49386850aa361b2b058a3ce74230a6b9b4cdfb14906d5df14fb279e96169e",
+    "attestation": {
+        "ts": "2026-07-21T13:57:50+00:00",
+        "platforms": [
+            "switch",
+            "web"
+        ],
+        "zip_sha256": "97b49386850aa361b2b058a3ce74230a6b9b4cdfb14906d5df14fb279e96169e"
+    },
+    "submitted_at": "2026-07-21T13:57:50+00:00"
+}
