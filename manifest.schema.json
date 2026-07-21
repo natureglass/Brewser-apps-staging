@@ -40,9 +40,24 @@
     "developer": { "type": "string", "minLength": 1, "maxLength": 191 },
     "license":   {
       "type": "string",
-      "enum": ["MIT", "Apache-2.0", "GPL-3.0", "BSD-3-Clause", "MPL-2.0", "CC0-1.0", "Proprietary"]
+      "minLength": 1,
+      "maxLength": 191
     },
     "exitGame":   { "type": "string", "minLength": 1 },
-    "fullscreen": { "type": "boolean" }
+    "fullscreen": { "type": "boolean" },
+    "buttonMapping": {
+      "type": "object",
+      "description": "Optional keyboard-key -> Switch-control map emitted by Brewser_Sub_Manifest::build(). Keys are lowercase keyboard key names, values are Switch control names; both sides come from a curated but FILTERABLE vocab, so this is a free-form string->string map (not an enum) to keep lockstep. Max 64 entries.",
+      "minProperties": 1,
+      "maxProperties": 64,
+      "propertyNames": { "type": "string", "minLength": 1 },
+      "additionalProperties": { "type": "string", "minLength": 1 }
+    },
+    "linked_idea_ids": {
+      "type": "array",
+      "items": { "type": "integer", "minimum": 1 },
+      "uniqueItems": true,
+      "description": "Optional Brewser Ideas (Phase 2) build-linking: unique positive idea ids this app satisfies."
+    }
   }
 }
