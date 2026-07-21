@@ -6,7 +6,7 @@
     "logo": "assets/appbanner.jpg",
     "entry": "index.html",
     "categories": [
-        "Other"
+        "Demos"
     ],
     "permissions": [],
     "compatibility": [
@@ -18,9 +18,14 @@
     "exitGame": "PLUS",
     "fullscreen": true,
     "genre": [
+        "Experience",
         "Simulation"
     ],
+    "features": [
+        "WebGL 2"
+    ],
     "tags": [
-        "Fluids"
+        "Fluids",
+        "Demoscene"
     ]
 }
