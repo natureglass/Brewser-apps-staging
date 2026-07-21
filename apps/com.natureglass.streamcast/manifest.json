@@ -23,10 +23,11 @@
     "exitGame": "PLUS",
     "fullscreen": true,
     "genre": [
-        "Experience"
+        "Social"
     ],
     "tags": [
         "Twitch",
-        "Social"
+        "Stream",
+        "Video"
     ]
 }
