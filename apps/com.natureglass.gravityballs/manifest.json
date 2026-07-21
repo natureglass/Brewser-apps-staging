@@ -20,5 +20,11 @@
     "fullscreen": true,
     "genre": [
         "Simulation"
+    ],
+    "features": [
+        "Motion Sensors"
+    ],
+    "tags": [
+        "Physics"
     ]
 }
