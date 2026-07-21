@@ -1,7 +1,7 @@
 {
     "audioFilesPath": "/music/",
     "visualizer": {
-        "gain": 30.0,
+        "gain": 10.0,
         "waveGain": 1.4,
         "flipY": false,
         "bgAlpha": 0.0,
