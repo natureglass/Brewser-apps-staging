@@ -9,7 +9,9 @@
         "Apps",
         "Other"
     ],
-    "permissions": [],
+    "permissions": [
+        "Account"
+    ],
     "compatibility": [
         "switch"
     ],
