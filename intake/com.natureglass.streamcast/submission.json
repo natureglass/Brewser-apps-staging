@@ -1,15 +1,15 @@
 {
     "id": "com.natureglass.streamcast",
     "name": "Stream Cast",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
-    "zip_sha256": "6117c05e1f72ed88f1d2cc0036ccc9681d9baa2b7bd87b52cb968222453ee4e2",
+    "zip_sha256": "7a4827d9e95237df5d36b052be7a019c0f1511414935c167f998f4bb003e54f2",
     "attestation": {
-        "ts": "2026-07-21T10:28:54+00:00",
+        "ts": "2026-07-21T10:36:50+00:00",
         "platforms": [
             "switch"
         ],
-        "zip_sha256": "6117c05e1f72ed88f1d2cc0036ccc9681d9baa2b7bd87b52cb968222453ee4e2"
+        "zip_sha256": "7a4827d9e95237df5d36b052be7a019c0f1511414935c167f998f4bb003e54f2"
     },
-    "submitted_at": "2026-07-21T10:28:54+00:00"
+    "submitted_at": "2026-07-21T10:36:50+00:00"
 }
