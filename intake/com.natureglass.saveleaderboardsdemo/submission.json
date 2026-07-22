@@ -1,0 +1,16 @@
+{
+    "id": "com.natureglass.saveleaderboardsdemo",
+    "name": "Save & Leaderboards Demo",
+    "version": "1.0.0",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "zip_sha256": "f798cfd1d87fac14f0f17f6b29b164e71ff97f90a1e50372f56faa14837380c8",
+    "attestation": {
+        "ts": "2026-07-22T11:14:52+00:00",
+        "platforms": [
+            "switch",
+            "web"
+        ],
+        "zip_sha256": "f798cfd1d87fac14f0f17f6b29b164e71ff97f90a1e50372f56faa14837380c8"
+    },
+    "submitted_at": "2026-07-22T11:14:52+00:00"
+}
