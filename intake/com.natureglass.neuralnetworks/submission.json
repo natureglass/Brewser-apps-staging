@@ -1,0 +1,15 @@
+{
+    "id": "com.natureglass.neuralnetworks",
+    "name": "Neural Networks",
+    "version": "1.0.1",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "zip_sha256": "75b62baea8bcf3a9728c3f9fc5e5b9c363469d1c4cbed9c61bd1e880f9ee5862",
+    "attestation": {
+        "ts": "2026-07-22T12:47:25+00:00",
+        "platforms": [
+            "web"
+        ],
+        "zip_sha256": "75b62baea8bcf3a9728c3f9fc5e5b9c363469d1c4cbed9c61bd1e880f9ee5862"
+    },
+    "submitted_at": "2026-07-22T12:47:25+00:00"
+}
