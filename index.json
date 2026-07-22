@@ -30,16 +30,6 @@
         "description": "<p>MIDI Lab</p>"
     },
     {
-        "id": "com.natureglass.sensorsplayground",
-        "name": "Sensors Playground",
-        "version": "1.0.0",
-        "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
-        "updated_at": "2026-07-21T12:39:53Z",
-        "entry": "index.html",
-        "logo": "assets/appbanner.jpg",
-        "description": "<p>Sensors Playground</p>"
-    },
-    {
         "id": "com.natureglass.speedtest",
         "name": "Speed Test",
         "version": "1.0.4",
