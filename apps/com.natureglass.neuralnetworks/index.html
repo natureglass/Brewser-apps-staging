@@ -45,6 +45,7 @@
   button:hover{border-color:var(--phos-dim);color:var(--phos)}
   button:active{transform:translateY(1px)}
   button:focus-visible{outline:2px solid var(--phos);outline-offset:2px}
+  button:disabled{opacity:.5;cursor:default;color:var(--ink-dim);border-color:var(--line)}
   .verdict{display:flex;align-items:center;gap:18px;margin-bottom:14px}
   .glyph{font-size:76px;line-height:1;font-weight:700;color:var(--phos);
     text-shadow:0 0 18px rgba(57,255,176,.35);min-width:64px;text-align:center}
@@ -80,7 +81,7 @@
       </div>
       <div class="controls">
         <button id="clear">Clear</button>
-        <button id="run">Classify</button>
+        <button id="bench" title="Run inference repeatedly and report average latency">Benchmark</button>
       </div>
     </section>
 
@@ -310,8 +311,36 @@ async function run(){
   document.getElementById('s-time').textContent=dt.toFixed(1)+' ms';
 }
 
+async function benchmark(){
+  if(!ready||!GRAPH)return;
+  const btn=document.getElementById('bench');
+  const timeChip=document.getElementById('s-time');
+  // benchmark the current drawing, or a synthetic input if the pad is empty
+  let input=readInput();
+  let hasInk=false;for(let i=0;i<input.length;i++){if(input[i]>0.05){hasInk=true;break;}}
+  if(!hasInk){for(let i=0;i<input.length;i++)input[i]=Math.random()*0.6;}
+  const outputs={output:new Float32Array(10)};
+  const WARMUP=3, ITERS=50;
+  btn.disabled=true;btn.textContent='Running…';
+  // let the label paint before the blocking loop
+  await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+  for(let i=0;i<WARMUP;i++)await BACKEND.ctx.compute(GRAPH,{input},outputs);
+  let best=Infinity,sum=0;
+  for(let i=0;i<ITERS;i++){
+    const t0=performance.now();
+    await BACKEND.ctx.compute(GRAPH,{input},outputs);
+    const dt=performance.now()-t0;
+    sum+=dt;if(dt<best)best=dt;
+  }
+  const mean=sum/ITERS;
+  timeChip.textContent=`${mean.toFixed(2)} ms avg · ${best.toFixed(2)} min · ${ITERS}×`;
+  btn.disabled=false;btn.textContent='Benchmark';
+  // if we ran on real ink, refresh the visible verdict too
+  if(hasInk){dirty=true;run();}
+}
+
 document.getElementById('clear').addEventListener('click',clearPad);
-document.getElementById('run').addEventListener('click',()=>{dirty=true;run();});
+document.getElementById('bench').addEventListener('click',benchmark);
 
 (async()=>{
   clearPad();
