@@ -40,6 +40,16 @@
     "description": "<p>MIDI Lab</p>"
   },
   {
+    "id": "com.natureglass.saveleaderboardsdemo",
+    "name": "Save & Leaderboards Demo",
+    "version": "1.0.0",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "updated_at": "2026-07-22T11:15:10Z",
+    "entry": "index.html",
+    "logo": "assets/appbanner.jpg",
+    "description": "<p>Save &amp; Leaderboards Demo</p>"
+  },
+  {
     "id": "com.natureglass.sensorsplayground",
     "name": "Sensors Playground",
     "version": "1.0.0",
