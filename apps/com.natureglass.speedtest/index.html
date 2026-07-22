@@ -124,6 +124,14 @@
 
     input:focus, select:focus { border-color: rgba(101, 214, 255, .65); }
 
+    /* The open dropdown's option rows default to a near-white system
+     * background; paint them #444 so the resting (non-hovered) rows match
+     * the dark UI. */
+    select option {
+      background: #444444;
+      color: var(--text);
+    }
+
     button {
       background: linear-gradient(135deg, #65d6ff, #54e3a6);
       color: #07111c;
@@ -139,8 +147,10 @@
     .side {
       padding: 22px;
       display: grid;
+      /* metrics + config size to content; the log row takes all the space
+       * left in the column so it fills down to the bottom of the card. */
+      grid-template-rows: auto auto 1fr;
       gap: 14px;
-      align-content: start;
       min-height: 0;
       overflow: hidden;
     }
@@ -185,8 +195,10 @@
       border: 1px solid var(--border);
       border-radius: 20px;
       padding: 14px;
-      min-height: 180px;
-      max-height: 230px;
+      /* min-height:0 lets the 1fr grid row shrink this below its content
+       * so it stretches to fill the leftover space instead of capping at a
+       * fixed height; overflow keeps long diagnostics scrollable. */
+      min-height: 0;
       overflow: auto;
       font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
       font-size: 12px;
@@ -198,7 +210,6 @@
     .config {
       display: grid;
       gap: 10px;
-      display: none;
     }
 
     .config-row {
@@ -293,11 +304,11 @@
       <section class="config">
         <div class="config-row">
           <label for="downloadEndpoint">Download endpoint</label>
-          <input id="downloadEndpoint" value="https://speed.cloudflare.com/__down?bytes={bytes}" />
+          <input id="downloadEndpoint" value="https://speed.cloudflare.com/__down?bytes={bytes}" disabled />
         </div>
         <div class="config-row">
           <label for="uploadEndpoint">Upload endpoint</label>
-          <input id="uploadEndpoint" value="https://speed.cloudflare.com/__up" />
+          <input id="uploadEndpoint" value="https://speed.cloudflare.com/__up" disabled/>
         </div>
       </section>
 
