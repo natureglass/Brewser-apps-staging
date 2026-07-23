@@ -1,0 +1,16 @@
+{
+  "id": "com.test.peripheral",
+  "name": "Undeclared Peripheral",
+  "version": "1.0.0",
+  "description": "Uses WebUSB without declaring a matching permission. No egress.",
+  "logo": "assets/appbanner.jpg",
+  "entry": "index.html",
+  "categories": ["demo"],
+  "permissions": ["fullscreen"],
+  "compatibility": ["web"],
+  "allowed_origins": [],
+  "developer": "Test Dev",
+  "license": "MIT",
+  "exitGame": "PLUS",
+  "fullscreen": true
+}

@@ -51,6 +51,21 @@ jobs:
       - name: Install jsonschema
         run: python -m pip install --quiet 'jsonschema>=4.0'
 
+      # The security scanner is a Node (ESM) tool in scanner/. It runs INLINE in
+      # the per-submission loop below (one unpacked tree per submission), so it
+      # is invoked like the Python helpers — not as a `uses:` composite action,
+      # which cannot run inside a bash loop. Deps are pinned + lockfiled under
+      # scanner/. Scan failures never fail intake (see the loop's fail-safe).
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: scanner/package-lock.json
+
+      - name: Install scanner deps
+        run: npm ci --prefix scanner
+
       - name: Configure git author
         run: |
           git config user.name  "brewser-submissions-bot"
@@ -96,6 +111,10 @@ jobs:
             error=""
             version=""
             zip_sha256=""
+            # Security-scan outputs for THIS submission. Empty on the error path
+            # (no unpacked tree to scan); populated after a successful unzip.
+            scan_verdict=""
+            scan_findings_file=""
 
             if [ ! -f "$manifest_file" ] || [ ! -f "$zip_file" ]; then
               result="error"
@@ -139,6 +158,24 @@ jobs:
                   cp -a "$tmpdir"/. "$target"/
                   cp "$manifest_file" "$target/manifest.json"
 
+                  # ---- Security scan (informational; NEVER fails intake) -----
+                  # Runs on the unpacked tree before the callback so verdict +
+                  # findings ride the SAME signed body. scan.mjs always exits 0
+                  # and self-degrades to SUSPICIOUS internally; the extra guard
+                  # here covers the case where node can't launch at all, so a
+                  # broken scanner can't take intake down or auto-clear an app.
+                  scan_findings_file="$(mktemp)"
+                  if node scanner/scan.mjs --package "$tmpdir" --manifest "$manifest_file" --out "$scan_findings_file" 2> /tmp/scanerr; then
+                    scan_verdict=$(python -c "import json,sys; print(json.load(open('$scan_findings_file')).get('verdict',''))" 2>/dev/null || echo "")
+                  fi
+                  if [ -z "$scan_verdict" ]; then
+                    scan_verdict="SUSPICIOUS"
+                    printf '%s' '{"verdict":"SUSPICIOUS","score":10,"scanner_version":"ci-fallback","scanned_at":"","package_hash":"","counts":{"info":0,"suspicious":1,"dangerous":0},"rationale":"Scanner did not complete in CI — fail-safe verdict, manual review required.","truncated":false,"findings":[{"rule_id":"scan-error","severity":"SUSPICIOUS","title":"Scanner failed in CI","detail":"The scan step produced no verdict; treated as SUSPICIOUS so nothing auto-clears.","file":"","line":0,"evidence":""}],"limitations":"Static heuristic scan. A GOOD verdict is not proof of safety. Human review is still required."}' > "$scan_findings_file"
+                    echo "::warning::scan for $pkg did not complete — defaulting verdict to SUSPICIOUS: $(head -c 200 /tmp/scanerr 2>/dev/null)"
+                  else
+                    echo "::notice::scan for $pkg → $scan_verdict"
+                  fi
+
                   python "$SCRIPT_DIR/upsert_index.py" "$manifest_file" "$sub_file" index.json
 
                   git rm -rf "$intake_dir" >/dev/null
@@ -176,6 +213,8 @@ jobs:
               printf '%s' "$BREWSER_CALLBACK_SECRET" | \
                 python "$SCRIPT_DIR/build_callback.py" \
                   --out-dir "$cb_dir" \
+                  --scan-verdict "$scan_verdict" \
+                  ${scan_findings_file:+--scan-findings-file "$scan_findings_file"} \
                   "$pkg" "$version" "$zip_sha256" "$result" "$deploy_sha" "$error"
 
               cb_body=$(cat "$cb_dir/body")
@@ -218,6 +257,7 @@ jobs:
             fi
 
             unset committed_sha
+            [ -n "$scan_findings_file" ] && rm -f "$scan_findings_file"
 
             if [ "$result" != "ok" ]; then
               overall_status=1

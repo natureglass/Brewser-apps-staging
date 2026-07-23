@@ -1,0 +1,16 @@
+{
+  "id": "com.test.clean",
+  "name": "Clean Demo",
+  "version": "1.0.0",
+  "description": "A well-behaved app using only standard Web APIs and its own origin.",
+  "logo": "assets/appbanner.jpg",
+  "entry": "index.html",
+  "categories": ["demo"],
+  "permissions": [],
+  "compatibility": ["web", "switch"],
+  "allowed_origins": ["https://api.example.com"],
+  "developer": "Test Dev",
+  "license": "MIT",
+  "exitGame": "PLUS",
+  "fullscreen": true
+}

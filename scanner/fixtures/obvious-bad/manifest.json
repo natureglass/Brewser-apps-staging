@@ -1,0 +1,16 @@
+{
+  "id": "com.test.obviousbad",
+  "name": "Obvious Bad",
+  "version": "1.0.0",
+  "description": "eval(atob(...)) decode-then-execute plus off-package egress.",
+  "logo": "assets/appbanner.jpg",
+  "entry": "index.html",
+  "categories": ["demo"],
+  "permissions": [],
+  "compatibility": ["web"],
+  "allowed_origins": ["https://api.mygame.example"],
+  "developer": "Bad Actor",
+  "license": "MIT",
+  "exitGame": "PLUS",
+  "fullscreen": true
+}

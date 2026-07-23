@@ -10,11 +10,20 @@ Reads the shared secret from stdin (never as a CLI arg — arg lists are visible
 in `ps` even on GitHub-hosted runners).
 
 Usage:
-  build_callback.py --out-dir DIR <package_id> <version> <zip_sha256> \
+  build_callback.py --out-dir DIR [--scan-verdict V] [--scan-findings-file F] \
+                    <package_id> <version> <zip_sha256> \
                     <ok|error> [deploy_sha] [error_msg]
 
 The signature covers `<ts>.<body>`, matching what Brewser_Sub_Rest::route_callback
 verifies with hash_equals on the WordPress side.
+
+The optional security-scan fields (`scan_verdict`, `scan_findings`) are folded
+into the SAME signed body, not sent as unsigned side-channel headers — the WP
+side verifies the raw body bytes, so anything it later reads must be inside the
+signature. `scan_findings` is embedded as the nested findings object (already
+size-capped + evidence-truncated by the scanner). Both default to empty/None so
+error-result callbacks (no scan ran) keep the historic body shape plus two inert
+keys, which route_callback reads only via isset().
 
 Canonical trailing-newline rule: BOTH sides strip exactly one trailing \\r\\n
 or \\n from the secret before hashing. Nothing else — no leading trim, no
@@ -40,6 +49,8 @@ import time
 def main(argv):
     p = argparse.ArgumentParser()
     p.add_argument("--out-dir", required=True)
+    p.add_argument("--scan-verdict", default="")
+    p.add_argument("--scan-findings-file", default="")
     p.add_argument("package_id")
     p.add_argument("version")
     p.add_argument("zip_sha256")
@@ -47,6 +58,19 @@ def main(argv):
     p.add_argument("deploy_sha", nargs="?", default="")
     p.add_argument("error_msg", nargs="?", default="")
     args = p.parse_args(argv[1:])
+
+    # Load the scan findings object (if any). A missing/unreadable/oversize file
+    # is treated as "no findings" — the verdict string still rides in the body,
+    # and the scanner already fail-safes to SUSPICIOUS on its own errors, so we
+    # never fabricate a GOOD here.
+    scan_findings = None
+    if args.scan_findings_file:
+        try:
+            with open(args.scan_findings_file, "r", encoding="utf-8") as f:
+                scan_findings = json.load(f)
+        except Exception as e:  # noqa: BLE001 — any read/parse failure is non-fatal
+            print("[build_callback] scan-findings unreadable: {}".format(e), file=sys.stderr)
+            scan_findings = None
 
     # Canonical: strip ONLY trailing CR / LF. Do not use .strip() — that also
     # strips leading whitespace and other whitespace classes, which would
@@ -65,6 +89,8 @@ def main(argv):
         "result":            args.result,
         "error":             args.error_msg,
         "deploy_commit_sha": args.deploy_sha,
+        "scan_verdict":      args.scan_verdict,
+        "scan_findings":     scan_findings,
     }, separators=(",", ":"), sort_keys=True)
 
     ts           = str(int(time.time()))

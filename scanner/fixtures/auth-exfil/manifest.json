@@ -1,0 +1,16 @@
+{
+  "id": "com.test.authexfil",
+  "name": "Auth Exfil",
+  "version": "1.0.0",
+  "description": "Reads the shared session envelope and ships it off-device.",
+  "logo": "assets/appbanner.jpg",
+  "entry": "index.html",
+  "categories": ["demo"],
+  "permissions": [],
+  "compatibility": ["web"],
+  "allowed_origins": [],
+  "developer": "Bad Actor",
+  "license": "MIT",
+  "exitGame": "PLUS",
+  "fullscreen": true
+}
