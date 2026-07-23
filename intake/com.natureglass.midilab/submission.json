@@ -3,14 +3,14 @@
     "name": "MIDI Lab",
     "version": "1.0.0",
     "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
-    "zip_sha256": "8a37ee87989d7ff9c1b4607c5c0160647074e300b88abf4fd6aa5c6caf6b6678",
+    "zip_sha256": "ee872967d10a02f01c9ce631c0ee4d37a8a9db47ca342468e2a7e32a412a7b0c",
     "attestation": {
-        "ts": "2026-07-23T17:00:05+00:00",
+        "ts": "2026-07-23T17:17:10+00:00",
         "platforms": [
             "switch",
             "web"
         ],
-        "zip_sha256": "8a37ee87989d7ff9c1b4607c5c0160647074e300b88abf4fd6aa5c6caf6b6678"
+        "zip_sha256": "ee872967d10a02f01c9ce631c0ee4d37a8a9db47ca342468e2a7e32a412a7b0c"
     },
-    "submitted_at": "2026-07-23T17:00:05+00:00"
+    "submitted_at": "2026-07-23T17:17:10+00:00"
 }
