@@ -15,7 +15,7 @@ import { INFO, SUSPICIOUS, DANGEROUS } from './severity.mjs';
 import { shannonEntropy, base64ishRatio } from './entropy.mjs';
 import {
   EXEC_SINKS, SENSITIVE_GLOBALS, DECODE_FNS,
-  PERIPHERAL_APIS, NFC_CTOR, isPeripheralNavProp,
+  PERIPHERAL_APIS, NFC_CTOR, isPeripheralNavProp, MINER_SIGNATURES,
 } from './signatures.mjs';
 import { isExternalUrl } from './origins.mjs';
 
@@ -112,9 +112,24 @@ export function analyzeJs(code, file, ctx) {
     return { findings, peripheralsUsed };
   }
 
+  // Known crypto-miner signatures — a cheap substring sweep over the source
+  // (catches both library references and inlined miner code). One hit per file.
+  {
+    const lower = code.toLowerCase();
+    for (const sig of MINER_SIGNATURES) {
+      if (lower.includes(sig)) {
+        add({ rule_id: 'miner-signature', severity: DANGEROUS, file, line: 0,
+          detail: 'Contains a known crypto-miner signature ("' + sig + '") — unauthorized resource abuse.',
+          evidence: sig });
+        break;
+      }
+    }
+  }
+
   // -------------------------------------------------------------------------
   // Taint: collect assignments, fixpoint over binding taint, then sink pass.
-  // Labels: 'auth' (brewser_auth), 'storage', 'cookie', 'device', 'decode'.
+  // Labels: 'auth' (brewser_auth), 'storage', 'cookie', 'device', 'decode',
+  //         'network' (fetched response body — reassembled-payload).
   // -------------------------------------------------------------------------
   const taint = new Map(); // binding node -> Set<label>
 
@@ -198,6 +213,8 @@ export function analyzeJs(code, file, ctx) {
     if (last === 'decode' && obj === 'TextDecoder') out.add('decode'); // rare
     if (last === 'decode' && /decoder/i.test(obj)) out.add('decode');
     if (last === 'getDevices' || last === 'getPorts') out.add('device');
+    // Fetched response body reads → 'network' (reassembled-payload dataflow).
+    if (last === 'text' || last === 'json' || last === 'arrayBuffer' || last === 'blob') out.add('network');
     return out;
   }
 
@@ -205,6 +222,11 @@ export function analyzeJs(code, file, ctx) {
     const out = new Set();
     const mp = memberPath(node);
     if (mp === 'document.cookie') { out.add('cookie'); return out; }
+    // XHR response body reads → 'network'.
+    if (node.property && node.property.type === 'Identifier' &&
+        (node.property.name === 'responseText' || node.property.name === 'response')) {
+      out.add('network');
+    }
     // localStorage['brewser_auth'] / localStorage.brewser_auth
     if (node.object && node.object.type === 'Identifier' &&
         (node.object.name === 'localStorage' || node.object.name === 'sessionStorage')) {
@@ -347,6 +369,32 @@ export function analyzeJs(code, file, ctx) {
       }
     },
 
+    // ---- Aliasing a dangerous global to a local (const f = eval; …) -------
+    VariableDeclarator(path) {
+      const init = path.node.init;
+      if (!init) return;
+      const EXEC_ALIASES = new Set(['eval', 'Function', 'importScripts']);
+      let aliased = null;
+      if (init.type === 'Identifier' && EXEC_ALIASES.has(init.name)) {
+        aliased = init.name;
+      } else if (init.type === 'MemberExpression') {
+        const mp = memberPath(init);
+        if (mp) {
+          const parts = mp.split('.');
+          const obj = parts[parts.length - 2];
+          const prop = parts[parts.length - 1];
+          if (['window', 'self', 'globalThis', 'top'].includes(obj) && EXEC_ALIASES.has(prop)) {
+            aliased = prop;
+          }
+        }
+      }
+      if (aliased) {
+        add({ rule_id: 'global-alias-sink', severity: SUSPICIOUS, file, line: lineOf(path.node),
+          detail: 'Aliases the code-execution global "' + aliased + '" to a local — a common way to hide a dangerous call from a reviewer or a naive grep.',
+          evidence: snippet(code, path.node) });
+      }
+    },
+
     // ---- Dynamic import with computed specifier ---------------------------
     Import(path) {
       const call = path.parentPath && path.parentPath.node;
@@ -405,6 +453,15 @@ export function analyzeJs(code, file, ctx) {
           detail: 'Accesses document.cookie.', evidence: snippet(code, node) });
       }
 
+      // devtools-detection: any access to Function.prototype.toString (used to
+      // sniff whether natives have been hooked/instrumented), however it's then
+      // invoked (.call/.apply or direct).
+      if (memberPath(node) === 'Function.prototype.toString') {
+        add({ rule_id: 'devtools-detection', severity: SUSPICIOUS, file, line: lineOf(node),
+          detail: 'Accesses Function.prototype.toString — a common anti-analysis / devtools-detection trick (checking whether natives are hooked).',
+          evidence: snippet(code, node) });
+      }
+
       // .constructor.constructor eval-escape.
       if (!node.computed && node.property.type === 'Identifier' && node.property.name === 'constructor' &&
           node.object.type === 'MemberExpression' && !node.object.computed &&
@@ -414,13 +471,18 @@ export function analyzeJs(code, file, ctx) {
           evidence: snippet(code, node) });
       }
 
-      // Computed window/self/globalThis/top[x] -> resolved sink name.
+      // Computed window/self/globalThis/top[x].
       if (node.computed && node.object.type === 'Identifier' &&
           ['window', 'self', 'globalThis', 'top'].includes(node.object.name)) {
         const key = staticString(node.property);
         if (key.static && SENSITIVE_GLOBALS.has(key.value)) {
           add({ rule_id: 'computed-sink-name', severity: SUSPICIOUS, file, line: lineOf(node),
             detail: node.object.name + "['" + key.value + "'] resolves a sensitive global (" + key.value + ') through a runtime-assembled name — an obfuscation tell.',
+            evidence: snippet(code, node) });
+        } else if (!key.static && isCallee) {
+          // Fully dynamic global lookup that is then invoked: window[x](…).
+          add({ rule_id: 'global-bracket-sink', severity: SUSPICIOUS, file, line: lineOf(node),
+            detail: node.object.name + '[…]() invokes a global chosen by a runtime value — the called name is hidden from static review.',
             evidence: snippet(code, node) });
         }
       }
@@ -475,6 +537,16 @@ export function analyzeJs(code, file, ctx) {
       const last = parts.length ? parts[parts.length - 1] : simpleName;
       const objName = parts.length >= 2 ? parts[parts.length - 2] : '';
 
+      // Self-decoding IIFE: (function(){ … atob(…) … eval(…) … })() — a function
+      // that decodes then executes its own body, invoked immediately.
+      if ((callee.type === 'FunctionExpression' || callee.type === 'ArrowFunctionExpression') && callee.body) {
+        if (subtreeHasCallName(callee.body, DECODE_FNS) && subtreeHasCallName(callee.body, EXEC_SINKS)) {
+          add({ rule_id: 'self-decoding-iife', severity: SUSPICIOUS, file, line,
+            detail: 'An immediately-invoked function decodes data and executes it within its own body — a self-decoding payload.',
+            evidence: snippet(code, node) });
+        }
+      }
+
       // localStorage.getItem('brewser_auth') / sessionStorage.getItem(...) — the
       // CALL form (the member form is handled in MemberExpression).
       if (last === 'getItem' && (objName === 'localStorage' || objName === 'sessionStorage')) {
@@ -506,6 +578,10 @@ export function analyzeJs(code, file, ctx) {
         if (labels.has('decode')) {
           add({ rule_id: 'decode-exec', severity: DANGEROUS, file, line,
             detail: 'Decoded data (atob/decodeURIComponent/fromCharCode/…) flows into eval() — the classic obfuscated-payload pattern.',
+            evidence: snippet(code, node) });
+        } else if (labels.has('network')) {
+          add({ rule_id: 'reassembled-payload', severity: DANGEROUS, file, line,
+            detail: 'Data fetched from the network flows into eval() — remotely-delivered code executed at runtime.',
             evidence: snippet(code, node) });
         } else if (!s || !s.static) {
           add({ rule_id: 'eval-nonliteral', severity: SUSPICIOUS, file, line,
@@ -628,12 +704,6 @@ export function analyzeJs(code, file, ctx) {
         return;
       }
 
-      // Function.prototype.toString devtools detection.
-      if (mp === 'Function.prototype.toString' || (last === 'toString' && objName === 'toString')) {
-        add({ rule_id: 'devtools-detection', severity: SUSPICIOUS, file, line,
-          detail: 'Inspects Function.prototype.toString — a common anti-analysis / devtools-detection trick.',
-          evidence: snippet(code, node) });
-      }
     },
 
     NewExpression(path) {
@@ -668,9 +738,13 @@ export function analyzeJs(code, file, ctx) {
     const line = lineOf(node);
     const anyNonStatic = node.arguments.some((a) => !staticString(a).static);
     const anyDecode = node.arguments.some((a) => exprLabels(a, scope).has('decode'));
+    const anyNetwork = node.arguments.some((a) => exprLabels(a, scope).has('network'));
     if (anyDecode) {
       add({ rule_id: 'decode-exec', severity: DANGEROUS, file, line,
         detail: 'Decoded data flows into Function() — code built from an obfuscated payload.', evidence: snippet(code, node) });
+    } else if (anyNetwork) {
+      add({ rule_id: 'reassembled-payload', severity: DANGEROUS, file, line,
+        detail: 'Network-fetched data flows into Function() — remotely-delivered code executed at runtime.', evidence: snippet(code, node) });
     } else if (anyNonStatic && node.arguments.length > 0) {
       add({ rule_id: 'function-constructor', severity: SUSPICIOUS, file, line,
         detail: 'Function() constructs code from a non-literal — a runtime-decided code path.', evidence: snippet(code, node) });
@@ -777,6 +851,24 @@ function gateCheck(test, body, add, file, code) {
   if (g.platform) add(makeFinding({ rule_id: 'platform-gated-code', severity: SUSPICIOUS, file, line, detail: 'A code path containing a sink is gated on userAgent/platform sniffing — may only misbehave on the Switch build.', evidence: ev }));
 }
 
+// Does a subtree contain a call whose (simple or member-tail) name is in `names`?
+function subtreeHasCallName(node, names, depth = 0) {
+  if (!node || typeof node !== 'object' || depth > 30) return false;
+  if (node.type === 'CallExpression' && node.callee) {
+    const c = node.callee;
+    const name = c.type === 'Identifier' ? c.name
+      : (c.type === 'MemberExpression' && c.property && c.property.type === 'Identifier' ? c.property.name : null);
+    if (name && names.has(name)) return true;
+  }
+  for (const k in node) {
+    if (k === 'loc' || k === 'start' || k === 'end' || k === 'leadingComments' || k === 'trailingComments') continue;
+    const v = node[k];
+    if (Array.isArray(v)) { for (const x of v) if (subtreeHasCallName(x, names, depth + 1)) return true; }
+    else if (v && typeof v.type === 'string') { if (subtreeHasCallName(v, names, depth + 1)) return true; }
+  }
+  return false;
+}
+
 function unboundedLoop(path, add, file, code) {
   const node = path.node;
   // while(true)/for(;;) with no await/yield/break/return reachable in the body.
@@ -786,7 +878,7 @@ function unboundedLoop(path, add, file, code) {
   if (!isTrue) return;
   let hasEscape = false;
   path.traverse({
-    'BreakStatement|ReturnStatement|AwaitExpression|YieldStatement|YieldExpression'() { hasEscape = true; },
+    'BreakStatement|ReturnStatement|AwaitExpression|YieldExpression'() { hasEscape = true; },
   });
   if (!hasEscape) {
     add(makeFinding({ rule_id: 'unbounded-loop', severity: INFO, file, line: lineOf(node),

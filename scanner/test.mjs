@@ -7,6 +7,7 @@ import { readFileSync, mkdtempSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { RULES } from './lib/rules.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const SCAN = path.join(__dirname, 'scan.mjs');
@@ -48,6 +49,23 @@ for (const c of CASES) {
   log(typeof artifact.package_hash === 'string' && artifact.package_hash.length === 64, 'has a sha256 package_hash');
   for (const id of c.must) log(ids.has(id), 'trips rule ' + id);
   for (const id of c.mustNot) log(!ids.has(id), 'does NOT trip rule ' + id);
+}
+
+// Full-catalogue coverage: the all-patterns fixture must trip EVERY non-harness
+// rule (guards the whole catalogue against silent regressions — e.g. an analyzer
+// that throws and skips a file, which is exactly how the YieldStatement crash and
+// the .toString.call devtools miss slipped through before).
+{
+  console.log('\n# all-patterns (full catalogue coverage)');
+  const { artifact, exitCode } = runScan('all-patterns');
+  const got = new Set(artifact.findings.map((f) => f.rule_id));
+  const harness = new Set(['scan-error', 'findings-truncated', 'file-parse-error']);
+  const expected = Object.keys(RULES).filter((r) => !harness.has(r));
+  const missing = expected.filter((r) => !got.has(r));
+  log(exitCode === 0, 'exit code is 0');
+  log(artifact.verdict === 'DANGEROUS', 'verdict is DANGEROUS (got ' + artifact.verdict + ')');
+  log(!got.has('file-parse-error'), 'no file-parse-error (no analyzer threw/skipped a file)');
+  log(missing.length === 0, 'trips every non-harness rule' + (missing.length ? ' — MISSING: ' + missing.join(', ') : ' (' + expected.length + ')'));
 }
 
 // Determinism: the same package hashes the same across two runs.

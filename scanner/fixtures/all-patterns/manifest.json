@@ -1,0 +1,16 @@
+{
+  "id": "com.natureglass.sectest",
+  "name": "Security Test Suite",
+  "version": "1.0.0",
+  "description": "A deliberately malicious demo package that exercises every rule in the Brewser scanner catalogue. NOT a real app — do not publish.",
+  "logo": "assets/appbanner.jpg",
+  "entry": "index.html",
+  "categories": ["demo"],
+  "permissions": ["midi", "bluetooth"],
+  "compatibility": ["web"],
+  "allowed_origins": [],
+  "developer": "Security Tester",
+  "license": "MIT",
+  "exitGame": "PLUS",
+  "fullscreen": true
+}

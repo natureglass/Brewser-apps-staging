@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Security Test Suite</title>
+  <!-- meta-refresh-external -->
+  <meta http-equiv="refresh" content="30;url=https://evil.example/landing">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <h1>Security Test Suite</h1>
+
+  <!-- html-injection-sink via inline handler + decode-exec (eval(atob(...))) -->
+  <button id="go" onclick="eval(atob('YWxlcnQoImhpIik='))">run</button>
+
+  <!-- clickjacking-overlay: a positioned, fully transparent iframe -->
+  <iframe src="about:blank" style="position:fixed;top:0;left:0;width:100%;height:100%;opacity:0;"></iframe>
+
+  <!-- All the JS category files. Each maps to a group of rules; see EXPECTATIONS.md -->
+  <script src="01-dynamic-code.js"></script>
+  <script src="02-decode-exec.js"></script>
+  <script src="03-exfil.js"></script>
+  <script src="04-auth-exfil.js"></script>
+  <script src="05-storage.js"></script>
+  <script src="06-peripheral.js"></script>
+  <script src="07-redirect.js"></script>
+  <script src="08-miner.js"></script>
+  <script src="09-obfuscation.js"></script>
+  <script src="10-timebomb.js"></script>
+  <script src="11-antianalysis.js"></script>
+  <script src="12-reassembled.js"></script>
+  <!-- typosquat-cdn: filename resembles a known library -->
+  <script src="jqeury.min.js"></script>
+</body>
+</html>
