@@ -1,7 +1,7 @@
 {
     "id": "com.natureglass.test",
     "name": "test",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "<p>test</p>",
     "logo": "assets/appbanner.jpg",
     "entry": "index.html",
