@@ -1,0 +1,15 @@
+{
+    "id": "com.natureglass.test",
+    "name": "test",
+    "version": "1.0.0",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "zip_sha256": "32dfcae58fac71da6a8a46e03e2112351d5dd5f504a016937f4074a707175a8f",
+    "attestation": {
+        "ts": "2026-07-23T18:33:22+00:00",
+        "platforms": [
+            "web"
+        ],
+        "zip_sha256": "32dfcae58fac71da6a8a46e03e2112351d5dd5f504a016937f4074a707175a8f"
+    },
+    "submitted_at": "2026-07-23T18:33:22+00:00"
+}
