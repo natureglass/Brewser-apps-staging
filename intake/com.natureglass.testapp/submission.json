@@ -1,0 +1,15 @@
+{
+    "id": "com.natureglass.testapp",
+    "name": "Test App",
+    "version": "1.0.0",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "zip_sha256": "fe1b188d7a98b20021f96f399757da3a9ab6063d87e4bcaecf1272d5db3e0826",
+    "attestation": {
+        "ts": "2026-07-23T11:52:23+00:00",
+        "platforms": [
+            "web"
+        ],
+        "zip_sha256": "fe1b188d7a98b20021f96f399757da3a9ab6063d87e4bcaecf1272d5db3e0826"
+    },
+    "submitted_at": "2026-07-23T11:52:23+00:00"
+}
