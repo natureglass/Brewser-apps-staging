@@ -1,0 +1,26 @@
+{
+  "verdict": "GOOD",
+  "score": 1,
+  "scanned_at": "2026-07-24T16:57:07Z",
+  "scanner_version": "1.0.0",
+  "package_hash": "db5c794905c94168f15d41179eed51af9e72b4cbfe6d8c8469d09a0f027ede20",
+  "counts": {
+    "info": 1,
+    "suspicious": 0,
+    "dangerous": 0
+  },
+  "rationale": "No known-bad pattern matched (1 informational note(s)). Not proof of safety — human review still required.",
+  "truncated": false,
+  "findings": [
+    {
+      "rule_id": "html-injection-sink",
+      "severity": "INFO",
+      "title": "DOM HTML sink assigned a non-literal value",
+      "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
+      "file": "index.html <inline script>",
+      "line": 1207,
+      "evidence": "button.innerHTML = ` <span class=\"num\">${String(index + 1).padStart(2, \"0\")}</span> <strong>${track.title}</strong> <sp…"
+    }
+  ],
+  "limitations": "Static heuristic scan. A GOOD verdict means no known-bad pattern matched, NOT proof of safety. Human review is still required for every submission."
+}
