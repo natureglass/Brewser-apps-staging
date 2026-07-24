@@ -1,5 +1,15 @@
 [
   {
+    "id": "com.natureglass.fractalzoom",
+    "name": "Fractal Zoom",
+    "version": "1.0.0",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "updated_at": "2026-07-24T14:43:31Z",
+    "entry": "index.html",
+    "logo": "assets/appbanner.jpg",
+    "description": "<p><strong>Fractal Zoom</strong> is a GPU-powered explorer for six infinitely detailed fractals. Dive endlessly into these mathematical worlds, panning and zooming smoothly to reveal intricate structure at every scale, all rendered in real time with WebGL2.</p>\r\n<p><strong>How it works.</strong> Most of the fractals — the <em>Mandelbrot</em>, <em>Julia</em>, <em>Burning Ship</em>, <em>Phoenix</em> and <em>Koch</em> sets — are drawn by a fragment shader covering the whole screen: for every…"
+  },
+  {
     "id": "com.natureglass.neuralnetworks",
     "name": "Neural Networks",
     "version": "1.0.0",
