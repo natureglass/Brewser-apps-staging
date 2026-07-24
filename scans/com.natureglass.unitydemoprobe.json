@@ -1,0 +1,530 @@
+{
+  "verdict": "SUSPICIOUS",
+  "score": 246,
+  "scanned_at": "2026-07-24T19:27:22Z",
+  "scanner_version": "1.1.0",
+  "package_hash": "13af9e9407521d0df4503c47d07a6d514b71b79a4862c22a1f8a6f00541c49b7",
+  "counts": {
+    "info": 36,
+    "suspicious": 21,
+    "dangerous": 0
+  },
+  "rationale": "Suspicious: 21 signal(s) needing review; e.g. reads or writes document.cookie.",
+  "truncated": false,
+  "findings": [
+    {
+      "rule_id": "cookie-access",
+      "severity": "SUSPICIOUS",
+      "title": "Reads or writes document.cookie",
+      "detail": "Writes document.cookie.",
+      "file": "builds/2021.3.45f2-webgl1/debug-console.js",
+      "line": 28,
+      "evidence": "document.cookie = cname + \"=\" + cvalue + \";\" + expires + \";path=/\""
+    },
+    {
+      "rule_id": "cookie-access",
+      "severity": "SUSPICIOUS",
+      "title": "Reads or writes document.cookie",
+      "detail": "Accesses document.cookie.",
+      "file": "builds/2021.3.45f2-webgl1/debug-console.js",
+      "line": 33,
+      "evidence": "document.cookie"
+    },
+    {
+      "rule_id": "cookie-access",
+      "severity": "SUSPICIOUS",
+      "title": "Reads or writes document.cookie",
+      "detail": "Writes document.cookie.",
+      "file": "builds/2022.3.62f3-webgl1/debug-console.js",
+      "line": 28,
+      "evidence": "document.cookie = cname + \"=\" + cvalue + \";\" + expires + \";path=/\""
+    },
+    {
+      "rule_id": "cookie-access",
+      "severity": "SUSPICIOUS",
+      "title": "Reads or writes document.cookie",
+      "detail": "Accesses document.cookie.",
+      "file": "builds/2022.3.62f3-webgl1/debug-console.js",
+      "line": 33,
+      "evidence": "document.cookie"
+    },
+    {
+      "rule_id": "cookie-access",
+      "severity": "SUSPICIOUS",
+      "title": "Reads or writes document.cookie",
+      "detail": "Writes document.cookie.",
+      "file": "builds/2022.3.62f3-webgl2-debug/debug-console.js",
+      "line": 28,
+      "evidence": "document.cookie = cname + \"=\" + cvalue + \";\" + expires + \";path=/\""
+    },
+    {
+      "rule_id": "cookie-access",
+      "severity": "SUSPICIOUS",
+      "title": "Reads or writes document.cookie",
+      "detail": "Accesses document.cookie.",
+      "file": "builds/2022.3.62f3-webgl2-debug/debug-console.js",
+      "line": 33,
+      "evidence": "document.cookie"
+    },
+    {
+      "rule_id": "cookie-access",
+      "severity": "SUSPICIOUS",
+      "title": "Reads or writes document.cookie",
+      "detail": "Writes document.cookie.",
+      "file": "builds/2023.2.20f1-webgl2-debug/debug-console.js",
+      "line": 28,
+      "evidence": "document.cookie = cname + \"=\" + cvalue + \";\" + expires + \";path=/\""
+    },
+    {
+      "rule_id": "cookie-access",
+      "severity": "SUSPICIOUS",
+      "title": "Reads or writes document.cookie",
+      "detail": "Accesses document.cookie.",
+      "file": "builds/2023.2.20f1-webgl2-debug/debug-console.js",
+      "line": 33,
+      "evidence": "document.cookie"
+    },
+    {
+      "rule_id": "cookie-access",
+      "severity": "SUSPICIOUS",
+      "title": "Reads or writes document.cookie",
+      "detail": "Writes document.cookie.",
+      "file": "builds/6000.0.74f1-webgl2-debug/debug-console.js",
+      "line": 28,
+      "evidence": "document.cookie = cname + \"=\" + cvalue + \";\" + expires + \";path=/\""
+    },
+    {
+      "rule_id": "cookie-access",
+      "severity": "SUSPICIOUS",
+      "title": "Reads or writes document.cookie",
+      "detail": "Accesses document.cookie.",
+      "file": "builds/6000.0.74f1-webgl2-debug/debug-console.js",
+      "line": 33,
+      "evidence": "document.cookie"
+    },
+    {
+      "rule_id": "cookie-access",
+      "severity": "SUSPICIOUS",
+      "title": "Reads or writes document.cookie",
+      "detail": "Writes document.cookie.",
+      "file": "builds/6000.4.0f1-urp-webgl2-debug/debug-console.js",
+      "line": 28,
+      "evidence": "document.cookie = cname + \"=\" + cvalue + \";\" + expires + \";path=/\""
+    },
+    {
+      "rule_id": "cookie-access",
+      "severity": "SUSPICIOUS",
+      "title": "Reads or writes document.cookie",
+      "detail": "Accesses document.cookie.",
+      "file": "builds/6000.4.0f1-urp-webgl2-debug/debug-console.js",
+      "line": 33,
+      "evidence": "document.cookie"
+    },
+    {
+      "rule_id": "cookie-access",
+      "severity": "SUSPICIOUS",
+      "title": "Reads or writes document.cookie",
+      "detail": "Writes document.cookie.",
+      "file": "builds/6000.4.0f1-webgl2-debug/debug-console.js",
+      "line": 28,
+      "evidence": "document.cookie = cname + \"=\" + cvalue + \";\" + expires + \";path=/\""
+    },
+    {
+      "rule_id": "cookie-access",
+      "severity": "SUSPICIOUS",
+      "title": "Reads or writes document.cookie",
+      "detail": "Accesses document.cookie.",
+      "file": "builds/6000.4.0f1-webgl2-debug/debug-console.js",
+      "line": 33,
+      "evidence": "document.cookie"
+    },
+    {
+      "rule_id": "eval-nonliteral",
+      "severity": "SUSPICIOUS",
+      "title": "eval() of a non-literal value",
+      "detail": "eval() of a non-literal expression: the executed code is decided at runtime.",
+      "file": "builds/2021.3.45f2-webgl1/debug-console.js",
+      "line": 66,
+      "evidence": "eval(consoleInput.value)"
+    },
+    {
+      "rule_id": "eval-nonliteral",
+      "severity": "SUSPICIOUS",
+      "title": "eval() of a non-literal value",
+      "detail": "eval() of a non-literal expression: the executed code is decided at runtime.",
+      "file": "builds/2022.3.62f3-webgl1/debug-console.js",
+      "line": 66,
+      "evidence": "eval(consoleInput.value)"
+    },
+    {
+      "rule_id": "eval-nonliteral",
+      "severity": "SUSPICIOUS",
+      "title": "eval() of a non-literal value",
+      "detail": "eval() of a non-literal expression: the executed code is decided at runtime.",
+      "file": "builds/2022.3.62f3-webgl2-debug/debug-console.js",
+      "line": 66,
+      "evidence": "eval(consoleInput.value)"
+    },
+    {
+      "rule_id": "eval-nonliteral",
+      "severity": "SUSPICIOUS",
+      "title": "eval() of a non-literal value",
+      "detail": "eval() of a non-literal expression: the executed code is decided at runtime.",
+      "file": "builds/2023.2.20f1-webgl2-debug/debug-console.js",
+      "line": 66,
+      "evidence": "eval(consoleInput.value)"
+    },
+    {
+      "rule_id": "eval-nonliteral",
+      "severity": "SUSPICIOUS",
+      "title": "eval() of a non-literal value",
+      "detail": "eval() of a non-literal expression: the executed code is decided at runtime.",
+      "file": "builds/6000.0.74f1-webgl2-debug/debug-console.js",
+      "line": 66,
+      "evidence": "eval(consoleInput.value)"
+    },
+    {
+      "rule_id": "eval-nonliteral",
+      "severity": "SUSPICIOUS",
+      "title": "eval() of a non-literal value",
+      "detail": "eval() of a non-literal expression: the executed code is decided at runtime.",
+      "file": "builds/6000.4.0f1-urp-webgl2-debug/debug-console.js",
+      "line": 66,
+      "evidence": "eval(consoleInput.value)"
+    },
+    {
+      "rule_id": "eval-nonliteral",
+      "severity": "SUSPICIOUS",
+      "title": "eval() of a non-literal value",
+      "detail": "eval() of a non-literal expression: the executed code is decided at runtime.",
+      "file": "builds/6000.4.0f1-webgl2-debug/debug-console.js",
+      "line": 66,
+      "evidence": "eval(consoleInput.value)"
+    },
+    {
+      "rule_id": "high-entropy-string",
+      "severity": "INFO",
+      "title": "High-entropy string literal (possible packed payload)",
+      "detail": "1 high-entropy base64-like string literal(s); largest 369 chars. Possible packed/encoded payload.",
+      "file": "builds/2021.3.45f2-webgl1/Build/framework.js",
+      "line": 0,
+      "evidence": "Manual synchronization of Unity Application.persistentDataPath via JS_FileSystem_Sync() is deprecated and will be later…"
+    },
+    {
+      "rule_id": "high-entropy-string",
+      "severity": "INFO",
+      "title": "High-entropy string literal (possible packed payload)",
+      "detail": "1 high-entropy base64-like string literal(s); largest 369 chars. Possible packed/encoded payload.",
+      "file": "builds/2022.3.62f3-webgl1/Build/framework.js",
+      "line": 0,
+      "evidence": "Manual synchronization of Unity Application.persistentDataPath via JS_FileSystem_Sync() is deprecated and will be later…"
+    },
+    {
+      "rule_id": "high-entropy-string",
+      "severity": "INFO",
+      "title": "High-entropy string literal (possible packed payload)",
+      "detail": "1 high-entropy base64-like string literal(s); largest 369 chars. Possible packed/encoded payload.",
+      "file": "builds/2022.3.62f3-webgl2-debug/Build/framework.js",
+      "line": 0,
+      "evidence": "Manual synchronization of Unity Application.persistentDataPath via JS_FileSystem_Sync() is deprecated and will be later…"
+    },
+    {
+      "rule_id": "high-entropy-string",
+      "severity": "INFO",
+      "title": "High-entropy string literal (possible packed payload)",
+      "detail": "2 high-entropy base64-like string literal(s); largest 589 chars. Possible packed/encoded payload.",
+      "file": "builds/2023.2.20f1-webgl2-debug/Build/framework.js",
+      "line": 0,
+      "evidence": "r8YA8RmA8UA8TAHUAHTAHVO8YO8RmO8UO8TALUALTALVOHUOHTOHV W8Y W8Z W8Rm W8U W8T bgra8Y bgra8ZOb9e5uVOb10a2YO11b10uVOLUOLTOLV…"
+    },
+    {
+      "rule_id": "high-entropy-string",
+      "severity": "INFO",
+      "title": "High-entropy string literal (possible packed payload)",
+      "detail": "2 high-entropy base64-like string literal(s); largest 369 chars. Possible packed/encoded payload.",
+      "file": "builds/6000.0.74f1-webgl2-debug/Build/framework.js",
+      "line": 0,
+      "evidence": "Manual synchronization of Unity Application.persistentDataPath via JS_FileSystem_Sync() is deprecated and will be later…"
+    },
+    {
+      "rule_id": "high-entropy-string",
+      "severity": "INFO",
+      "title": "High-entropy string literal (possible packed payload)",
+      "detail": "2 high-entropy base64-like string literal(s); largest 369 chars. Possible packed/encoded payload.",
+      "file": "builds/6000.4.0f1-urp-webgl2-debug/Build/framework.js",
+      "line": 0,
+      "evidence": "Manual synchronization of Unity Application.persistentDataPath via JS_FileSystem_Sync() is deprecated and will be later…"
+    },
+    {
+      "rule_id": "high-entropy-string",
+      "severity": "INFO",
+      "title": "High-entropy string literal (possible packed payload)",
+      "detail": "2 high-entropy base64-like string literal(s); largest 369 chars. Possible packed/encoded payload.",
+      "file": "builds/6000.4.0f1-webgl2-debug/Build/framework.js",
+      "line": 0,
+      "evidence": "Manual synchronization of Unity Application.persistentDataPath via JS_FileSystem_Sync() is deprecated and will be later…"
+    },
+    {
+      "rule_id": "html-injection-sink",
+      "severity": "INFO",
+      "title": "DOM HTML sink assigned a non-literal value",
+      "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
+      "file": "builds/2021.3.45f2-webgl1/debug-console.js",
+      "line": 208,
+      "evidence": "counterText.innerHTML = count"
+    },
+    {
+      "rule_id": "html-injection-sink",
+      "severity": "INFO",
+      "title": "DOM HTML sink assigned a non-literal value",
+      "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
+      "file": "builds/2021.3.45f2-webgl1/debug-console.js",
+      "line": 445,
+      "evidence": "counter.querySelector(\".counter\").innerHTML = count"
+    },
+    {
+      "rule_id": "html-injection-sink",
+      "severity": "INFO",
+      "title": "DOM HTML sink assigned a non-literal value",
+      "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
+      "file": "builds/2021.3.45f2-webgl1/debug-console.js",
+      "line": 462,
+      "evidence": "text.innerHTML = message"
+    },
+    {
+      "rule_id": "html-injection-sink",
+      "severity": "INFO",
+      "title": "DOM HTML sink assigned a non-literal value",
+      "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
+      "file": "builds/2021.3.45f2-webgl1/debug-console.js",
+      "line": 611,
+      "evidence": "trackingDiv.innerHTML = innerHtml"
+    },
+    {
+      "rule_id": "html-injection-sink",
+      "severity": "INFO",
+      "title": "DOM HTML sink assigned a non-literal value",
+      "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
+      "file": "builds/2022.3.62f3-webgl1/debug-console.js",
+      "line": 208,
+      "evidence": "counterText.innerHTML = count"
+    },
+    {
+      "rule_id": "html-injection-sink",
+      "severity": "INFO",
+      "title": "DOM HTML sink assigned a non-literal value",
+      "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
+      "file": "builds/2022.3.62f3-webgl1/debug-console.js",
+      "line": 445,
+      "evidence": "counter.querySelector(\".counter\").innerHTML = count"
+    },
+    {
+      "rule_id": "html-injection-sink",
+      "severity": "INFO",
+      "title": "DOM HTML sink assigned a non-literal value",
+      "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
+      "file": "builds/2022.3.62f3-webgl1/debug-console.js",
+      "line": 462,
+      "evidence": "text.innerHTML = message"
+    },
+    {
+      "rule_id": "html-injection-sink",
+      "severity": "INFO",
+      "title": "DOM HTML sink assigned a non-literal value",
+      "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
+      "file": "builds/2022.3.62f3-webgl1/debug-console.js",
+      "line": 611,
+      "evidence": "trackingDiv.innerHTML = innerHtml"
+    },
+    {
+      "rule_id": "html-injection-sink",
+      "severity": "INFO",
+      "title": "DOM HTML sink assigned a non-literal value",
+      "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
+      "file": "builds/2022.3.62f3-webgl2-debug/debug-console.js",
+      "line": 208,
+      "evidence": "counterText.innerHTML = count"
+    },
+    {
+      "rule_id": "html-injection-sink",
+      "severity": "INFO",
+      "title": "DOM HTML sink assigned a non-literal value",
+      "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
+      "file": "builds/2022.3.62f3-webgl2-debug/debug-console.js",
+      "line": 445,
+      "evidence": "counter.querySelector(\".counter\").innerHTML = count"
+    },
+    {
+      "rule_id": "html-injection-sink",
+      "severity": "INFO",
+      "title": "DOM HTML sink assigned a non-literal value",
+      "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
+      "file": "builds/2022.3.62f3-webgl2-debug/debug-console.js",
+      "line": 462,
+      "evidence": "text.innerHTML = message"
+    },
+    {
+      "rule_id": "html-injection-sink",
+      "severity": "INFO",
+      "title": "DOM HTML sink assigned a non-literal value",
+      "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
+      "file": "builds/2022.3.62f3-webgl2-debug/debug-console.js",
+      "line": 611,
+      "evidence": "trackingDiv.innerHTML = innerHtml"
+    },
+    {
+      "rule_id": "html-injection-sink",
+      "severity": "INFO",
+      "title": "DOM HTML sink assigned a non-literal value",
+      "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
+      "file": "builds/2023.2.20f1-webgl2-debug/debug-console.js",
+      "line": 208,
+      "evidence": "counterText.innerHTML = count"
+    },
+    {
+      "rule_id": "html-injection-sink",
+      "severity": "INFO",
+      "title": "DOM HTML sink assigned a non-literal value",
+      "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
+      "file": "builds/2023.2.20f1-webgl2-debug/debug-console.js",
+      "line": 445,
+      "evidence": "counter.querySelector(\".counter\").innerHTML = count"
+    },
+    {
+      "rule_id": "html-injection-sink",
+      "severity": "INFO",
+      "title": "DOM HTML sink assigned a non-literal value",
+      "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
+      "file": "builds/2023.2.20f1-webgl2-debug/debug-console.js",
+      "line": 462,
+      "evidence": "text.innerHTML = message"
+    },
+    {
+      "rule_id": "html-injection-sink",
+      "severity": "INFO",
+      "title": "DOM HTML sink assigned a non-literal value",
+      "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
+      "file": "builds/2023.2.20f1-webgl2-debug/debug-console.js",
+      "line": 611,
+      "evidence": "trackingDiv.innerHTML = innerHtml"
+    },
+    {
+      "rule_id": "html-injection-sink",
+      "severity": "INFO",
+      "title": "DOM HTML sink assigned a non-literal value",
+      "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
+      "file": "builds/6000.0.74f1-webgl2-debug/debug-console.js",
+      "line": 208,
+      "evidence": "counterText.innerHTML = count"
+    },
+    {
+      "rule_id": "html-injection-sink",
+      "severity": "INFO",
+      "title": "DOM HTML sink assigned a non-literal value",
+      "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
+      "file": "builds/6000.0.74f1-webgl2-debug/debug-console.js",
+      "line": 445,
+      "evidence": "counter.querySelector(\".counter\").innerHTML = count"
+    },
+    {
+      "rule_id": "html-injection-sink",
+      "severity": "INFO",
+      "title": "DOM HTML sink assigned a non-literal value",
+      "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
+      "file": "builds/6000.0.74f1-webgl2-debug/debug-console.js",
+      "line": 462,
+      "evidence": "text.innerHTML = message"
+    },
+    {
+      "rule_id": "html-injection-sink",
+      "severity": "INFO",
+      "title": "DOM HTML sink assigned a non-literal value",
+      "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
+      "file": "builds/6000.0.74f1-webgl2-debug/debug-console.js",
+      "line": 611,
+      "evidence": "trackingDiv.innerHTML = innerHtml"
+    },
+    {
+      "rule_id": "html-injection-sink",
+      "severity": "INFO",
+      "title": "DOM HTML sink assigned a non-literal value",
+      "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
+      "file": "builds/6000.4.0f1-urp-webgl2-debug/debug-console.js",
+      "line": 208,
+      "evidence": "counterText.innerHTML = count"
+    },
+    {
+      "rule_id": "html-injection-sink",
+      "severity": "INFO",
+      "title": "DOM HTML sink assigned a non-literal value",
+      "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
+      "file": "builds/6000.4.0f1-urp-webgl2-debug/debug-console.js",
+      "line": 445,
+      "evidence": "counter.querySelector(\".counter\").innerHTML = count"
+    },
+    {
+      "rule_id": "html-injection-sink",
+      "severity": "INFO",
+      "title": "DOM HTML sink assigned a non-literal value",
+      "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
+      "file": "builds/6000.4.0f1-urp-webgl2-debug/debug-console.js",
+      "line": 462,
+      "evidence": "text.innerHTML = message"
+    },
+    {
+      "rule_id": "html-injection-sink",
+      "severity": "INFO",
+      "title": "DOM HTML sink assigned a non-literal value",
+      "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
+      "file": "builds/6000.4.0f1-urp-webgl2-debug/debug-console.js",
+      "line": 611,
+      "evidence": "trackingDiv.innerHTML = innerHtml"
+    },
+    {
+      "rule_id": "html-injection-sink",
+      "severity": "INFO",
+      "title": "DOM HTML sink assigned a non-literal value",
+      "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
+      "file": "builds/6000.4.0f1-webgl2-debug/debug-console.js",
+      "line": 208,
+      "evidence": "counterText.innerHTML = count"
+    },
+    {
+      "rule_id": "html-injection-sink",
+      "severity": "INFO",
+      "title": "DOM HTML sink assigned a non-literal value",
+      "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
+      "file": "builds/6000.4.0f1-webgl2-debug/debug-console.js",
+      "line": 445,
+      "evidence": "counter.querySelector(\".counter\").innerHTML = count"
+    },
+    {
+      "rule_id": "html-injection-sink",
+      "severity": "INFO",
+      "title": "DOM HTML sink assigned a non-literal value",
+      "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
+      "file": "builds/6000.4.0f1-webgl2-debug/debug-console.js",
+      "line": 462,
+      "evidence": "text.innerHTML = message"
+    },
+    {
+      "rule_id": "html-injection-sink",
+      "severity": "INFO",
+      "title": "DOM HTML sink assigned a non-literal value",
+      "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
+      "file": "builds/6000.4.0f1-webgl2-debug/debug-console.js",
+      "line": 611,
+      "evidence": "trackingDiv.innerHTML = innerHtml"
+    },
+    {
+      "rule_id": "html-injection-sink",
+      "severity": "INFO",
+      "title": "DOM HTML sink assigned a non-literal value",
+      "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
+      "file": "runner.js",
+      "line": 47,
+      "evidence": "el.innerHTML = text"
+    }
+  ],
+  "limitations": "Static heuristic scan. A GOOD verdict means no known-bad pattern matched, NOT proof of safety. Human review is still required for every submission."
+}
