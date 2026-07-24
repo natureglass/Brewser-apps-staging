@@ -1,12 +1,1 @@
-[
-  {
-    "id": "com.natureglass.webgl2threejsdemos",
-    "name": "WebGL2 - ThreeJS Demos",
-    "version": "1.0.0",
-    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
-    "updated_at": "2026-07-24T06:37:42Z",
-    "entry": "index.html",
-    "logo": "assets/appbanner.jpg",
-    "description": "<p><strong>WebGL2 - ThreeJS Demos</strong> is a showcase of real-time 3D graphics powered by <em>Three.js</em> and WebGL2, running natively on the Switch browser. It's a curated gallery of sixteen self-contained examples, each built to stress a different advanced rendering technique.</p>\r\n<p><strong>How it works.</strong> The home page is a simple gallery of cards — a thumbnail and a short description for each demo. Clicking one opens that example as its own standalone page; there's no streaming…"
-  }
-]
+[]
