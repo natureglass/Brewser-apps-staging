@@ -1,12 +1,1 @@
-[
-  {
-    "id": "com.natureglass.speedtest",
-    "name": "Speed Test",
-    "version": "1.0.0",
-    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
-    "updated_at": "2026-07-24T06:48:06Z",
-    "entry": "index.html",
-    "logo": "assets/appbanner.jpg",
-    "description": "<p><strong>Speed Test</strong> checks how fast your internet connection really is, measuring against Cloudflare's global network and showing the results on an animated needle gauge with live metric tiles and a diagnostics log.</p>\r\n<p><strong>How it works.</strong> Tapping start runs three phases in turn. First it measures <em>latency</em> by timing several tiny round-trips to the server and averaging them. Then it measures <em>download</em> speed by streaming a large file and recomputing the…"
-  }
-]
+[]
