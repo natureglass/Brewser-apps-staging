@@ -1,22 +1,12 @@
 [
-  {
-    "id": "com.natureglass.speedtest",
-    "name": "Speed Test",
-    "version": "1.0.1",
-    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
-    "updated_at": "2026-07-24T14:02:04Z",
-    "entry": "index.html",
-    "logo": "assets/appbanner.jpg",
-    "description": "<p><strong>Speed Test</strong> checks how fast your internet connection really is, measuring against Cloudflare's global network and showing the results on an animated needle gauge with live metric tiles and a diagnostics log.</p>\r\n<p><strong>How it works.</strong> Tapping start runs three phases in turn. First it measures <em>latency</em> by timing several tiny round-trips to the server and averaging them. Then it measures <em>download</em> speed by streaming a large file and recomputing the…"
-  },
-  {
-    "id": "com.natureglass.streamcast",
-    "name": "Stream Cast",
-    "version": "1.0.0",
-    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
-    "updated_at": "2026-07-24T14:00:59Z",
-    "entry": "index.html",
-    "logo": "assets/appbanner.jpg",
-    "description": "<p><strong>Stream Cast</strong> brings live Twitch streaming to the Switch browser. A \"Live now\" sidebar lists popular channels while the main stage swaps between a search screen and full-screen video.</p>\r\n<p><strong>How it works.</strong> The app talks to Twitch's own web service to do everything the site does: it fetches the directory of top live channels, looks up a stream's title, viewer count and uptime, and requests a signed playback token for the channel you choose. With that token it…"
-  }
+    {
+        "id": "com.natureglass.streamcast",
+        "name": "Stream Cast",
+        "version": "1.0.0",
+        "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+        "updated_at": "2026-07-24T14:00:59Z",
+        "entry": "index.html",
+        "logo": "assets/appbanner.jpg",
+        "description": "<p><strong>Stream Cast</strong> brings live Twitch streaming to the Switch browser. A \"Live now\" sidebar lists popular channels while the main stage swaps between a search screen and full-screen video.</p>\r\n<p><strong>How it works.</strong> The app talks to Twitch's own web service to do everything the site does: it fetches the directory of top live channels, looks up a stream's title, viewer count and uptime, and requests a signed playback token for the channel you choose. With that token it…"
+    }
 ]
