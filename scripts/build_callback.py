@@ -17,13 +17,20 @@ Usage:
 The signature covers `<ts>.<body>`, matching what Brewser_Sub_Rest::route_callback
 verifies with hash_equals on the WordPress side.
 
-The optional security-scan fields (`scan_verdict`, `scan_findings`) are folded
-into the SAME signed body, not sent as unsigned side-channel headers — the WP
-side verifies the raw body bytes, so anything it later reads must be inside the
-signature. `scan_findings` is embedded as the nested findings object (already
-size-capped + evidence-truncated by the scanner). Both default to empty/None so
-error-result callbacks (no scan ran) keep the historic body shape plus two inert
-keys, which route_callback reads only via isset().
+The optional security-scan fields (`scan_verdict`, `scan_findings_b64`) are
+folded into the SAME signed body, not sent as unsigned side-channel headers —
+the WP side verifies the raw body bytes, so anything it later reads must be
+inside the signature.
+
+`scan_findings_b64` is the findings JSON **base64-encoded**, NOT the raw object.
+This is deliberate: the findings' `evidence` snippets are literal malicious code
+(`eval(atob(...))`, `fetch('https://…')`, `localStorage['brewser_auth']`), and
+sending them raw makes the callback POST body itself look like an attack — a
+host WAF / upload-AV (mod_security, Imunify360) will 403 the callback, so the
+verdict never lands and the row stays stuck at `submitted`. Base64 keeps those
+patterns out of the request bytes while the HMAC still covers everything. Both
+scan fields default to empty so error-result callbacks (no scan ran) keep the
+historic shape plus inert keys, which route_callback reads only via isset().
 
 Canonical trailing-newline rule: BOTH sides strip exactly one trailing \\r\\n
 or \\n from the secret before hashing. Nothing else — no leading trim, no
@@ -38,6 +45,7 @@ by the "Callback debug" toggle in the plugin settings to isolate which side
 of the wire diverged.
 """
 import argparse
+import base64
 import hashlib
 import hmac
 import json
@@ -82,6 +90,14 @@ def main(argv):
         print("no secret on stdin", file=sys.stderr)
         return 2
 
+    # Base64 the findings so raw malicious-looking evidence never appears in the
+    # request body (see the module docstring — otherwise a host WAF/AV 403s the
+    # callback and the verdict never lands).
+    scan_findings_b64 = ""
+    if scan_findings is not None:
+        compact = json.dumps(scan_findings, separators=(",", ":"), sort_keys=True)
+        scan_findings_b64 = base64.b64encode(compact.encode("utf-8")).decode("ascii")
+
     body = json.dumps({
         "package_id":        args.package_id,
         "version":           args.version,
@@ -90,7 +106,7 @@ def main(argv):
         "error":             args.error_msg,
         "deploy_commit_sha": args.deploy_sha,
         "scan_verdict":      args.scan_verdict,
-        "scan_findings":     scan_findings,
+        "scan_findings_b64": scan_findings_b64,
     }, separators=(",", ":"), sort_keys=True)
 
     ts           = str(int(time.time()))

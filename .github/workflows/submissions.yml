@@ -164,7 +164,14 @@ jobs:
                   # and self-degrades to SUSPICIOUS internally; the extra guard
                   # here covers the case where node can't launch at all, so a
                   # broken scanner can't take intake down or auto-clear an app.
-                  scan_findings_file="$(mktemp)"
+                  #
+                  # The findings are written to scans/<pkg>.json IN THE REPO and
+                  # committed with the deploy, so the scan verdict is recoverable
+                  # by the plugin's Re-check action if the callback is ever lost
+                  # (e.g. a WAF 403 on the callback). It mirrors how Re-check
+                  # already heals STATUS from the deployed apps/<pkg>/manifest.json.
+                  mkdir -p scans
+                  scan_findings_file="scans/$pkg.json"
                   if node scanner/scan.mjs --package "$tmpdir" --manifest "$manifest_file" --out "$scan_findings_file" 2> /tmp/scanerr; then
                     scan_verdict=$(python -c "import json,sys; print(json.load(open('$scan_findings_file')).get('verdict',''))" 2>/dev/null || echo "")
                   fi
@@ -179,7 +186,7 @@ jobs:
                   python "$SCRIPT_DIR/upsert_index.py" "$manifest_file" "$sub_file" index.json
 
                   git rm -rf "$intake_dir" >/dev/null
-                  git add -A "$target" "index.json"
+                  git add -A "$target" "index.json" "$scan_findings_file"
 
                   # Capture HEAD BEFORE the commit so a "nothing to commit"
                   # (or any other commit failure) doesn't let deploy_sha
@@ -257,7 +264,6 @@ jobs:
             fi
 
             unset committed_sha
-            [ -n "$scan_findings_file" ] && rm -f "$scan_findings_file"
 
             if [ "$result" != "ok" ]; then
               overall_status=1
