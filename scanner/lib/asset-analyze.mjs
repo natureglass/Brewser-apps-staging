@@ -95,9 +95,13 @@ export function analyzeAsset(fileObj, ctx) {
 
   // 3. High-entropy blob in a non-media, non-compressed unknown file. Media &
   // already-compressed formats are legitimately high-entropy, so exclude them.
-  const COMPRESSED = new Set(['.png', '.jpg', '.jpeg', '.gif', '.webp', '.woff', '.woff2', '.mp3', '.mp4', '.ogg', '.wav', '.zip', '.gz', '.br', '.wasm', '.bin', '.ico', '.pdf', '.ttf', '.otf', '.eot']);
+  const COMPRESSED = new Set(['.png', '.jpg', '.jpeg', '.gif', '.webp', '.woff', '.woff2', '.mp3', '.mp4', '.ogg', '.wav', '.zip', '.gz', '.br', '.wasm', '.bin', '.ico', '.pdf', '.ttf', '.otf', '.eot', '.data', '.unity3d', '.assets', '.bundle', '.mov', '.webm', '.m4a', '.aac', '.flac']);
   if (!COMPRESSED.has(ext) && buffer.length > 4096) {
-    const ent = byteEntropy(buffer);
+    // Sample the first 2 MB for large files — byte-entropy of a representative
+    // slice is enough to flag a packed blob, and it keeps a 100+ MB asset from
+    // costing a full-buffer byte loop.
+    const ENTROPY_SAMPLE = 2 * 1024 * 1024;
+    const ent = byteEntropy(buffer.length > ENTROPY_SAMPLE ? buffer.subarray(0, ENTROPY_SAMPLE) : buffer);
     if (ent > 7.2) {
       add({ rule_id: 'high-entropy-file', severity: INFO, file, line: 0,
         detail: 'High byte-entropy (' + ent.toFixed(2) + '/8) in a ' + (ext || 'no-extension') + ' file — could be a packed/encrypted blob.',

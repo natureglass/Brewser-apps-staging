@@ -18,6 +18,14 @@ on:
     paths:
       - 'intake/**'
   workflow_dispatch: {}
+  # Large-file intake path. The plugin can't push a big bundle through GitHub's
+  # blob API (it 422s ~40 MB), so for oversize apps it fires this dispatch with
+  # a tokened URL to fetch the zip. The "Materialize large intake" step below
+  # downloads it into intake/<pkg>/ IN THIS RUN, and the normal loop then
+  # processes it exactly like a pushed intake (validate → unzip → scan → deploy
+  # → callback) — git push handles files the blob API can't. See ./README.md.
+  repository_dispatch:
+    types: [ large_intake ]
 
 # ONE global concurrency group. Two parallel deploys both fast-forwarding main
 # would race; serializing everything is the simplest thing that works, and our
@@ -79,6 +87,45 @@ jobs:
           test -f "$SCRIPT_DIR/safe_unzip.py"        || { echo "missing safe_unzip.py"; exit 1; }
           test -f "$SCRIPT_DIR/upsert_index.py"      || { echo "missing upsert_index.py"; exit 1; }
           test -f "$SCRIPT_DIR/build_callback.py"    || { echo "missing build_callback.py"; exit 1; }
+
+      # Large-file intake: on a repository_dispatch, pull the oversize bundle
+      # (which can't go through the plugin's blob API) into intake/<pkg>/ IN THIS
+      # run. The normal loop below then processes it identically to a pushed
+      # intake. The zip is STAGED (not committed), so the deploy loop's
+      # `git rm -rf intake/<pkg>` drops it before the deploy commit — the big
+      # blob never enters git history.
+      - name: Materialize large intake from dispatch
+        if: github.event_name == 'repository_dispatch'
+        env:
+          CP: ${{ toJSON(github.event.client_payload) }}
+          ASSET_TOKEN: ${{ github.event.client_payload.zip_token }}
+        run: |
+          set -euo pipefail
+          get() { printf '%s' "$CP" | python -c "import json,sys; d=json.load(sys.stdin); v=d.get('$1',''); print(v if isinstance(v,str) else '')"; }
+          pkg="$(get package_id)"; pkg="$(printf '%s' "$pkg" | tr '[:upper:]' '[:lower:]')"
+          ver="$(get version)"; sha="$(get zip_sha256)"; url="$(get zip_url)"
+          if [ -z "$pkg" ] || [ -z "$ver" ] || [ -z "$sha" ] || [ -z "$url" ]; then
+            echo "::error::large_intake dispatch missing required field(s)"; exit 1
+          fi
+          # Guard the package id: reverse-DNS shape only, so it can't escape intake/.
+          case "$pkg" in
+            *[!a-z0-9._-]* | */* | ..* ) echo "::error::illegal package_id '$pkg'"; exit 1 ;;
+          esac
+          dir="intake/$pkg"
+          mkdir -p "$dir"
+          # manifest + submission ride inline in the payload (small); write them.
+          printf '%s' "$CP" | python -c "import json,sys; d=json.load(sys.stdin); open('$dir/manifest.json','w',encoding='utf-8').write(json.dumps(d['manifest'], separators=(',',':')) if not isinstance(d['manifest'],str) else d['manifest'])"
+          printf '%s' "$CP" | python -c "import json,sys; d=json.load(sys.stdin); open('$dir/submission.json','w',encoding='utf-8').write(json.dumps(d['submission'], separators=(',',':')) if not isinstance(d['submission'],str) else d['submission'])"
+          # Download with the short-lived token as a HEADER (never in the URL/logs).
+          curl -fsSL --retry 3 --retry-delay 2 --max-time 900 \
+            -H "X-Brewser-Asset-Token: $ASSET_TOKEN" \
+            -o "$dir/bundle.zip" "$url"
+          actual="$(sha256sum "$dir/bundle.zip" | awk '{print $1}')"
+          if [ "$actual" != "$sha" ]; then
+            echo "::error::downloaded bundle sha256 mismatch (got $actual expected $sha)"; exit 1
+          fi
+          git add "$dir"
+          echo "::notice::materialized large intake $pkg@$ver ($(du -h "$dir/bundle.zip" | awk '{print $1}'))"
 
       - name: Process every pending intake
         env:

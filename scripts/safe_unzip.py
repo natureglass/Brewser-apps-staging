@@ -16,11 +16,12 @@ import stat
 import sys
 import zipfile
 
-# Zip-bomb caps. Compressed cap is enforced by the plugin (default 25 MB);
-# the uncompressed side is what would exhaust the runner's disk, so gate it
-# independently. 200 MB / 5000 entries is generous for any legit brewser app
-# (the largest current shipping bundle is ~40 MB uncompressed).
-MAX_UNCOMPRESSED_BYTES = 200 * 1024 * 1024
+# Zip-bomb caps. Compressed cap is enforced by the plugin; the uncompressed side
+# is what would exhaust the runner's disk, so gate it independently. 300 MB /
+# 5000 entries gives headroom for large multi-build apps (e.g. a Unity WebGL
+# bundle with several builds runs ~190 MB uncompressed) while still bounding a
+# malicious zip bomb well under the runner's disk.
+MAX_UNCOMPRESSED_BYTES = 300 * 1024 * 1024
 MAX_ENTRIES            = 5000
 
 

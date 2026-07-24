@@ -92,10 +92,28 @@ function memberPath(node) {
   return null;
 }
 
+// Above this size we do NOT hand a JS file to Babel — a multi-MB minified
+// bundle (typical of emscripten/Unity/Godot framework.js) can be very slow and
+// memory-heavy to fully parse, and the AST rules get little from mangled code
+// anyway. We still run the cheap miner sweep + regex backstop so the crown-jewel
+// patterns can't hide in a huge file. Keeps big-app scans fast and bounded.
+const MAX_JS_PARSE_BYTES = 4 * 1024 * 1024; // 4 MB
+
 export function analyzeJs(code, file, ctx) {
   const findings = [];
   const peripheralsUsed = new Set();
   const add = (f) => findings.push(makeFinding(f));
+
+  // Cheap miner-signature sweep first — works at any size (bounded scan below).
+  minerSweep(code, file, add);
+
+  if (code.length > MAX_JS_PARSE_BYTES) {
+    add({ rule_id: 'file-parse-error', severity: INFO, file, line: 0,
+      detail: 'File is ' + (code.length / 1048576).toFixed(1) + ' MB — over the ' + (MAX_JS_PARSE_BYTES / 1048576) +
+        ' MB AST limit (typical of a minified framework/emscripten bundle). Ran the regex backstop only.', evidence: '' });
+    regexBackstop(code, file, ctx, add);
+    return { findings, peripheralsUsed };
+  }
 
   let ast;
   try {
@@ -110,20 +128,6 @@ export function analyzeJs(code, file, ctx) {
       detail: 'Could not parse as JS (' + e.name + '); ran regex backstop only.', evidence: e.message });
     regexBackstop(code, file, ctx, add);
     return { findings, peripheralsUsed };
-  }
-
-  // Known crypto-miner signatures — a cheap substring sweep over the source
-  // (catches both library references and inlined miner code). One hit per file.
-  {
-    const lower = code.toLowerCase();
-    for (const sig of MINER_SIGNATURES) {
-      if (lower.includes(sig)) {
-        add({ rule_id: 'miner-signature', severity: DANGEROUS, file, line: 0,
-          detail: 'Contains a known crypto-miner signature ("' + sig + '") — unauthorized resource abuse.',
-          evidence: sig });
-        break;
-      }
-    }
   }
 
   // -------------------------------------------------------------------------
@@ -849,6 +853,23 @@ function gateCheck(test, body, add, file, code) {
   if (g.time) add(makeFinding({ rule_id: 'time-gated-code', severity: SUSPICIOUS, file, line, detail: 'A code path containing a sink is gated on a date/time comparison — behaves benignly during review, differently later.', evidence: ev }));
   if (g.host) add(makeFinding({ rule_id: 'host-gated-code', severity: SUSPICIOUS, file, line, detail: 'A code path containing a sink is gated on hostname/origin — may behave differently in Chrome vs on-device vs on brewser.tech.', evidence: ev }));
   if (g.platform) add(makeFinding({ rule_id: 'platform-gated-code', severity: SUSPICIOUS, file, line, detail: 'A code path containing a sink is gated on userAgent/platform sniffing — may only misbehave on the Switch build.', evidence: ev }));
+}
+
+// Cheap crypto-miner signature sweep. Bounded to the first ~5 MB so a
+// pathologically huge file can't blow memory on toLowerCase(); miner code/refs
+// live near the top of a bundle in practice. One hit per file.
+const MINER_SWEEP_BYTES = 5 * 1024 * 1024;
+function minerSweep(code, file, add) {
+  const scan = code.length > MINER_SWEEP_BYTES ? code.slice(0, MINER_SWEEP_BYTES) : code;
+  const lower = scan.toLowerCase();
+  for (const sig of MINER_SIGNATURES) {
+    if (lower.includes(sig)) {
+      add(makeFinding({ rule_id: 'miner-signature', severity: DANGEROUS, file, line: 0,
+        detail: 'Contains a known crypto-miner signature ("' + sig + '") — unauthorized resource abuse.',
+        evidence: sig }));
+      break;
+    }
+  }
 }
 
 // Does a subtree contain a call whose (simple or member-tail) name is in `names`?
