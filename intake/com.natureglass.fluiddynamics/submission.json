@@ -1,16 +1,16 @@
 {
     "id": "com.natureglass.fluiddynamics",
     "name": "Fluid dynamics",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
     "zip_sha256": "72c0c104eaaa67d3b01f4563568efdc91c8372b7160937f200d9e23f3ebd3288",
     "attestation": {
-        "ts": "2026-07-25T12:29:38+00:00",
+        "ts": "2026-07-25T12:40:06+00:00",
         "platforms": [
             "switch",
             "web"
         ],
         "zip_sha256": "72c0c104eaaa67d3b01f4563568efdc91c8372b7160937f200d9e23f3ebd3288"
     },
-    "submitted_at": "2026-07-25T12:29:38+00:00"
+    "submitted_at": "2026-07-25T12:40:06+00:00"
 }
