@@ -1,12 +1,1 @@
-[
-  {
-    "id": "com.natureglass.midilab",
-    "name": "MIDI Lab",
-    "version": "1.0.2",
-    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
-    "updated_at": "2026-07-25T19:29:08Z",
-    "entry": "index.html",
-    "logo": "assets/appbanner.jpg",
-    "description": "<p><strong>MIDI Lab</strong> is a universal MIDI-controller tester, synthesizer and visual playground. Plug in a keyboard, pad grid or knob controller and the app builds an on-screen mirror of your exact device, then lights up every note, pad and dial as you play it — while turning your performance into sound and reactive graphics.</p>\r\n<p><strong>How it works.</strong> The app connects to your hardware two ways, with an automatic fallback. First it tries the browser's built-in <em>Web MIDI</em>…"
-  }
-]
+[]
