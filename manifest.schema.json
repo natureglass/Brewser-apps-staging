@@ -8,7 +8,8 @@
   "required": [
     "id", "name", "version", "description", "logo", "entry",
     "categories", "permissions", "compatibility",
-    "allowed_origins", "developer", "license", "exitGame", "fullscreen"
+    "allowed_origins", "developer", "license", "exitGame", "fullscreen",
+    "publishedAt"
   ],
   "properties": {
     "id": {
@@ -45,6 +46,11 @@
     },
     "exitGame":   { "type": "string", "minLength": 1 },
     "fullscreen": { "type": "boolean" },
+    "publishedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO-8601 UTC first-go-live timestamp. SET-ONCE: Brewser_Sub_Manifest::build() must carry any existing value forward unchanged on every rebuild — a resubmission must never alter this date (it drives the runtime's Most Recent sort). Mirrors the App Post's post_date, the same field the [brewser_browse] Most Recent tab orders on."
+    },
     "buttonMapping": {
       "type": "object",
       "description": "Optional keyboard-key -> Switch-control map emitted by Brewser_Sub_Manifest::build(). Keys are lowercase keyboard key names, values are Switch control names; both sides come from a curated but FILTERABLE vocab, so this is a free-form string->string map (not an enum) to keep lockstep. Max 64 entries.",
