@@ -8,7 +8,8 @@
   "required": [
     "id", "name", "version", "description", "logo", "entry",
     "categories", "permissions", "compatibility",
-    "allowed_origins", "developer", "license", "exitGame", "fullscreen"
+    "allowed_origins", "developer", "license", "exitGame", "fullscreen",
+    "publishedAt"
   ],
   "properties": {
     "id": {
