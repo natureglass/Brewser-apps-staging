@@ -1,12 +1,1 @@
-[
-  {
-    "id": "com.natureglass.unitydemoprobe",
-    "name": "Unity Demo Probe",
-    "version": "1.0.2",
-    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
-    "updated_at": "2026-07-26T16:10:22Z",
-    "entry": "index.html",
-    "logo": "assets/appbanner.jpg",
-    "description": "<p><b>Unity Demos</b> is a measurement tool for Brewser, not a game. It loads a curated matrix of <b>real Unity WebGL debug builds</b> (spanning Unity 2021 LTS through Unity 6) one at a time and records exactly how far each one gets before it stalls, crashes, or completes.</p>\r\n<p>Pick a build from the table and press <b>A</b> to launch it. The harness watches the whole load and writes a per-run <b>NDJSON log</b> to <code>sdmc:/switch/brewser/logs/unity-demos/</code>…"
-  }
-]
+[]
