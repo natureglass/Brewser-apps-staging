@@ -20,6 +20,7 @@
     "name":        { "type": "string", "minLength": 1, "maxLength": 191 },
     "version":     { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$" },
     "description": { "type": "string", "minLength": 1, "maxLength": 20000 },
+    "summary":     { "type": "string", "maxLength": 100, "description": "Optional one-line human blurb (the submission's Short description / post_excerpt, capped at SHORT_DESC_MAX = 100 chars). Emitted by Brewser_Sub_Manifest::build() ONLY when non-empty; the runtime shows it on the catalogue browse cards and falls back to a summary derived from `description` when absent. Distinct from `description` (full HTML, shown in the app detail modal)." },
     "logo":        { "type": "string", "minLength": 1, "maxLength": 191 },
     "entry":       { "type": "string", "minLength": 1, "maxLength": 191 },
     "categories":  { "type": "array", "minItems": 1, "items": { "type": "string" }, "uniqueItems": true },
