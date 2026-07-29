@@ -87,6 +87,7 @@ jobs:
           test -f "$SCRIPT_DIR/safe_unzip.py"        || { echo "missing safe_unzip.py"; exit 1; }
           test -f "$SCRIPT_DIR/upsert_index.py"      || { echo "missing upsert_index.py"; exit 1; }
           test -f "$SCRIPT_DIR/build_callback.py"    || { echo "missing build_callback.py"; exit 1; }
+          test -f "$SCRIPT_DIR/write_artifact.py"    || { echo "missing write_artifact.py"; exit 1; }
 
       # Large-file intake: on a repository_dispatch, pull the oversize bundle
       # (which can't go through the plugin's blob API) into intake/<pkg>/ IN THIS
@@ -205,6 +206,20 @@ jobs:
                   cp -a "$tmpdir"/. "$target"/
                   cp "$manifest_file" "$target/manifest.json"
 
+                  # ---- Artifact inventory (enables on-device install) --------
+                  # Per-app file manifest the Brewser runtime downloads to
+                  # install a STAGED app on the console (served at
+                  # my.brewser.tech/artifacts/<pkg>.json). Same shape as the
+                  # prod brewser-apps artifacts (runtime parseArtifacts contract:
+                  # {id, sizeBytes, files}). The staging deploy is the only place
+                  # the full deployed tree exists to scan. Best-effort: a failure
+                  # warns but never fails the deploy — the app still ships, it
+                  # just can't be installed on-device until the next good run.
+                  mkdir -p artifacts
+                  if ! python "$SCRIPT_DIR/write_artifact.py" "$pkg" apps artifacts 2> /tmp/arterr; then
+                    echo "::warning::artifact generation for $pkg failed: $(head -c 200 /tmp/arterr 2>/dev/null)"
+                  fi
+
                   # ---- Security scan (informational; NEVER fails intake) -----
                   # Runs on the unpacked tree before the callback so verdict +
                   # findings ride the SAME signed body. scan.mjs always exits 0
@@ -233,7 +248,7 @@ jobs:
                   python "$SCRIPT_DIR/upsert_index.py" "$manifest_file" "$sub_file" index.json
 
                   git rm -rf "$intake_dir" >/dev/null
-                  git add -A "$target" "index.json" "$scan_findings_file"
+                  git add -A "$target" "index.json" "$scan_findings_file" artifacts
 
                   # Capture HEAD BEFORE the commit so a "nothing to commit"
                   # (or any other commit failure) doesn't let deploy_sha
