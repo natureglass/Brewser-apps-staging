@@ -1,0 +1,16 @@
+{
+    "id": "com.natureglass.aether",
+    "name": "Aether",
+    "version": "1.0.1",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "zip_sha256": "98b15e91ef89f7fae75bb8e69fa17b26b6f381f2dfc0f964718a45707816c954",
+    "attestation": {
+        "ts": "2026-07-31T15:32:15+00:00",
+        "platforms": [
+            "switch",
+            "web"
+        ],
+        "zip_sha256": "98b15e91ef89f7fae75bb8e69fa17b26b6f381f2dfc0f964718a45707816c954"
+    },
+    "submitted_at": "2026-07-31T15:32:15+00:00"
+}
