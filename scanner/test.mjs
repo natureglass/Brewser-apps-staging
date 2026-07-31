@@ -68,6 +68,19 @@ for (const c of CASES) {
   log(missing.length === 0, 'trips every non-harness rule' + (missing.length ? ' — MISSING: ' + missing.join(', ') : ' (' + expected.length + ')'));
 }
 
+// Capabilities detection (Phase 2b): the fixture exercises every non-navigator
+// capability detector across an inline <script> (WebGL + Web Audio) and an
+// external app.js (WebRTC, NFC, sensors). Assert the emitted slug set; the verdict
+// is irrelevant here (the benign NFC use trips only peripheral-undeclared).
+{
+  console.log('\n# capabilities (Phase 2b detection)');
+  const { artifact, exitCode } = runScan('capabilities');
+  const caps = Array.isArray(artifact.capabilities) ? [...artifact.capabilities].sort() : [];
+  const expected = ['nfc', 'sensors', 'webaudio', 'webgl', 'webrtc'];
+  log(exitCode === 0, 'exit code is 0');
+  log(JSON.stringify(caps) === JSON.stringify(expected), 'capabilities = ' + JSON.stringify(expected) + ' (got ' + JSON.stringify(caps) + ')');
+}
+
 // Determinism: the same package hashes the same across two runs.
 const a = runScan('obfuscated').artifact.package_hash;
 const b = runScan('obfuscated').artifact.package_hash;

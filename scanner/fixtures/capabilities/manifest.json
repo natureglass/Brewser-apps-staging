@@ -1,0 +1,16 @@
+{
+  "id": "com.test.capabilities",
+  "name": "Capabilities Demo",
+  "version": "1.0.0",
+  "description": "Exercises the non-navigator Web-API capability detectors (Phase 2b): WebGL, Web Audio, WebRTC/WebSocket, Web NFC and the sensor/orientation APIs. Benign — no security rules should fire.",
+  "logo": "assets/appbanner.jpg",
+  "entry": "index.html",
+  "categories": ["demo"],
+  "permissions": [],
+  "compatibility": ["web", "switch"],
+  "allowed_origins": [],
+  "developer": "Test Dev",
+  "license": "MIT",
+  "exitGame": "PLUS",
+  "fullscreen": true
+}

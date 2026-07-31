@@ -22,6 +22,7 @@ function nodeOffset(node) {
 export function analyzeHtml(text, file, ctx, isSvg = false) {
   const findings = [];
   const peripheralsUsed = new Set();
+  const capabilitiesUsed = new Set();
   const add = (f) => findings.push(makeFinding(f));
 
   let root;
@@ -30,7 +31,7 @@ export function analyzeHtml(text, file, ctx, isSvg = false) {
   } catch (e) {
     add({ rule_id: 'file-parse-error', severity: INFO, file, line: 0,
       detail: 'Could not parse HTML/SVG (' + e.name + ').', evidence: e.message });
-    return { findings, peripheralsUsed };
+    return { findings, peripheralsUsed, capabilitiesUsed };
   }
 
   // Inline + external <script>.
@@ -48,6 +49,7 @@ export function analyzeHtml(text, file, ctx, isSvg = false) {
         const sub = analyzeJs(js, file + ' <inline script>', ctx);
         for (const f of sub.findings) { if (!f.line) f.line = line; findings.push(f); }
         for (const p of sub.peripheralsUsed) peripheralsUsed.add(p);
+        for (const c of sub.capabilitiesUsed) capabilitiesUsed.add(c);
       }
     }
     if (isSvg) {
@@ -69,6 +71,7 @@ export function analyzeHtml(text, file, ctx, isSvg = false) {
           const sub = analyzeJs(js, file + ' [' + lname + ']', ctx);
           for (const f of sub.findings) { if (!f.line) f.line = line; findings.push(f); }
           for (const p of sub.peripheralsUsed) peripheralsUsed.add(p);
+          for (const c of sub.capabilitiesUsed) capabilitiesUsed.add(c);
           if (isSvg) {
             add({ rule_id: 'svg-active-content', severity: SUSPICIOUS, file, line,
               detail: 'SVG element carries an inline ' + lname + ' handler.', evidence: lname + '="' + val.slice(0, 60) + '"' });
@@ -115,5 +118,5 @@ export function analyzeHtml(text, file, ctx, isSvg = false) {
     }
   }
 
-  return { findings, peripheralsUsed };
+  return { findings, peripheralsUsed, capabilitiesUsed };
 }

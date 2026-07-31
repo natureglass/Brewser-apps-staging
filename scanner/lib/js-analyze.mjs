@@ -102,6 +102,10 @@ const MAX_JS_PARSE_BYTES = 4 * 1024 * 1024; // 4 MB
 export function analyzeJs(code, file, ctx) {
   const findings = [];
   const peripheralsUsed = new Set();
+  // Non-security Web-API capabilities used, for the achievements evaluator on the
+  // WP side (Phase 2b). Presence-based, like peripheralsUsed. Slugs mirror the
+  // WP regex scan: webgl / webaudio / webrtc / nfc / sensors.
+  const capabilitiesUsed = new Set();
   const add = (f) => findings.push(makeFinding(f));
 
   // Cheap miner-signature sweep first — works at any size (bounded scan below).
@@ -112,7 +116,8 @@ export function analyzeJs(code, file, ctx) {
       detail: 'File is ' + (code.length / 1048576).toFixed(1) + ' MB — over the ' + (MAX_JS_PARSE_BYTES / 1048576) +
         ' MB AST limit (typical of a minified framework/emscripten bundle). Ran the regex backstop only.', evidence: '' });
     regexBackstop(code, file, ctx, add);
-    return { findings, peripheralsUsed };
+    capabilityRegexSweep(code, capabilitiesUsed); // AST unavailable — regex floor.
+    return { findings, peripheralsUsed, capabilitiesUsed };
   }
 
   let ast;
@@ -127,7 +132,8 @@ export function analyzeJs(code, file, ctx) {
     add({ rule_id: 'file-parse-error', severity: INFO, file, line: 0,
       detail: 'Could not parse as JS (' + e.name + '); ran regex backstop only.', evidence: e.message });
     regexBackstop(code, file, ctx, add);
-    return { findings, peripheralsUsed };
+    capabilityRegexSweep(code, capabilitiesUsed); // parse failed — regex floor.
+    return { findings, peripheralsUsed, capabilitiesUsed };
   }
 
   // -------------------------------------------------------------------------
@@ -541,6 +547,24 @@ export function analyzeJs(code, file, ctx) {
       const last = parts.length ? parts[parts.length - 1] : simpleName;
       const objName = parts.length >= 2 ? parts[parts.length - 2] : '';
 
+      // ---- Capability detection (independent of the security rules below) ----
+      // Read the method name straight off the callee so a chained receiver like
+      // `canvas().getContext(...)` still resolves — memberPath (hence `last`)
+      // returns null when the receiver is itself a call.
+      const calleeMethod = (callee.type === 'MemberExpression' && !callee.computed && callee.property.type === 'Identifier')
+        ? callee.property.name
+        : simpleName;
+      // canvas.getContext('webgl'|'webgl2'|'experimental-webgl') → webgl.
+      if (calleeMethod === 'getContext') {
+        const gs = staticString(node.arguments[0]);
+        if (gs.static && /^(webgl2?|experimental-webgl)$/i.test(String(gs.value))) capabilitiesUsed.add('webgl');
+      }
+      // addEventListener('deviceorientation'|'devicemotion') → sensors.
+      if (calleeMethod === 'addEventListener') {
+        const es = staticString(node.arguments[0]);
+        if (es.static && /^(deviceorientation|devicemotion)$/i.test(String(es.value))) capabilitiesUsed.add('sensors');
+      }
+
       // Self-decoding IIFE: (function(){ … atob(…) … eval(…) … })() — a function
       // that decodes then executes its own body, invoked immediately.
       if ((callee.type === 'FunctionExpression' || callee.type === 'ArrowFunctionExpression') && callee.body) {
@@ -716,6 +740,14 @@ export function analyzeJs(code, file, ctx) {
       const callee = node.callee;
       const name = callee.type === 'Identifier' ? callee.name : memberPath(callee);
 
+      // ---- Capability detection (before the early-returning security checks) --
+      // Take the member tail so `new window.AudioContext()` still matches.
+      const ctorTail = name ? String(name).split('.').pop() : '';
+      if (/^(webkit)?(Offline)?AudioContext$/.test(ctorTail)) capabilitiesUsed.add('webaudio');
+      if (ctorTail === 'RTCPeerConnection' || ctorTail === 'webkitRTCPeerConnection' || ctorTail === 'mozRTCPeerConnection' || ctorTail === 'WebSocket') capabilitiesUsed.add('webrtc');
+      if (ctorTail === NFC_CTOR) capabilitiesUsed.add('nfc');
+      if (SENSOR_CTORS.has(ctorTail)) capabilitiesUsed.add('sensors');
+
       if (name === 'Function') { handleCodeCtor(node, path.scope); return; }
       if (name === 'WebSocket') { handleNetworkSink(node, node.arguments[0], path.scope, 'new WebSocket()'); return; }
       if (name === 'EventSource') { handleNetworkSink(node, node.arguments[0], path.scope, 'new EventSource()'); return; }
@@ -792,7 +824,26 @@ export function analyzeJs(code, file, ctx) {
     }
   }
 
-  return { findings, peripheralsUsed };
+  return { findings, peripheralsUsed, capabilitiesUsed };
+}
+
+// Generic-Sensor-API constructors that map to the `sensors` capability
+// (Sixth Sense achievement). DeviceOrientation is caught via the event name.
+const SENSOR_CTORS = new Set([
+  'Accelerometer', 'LinearAccelerationSensor', 'GravitySensor',
+  'Gyroscope', 'AbsoluteOrientationSensor', 'RelativeOrientationSensor',
+  'Magnetometer', 'AmbientLightSensor',
+]);
+
+// Regex floor for capability detection when the AST is unavailable (file over the
+// parse-size limit, or unparseable). Mirrors the WP-side CAPABILITY_PATTERNS so a
+// big minified bundle still contributes capabilities. Presence-based.
+function capabilityRegexSweep(code, caps) {
+  if (/getContext\s*\(\s*['"](?:webgl2?|experimental-webgl)['"]/.test(code)) caps.add('webgl');
+  if (/(?:Offline|webkit)?AudioContext\b/.test(code)) caps.add('webaudio');
+  if (/RTCPeerConnection\b|new\s+WebSocket\s*\(/.test(code)) caps.add('webrtc');
+  if (/\bNDEFReader\b/.test(code)) caps.add('nfc');
+  if (/DeviceOrientationEvent\b|['"]deviceorientation['"]|new\s+(?:Accelerometer|Gyroscope|LinearAccelerationSensor|AbsoluteOrientationSensor|RelativeOrientationSensor|GravitySensor)\b/.test(code)) caps.add('sensors');
 }
 
 // Gate predicate: does this test look like a time/host/platform/random trigger?

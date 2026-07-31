@@ -30,7 +30,7 @@ import { INFO, SUSPICIOUS } from './lib/severity.mjs';
 import { scoreFindings, rationaleFor, sortFindings } from './lib/score.mjs';
 import { TYPOSQUAT_CDN } from './lib/signatures.mjs';
 
-export const SCANNER_VERSION = '1.1.0';
+export const SCANNER_VERSION = '1.2.0';
 
 const LIMITATIONS =
   'Static heuristic scan. A GOOD verdict means no known-bad pattern matched, ' +
@@ -58,7 +58,7 @@ function nowIso() {
   return new Date().toISOString().replace(/\.\d+Z$/, 'Z');
 }
 
-function buildArtifact({ verdict, score, counts, rationale, findings, packageHash, truncated }) {
+function buildArtifact({ verdict, score, counts, rationale, findings, packageHash, truncated, capabilities }) {
   return {
     verdict,
     score,
@@ -69,6 +69,10 @@ function buildArtifact({ verdict, score, counts, rationale, findings, packageHas
     rationale,
     truncated: !!truncated,
     findings,
+    // Non-security Web-API capabilities detected in the bundle (Phase 2b): a small
+    // slug list (webgl/webaudio/webrtc/nfc/sensors) the WP achievements evaluator
+    // reads. Never truncated (tiny); independent of the verdict.
+    capabilities: Array.isArray(capabilities) ? capabilities : [],
     limitations: LIMITATIONS,
   };
 }
@@ -76,6 +80,10 @@ function buildArtifact({ verdict, score, counts, rationale, findings, packageHas
 async function runScan(args) {
   const findings = [];
   const peripheralsUsed = new Set();
+  // Non-security Web-API capabilities (webgl/webaudio/webrtc/nfc/sensors) for the
+  // WP achievements evaluator (Phase 2b). Emitted in the artifact; does not affect
+  // the verdict.
+  const capabilitiesUsed = new Set();
 
   // Manifest context (allowlist + declared peripherals + self namespace).
   let manifestText = '{}';
@@ -124,14 +132,17 @@ async function runScan(args) {
         const r = analyzeJs(f.text, f.rel, ctx);
         r.findings.forEach((x) => findings.push(x));
         r.peripheralsUsed.forEach((p) => peripheralsUsed.add(p));
+        r.capabilitiesUsed.forEach((c) => capabilitiesUsed.add(c));
       } else if (f.kind === KIND.HTML && f.isText) {
         const r = analyzeHtml(f.text, f.rel, ctx, false);
         r.findings.forEach((x) => findings.push(x));
         r.peripheralsUsed.forEach((p) => peripheralsUsed.add(p));
+        r.capabilitiesUsed.forEach((c) => capabilitiesUsed.add(c));
       } else if (f.kind === KIND.SVG && f.isText) {
         const r = analyzeHtml(f.text, f.rel, ctx, true);
         r.findings.forEach((x) => findings.push(x));
         r.peripheralsUsed.forEach((p) => peripheralsUsed.add(p));
+        r.capabilitiesUsed.forEach((c) => capabilitiesUsed.add(c));
       } else if (f.kind === KIND.CSS && f.isText) {
         analyzeCss(f.text, f.rel, ctx).findings.forEach((x) => findings.push(x));
       } else if (f.kind === KIND.JSON) {
@@ -152,7 +163,7 @@ async function runScan(args) {
   // Manifest post-analysis notes (declared-but-unused peripherals).
   manifestNotes(ctx, peripheralsUsed).forEach((x) => findings.push(x));
 
-  return { findings, packageHash };
+  return { findings, packageHash, capabilities: [...capabilitiesUsed].sort() };
 }
 
 // Truncate the findings array (worst-first) so the artifact stays under the
@@ -179,12 +190,12 @@ async function main() {
     if (!args.package || !args.out) {
       throw new Error('usage: scan.mjs --package <dir> --manifest <file> --out <file>');
     }
-    const { findings, packageHash } = await runScan(args);
+    const { findings, packageHash, capabilities } = await runScan(args);
     const sorted = sortFindings(findings);
     const { findings: outFindings, truncated } = maybeTruncate(sorted, args.maxBytes);
     const { verdict, score, counts } = scoreFindings(outFindings);
     const rationale = rationaleFor(verdict, outFindings, counts);
-    artifact = buildArtifact({ verdict, score, counts, rationale, findings: outFindings, packageHash, truncated });
+    artifact = buildArtifact({ verdict, score, counts, rationale, findings: outFindings, packageHash, truncated, capabilities });
   } catch (e) {
     // Fail SAFE: never GOOD on a crash. Emit a valid SUSPICIOUS artifact.
     artifact = buildArtifact({
