@@ -1,0 +1,16 @@
+{
+    "id": "com.natureglass.midilab",
+    "name": "MIDI Lab",
+    "version": "1.0.4",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "zip_sha256": "79d73b94a63695b152711a75df5549f32afda4494b8fe27ae91cd715e3e99908",
+    "attestation": {
+        "ts": "2026-07-31T14:49:19+00:00",
+        "platforms": [
+            "switch",
+            "web"
+        ],
+        "zip_sha256": "79d73b94a63695b152711a75df5549f32afda4494b8fe27ae91cd715e3e99908"
+    },
+    "submitted_at": "2026-07-31T14:49:19+00:00"
+}
