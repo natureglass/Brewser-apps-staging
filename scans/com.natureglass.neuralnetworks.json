@@ -1,8 +1,8 @@
 {
   "verdict": "GOOD",
   "score": 2,
-  "scanned_at": "2026-07-24T15:07:28Z",
-  "scanner_version": "1.0.0",
+  "scanned_at": "2026-07-31T18:09:17Z",
+  "scanner_version": "1.2.0",
   "package_hash": "567254dcd2f784c5ed1cb21036ced1ca7956add1fe731f4928c74af552e183a5",
   "counts": {
     "info": 2,
@@ -31,5 +31,6 @@
       "evidence": "conf.innerHTML=`could not load weights — serve over http (not file://). ${err.message}`"
     }
   ],
+  "capabilities": [],
   "limitations": "Static heuristic scan. A GOOD verdict means no known-bad pattern matched, NOT proof of safety. Human review is still required for every submission."
 }
