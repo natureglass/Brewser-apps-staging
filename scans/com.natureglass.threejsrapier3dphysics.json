@@ -1,0 +1,54 @@
+{
+  "verdict": "SUSPICIOUS",
+  "score": 13,
+  "scanned_at": "2026-08-02T18:19:50Z",
+  "scanner_version": "1.2.0",
+  "package_hash": "4f4dc5ea36cce9e4afdaaf32b7177bb12d52b49d93bacc82a6d3126532aa1dd8",
+  "counts": {
+    "info": 3,
+    "suspicious": 1,
+    "dangerous": 0
+  },
+  "rationale": "Suspicious: 1 signal(s) needing review; e.g. dynamic import() with a computed specifier.",
+  "truncated": false,
+  "findings": [
+    {
+      "rule_id": "dynamic-import-computed",
+      "severity": "SUSPICIOUS",
+      "title": "Dynamic import() with a computed specifier",
+      "detail": "import() with a non-literal specifier — the module loaded is decided at runtime.",
+      "file": "jsm/physics/RapierPhysics.js",
+      "line": 102,
+      "evidence": "import( RAPIER_PATH /* @vite-ignore */ )"
+    },
+    {
+      "rule_id": "file-parse-error",
+      "severity": "INFO",
+      "title": "A source file could not be parsed",
+      "detail": "Could not parse as JS (SyntaxError); ran regex backstop only.",
+      "file": "index.html <inline script>",
+      "line": 24,
+      "evidence": "Unexpected token (3:13)"
+    },
+    {
+      "rule_id": "high-entropy-string",
+      "severity": "INFO",
+      "title": "High-entropy string literal (possible packed payload)",
+      "detail": "1 high-entropy base64-like string literal(s); largest 259 chars. Possible packed/encoded payload.",
+      "file": "build/three.module.js",
+      "line": 0,
+      "evidence": "#ifdef USE_CLEARCOATMAP uniform sampler2D clearcoatMap; #endif #ifdef USE_CLEARCOAT_NORMALMAP uniform sampler2D clearco…"
+    },
+    {
+      "rule_id": "high-entropy-string",
+      "severity": "INFO",
+      "title": "High-entropy string literal (possible packed payload)",
+      "detail": "1 high-entropy base64-like string literal(s); largest 2264124 chars. Possible packed/encoded payload.",
+      "file": "jsm/physics/rapier/rapier.es.js",
+      "line": 0,
+      "evidence": "AGFzbQEAAAABoQygAWACf38AYAN/f38AYAR/f39/AGACf38Bf2ADf39/AX9gAX8Bf2ABfwBgBX9/f39/AGAGf39/f31/AGACf3wBf2AGf39/f39/AGABfwF…"
+    }
+  ],
+  "capabilities": [],
+  "limitations": "Static heuristic scan. A GOOD verdict means no known-bad pattern matched, NOT proof of safety. Human review is still required for every submission."
+}
