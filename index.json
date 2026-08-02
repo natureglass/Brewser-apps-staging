@@ -10,6 +10,16 @@
     "description": "<p>Test App</p>"
   },
   {
+    "id": "com.natureglass.threejsdynamiccubemapreflection",
+    "name": "ThreeJS Dynamic Cubemap Reflection",
+    "version": "1.0.0",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "updated_at": "2026-08-02T18:45:03Z",
+    "entry": "index.html",
+    "logo": "assets/appbanner.jpg",
+    "description": "<p>ThreeJS Dynamic Cubemap Reflection</p>"
+  },
+  {
     "id": "com.natureglass.threejsrapier3dphysics",
     "name": "ThreeJS Rapier3d Physics",
     "version": "1.0.0",
