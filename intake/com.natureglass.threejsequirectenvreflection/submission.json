@@ -1,0 +1,16 @@
+{
+    "id": "com.natureglass.threejsequirectenvreflection",
+    "name": "ThreeJS Equirect Env Reflection",
+    "version": "1.0.0",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "zip_sha256": "b8019b444146aa9debe62d1688ea38f2038adb739834590fa60bb2a25ac82b41",
+    "attestation": {
+        "ts": "2026-08-03T09:01:06+00:00",
+        "platforms": [
+            "switch",
+            "web"
+        ],
+        "zip_sha256": "b8019b444146aa9debe62d1688ea38f2038adb739834590fa60bb2a25ac82b41"
+    },
+    "submitted_at": "2026-08-03T09:01:06+00:00"
+}
