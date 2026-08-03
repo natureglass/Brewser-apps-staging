@@ -8,15 +8,5 @@
         "entry": "index.html",
         "logo": "assets/appbanner.jpg",
         "description": "<p>Test App</p>"
-    },
-    {
-        "id": "com.natureglass.threejsspotlightshadowcookie",
-        "name": "ThreeJS Spotlight Shadow Cookie",
-        "version": "1.0.0",
-        "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
-        "updated_at": "2026-08-03T09:51:11Z",
-        "entry": "index.html",
-        "logo": "assets/appbanner.jpg",
-        "description": "<p>ThreeJS Spotlight Shadow Cookie</p>"
     }
 ]
