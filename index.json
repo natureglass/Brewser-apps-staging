@@ -28,5 +28,15 @@
     "entry": "index.html",
     "logo": "assets/appbanner.jpg",
     "description": "<p>ThreeJS Loader GLTF</p>"
+  },
+  {
+    "id": "com.natureglass.threejspostprocessingpixelation",
+    "name": "ThreeJS Postprocessing Pixelation",
+    "version": "1.0.0",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "updated_at": "2026-08-03T09:23:30Z",
+    "entry": "index.html",
+    "logo": "assets/appbanner.jpg",
+    "description": "<p>ThreeJS Postprocessing Pixelation</p>"
   }
 ]
