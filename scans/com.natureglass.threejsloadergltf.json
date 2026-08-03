@@ -1,0 +1,36 @@
+{
+  "verdict": "GOOD",
+  "score": 2,
+  "scanned_at": "2026-08-03T09:20:29Z",
+  "scanner_version": "1.2.0",
+  "package_hash": "a6c78a8320bf5d072cb46affa83a9c4ae94374adf2bf35e293eb60df0762f65e",
+  "counts": {
+    "info": 2,
+    "suspicious": 0,
+    "dangerous": 0
+  },
+  "rationale": "No known-bad pattern matched (2 informational note(s)). Not proof of safety — human review still required.",
+  "truncated": false,
+  "findings": [
+    {
+      "rule_id": "file-parse-error",
+      "severity": "INFO",
+      "title": "A source file could not be parsed",
+      "detail": "Could not parse as JS (SyntaxError); ran regex backstop only.",
+      "file": "index.html <inline script>",
+      "line": 21,
+      "evidence": "Unexpected token (3:13)"
+    },
+    {
+      "rule_id": "high-entropy-string",
+      "severity": "INFO",
+      "title": "High-entropy string literal (possible packed payload)",
+      "detail": "1 high-entropy base64-like string literal(s); largest 259 chars. Possible packed/encoded payload.",
+      "file": "build/three.module.js",
+      "line": 0,
+      "evidence": "#ifdef USE_CLEARCOATMAP uniform sampler2D clearcoatMap; #endif #ifdef USE_CLEARCOAT_NORMALMAP uniform sampler2D clearco…"
+    }
+  ],
+  "capabilities": [],
+  "limitations": "Static heuristic scan. A GOOD verdict means no known-bad pattern matched, NOT proof of safety. Human review is still required for every submission."
+}
