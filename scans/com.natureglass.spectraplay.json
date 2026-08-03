@@ -1,8 +1,8 @@
 {
   "verdict": "GOOD",
   "score": 1,
-  "scanned_at": "2026-07-24T16:57:07Z",
-  "scanner_version": "1.0.0",
+  "scanned_at": "2026-08-03T20:42:45Z",
+  "scanner_version": "1.2.0",
   "package_hash": "db5c794905c94168f15d41179eed51af9e72b4cbfe6d8c8469d09a0f027ede20",
   "counts": {
     "info": 1,
@@ -21,6 +21,9 @@
       "line": 1207,
       "evidence": "button.innerHTML = ` <span class=\"num\">${String(index + 1).padStart(2, \"0\")}</span> <strong>${track.title}</strong> <sp…"
     }
+  ],
+  "capabilities": [
+    "webgl"
   ],
   "limitations": "Static heuristic scan. A GOOD verdict means no known-bad pattern matched, NOT proof of safety. Human review is still required for every submission."
 }
