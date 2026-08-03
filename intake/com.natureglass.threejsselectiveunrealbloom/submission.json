@@ -1,0 +1,16 @@
+{
+    "id": "com.natureglass.threejsselectiveunrealbloom",
+    "name": "ThreeJS Selective Unreal Bloom",
+    "version": "1.0.0",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "zip_sha256": "da0f1249d3d8ba6e81a924ff061548d349c4fe57a4c1672d5c95f5fc0b8a0352",
+    "attestation": {
+        "ts": "2026-08-03T09:27:35+00:00",
+        "platforms": [
+            "switch",
+            "web"
+        ],
+        "zip_sha256": "da0f1249d3d8ba6e81a924ff061548d349c4fe57a4c1672d5c95f5fc0b8a0352"
+    },
+    "submitted_at": "2026-08-03T09:27:35+00:00"
+}
