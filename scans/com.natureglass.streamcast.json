@@ -1,0 +1,54 @@
+{
+  "verdict": "SUSPICIOUS",
+  "score": 40,
+  "scanned_at": "2026-08-06T10:34:27Z",
+  "scanner_version": "1.2.0",
+  "package_hash": "52b90add9b0803c547cfd4d4a4a0b230868acdb8ab40e8ea69de26eac22a74a6",
+  "counts": {
+    "info": 0,
+    "suspicious": 4,
+    "dangerous": 0
+  },
+  "rationale": "Suspicious: 4 signal(s) needing review; e.g. network request to an off-package external origin.",
+  "truncated": false,
+  "findings": [
+    {
+      "rule_id": "external-egress",
+      "severity": "SUSPICIOUS",
+      "title": "Network request to an off-package external origin",
+      "detail": "fetch() targets https://gql.twitch.tv/gql, an origin not in the manifest allowed_origins.",
+      "file": "index.html <inline script>",
+      "line": 110,
+      "evidence": "fetch('https://gql.twitch.tv/gql', { method: 'POST', headers: { 'Client-ID': CLIENT_ID, 'Content-Type': 'application/js…"
+    },
+    {
+      "rule_id": "external-egress",
+      "severity": "SUSPICIOUS",
+      "title": "Network request to an off-package external origin",
+      "detail": "fetch() targets https://gql.twitch.tv/gql, an origin not in the manifest allowed_origins.",
+      "file": "index.html <inline script>",
+      "line": 155,
+      "evidence": "fetch('https://gql.twitch.tv/gql', { method: 'POST', headers: { 'Client-ID': CLIENT_ID, 'Content-Type': 'application/js…"
+    },
+    {
+      "rule_id": "external-egress",
+      "severity": "SUSPICIOUS",
+      "title": "Network request to an off-package external origin",
+      "detail": "fetch() targets https://gql.twitch.tv/gql, an origin not in the manifest allowed_origins.",
+      "file": "index.html <inline script>",
+      "line": 204,
+      "evidence": "fetch('https://gql.twitch.tv/gql', { method: 'POST', headers: { 'Client-ID': CLIENT_ID, 'Content-Type': 'application/js…"
+    },
+    {
+      "rule_id": "external-egress-assembled",
+      "severity": "SUSPICIOUS",
+      "title": "Network request to a runtime-assembled URL",
+      "detail": "an image/script src assignment targets a runtime-assembled URL containing the external fragment https://player.twitch.tv/?.",
+      "file": "index.html <inline script>",
+      "line": 774,
+      "evidence": "frame.src = src"
+    }
+  ],
+  "capabilities": [],
+  "limitations": "Static heuristic scan. A GOOD verdict means no known-bad pattern matched, NOT proof of safety. Human review is still required for every submission."
+}
