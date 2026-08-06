@@ -1,1 +1,12 @@
-[]
+[
+  {
+    "id": "com.natureglass.threejsloadercollada",
+    "name": "ThreeJS Loader Collada",
+    "version": "1.0.0",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "updated_at": "2026-08-06T09:44:13Z",
+    "entry": "index.html",
+    "logo": "assets/appbanner.jpg",
+    "description": "<p><strong>ThreeJS Loader Collada</strong> loads a textured Elf Girl character from a Collada file and turns her slowly on the spot for a clean, close-up look.</p>\r\n<p><strong>How it works.</strong> The demo hands a <em>.dae</em> file to three.js's <em>ColladaLoader</em>, which parses the XML-based <em>COLLADA</em> interchange format — geometry, materials and its separate JPEG textures for body, face and hair — and assembles the finished scene. A <em>LoadingManager</em> waits until every asset…"
+  }
+]
