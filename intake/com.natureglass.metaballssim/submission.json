@@ -1,0 +1,16 @@
+{
+    "id": "com.natureglass.metaballssim",
+    "name": "Metaballs sim",
+    "version": "1.0.1",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "zip_sha256": "0bc3faaa3e924a6f1ccb3714a8b6d314554404cb238ba04294dbcdeaf26982fc",
+    "attestation": {
+        "ts": "2026-08-06T19:40:25+00:00",
+        "platforms": [
+            "switch",
+            "web"
+        ],
+        "zip_sha256": "0bc3faaa3e924a6f1ccb3714a8b6d314554404cb238ba04294dbcdeaf26982fc"
+    },
+    "submitted_at": "2026-08-06T19:40:25+00:00"
+}
