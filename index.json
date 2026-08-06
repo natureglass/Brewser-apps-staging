@@ -1,1 +1,12 @@
-[]
+[
+  {
+    "id": "com.natureglass.threejsselectiveunrealbloom",
+    "name": "ThreeJS Selective Unreal Bloom",
+    "version": "1.0.1",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "updated_at": "2026-08-06T11:19:37Z",
+    "entry": "index.html",
+    "logo": "assets/appbanner.jpg",
+    "description": "<p><strong>ThreeJS Selective Unreal Bloom</strong> shows off an animated sci-fi engine — a detailed \"Primary Ion Drive\" model whose hot, glowing core blazes with a soft cinematic halo while the rest of the hull stays sharp.</p>\r\n<p><strong>How it works.</strong> The model is drawn through an <em>effect composer</em> that lays an <em>Unreal-style bloom</em> pass over the rendered frame. Bloom works from a brightness <em>threshold</em>: only pixels brighter than the cut-off — here the emissive…"
+  }
+]
