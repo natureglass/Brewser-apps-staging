@@ -1,1 +1,12 @@
-[]
+[
+  {
+    "id": "com.natureglass.nxjswebgl1test",
+    "name": "nxjs WebGL1 Test",
+    "version": "1.0.1",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "updated_at": "2026-08-06T09:56:30Z",
+    "entry": "index.html",
+    "logo": "assets/appbanner.jpg",
+    "description": "<p><strong>nxjs WebGL1 Test</strong> is a WebGL1 showpiece for the nx.js runtime — a moonlit ocean at night, rendered in real time, with the nx.js logo riding a cube that bobs on the swell.</p>\r\n<p><strong>How it works.</strong> It is really a stress test of nx.js's WebGL1 path dressed up as a seascape. Four separate <em>GLSL programs</em> — sky, moon, water and cube — are marked <em>raw passthrough</em> so the engine hands them straight to the console's native graphics chip instead of emulating…"
+  }
+]
