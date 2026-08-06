@@ -1,12 +1,1 @@
-[
-    {
-        "id": "com.natureglass.threejsgpgpuwater",
-        "name": "ThreeJS GPGPU Water",
-        "version": "1.0.0",
-        "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
-        "updated_at": "2026-08-06T09:24:58Z",
-        "entry": "index.html",
-        "logo": "assets/appbanner.jpg",
-        "description": "<p><strong>ThreeJS GPGPU Water</strong> is a reflective pool you can stir with a fingertip — press and drag across the surface and ripples spread out, run to the rim and slowly settle.</p>\r\n<p><strong>How it works.</strong> The surface is a grid of heights held in a texture and simulated entirely on the graphics card — this is the <em>GPGPU</em> (general-purpose GPU) technique, where a shader is used for maths rather than for drawing. Each frame a <em>compute shader</em> looks at every cell…"
-    }
-]
+[]
