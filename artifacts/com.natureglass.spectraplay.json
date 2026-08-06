@@ -1,7 +1,8 @@
 {
   "id": "com.natureglass.spectraplay",
-  "sizeBytes": 156061,
+  "sizeBytes": 158718,
   "files": [
+    "README.md",
     "assets/appbanner.jpg",
     "assets/audioplayer_logo.png",
     "assets/left-chevron.png",
