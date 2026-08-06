@@ -1,0 +1,16 @@
+{
+    "id": "com.natureglass.savedemo",
+    "name": "Save Demo",
+    "version": "1.0.0",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "zip_sha256": "855284ba38672070f0e3f8d4ffd97a0b40c2cf6f67aabd52afab9543e1ff5533",
+    "attestation": {
+        "ts": "2026-08-06T10:20:30+00:00",
+        "platforms": [
+            "switch",
+            "web"
+        ],
+        "zip_sha256": "855284ba38672070f0e3f8d4ffd97a0b40c2cf6f67aabd52afab9543e1ff5533"
+    },
+    "submitted_at": "2026-08-06T10:20:30+00:00"
+}
