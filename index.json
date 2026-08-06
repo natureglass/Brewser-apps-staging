@@ -8,15 +8,5 @@
         "entry": "index.html",
         "logo": "assets/appbanner.jpg",
         "description": "<p><strong>Neural Networks</strong> is a live handwriting classifier that runs a real convolutional neural network right in the browser. Draw a digit from 0 to 9 and the model instantly guesses what it is, showing its confidence and a probability bar for every possible digit — and no data ever leaves your device.</p>\r\n<p><strong>How it works.</strong> The app is a working demonstration of <em>WebNN</em>, a browser standard for running machine-learning models with hardware acceleration. It builds…"
-    },
-    {
-        "id": "com.natureglass.streamcast",
-        "name": "Stream Cast",
-        "version": "1.0.0",
-        "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
-        "updated_at": "2026-08-06T10:34:27Z",
-        "entry": "index.html",
-        "logo": "assets/appbanner.jpg",
-        "description": "<p><strong>Stream Cast</strong> brings live Twitch streaming to the Switch browser. A \"Live now\" sidebar lists popular channels while the main stage swaps between a search screen and full-screen video.</p>\r\n<p><strong>How it works.</strong> The app talks to Twitch's own web service to do everything the site does: it fetches the directory of top live channels, looks up a stream's title, viewer count and uptime, and requests a signed playback token for the channel you choose. With that token it…"
     }
 ]
