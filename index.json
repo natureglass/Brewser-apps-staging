@@ -18,5 +18,15 @@
     "entry": "index.html",
     "logo": "assets/appbanner.jpg",
     "description": "<p><strong>nxjs WebGL2 Test</strong> is a WebGL2 showpiece for the nx.js runtime — a procedural sunset sea, drawn entirely inside a single shader, with the nx.js logo on a cube drifting on the tide.</p>\r\n<p><strong>How it works.</strong> The whole scene is painted by one <em>fragment shader</em> in the ShaderToy style: a single full-screen triangle is drawn with no geometry data at all, and for every pixel the shader casts a <em>ray</em> out into an imagined world. It <em>ray-marches</em> a…"
+  },
+  {
+    "id": "com.natureglass.threejsdynamiccubemapreflection",
+    "name": "ThreeJS Dynamic Cubemap Reflection",
+    "version": "1.0.0",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "updated_at": "2026-08-06T09:23:33Z",
+    "entry": "index.html",
+    "logo": "assets/appbanner.jpg",
+    "description": "<p><strong>ThreeJS Dynamic Cubemap Reflection</strong> is a shimmering showcase built around a chrome sphere that mirrors everything happening around it in real time — a tumbling cube and a twisting torus knot sweep past while the whole scene is reflected on its polished surface.</p>\r\n<p><strong>How it works.</strong> The mirror-ball trick relies on a technique called <em>dynamic cube-mapping</em>. Every frame a special six-sided camera — a <em>CubeCamera</em> — sits at the centre of the…"
   }
 ]
