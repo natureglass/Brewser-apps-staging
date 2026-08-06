@@ -10,16 +10,6 @@
         "description": "<p><strong>ThreeJS Loader GLTF</strong> displays the battle-scarred Damaged Helmet — a benchmark physically based model — lit and reflected by a real-world HDR sky.</p>\r\n<p><strong>How it works.</strong> The <em>GLTFLoader</em> reads a glTF 2.0 model together with its binary geometry buffer and a full <em>physically based</em> texture set — base colour, normal, metal-roughness, ambient occlusion and emissive maps — so the metal, glass and scorched paint each respond to light correctly. An…"
     },
     {
-        "id": "com.natureglass.threejspostprocessingpixelation",
-        "name": "ThreeJS Postprocessing Pixelation",
-        "version": "1.0.0",
-        "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
-        "updated_at": "2026-08-06T09:47:24Z",
-        "entry": "index.html",
-        "logo": "assets/appbanner.jpg",
-        "description": "<p><strong>ThreeJS Postprocessing Pixelation</strong> renders a tiny 3D diorama and then crushes the whole picture down into chunky retro pixels, like a modern scene squeezed through an old console's video output.</p>\r\n<p><strong>How it works.</strong> The scene — two tilted cubes, a checkerboard floor and a glowing blue crystal that gently bobs and pulses — is drawn through an <em>effect composer</em>, a pipeline that post-processes the rendered image before it reaches the screen. A…"
-    },
-    {
         "id": "com.natureglass.threejsrapier3dphysics",
         "name": "ThreeJS Rapier3d Physics",
         "version": "1.0.0",
