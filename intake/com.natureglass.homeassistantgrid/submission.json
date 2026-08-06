@@ -1,0 +1,16 @@
+{
+    "id": "com.natureglass.homeassistantgrid",
+    "name": "Home Assistant Grid",
+    "version": "1.0.0",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "zip_sha256": "b52c66e2bde4e32b5d866da62d5f2803f86b6c58460406fafff4ed9e9623d7a1",
+    "attestation": {
+        "ts": "2026-08-06T07:52:40+00:00",
+        "platforms": [
+            "switch",
+            "web"
+        ],
+        "zip_sha256": "b52c66e2bde4e32b5d866da62d5f2803f86b6c58460406fafff4ed9e9623d7a1"
+    },
+    "submitted_at": "2026-08-06T07:52:40+00:00"
+}
