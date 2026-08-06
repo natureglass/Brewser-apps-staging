@@ -8,15 +8,5 @@
         "entry": "index.html",
         "logo": "assets/appbanner.jpg",
         "description": "<p><strong>AETHER</strong> turns a written phrase into a fullscreen animated field. Describe a world, watch it assemble, then open the console and take it apart.</p>\r\n<p><strong>How it works</strong></p>\r\n<p>Type something like <em>stormy alien ocean at dusk</em> and press Render. AETHER reads the phrase against a vocabulary of 168 words covering subjects, moods, colours, materials, styles and times of day. Every word it recognises contributes to a set of 40 numbers — field scale, warp depth,…"
-    },
-    {
-        "id": "com.natureglass.sensorsplayground",
-        "name": "Sensors Playground",
-        "version": "1.0.0",
-        "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
-        "updated_at": "2026-08-06T10:25:10Z",
-        "entry": "index.html",
-        "logo": "assets/appbanner.jpg",
-        "description": "<p><strong>Sensors Playground</strong> is a hardware diagnostics dashboard that surfaces the sensors and capabilities of your device. Each panel probes a real piece of hardware through a standard web API and shows a live readout, so you can see — and feel — exactly what your device exposes.</p>\r\n<p><strong>How it works.</strong> The dashboard is a grid of independent \"diagnostic cards\", each wired to a browser API and updating live from that hardware's own events rather than constant polling.…"
     }
 ]
