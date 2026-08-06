@@ -1,32 +1,22 @@
 [
-  {
-    "id": "com.natureglass.midilab",
-    "name": "MIDI Lab",
-    "version": "1.0.0",
-    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
-    "updated_at": "2026-08-06T10:50:32Z",
-    "entry": "index.html",
-    "logo": "assets/appbanner.jpg",
-    "description": "<p><strong>MIDI Lab</strong> is a universal MIDI-controller tester, synthesizer and visual playground. Plug in a keyboard, pad grid or knob controller and the app builds an on-screen mirror of your exact device, then lights up every note, pad and dial as you play it — while turning your performance into sound and reactive graphics.</p>\r\n<p><strong>How it works.</strong> The app connects to your hardware two ways, with an automatic fallback. First it tries the browser's built-in <em>Web MIDI</em>…"
-  },
-  {
-    "id": "com.natureglass.threejsshaderssky",
-    "name": "ThreeJS Shaders Sky",
-    "version": "1.0.1",
-    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
-    "updated_at": "2026-08-06T10:51:40Z",
-    "entry": "index.html",
-    "logo": "assets/appbanner.jpg",
-    "description": "<p><strong>ThreeJS Shaders Sky</strong> is an interactive atmosphere — a procedurally generated sky where you can move the sun from dawn to dusk and watch the colours, haze and drifting clouds respond.</p>\r\n<p><strong>How it works.</strong> There is no sky photograph here; every pixel is computed by a shader based on the <em>Preetham analytic daylight model</em>, a physics-inspired formula for how sunlight scatters through the air. Two effects do most of the work: <em>Rayleigh scattering</em>,…"
-  },
-  {
-    "id": "com.natureglass.threejsspotlightshadowcookie",
-    "name": "ThreeJS Spotlight Shadow Cookie",
-    "version": "1.0.1",
-    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
-    "updated_at": "2026-08-06T10:50:35Z",
-    "entry": "index.html",
-    "logo": "assets/appbanner.jpg",
-    "description": "<p><strong>ThreeJS Spotlight Shadow Cookie</strong> lights a marble angel with a single moving spotlight that projects a patterned texture and casts a soft, shifting shadow across the floor.</p>\r\n<p><strong>How it works.</strong> A lone spotlight sweeps a slow circle above the scene, and every frame the renderer draws the view from its position into a <em>shadow map</em> so the statue blocks the light realistically. The beam also carries a projected texture — a <em>cookie</em> (or gobo) — that…"
-  }
+    {
+        "id": "com.natureglass.threejsshaderssky",
+        "name": "ThreeJS Shaders Sky",
+        "version": "1.0.1",
+        "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+        "updated_at": "2026-08-06T10:51:40Z",
+        "entry": "index.html",
+        "logo": "assets/appbanner.jpg",
+        "description": "<p><strong>ThreeJS Shaders Sky</strong> is an interactive atmosphere — a procedurally generated sky where you can move the sun from dawn to dusk and watch the colours, haze and drifting clouds respond.</p>\r\n<p><strong>How it works.</strong> There is no sky photograph here; every pixel is computed by a shader based on the <em>Preetham analytic daylight model</em>, a physics-inspired formula for how sunlight scatters through the air. Two effects do most of the work: <em>Rayleigh scattering</em>,…"
+    },
+    {
+        "id": "com.natureglass.threejsspotlightshadowcookie",
+        "name": "ThreeJS Spotlight Shadow Cookie",
+        "version": "1.0.1",
+        "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+        "updated_at": "2026-08-06T10:50:35Z",
+        "entry": "index.html",
+        "logo": "assets/appbanner.jpg",
+        "description": "<p><strong>ThreeJS Spotlight Shadow Cookie</strong> lights a marble angel with a single moving spotlight that projects a patterned texture and casts a soft, shifting shadow across the floor.</p>\r\n<p><strong>How it works.</strong> A lone spotlight sweeps a slow circle above the scene, and every frame the renderer draws the view from its position into a <em>shadow map</em> so the statue blocks the light realistically. The beam also carries a projected texture — a <em>cookie</em> (or gobo) — that…"
+    }
 ]
