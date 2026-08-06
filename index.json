@@ -1,15 +1,5 @@
 [
     {
-        "id": "com.natureglass.threejsshaderssky",
-        "name": "ThreeJS Shaders Sky",
-        "version": "1.0.1",
-        "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
-        "updated_at": "2026-08-06T10:51:40Z",
-        "entry": "index.html",
-        "logo": "assets/appbanner.jpg",
-        "description": "<p><strong>ThreeJS Shaders Sky</strong> is an interactive atmosphere — a procedurally generated sky where you can move the sun from dawn to dusk and watch the colours, haze and drifting clouds respond.</p>\r\n<p><strong>How it works.</strong> There is no sky photograph here; every pixel is computed by a shader based on the <em>Preetham analytic daylight model</em>, a physics-inspired formula for how sunlight scatters through the air. Two effects do most of the work: <em>Rayleigh scattering</em>,…"
-    },
-    {
         "id": "com.natureglass.threejsspotlightshadowcookie",
         "name": "ThreeJS Spotlight Shadow Cookie",
         "version": "1.0.1",
