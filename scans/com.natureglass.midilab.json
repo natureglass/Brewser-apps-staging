@@ -1,9 +1,9 @@
 {
   "verdict": "GOOD",
   "score": 11,
-  "scanned_at": "2026-07-31T14:49:49Z",
-  "scanner_version": "1.1.0",
-  "package_hash": "7f85acdfeec84b934cad3f290c7da8aee9a9e39bb9095f41511b711684901ce5",
+  "scanned_at": "2026-08-06T10:50:32Z",
+  "scanner_version": "1.2.0",
+  "package_hash": "63189fcc419e556f138a552069920322f87fae881346c94f9d8d6c4d37ec20aa",
   "counts": {
     "info": 11,
     "suspicious": 0,
@@ -111,6 +111,9 @@
       "line": 847,
       "evidence": "row.innerHTML = `<span class=\"t\">${nowStamp()}</span><span class=\"ev-raw\">system</span><span class=\"ctrl\">${text}</span…"
     }
+  ],
+  "capabilities": [
+    "webgl"
   ],
   "limitations": "Static heuristic scan. A GOOD verdict means no known-bad pattern matched, NOT proof of safety. Human review is still required for every submission."
 }

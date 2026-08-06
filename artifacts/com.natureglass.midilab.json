@@ -1,7 +1,8 @@
 {
   "id": "com.natureglass.midilab",
-  "sizeBytes": 119051,
+  "sizeBytes": 121929,
   "files": [
+    "README.md",
     "assets/app.js",
     "assets/appbanner.jpg",
     "assets/appbanner.png",
