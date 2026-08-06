@@ -1,0 +1,16 @@
+{
+    "id": "com.natureglass.threejsspotlightshadowcookie",
+    "name": "ThreeJS Spotlight Shadow Cookie",
+    "version": "1.0.1",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "zip_sha256": "6d60afefe1cc3b70c2a7aa5cd865fd12c15ed7006bfb075061ff26d94d98d113",
+    "attestation": {
+        "ts": "2026-08-06T10:50:04+00:00",
+        "platforms": [
+            "switch",
+            "web"
+        ],
+        "zip_sha256": "6d60afefe1cc3b70c2a7aa5cd865fd12c15ed7006bfb075061ff26d94d98d113"
+    },
+    "submitted_at": "2026-08-06T10:50:04+00:00"
+}
