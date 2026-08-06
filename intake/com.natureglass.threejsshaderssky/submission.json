@@ -1,0 +1,16 @@
+{
+    "id": "com.natureglass.threejsshaderssky",
+    "name": "ThreeJS Shaders Sky",
+    "version": "1.0.1",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "zip_sha256": "d8ba494b13498872c6717e5d49f248bf615f13f1859556a4a8f3a809f779e798",
+    "attestation": {
+        "ts": "2026-08-06T10:51:12+00:00",
+        "platforms": [
+            "switch",
+            "web"
+        ],
+        "zip_sha256": "d8ba494b13498872c6717e5d49f248bf615f13f1859556a4a8f3a809f779e798"
+    },
+    "submitted_at": "2026-08-06T10:51:12+00:00"
+}
