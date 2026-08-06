@@ -1,5 +1,15 @@
 [
   {
+    "id": "com.natureglass.savedemo",
+    "name": "Save Demo",
+    "version": "1.0.0",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "updated_at": "2026-08-06T10:20:54Z",
+    "entry": "index.html",
+    "logo": "assets/appbanner.jpg",
+    "description": "<p><strong>Save Demo</strong> is a hands-on test harness for the Brewser save system — the same building blocks any app can use to remember data across sessions and devices. Sign in with your Google/Brewser account and exercise every part of the API from one screen.</p>\r\n<p><strong>How it works.</strong> The app uses a two-tier persistence model. When you save, your data is written <em>instantly</em> to this browser's local storage, then a background sync quietly uploads it to your account a…"
+  },
+  {
     "id": "com.natureglass.speedtest",
     "name": "Speed Test",
     "version": "1.0.0",
