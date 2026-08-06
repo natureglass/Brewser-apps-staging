@@ -18,6 +18,15 @@ on:
     paths:
       - 'intake/**'
   workflow_dispatch: {}
+  # Straggler sweep. The push trigger only fires when a NEW intake lands, so an
+  # intake left behind by a failed run (e.g. GitHub 5xx'd the plugin's push or
+  # this job's final `git push`) would otherwise sit until the next unrelated
+  # submission happens by. This job already reprocesses EVERY pending
+  # intake/*/submission.json at checkout and is idempotent + serialized by the
+  # concurrency group, so a periodic run just picks up any leftover and no-ops
+  # in seconds when intake/ is empty. Every 15 min (5 min is GitHub's floor).
+  schedule:
+    - cron: '*/15 * * * *'
   # Large-file intake path. The plugin can't push a big bundle through GitHub's
   # blob API (it 422s ~40 MB), so for oversize apps it fires this dispatch with
   # a tokened URL to fetch the zip. The "Materialize large intake" step below
@@ -345,8 +354,26 @@ jobs:
 
           # One push at the end — every successful commit rides on it. Do NOT
           # let a network failure or lost race silently mask as a green build.
-          if ! git push origin HEAD:main; then
-            echo "::error::git push origin HEAD:main failed"
+          # GitHub's git backend occasionally 5xx's a push ("Internal server
+          # error. Correlation ID …"); retry with a short backoff before giving
+          # up so a transient blip doesn't strand freshly-deployed commits (which
+          # would leave the just-processed intake/ folders un-removed on the
+          # remote). Runs are serialized by the concurrency group, so a retry
+          # can't collide with another run of THIS workflow.
+          push_ok=0
+          for attempt in 1 2 3 4 5; do
+            if git push origin HEAD:main; then
+              push_ok=1
+              break
+            fi
+            if [ "$attempt" -lt 5 ]; then
+              wait_s=$(( attempt * 5 ))
+              echo "::warning::git push attempt $attempt failed — retrying in ${wait_s}s"
+              sleep "$wait_s"
+            fi
+          done
+          if [ "$push_ok" -ne 1 ]; then
+            echo "::error::git push origin HEAD:main failed after retries"
             overall_status=1
           fi
 
