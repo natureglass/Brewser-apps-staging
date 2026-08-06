@@ -1,0 +1,16 @@
+{
+    "id": "com.natureglass.nxjswebgl1test",
+    "name": "nxjs WebGL1 Test",
+    "version": "1.0.1",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "zip_sha256": "9ed25058ddc7cc2a8148a1682e31c8f5a180a426f4f69f751945da325f7f9edf",
+    "attestation": {
+        "ts": "2026-08-06T09:56:05+00:00",
+        "platforms": [
+            "switch",
+            "web"
+        ],
+        "zip_sha256": "9ed25058ddc7cc2a8148a1682e31c8f5a180a426f4f69f751945da325f7f9edf"
+    },
+    "submitted_at": "2026-08-06T09:56:05+00:00"
+}
