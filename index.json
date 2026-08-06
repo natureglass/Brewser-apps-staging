@@ -1,12 +1,1 @@
-[
-    {
-        "id": "com.natureglass.threejsspotlightshadowcookie",
-        "name": "ThreeJS Spotlight Shadow Cookie",
-        "version": "1.0.0",
-        "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
-        "updated_at": "2026-08-06T10:14:29Z",
-        "entry": "index.html",
-        "logo": "assets/appbanner.jpg",
-        "description": "<p><strong>ThreeJS Spotlight Shadow Cookie</strong> lights a marble angel with a single moving spotlight that projects a patterned texture and casts a soft, shifting shadow across the floor.</p>\r\n<p><strong>How it works.</strong> A lone spotlight sweeps a slow circle above the scene, and every frame the renderer draws the view from its position into a <em>shadow map</em> so the statue blocks the light realistically. The beam also carries a projected texture — a <em>cookie</em> (or gobo) — that…"
-    }
-]
+[]
