@@ -1,7 +1,8 @@
 {
   "id": "com.natureglass.threejsrapier3dphysics",
-  "sizeBytes": 4685017,
+  "sizeBytes": 4662391,
   "files": [
+    "README.md",
     "assets/appbanner.jpg",
     "build/three.core.js",
     "build/three.module.js",

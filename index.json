@@ -28,5 +28,15 @@
     "entry": "index.html",
     "logo": "assets/appbanner.jpg",
     "description": "<p><strong>ThreeJS Postprocessing Pixelation</strong> renders a tiny 3D diorama and then crushes the whole picture down into chunky retro pixels, like a modern scene squeezed through an old console's video output.</p>\r\n<p><strong>How it works.</strong> The scene — two tilted cubes, a checkerboard floor and a glowing blue crystal that gently bobs and pulses — is drawn through an <em>effect composer</em>, a pipeline that post-processes the rendered image before it reaches the screen. A…"
+  },
+  {
+    "id": "com.natureglass.threejsrapier3dphysics",
+    "name": "ThreeJS Rapier3d Physics",
+    "version": "1.0.0",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "updated_at": "2026-08-06T09:48:11Z",
+    "entry": "index.html",
+    "logo": "assets/appbanner.jpg",
+    "description": "<p><strong>ThreeJS Rapier3d Physics</strong> is a self-running rigid-body playground: colourful boxes, spheres and rounded blocks rain down onto a grid floor, bounce, tumble and pile up under gravity.</p>\r\n<p><strong>How it works.</strong> A full physics engine — <em>Rapier</em>, written in Rust and compiled to <em>WebAssembly</em> so it runs at near-native speed in the browser — steps the world forward every frame, pulling bodies down with gravity and resolving collisions between shapes using…"
   }
 ]
