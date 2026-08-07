@@ -1,0 +1,16 @@
+{
+    "id": "com.natureglass.gravityballs",
+    "name": "Gravity Balls",
+    "version": "1.0.2",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "zip_sha256": "84407c8e6f8d43333dd8956f08608890d81be3fa9be6ab9e649979aa5d350d25",
+    "attestation": {
+        "ts": "2026-08-07T06:31:29+00:00",
+        "platforms": [
+            "switch",
+            "web"
+        ],
+        "zip_sha256": "84407c8e6f8d43333dd8956f08608890d81be3fa9be6ab9e649979aa5d350d25"
+    },
+    "submitted_at": "2026-08-07T06:31:29+00:00"
+}
