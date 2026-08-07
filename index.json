@@ -18,5 +18,15 @@
     "entry": "index.html",
     "logo": "assets/appbanner.jpg",
     "description": "<p><strong>Fractal Zoom</strong> is a GPU-powered explorer for six infinitely detailed fractals. Dive endlessly into these mathematical worlds, panning and zooming smoothly to reveal intricate structure at every scale, all rendered in real time with WebGL2.</p>\r\n<p><strong>How it works.</strong> Most of the fractals — the <em>Mandelbrot</em>, <em>Julia</em>, <em>Burning Ship</em>, <em>Phoenix</em> and <em>Koch</em> sets — are drawn by a fragment shader covering the whole screen: for every…"
+  },
+  {
+    "id": "com.natureglass.gravityballs",
+    "name": "Gravity Balls",
+    "version": "1.0.1",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "updated_at": "2026-08-07T06:17:02Z",
+    "entry": "index.html",
+    "logo": "assets/appbanner.jpg",
+    "description": "<p><strong>Gravity Balls</strong> is a relaxing physics sandbox where a set of colourful balls fall, bounce and jostle against each other and the walls — and gravity points wherever you tilt.</p>\r\n<p><strong>How it works.</strong> A proper physics engine runs behind the scenes. Each frame is broken into several small sub-steps, and within each step the app nudges every ball's velocity by gravity, then repeatedly resolves collisions — ball-against-wall and ball-against-ball — using impulses…"
   }
 ]
