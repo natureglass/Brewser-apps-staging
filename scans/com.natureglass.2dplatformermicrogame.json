@@ -1,9 +1,9 @@
 {
   "verdict": "GOOD",
   "score": 2,
-  "scanned_at": "2026-08-08T11:36:47Z",
+  "scanned_at": "2026-08-08T20:41:09Z",
   "scanner_version": "1.2.0",
-  "package_hash": "2f91dbbf43e95455f810857c4a0917daf90ae09b2cf5cfb933d9c9d80002a0c8",
+  "package_hash": "d2dbe67a65456827f8716c2a65280189409e00c48ef79a8bcbada97c3c7b5aba",
   "counts": {
     "info": 2,
     "suspicious": 0,
@@ -27,7 +27,7 @@
       "title": "DOM HTML sink assigned a non-literal value",
       "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
       "file": "index.html <inline script>",
-      "line": 20,
+      "line": 10,
       "evidence": "div.innerHTML = msg"
     }
   ],
