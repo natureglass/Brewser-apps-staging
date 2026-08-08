@@ -1,11 +1,11 @@
 {
   "id": "com.natureglass.2dplatformermicrogame",
-  "sizeBytes": 38840820,
+  "sizeBytes": 35347643,
   "files": [
-    "Build/platformer.data",
-    "Build/platformer.framework.js",
-    "Build/platformer.loader.js",
-    "Build/platformer.wasm",
+    "Build/custom_apps.data",
+    "Build/custom_apps.framework.js",
+    "Build/custom_apps.loader.js",
+    "Build/custom_apps.wasm",
     "README.md",
     "TemplateData/favicon.ico",
     "TemplateData/fullscreen-button.png",
@@ -18,7 +18,6 @@
     "TemplateData/unity-logo-light.png",
     "TemplateData/webgl-logo.png",
     "assets/appbanner.jpg",
-    "assets/appbanner.png",
     "index.html",
     "manifest.json"
   ]

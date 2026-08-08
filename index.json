@@ -1,1 +1,12 @@
-[]
+[
+  {
+    "id": "com.natureglass.2dplatformermicrogame",
+    "name": "2D Platformer Microgame",
+    "version": "1.0.0",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "updated_at": "2026-08-08T11:36:47Z",
+    "entry": "index.html",
+    "logo": "assets/appbanner.jpg",
+    "description": "<p><strong>2D Platformer Microgame</strong> is Unity's official learning template — a complete little side-scroller — compiled to WebGL and running natively on the Switch GPU, entirely offline.</p>\r\n<p><strong>How it works.</strong> This is a real Unity engine build (Unity 2021.3 LTS, Universal Render Pipeline) exported to WebAssembly. The whole game — physics, tilemap, animation, the Cinemachine follow-camera and TextMeshPro UI — runs inside the Brewser runtime through its <em>WebGL…"
+  }
+]
