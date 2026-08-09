@@ -1,0 +1,15 @@
+{
+    "id": "com.natureglass.2dplatformermicrogame",
+    "name": "2D Platformer Microgame",
+    "version": "1.0.3",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "zip_sha256": "fd95ecb9839a5600946b3d9e7ed908fc4d091556fe9e1ebd8a191be7e691ecbf",
+    "attestation": {
+        "ts": "2026-08-09T21:04:34+00:00",
+        "platforms": [
+            "switch"
+        ],
+        "zip_sha256": "fd95ecb9839a5600946b3d9e7ed908fc4d091556fe9e1ebd8a191be7e691ecbf"
+    },
+    "submitted_at": "2026-08-09T21:04:34+00:00"
+}
