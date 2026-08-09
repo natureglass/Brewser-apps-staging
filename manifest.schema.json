@@ -31,7 +31,7 @@
     "compatibility": {
       "type": "array",
       "minItems": 1,
-      "items": { "type": "string", "enum": ["switch", "web", "smartphone", "android"] },
+      "items": { "type": "string", "enum": ["switch", "web", "mobile"] },
       "uniqueItems": true
     },
     "allowed_origins": {
