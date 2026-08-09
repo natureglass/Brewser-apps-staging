@@ -1,12 +1,1 @@
-[
-  {
-    "id": "com.natureglass.speedwatch",
-    "name": "Speed Watch",
-    "version": "1.0.0",
-    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
-    "updated_at": "2026-08-09T12:49:52Z",
-    "entry": "index.html",
-    "logo": "assets/appbanner.jpg",
-    "description": "<p><strong>Speed Watch</strong> turns your device into a GPS speedometer with a live map and automatic speed-limit alerts — a full driving head-up dashboard in a single page, with no libraries, no API keys, and no account.</p>\r\n<p><strong>How it works<br /></strong>A large canvas speedometer is the hero: your live speed swings an eased needle around a 270° dial styled after European road signage, with a big digital readout and a green \"legal\" zone that turns red past the posted…"
-  }
-]
+[]
