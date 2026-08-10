@@ -1,0 +1,20 @@
+{
+  "verdict": "GOOD",
+  "score": 0,
+  "scanned_at": "2026-08-10T12:06:54Z",
+  "scanner_version": "1.2.0",
+  "package_hash": "bfecc4ffda77be4056f37ae2bc9bc6247437e44bd9ce9acd1d17bdb3a3861344",
+  "counts": {
+    "info": 0,
+    "suspicious": 0,
+    "dangerous": 0
+  },
+  "rationale": "No known-bad pattern matched. Not proof of safety — human review still required.",
+  "truncated": false,
+  "findings": [],
+  "capabilities": [
+    "sensors",
+    "webgl"
+  ],
+  "limitations": "Static heuristic scan. A GOOD verdict means no known-bad pattern matched, NOT proof of safety. Human review is still required for every submission."
+}
