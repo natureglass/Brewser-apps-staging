@@ -1,1 +1,12 @@
-[]
+[
+  {
+    "id": "com.natureglass.midisurface",
+    "name": "MIDI Surface",
+    "version": "1.0.1",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "updated_at": "2026-08-11T06:10:05Z",
+    "entry": "index.html",
+    "logo": "assets/appbanner.jpg",
+    "description": "<p><strong>MIDI Surface</strong> is a touch-driven MIDI control surface and sample instrument. It draws your controller as an on-screen grid of glowing pads, knobs and faders that light up as you play the real hardware — and, on devices with lit pads, tapping the screen sends the signal back to illuminate the hardware in return. Every pad can also fire a looping audio sample shaped by live effects.</p>\r\n<p><strong>How it works.</strong> The app connects to your controller through the browser's…"
+  }
+]
