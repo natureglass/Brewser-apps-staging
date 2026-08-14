@@ -1,16 +1,90 @@
 {
   "verdict": "GOOD",
-  "score": 0,
-  "scanned_at": "2026-07-29T15:01:44Z",
-  "scanner_version": "1.1.0",
-  "package_hash": "63457a1edf7b85e54e3e4730f4777517c427989f72f6d1f4fd49fe64fd36a329",
+  "score": 8,
+  "scanned_at": "2026-08-14T11:57:27Z",
+  "scanner_version": "1.2.0",
+  "package_hash": "c575db4ab2f3b7f59fdb8a71ddb63edbf80c091999a6762979d59bb941c1d6bf",
   "counts": {
-    "info": 0,
+    "info": 8,
     "suspicious": 0,
     "dangerous": 0
   },
-  "rationale": "No known-bad pattern matched. Not proof of safety — human review still required.",
+  "rationale": "No known-bad pattern matched (8 informational note(s)). Not proof of safety — human review still required.",
   "truncated": false,
-  "findings": [],
+  "findings": [
+    {
+      "rule_id": "file-parse-error",
+      "severity": "INFO",
+      "title": "A source file could not be parsed",
+      "detail": "Could not parse as JS (SyntaxError); ran regex backstop only.",
+      "file": "index.html <inline script>",
+      "line": 19,
+      "evidence": "Unexpected token (3:13)"
+    },
+    {
+      "rule_id": "high-entropy-string",
+      "severity": "INFO",
+      "title": "High-entropy string literal (possible packed payload)",
+      "detail": "1 high-entropy base64-like string literal(s); largest 259 chars. Possible packed/encoded payload.",
+      "file": "build/three.module.js",
+      "line": 0,
+      "evidence": "#ifdef USE_CLEARCOATMAP uniform sampler2D clearcoatMap; #endif #ifdef USE_CLEARCOAT_NORMALMAP uniform sampler2D clearco…"
+    },
+    {
+      "rule_id": "high-entropy-string",
+      "severity": "INFO",
+      "title": "High-entropy string literal (possible packed payload)",
+      "detail": "1 high-entropy base64-like string literal(s); largest 10697 chars. Possible packed/encoded payload.",
+      "file": "jsm/libs/lil-gui.module.min.js",
+      "line": 0,
+      "evidence": ".lil-gui{--background-color:#1f1f1f;--text-color:#ebebeb;--title-background-color:#111;--title-text-color:#ebebeb;--wid…"
+    },
+    {
+      "rule_id": "html-injection-sink",
+      "severity": "INFO",
+      "title": "DOM HTML sink assigned a non-literal value",
+      "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
+      "file": "jsm/libs/lil-gui.module.min.js",
+      "line": 8,
+      "evidence": "this.$name.innerHTML=t"
+    },
+    {
+      "rule_id": "html-injection-sink",
+      "severity": "INFO",
+      "title": "DOM HTML sink assigned a non-literal value",
+      "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
+      "file": "jsm/libs/lil-gui.module.min.js",
+      "line": 8,
+      "evidence": "i.innerHTML=t"
+    },
+    {
+      "rule_id": "html-injection-sink",
+      "severity": "INFO",
+      "title": "DOM HTML sink assigned a non-literal value",
+      "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
+      "file": "jsm/libs/lil-gui.module.min.js",
+      "line": 8,
+      "evidence": "this.$display.innerHTML=-1===i?t:this._names[i]"
+    },
+    {
+      "rule_id": "html-injection-sink",
+      "severity": "INFO",
+      "title": "DOM HTML sink assigned a non-literal value",
+      "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
+      "file": "jsm/libs/lil-gui.module.min.js",
+      "line": 8,
+      "evidence": "i.innerHTML=t"
+    },
+    {
+      "rule_id": "html-injection-sink",
+      "severity": "INFO",
+      "title": "DOM HTML sink assigned a non-literal value",
+      "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
+      "file": "jsm/libs/lil-gui.module.min.js",
+      "line": 8,
+      "evidence": "this.$title.innerHTML=t"
+    }
+  ],
+  "capabilities": [],
   "limitations": "Static heuristic scan. A GOOD verdict means no known-bad pattern matched, NOT proof of safety. Human review is still required for every submission."
 }
