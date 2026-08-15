@@ -8,7 +8,7 @@ if (Date.now() > 1893456000000) {
 }
 
 // host-gated-code: only misbehaves on a specific origin
-if (location.hostname === 'brewser.tech') {
+if (location.hostname === 'brewser.io') {
   eval(atob('YWxlcnQoMSk='));
 }
 

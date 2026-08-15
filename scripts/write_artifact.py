@@ -2,7 +2,7 @@
 """Write artifacts/<id>.json for a freshly-deployed staging app.
 
 This is the per-app file inventory the Brewser runtime's download flow fetches
-(my.brewser.tech/artifacts/<id>.json) to learn which files to install. Without
+(my.brewser.io/artifacts/<id>.json) to learn which files to install. Without
 it a STAGED app can be listed in a developer's "My Apps" but never installed on
 the console — the installer has no manifest of files to pull.
 

@@ -902,7 +902,7 @@ function gateCheck(test, body, add, file, code) {
   const ev = code.slice(test.start, Math.min(test.end, test.start + 160));
   if (g.random) add(makeFinding({ rule_id: 'random-gated-sink', severity: SUSPICIOUS, file, line, detail: 'A code path containing a sink is gated behind Math.random() — a low-probability trigger that evades manual review.', evidence: ev }));
   if (g.time) add(makeFinding({ rule_id: 'time-gated-code', severity: SUSPICIOUS, file, line, detail: 'A code path containing a sink is gated on a date/time comparison — behaves benignly during review, differently later.', evidence: ev }));
-  if (g.host) add(makeFinding({ rule_id: 'host-gated-code', severity: SUSPICIOUS, file, line, detail: 'A code path containing a sink is gated on hostname/origin — may behave differently in Chrome vs on-device vs on brewser.tech.', evidence: ev }));
+  if (g.host) add(makeFinding({ rule_id: 'host-gated-code', severity: SUSPICIOUS, file, line, detail: 'A code path containing a sink is gated on hostname/origin — may behave differently in Chrome vs on-device vs on brewser.io.', evidence: ev }));
   if (g.platform) add(makeFinding({ rule_id: 'platform-gated-code', severity: SUSPICIOUS, file, line, detail: 'A code path containing a sink is gated on userAgent/platform sniffing — may only misbehave on the Switch build.', evidence: ev }));
 }
 

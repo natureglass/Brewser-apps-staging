@@ -20,11 +20,11 @@ scripts/
 apps/<package-id>/      — deployed apps (created by the workflow)
 intake/<package-id>/    — pending submissions from the plugin (removed by the workflow)
 index.json              — root manifest index (created / upserted by the workflow)
-index.html              — my.brewser.tech developer portal (served by GitHub Pages)
+index.html              — my.brewser.io developer portal (served by GitHub Pages)
 .nojekyll               — disables Jekyll processing so _-prefixed paths
                           inside app bundles (e.g. Unity WebGL exports) are
                           served verbatim
-CNAME                   — custom domain (my.brewser.tech). Managed by
+CNAME                   — custom domain (my.brewser.io). Managed by
                           GitHub Pages; nothing in the workflow modifies it.
 ```
 
@@ -49,7 +49,7 @@ Each entry is one submission's public projection:
 ```
 
 - `owner` is never the raw Google sub — only its lowercase hex SHA-256. This
-  is the same value my.brewser.tech recomputes from the signed-in user's
+  is the same value my.brewser.io recomputes from the signed-in user's
   `sub` claim to filter the index to that user's submissions.
 - `entry`, `logo`, `description` were added in Phase 2 for the portal front
   end so a card can render without a follow-up per-app manifest fetch.
@@ -61,7 +61,7 @@ Each entry is one submission's public projection:
 
 ## GitHub Pages / custom domain
 
-- `my.brewser.tech` is the CNAME target. The `CNAME` file at the repo root
+- `my.brewser.io` is the CNAME target. The `CNAME` file at the repo root
   is managed by GitHub Pages; the deploy workflow deliberately does NOT
   `git add -A` at the repo root (it stages only `apps/<pkg>/` and
   `index.json`), so a locally-deleted `CNAME` cannot be pushed away by the
@@ -69,11 +69,11 @@ Each entry is one submission's public projection:
 - `.nojekyll` is present so paths beginning with `_` inside app bundles
   survive to the CDN.
 - **Sign-in precondition:** the brewser-auth plugin's **Allowed origins**
-  setting on brewser.tech must include `https://my.brewser.tech`, or the
+  setting on brewser.io must include `https://my.brewser.io`, or the
   sign-in popup will refuse with "session expired". This is a one-time
   setup step in **Brewser → Play Auth** on the WordPress admin.
 - **Submission page:** the portal's empty state + signed-out view link to
-  `https://brewser.tech/submit/`. That page must host the
+  `https://brewser.io/submit/`. That page must host the
   `[brewser_submit_app]` shortcode.
 
 ## Canonical secret format

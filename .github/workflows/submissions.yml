@@ -227,7 +227,7 @@ jobs:
                   # ---- Artifact inventory (enables on-device install) --------
                   # Per-app file manifest the Brewser runtime downloads to
                   # install a STAGED app on the console (served at
-                  # my.brewser.tech/artifacts/<pkg>.json). Same shape as the
+                  # my.brewser.io/artifacts/<pkg>.json). Same shape as the
                   # prod brewser-apps artifacts (runtime parseArtifacts contract:
                   # {id, sizeBytes, files}). The staging deploy is the only place
                   # the full deployed tree exists to scan. Best-effort: a failure

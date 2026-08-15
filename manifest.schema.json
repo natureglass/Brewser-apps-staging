@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft-07/schema#",
-  "$id": "https://brewser.tech/schema/manifest.json",
+  "$id": "https://brewser.io/schema/manifest.json",
   "title": "Brewser app manifest",
   "description": "Canonical shape of every per-app manifest.json in the staging repo. Generated server-side by the Brewser Submissions plugin and validated in the staging workflow. Kept in sync manually — the plugin's Brewser_Sub_Manifest::build() is the generator and TEST_PLAN.md asserts its output validates against this file.",
   "type": "object",

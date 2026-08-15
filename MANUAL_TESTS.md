@@ -1,4 +1,4 @@
-# my.brewser.tech — manual test list
+# my.brewser.io — manual test list
 
 Phase 2 developer-portal front-end. Runs entirely on the browser; no CI.
 Each case: what to do, what to see. Devtools are your friend. Every case
@@ -7,18 +7,18 @@ inside the Brewser Switch runtime.
 
 Preconditions before running any of this:
 
-- **Pages served.** `https://my.brewser.tech/` resolves to this repo (CNAME
+- **Pages served.** `https://my.brewser.io/` resolves to this repo (CNAME
   configured, DNS propagated, Pages built).
 - **Auth origin allowlisted.** In WordPress, **Brewser → Play Auth →
-  Allowed origins** contains `https://my.brewser.tech` on its own line.
-- **Submission page exists.** `https://brewser.tech/submit/` hosts the
+  Allowed origins** contains `https://my.brewser.io` on its own line.
+- **Submission page exists.** `https://brewser.io/submit/` hosts the
   `[brewser_submit_app]` shortcode (or update `SUBMIT_URL` in `index.html`
   to whatever the operator picked).
 
 ## 1. Signed-out view (cold visitor)
 
 Open a private / incognito window (fresh localStorage). Visit
-`https://my.brewser.tech/`.
+`https://my.brewser.io/`.
 
 Expect: page loads. Only the "Sign in with Google" card is visible in the
 main area. No catalog, no app names, no ownership hash exposed anywhere in
@@ -28,7 +28,7 @@ the HTML source. Auth bar (top-right) is empty. Footer visible.
 
 From the signed-out view, click **Sign in with Google**.
 
-Expect: `500 × 620` popup opens on `brewser.tech`. Complete Google sign-in.
+Expect: `500 × 620` popup opens on `brewser.io`. Complete Google sign-in.
 Popup postMessages back and closes. Page re-renders: auth avatar/name in
 the top-right, cards for your owned staging apps (if any) below. No page
 navigation — everything happens in place.
@@ -53,7 +53,7 @@ localStorage.setItem('brewser_auth', JSON.stringify({
 }));
 ```
 
-Reload `my.brewser.tech`.
+Reload `my.brewser.io`.
 
 Expect: no popup interaction. Cards render immediately based on the seeded
 session. This is the Switch-runtime code path (the runtime pre-seeds the
@@ -116,7 +116,7 @@ For an existing sample: `/apps/com.natureglass.serpent/index.html`.
 
 Submit a new app through the WP shortcode; wait for the workflow's deploy
 commit to land (single `deploy: <pkg>@<ver>` commit). Refresh
-`my.brewser.tech` without clearing the browser cache.
+`my.brewser.io` without clearing the browser cache.
 
 Expect: the new card appears within seconds. If it doesn't, check Devtools
 Network — the `/index.json?ts=<epoch>` request must return the freshest

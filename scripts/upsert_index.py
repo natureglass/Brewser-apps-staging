@@ -6,7 +6,7 @@ keyed by id. Latest-wins: if an entry with the same id already exists it is
 replaced. Output is a JSON array sorted by id so diffs stay small across
 deploys.
 
-The `entry`, `logo`, `description` fields are added so my.brewser.tech can
+The `entry`, `logo`, `description` fields are added so my.brewser.io can
 render a card without a follow-up per-app manifest fetch. The page is still
 expected to tolerate old entries missing these fields (they only refresh on
 the next submission for that package_id) and fall back to the per-app
@@ -68,7 +68,7 @@ def main(argv: list[str]) -> int:
         "version":     manifest.get("version", ""),
         "owner":       submission.get("owner", ""),
         "updated_at":  datetime.datetime.utcnow().replace(microsecond=0).isoformat() + "Z",
-        # Phase 2 addendum for my.brewser.tech. Old entries missing these are
+        # Phase 2 addendum for my.brewser.io. Old entries missing these are
         # tolerated by the reader (falls back to /apps/<id>/manifest.json).
         "entry":       manifest.get("entry", "index.html"),
         "logo":        manifest.get("logo", ""),
