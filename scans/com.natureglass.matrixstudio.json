@@ -1,0 +1,47 @@
+{
+  "verdict": "SUSPICIOUS",
+  "score": 21,
+  "scanned_at": "2026-08-15T15:44:39Z",
+  "scanner_version": "1.2.0",
+  "package_hash": "5b3db19b2dc512d7b0840b6e5ff005e9f0875d4599996938ac7ac44424d4c4a3",
+  "counts": {
+    "info": 1,
+    "suspicious": 2,
+    "dangerous": 0
+  },
+  "rationale": "Suspicious: 2 signal(s) needing review; e.g. uses a peripheral api not declared in the manifest.",
+  "truncated": false,
+  "findings": [
+    {
+      "rule_id": "peripheral-undeclared",
+      "severity": "SUSPICIOUS",
+      "title": "Uses a peripheral API not declared in the manifest",
+      "detail": "Uses the serial peripheral API but the manifest declares no matching permission. Undeclared peripheral use is suspicious; combined with off-package egress it is treated as dangerous.",
+      "file": "index.html <inline script>",
+      "line": 305,
+      "evidence": "navigator.serial.requestPort()"
+    },
+    {
+      "rule_id": "peripheral-undeclared",
+      "severity": "SUSPICIOUS",
+      "title": "Uses a peripheral API not declared in the manifest",
+      "detail": "Uses the bluetooth peripheral API but the manifest declares no matching permission. Undeclared peripheral use is suspicious; combined with off-package egress it is treated as dangerous.",
+      "file": "index.html <inline script>",
+      "line": 323,
+      "evidence": "navigator.bluetooth.requestDevice({ filters:[{services:[NUS]}], optionalServices:[NUS]})"
+    },
+    {
+      "rule_id": "declared-unused-peripheral",
+      "severity": "INFO",
+      "title": "Peripheral declared in manifest but never used",
+      "detail": "The manifest declares a \"usb\" permission but no code uses that peripheral API. Harmless, but worth confirming the declaration is intended.",
+      "file": "manifest.json",
+      "line": 0,
+      "evidence": "usb"
+    }
+  ],
+  "capabilities": [
+    "webgl"
+  ],
+  "limitations": "Static heuristic scan. A GOOD verdict means no known-bad pattern matched, NOT proof of safety. Human review is still required for every submission."
+}
