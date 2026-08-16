@@ -264,8 +264,8 @@ function bvRGB(bv){
 /* ---------------- reference tables ---------------- */
 var CONST_NAMES = {And:'Andromeda',Ant:'Antlia',Aps:'Apus',Aqr:'Aquarius',Aql:'Aquila',Ara:'Ara',Ari:'Aries',Aur:'Auriga',Boo:'Boötes',Cae:'Caelum',Cam:'Camelopardalis',Cnc:'Cancer',CVn:'Canes Venatici',CMa:'Canis Major',CMi:'Canis Minor',Cap:'Capricornus',Car:'Carina',Cas:'Cassiopeia',Cen:'Centaurus',Cep:'Cepheus',Cet:'Cetus',Cha:'Chamaeleon',Cir:'Circinus',Col:'Columba',Com:'Coma Berenices',CrA:'Corona Australis',CrB:'Corona Borealis',Crv:'Corvus',Crt:'Crater',Cru:'Crux',Cyg:'Cygnus',Del:'Delphinus',Dor:'Dorado',Dra:'Draco',Equ:'Equuleus',Eri:'Eridanus',For:'Fornax',Gem:'Gemini',Gru:'Grus',Her:'Hercules',Hor:'Horologium',Hya:'Hydra',Hyi:'Hydrus',Ind:'Indus',Lac:'Lacerta',Leo:'Leo',LMi:'Leo Minor',Lep:'Lepus',Lib:'Libra',Lup:'Lupus',Lyn:'Lynx',Lyr:'Lyra',Men:'Mensa',Mic:'Microscopium',Mon:'Monoceros',Mus:'Musca',Nor:'Norma',Oct:'Octans',Oph:'Ophiuchus',Ori:'Orion',Pav:'Pavo',Peg:'Pegasus',Per:'Perseus',Phe:'Phoenix',Pic:'Pictor',Psc:'Pisces',PsA:'Piscis Austrinus',Pup:'Puppis',Pyx:'Pyxis',Ret:'Reticulum',Sge:'Sagitta',Sgr:'Sagittarius',Sco:'Scorpius',Scl:'Sculptor',Sct:'Scutum',Ser:'Serpens',Ser1:'Serpens',Ser2:'Serpens',Sex:'Sextans',Tau:'Taurus',Tel:'Telescopium',Tri:'Triangulum',TrA:'Triangulum Australe',Tuc:'Tucana',UMa:'Ursa Major',UMi:'Ursa Minor',Vel:'Vela',Vir:'Virgo',Vol:'Volans',Vul:'Vulpecula'};
 var DSO_FRIENDLY = {'M 31':'Andromeda Galaxy','M 33':'Triangulum Galaxy','M 42':'Orion Nebula','M 45':'Pleiades','M 44':'Beehive Cluster','M 8':'Lagoon Nebula','M 16':'Eagle Nebula','M 6':'Butterfly Cluster','M 7':'Ptolemy Cluster','Mel 25':'Hyades','Mel 20':'Alpha Persei Cluster','Mel 111':'Coma Star Cluster','47 Tuc':'47 Tucanae','h Per':'Double Cluster h Per','χ Per':'Double Cluster χ Per','η Car':'Carina Nebula','ω Cen':'Omega Centauri','LMC':'Large Magellanic Cloud','SMC':'Small Magellanic Cloud','Cr 399':'The Coathanger','IC 2602':'Southern Pleiades','GalCtr':'Galactic Centre','NGC 2244':'Rosette Cluster','NGC 2264':'Christmas Tree Cluster'};
-var DSO_TYPE = {oc:'Open cluster',gc:'Globular cluster',s:'Galaxy',sd:'Galaxy',i:'Galaxy',en:'Nebula',sfr:'Nebula',pos:'Region'};
-var DSO_COLOR = {oc:0xffd9a0,gc:0xffc27a,s:0xd9b8ff,sd:0xd9b8ff,i:0xd9b8ff,en:0xff9e7a,sfr:0xff9e7a,pos:0xffb37a};
+var DSO_TYPE = {oc:'Open cluster',gc:'Globular cluster',s:'Galaxy',sd:'Galaxy',i:'Galaxy',e:'Galaxy',en:'Nebula',rn:'Nebula',sfr:'Nebula',pn:'Planetary nebula',snr:'Supernova remnant',pos:'Region'};
+var DSO_COLOR = {oc:0xffd9a0,gc:0xffc27a,s:0xd9b8ff,sd:0xd9b8ff,i:0xd9b8ff,e:0xd9b8ff,en:0xff9e7a,rn:0xa8c8ff,sfr:0xff9e7a,pn:0xa8e8d8,snr:0xffb0a0,pos:0xffb37a};
 var PLANETS = [
   {key:'mercury',name:'Mercury',color:0xd8c8b8,size:5.0},
   {key:'venus',  name:'Venus',  color:0xfff2d0,size:9.0},
@@ -611,13 +611,32 @@ function imageEntry(pk){
   if (DSO_IMG && pk && pk.kind==='dso' && pk.desig && DSO_IMG[pk.desig]) return DSO_IMG[pk.desig];
   return null;
 }
+var texLRU=[];
 function getTex(path){
-  if (texCache[path]) return texCache[path];
+  if (texCache[path]){
+    var k=texLRU.indexOf(path);
+    if (k>=0) texLRU.splice(k,1);
+    texLRU.push(path);
+    return texCache[path];
+  }
   var t=texLoader.load(path);
   t.minFilter=THREE.LinearFilter; t.magFilter=THREE.LinearFilter;
   t.generateMipmaps=false;
   t.wrapS=THREE.ClampToEdgeWrapping; t.wrapT=THREE.ClampToEdgeWrapping;
   texCache[path]=t;
+  texLRU.push(path);
+  if (texLRU.length>26){
+    var active={};
+    var e=imageEntry(imgFor);
+    if (e) for (var i=0;i<e.tiles.length;i++) active[DATA_BASE+'dso-img/'+e.tiles[i].img]=1;
+    for (var j=0; j<texLRU.length && texLRU.length>26; j++){
+      var p=texLRU[j];
+      if (!active[p]){
+        texCache[p].dispose(); delete texCache[p];
+        texLRU.splice(j,1); j--;
+      }
+    }
+  }
   return t;
 }
 function clearImage(){
@@ -746,11 +765,11 @@ function buildDSOs(geo){
     pos[i*3]=tmpV.x*R_SKY; pos[i*3+1]=tmpV.y*R_SKY; pos[i*3+2]=tmpV.z*R_SKY;
     C.setHex(DSO_COLOR[pr.type]||0xffd9a0);
     col[i*3]=C.r; col[i*3+1]=C.g; col[i*3+2]=C.b;
-    siz[i]=Math.max(7, Math.min(15, 15-1.9*(+pr.mag||4)));
+    siz[i]=Math.max(4.5, Math.min(15, 15-1.9*(+pr.mag||4)));
     tw[i]=Math.random()*6.283;
-    var name = DSO_FRIENDLY[pr.desig] || pr.desig || f.id;
+    var name = pr.name || DSO_FRIENDLY[pr.desig] || pr.desig || f.id;
     var sub = [DSO_TYPE[pr.type]||'Deep-sky object'];
-    if (DSO_FRIENDLY[pr.desig] && pr.desig!==name) sub.push(pr.desig);
+    if (pr.desig && name!==pr.desig) sub.push(pr.desig);
     sub.push('mag '+(+pr.mag).toFixed(1));
     var pk={kind:'dso', desig:pr.desig, name:name, sub:sub.join(' · '), mag:+pr.mag, dir:tmpV.clone()};
     pickables.push(pk); dsoPicks.push(pk);
@@ -1076,7 +1095,7 @@ function showpieces(){
   }
   if (moonPick) add(moonPick,0);
   planetPicks.forEach(function(p){ add(p,1); });
-  dsoPicks.forEach(function(p){ add(p,2); });
+  dsoPicks.forEach(function(p){ if (imageEntry(p) || p.mag<5.2) add(p,2); });
   celebs.forEach(function(p){ add(p,3); });
   list.sort(function(a,b){ return a.rank-b.rank || a.pk.mag-b.pk.mag; });
   return list.map(function(e){ return e.pk; });

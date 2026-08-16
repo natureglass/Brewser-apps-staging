@@ -2,9 +2,9 @@
   {
     "id": "com.natureglass.dusk",
     "name": "Dusk - Sky Atlas",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
-    "updated_at": "2026-08-16T14:35:47Z",
+    "updated_at": "2026-08-16T14:48:06Z",
     "entry": "index.html",
     "logo": "assets/appbanner.jpg",
     "description": "<p><strong>Dusk</strong> is a pocket planetarium that draws the real night sky in WebGL. For any moment and place it renders the stars, constellations, Milky Way, deep-sky objects and planets exactly where they sit in the sky above you — wrapped in a warm dusk glow that fades from the horizon up to the zenith.</p>\r\n<p><strong>How it works.</strong> Everything you see is placed by genuine astronomy rather than a static picture. The whole celestial sphere is rotated for your latitude, longitude…"
