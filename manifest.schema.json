@@ -9,7 +9,7 @@
     "id", "name", "version", "description", "logo", "entry",
     "categories", "permissions", "compatibility",
     "allowed_origins", "developer", "license", "exitGame", "fullscreen",
-    "publishedAt"
+    "publishedAt", "updatedAt"
   ],
   "properties": {
     "id": {
@@ -27,6 +27,7 @@
     "genre":       { "type": "array", "items": { "type": "string" }, "uniqueItems": true, "description": "Optional brewser_genre taxonomy terms mirrored from the submission." },
     "features":    { "type": "array", "items": { "type": "string" }, "uniqueItems": true, "description": "Optional brewser_feature taxonomy terms mirrored from the submission." },
     "tags":        { "type": "array", "items": { "type": "string" }, "uniqueItems": true, "description": "Optional free post tags mirrored from the submission." },
+    "video_links": { "type": "array", "items": { "type": "string", "pattern": "^https?://" }, "uniqueItems": true, "description": "Optional demo/trailer video URLs from the submit form's Video links field. Full http(s) URLs (path + query preserved, unlike allowed_origins). Emitted by Brewser_Sub_Manifest::build() ONLY when the developer added some; capped at 10 (Brewser_Sub_Validate::MAX_VIDEO_LINKS). Attaching at least one earns the Showreel achievement." },
     "permissions": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
     "compatibility": {
       "type": "array",
@@ -54,6 +55,11 @@
       "type": "string",
       "format": "date-time",
       "description": "ISO-8601 UTC first-go-live timestamp. SET-ONCE: Brewser_Sub_Manifest::build() must carry any existing value forward unchanged on every rebuild — a resubmission must never alter this date (it drives the runtime's Most Recent sort). Mirrors the App Post's post_date, the same field the [brewser_browse] Most Recent tab orders on."
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO-8601 UTC last-update timestamp. The MUTABLE counterpart to publishedAt: Brewser_Sub_Manifest::build() re-stamps it to \"now\" on every NEW-VERSION submission (a fresh bundle), so it tracks when the app was last actually updated — deliberately NOT a carry-forward field. The ONE exception is a metadata-only edit (same version, no new bundle): that flow preserves the deployed manifest's existing value so a spelling fix never masquerades as a fresh update. On a first submission it equals publishedAt."
     },
     "buttonMapping": {
       "type": "object",
