@@ -1,9 +1,9 @@
 {
   "verdict": "SUSPICIOUS",
   "score": 11,
-  "scanned_at": "2026-08-16T11:44:32Z",
+  "scanned_at": "2026-08-16T14:35:47Z",
   "scanner_version": "1.2.0",
-  "package_hash": "3318f2063fac9781a63fd64eb8a4266d88ccba57ed087339bd7e640d93f4c5e1",
+  "package_hash": "2e6805ceba573ebdb1cdaba5df05da182ba1e3a20947ec80c166e469a727503e",
   "counts": {
     "info": 1,
     "suspicious": 1,
@@ -18,7 +18,7 @@
       "title": "localStorage access outside the app namespace",
       "detail": "Reads localStorage key \"dusk.prefs.v1\" outside this app namespace (com.natureglass.dusk) and other than brewser_auth.",
       "file": "index.html <inline script>",
-      "line": 35,
+      "line": 37,
       "evidence": "localStorage.getItem('dusk.prefs.v1')"
     },
     {
