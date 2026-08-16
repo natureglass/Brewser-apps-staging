@@ -12,9 +12,9 @@
   {
     "id": "com.natureglass.matrixstudio",
     "name": "Matrix Studio",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
-    "updated_at": "2026-08-15T15:44:39Z",
+    "updated_at": "2026-08-16T17:52:09Z",
     "entry": "index.html",
     "logo": "assets/appbanner.jpg",
     "description": "<p><strong>Matrix Studio</strong> is a design-and-control studio for addressable-LED matrix panels. Draw straight onto a glowing on-screen grid, stir it like fluid, or run built-in animations — then stream the picture live to a real ESP32-driven panel over USB serial or Bluetooth.</p>\r\n<p><strong>How it works.</strong> The whole canvas is a WebGL “LED wall”: every pixel is drawn as a rounded, softly glowing dot on a dark grid, so the preview reads like the real panel. Everything you paint…"

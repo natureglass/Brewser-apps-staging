@@ -1,9 +1,9 @@
 {
   "verdict": "SUSPICIOUS",
   "score": 21,
-  "scanned_at": "2026-08-15T15:44:39Z",
+  "scanned_at": "2026-08-16T17:52:09Z",
   "scanner_version": "1.2.0",
-  "package_hash": "5b3db19b2dc512d7b0840b6e5ff005e9f0875d4599996938ac7ac44424d4c4a3",
+  "package_hash": "613f7ee6d8047e5d42db826a6206014406b2092572fb9848bab1f1abc7cd540f",
   "counts": {
     "info": 1,
     "suspicious": 2,
@@ -18,7 +18,7 @@
       "title": "Uses a peripheral API not declared in the manifest",
       "detail": "Uses the serial peripheral API but the manifest declares no matching permission. Undeclared peripheral use is suspicious; combined with off-package egress it is treated as dangerous.",
       "file": "index.html <inline script>",
-      "line": 305,
+      "line": 375,
       "evidence": "navigator.serial.requestPort()"
     },
     {
@@ -27,7 +27,7 @@
       "title": "Uses a peripheral API not declared in the manifest",
       "detail": "Uses the bluetooth peripheral API but the manifest declares no matching permission. Undeclared peripheral use is suspicious; combined with off-package egress it is treated as dangerous.",
       "file": "index.html <inline script>",
-      "line": 323,
+      "line": 393,
       "evidence": "navigator.bluetooth.requestDevice({ filters:[{services:[NUS]}], optionalServices:[NUS]})"
     },
     {
