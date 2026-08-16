@@ -1,0 +1,17 @@
+{
+    "id": "com.natureglass.dusk",
+    "name": "Dusk",
+    "version": "1.0.1",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "zip_sha256": "8604ab4726a283652b76c1792a24ed0ca0911f0d3a44e56a41a103b7cf166b04",
+    "attestation": {
+        "ts": "2026-08-16T11:43:43+00:00",
+        "platforms": [
+            "mobile",
+            "switch",
+            "web"
+        ],
+        "zip_sha256": "8604ab4726a283652b76c1792a24ed0ca0911f0d3a44e56a41a103b7cf166b04"
+    },
+    "submitted_at": "2026-08-16T11:43:43+00:00"
+}
