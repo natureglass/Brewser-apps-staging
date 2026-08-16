@@ -1,0 +1,38 @@
+{
+  "verdict": "SUSPICIOUS",
+  "score": 11,
+  "scanned_at": "2026-08-16T07:45:46Z",
+  "scanner_version": "1.2.0",
+  "package_hash": "6ef66202054ad3f69ddc866ed7a7e37c45cd95e5ade44fe8fe115ab14a40740b",
+  "counts": {
+    "info": 1,
+    "suspicious": 1,
+    "dangerous": 0
+  },
+  "rationale": "Suspicious: 1 signal(s) needing review; e.g. localstorage access outside the app namespace.",
+  "truncated": false,
+  "findings": [
+    {
+      "rule_id": "cross-namespace-storage",
+      "severity": "SUSPICIOUS",
+      "title": "localStorage access outside the app namespace",
+      "detail": "Reads localStorage key \"dusk.prefs.v1\" outside this app namespace (com.natureglass.dusk) and other than brewser_auth.",
+      "file": "index.html <inline script>",
+      "line": 35,
+      "evidence": "localStorage.getItem('dusk.prefs.v1')"
+    },
+    {
+      "rule_id": "high-entropy-string",
+      "severity": "INFO",
+      "title": "High-entropy string literal (possible packed payload)",
+      "detail": "1 high-entropy base64-like string literal(s); largest 259 chars. Possible packed/encoded payload.",
+      "file": "assets/three.min.js",
+      "line": 0,
+      "evidence": "#ifdef USE_CLEARCOATMAP uniform sampler2D clearcoatMap; #endif #ifdef USE_CLEARCOAT_ROUGHNESSMAP uniform sampler2D clea…"
+    }
+  ],
+  "capabilities": [
+    "sensors"
+  ],
+  "limitations": "Static heuristic scan. A GOOD verdict means no known-bad pattern matched, NOT proof of safety. Human review is still required for every submission."
+}
