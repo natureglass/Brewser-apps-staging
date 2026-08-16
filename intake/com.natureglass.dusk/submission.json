@@ -1,0 +1,17 @@
+{
+    "id": "com.natureglass.dusk",
+    "name": "Dusk - Sky Atlas",
+    "version": "1.0.3",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "zip_sha256": "8437f888124b21574992643eb02adba165b70274e93077607b4888c8c700308e",
+    "attestation": {
+        "ts": "2026-08-16T14:47:30+00:00",
+        "platforms": [
+            "mobile",
+            "switch",
+            "web"
+        ],
+        "zip_sha256": "8437f888124b21574992643eb02adba165b70274e93077607b4888c8c700308e"
+    },
+    "submitted_at": "2026-08-16T14:47:30+00:00"
+}
