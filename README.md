@@ -25,7 +25,7 @@ Once an app has been tested and approved, it moves out of staging and into the *
 
 ## Publishing your own app
 
-Submitting and managing apps happens on the **[brewser.io](https://brewser.io)** website. Sign in, submit, test your app here in staging, and publish when you're happy with it.
+Submitting and managing apps happens on the **[brewser.io](https://brewser.io/submit/)** website. Sign in, submit, test your app here in staging, and publish when you're happy with it.
 
 ---
 
@@ -33,7 +33,7 @@ Submitting and managing apps happens on the **[brewser.io](https://brewser.io)**
 
 Technical details about submissions, testing, and how apps are built live at:
 
-**[docs.brewser.io/docs](https://docs.brewser.io/docs)**
+**[docs.brewser.io](https://docs.brewser.io/)**
 
 ---
 
