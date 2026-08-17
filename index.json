@@ -60,6 +60,16 @@
     "description": "<p><strong>Matrix Studio</strong> is a design-and-control studio for addressable-LED matrix panels. Draw straight onto a glowing on-screen grid, stir it like fluid, or run built-in animations — then stream the picture live to a real ESP32-driven panel over USB serial or Bluetooth.</p>\r\n<p><strong>How it works.</strong> The whole canvas is a WebGL “LED wall”: every pixel is drawn as a rounded, softly glowing dot on a dark grid, so the preview reads like the real panel. Everything you paint…"
   },
   {
+    "id": "com.natureglass.metaballssim",
+    "name": "Metaballs sim",
+    "version": "1.0.2",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "updated_at": "2026-08-17T20:14:15Z",
+    "entry": "index.html",
+    "logo": "assets/appbanner.jpg",
+    "description": "<p><strong>Metaballs sim</strong> is a relaxing fluid sandbox where dozens of soft water blobs fall, pool and merge into one gooey, rolling surface.</p>\r\n<p><strong>How it works.</strong> Two things run at once. Behind the scenes a lightweight particle simulation gives every blob <em>gravity</em>, plus <em>viscosity</em> and <em>cohesion</em> forces that pull neighbours together and let overlaps relax apart, so the crowd flows and settles like a thick liquid. On screen it uses the classic…"
+  },
+  {
     "id": "com.natureglass.speedwatch",
     "name": "Speed Watch",
     "version": "1.0.4",
