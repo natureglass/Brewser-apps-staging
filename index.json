@@ -10,6 +10,16 @@
     "description": "<p><strong>AETHER</strong> turns a written phrase into a fullscreen animated field. Describe a world, watch it assemble, then open the console and take it apart.</p>\r\n<p><strong>How it works</strong></p>\r\n<p>Type something like <em>stormy alien ocean at dusk</em> and press Render. AETHER reads the phrase against a vocabulary of 168 words covering subjects, moods, colours, materials, styles and times of day. Every word it recognises contributes to a set of 40 numbers — field scale, warp depth,…"
   },
   {
+    "id": "com.natureglass.compass",
+    "name": "Compass",
+    "version": "1.0.2",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "updated_at": "2026-08-17T12:31:51Z",
+    "entry": "index.html",
+    "logo": "assets/appbanner.jpg",
+    "description": "<p><strong>Compass</strong> is a working magnetic compass rendered entirely in WebGL. It reads your device's orientation sensors to point at magnetic north, showing a precise heading in degrees and the cardinal direction you're facing — on a hand-drawn dial that swings smoothly like the real thing.</p>\r\n<p><strong>How it works.</strong> Every part of the dial — the graduated ring, the tick marks, the degree numbers, the cardinal letters and the needle — is built from scratch as WebGL geometry,…"
+  },
+  {
     "id": "com.natureglass.dusk",
     "name": "Dusk - Sky Atlas",
     "version": "1.0.3",
