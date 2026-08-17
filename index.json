@@ -12,9 +12,9 @@
   {
     "id": "com.natureglass.compass",
     "name": "Compass",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
-    "updated_at": "2026-08-17T13:24:33Z",
+    "updated_at": "2026-08-17T17:12:52Z",
     "entry": "index.html",
     "logo": "assets/appbanner.jpg",
     "description": "<p><strong>Compass</strong> is a working magnetic compass rendered entirely in WebGL. It reads your device's orientation sensors to point at magnetic north, showing a precise heading in degrees and the cardinal direction you're facing — on a hand-drawn dial that swings smoothly like the real thing.</p>\r\n<p><strong>How it works.</strong> Every part of the dial — the graduated ring, the tick marks, the degree numbers, the cardinal letters and the needle — is built from scratch as WebGL geometry,…"
