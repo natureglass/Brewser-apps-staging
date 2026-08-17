@@ -1,17 +1,45 @@
 {
-  "verdict": "GOOD",
-  "score": 0,
-  "scanned_at": "2026-08-09T15:56:42Z",
+  "verdict": "SUSPICIOUS",
+  "score": 30,
+  "scanned_at": "2026-08-17T11:47:40Z",
   "scanner_version": "1.2.0",
-  "package_hash": "72b0ab76164d706dd3470a9ce84f604b4feab2067d9b853854b79f18ea9e59e2",
+  "package_hash": "d8f96a1447174c091239d84b03c43c860b53f146540ff5b25fb0131f685a0ceb",
   "counts": {
     "info": 0,
-    "suspicious": 0,
+    "suspicious": 3,
     "dangerous": 0
   },
-  "rationale": "No known-bad pattern matched. Not proof of safety — human review still required.",
+  "rationale": "Suspicious: 3 signal(s) needing review; e.g. file content does not match its extension.",
   "truncated": false,
-  "findings": [],
+  "findings": [
+    {
+      "rule_id": "magic-byte-mismatch",
+      "severity": "SUSPICIOUS",
+      "title": "File content does not match its extension",
+      "detail": "File extension .png does not match its content signature.",
+      "file": "pwa/apple-touch-icon.png",
+      "line": 0,
+      "evidence": ""
+    },
+    {
+      "rule_id": "magic-byte-mismatch",
+      "severity": "SUSPICIOUS",
+      "title": "File content does not match its extension",
+      "detail": "File extension .png does not match its content signature.",
+      "file": "pwa/icon-192.png",
+      "line": 0,
+      "evidence": ""
+    },
+    {
+      "rule_id": "magic-byte-mismatch",
+      "severity": "SUSPICIOUS",
+      "title": "File content does not match its extension",
+      "detail": "File extension .png does not match its content signature.",
+      "file": "pwa/icon-512.png",
+      "line": 0,
+      "evidence": ""
+    }
+  ],
   "capabilities": [],
   "limitations": "Static heuristic scan. A GOOD verdict means no known-bad pattern matched, NOT proof of safety. Human review is still required for every submission."
 }
