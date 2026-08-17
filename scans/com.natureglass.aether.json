@@ -1,9 +1,9 @@
 {
   "verdict": "GOOD",
   "score": 2,
-  "scanned_at": "2026-08-12T19:46:16Z",
+  "scanned_at": "2026-08-17T11:18:55Z",
   "scanner_version": "1.2.0",
-  "package_hash": "abd174fdd60ecf91ecce2fe4afbfbccc1e54f85f71c3c70ecb7bbc6dad5348ba",
+  "package_hash": "e7e2cef4ab00ecd6c5074cdd019345dd348d79ab155f221571e682d6afce95a0",
   "counts": {
     "info": 2,
     "suspicious": 0,
@@ -18,7 +18,7 @@
       "title": "DOM HTML sink assigned a non-literal value",
       "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
       "file": "index.html <inline script>",
-      "line": 872,
+      "line": 1033,
       "evidence": "s.innerHTML = '<span class=\"tick\"></span>' + g.group"
     },
     {
@@ -27,7 +27,7 @@
       "title": "DOM HTML sink assigned a non-literal value",
       "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
       "file": "index.html <inline script>",
-      "line": 985,
+      "line": 1148,
       "evidence": "el.tags.innerHTML = '<span class=\"tag\">' + msg + '</span>'"
     }
   ],

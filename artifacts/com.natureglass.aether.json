@@ -1,8 +1,9 @@
 {
   "id": "com.natureglass.aether",
-  "sizeBytes": 122536,
+  "sizeBytes": 3042623,
   "files": [
     "README.md",
+    "assets/appbanner.gif",
     "assets/appbanner.jpg",
     "index.html",
     "manifest.json"
