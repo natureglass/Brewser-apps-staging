@@ -1,0 +1,16 @@
+{
+    "id": "com.natureglass.fractalzoom",
+    "name": "Fractal Zoom",
+    "version": "1.0.3",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "zip_sha256": "960ea9bd8a966620a1e909d5ef7e2d37092152a8ed317808fca688ff815295bb",
+    "attestation": {
+        "ts": "2026-08-18T12:51:40+00:00",
+        "platforms": [
+            "switch",
+            "web"
+        ],
+        "zip_sha256": "960ea9bd8a966620a1e909d5ef7e2d37092152a8ed317808fca688ff815295bb"
+    },
+    "submitted_at": "2026-08-18T12:51:40+00:00"
+}
