@@ -80,6 +80,16 @@
     "description": "<p><strong>Metaballs sim</strong> is a relaxing fluid sandbox where dozens of soft water blobs fall, pool and merge into one gooey, rolling surface.</p>\r\n<p><strong>How it works.</strong> Two things run at once. Behind the scenes a lightweight particle simulation gives every blob <em>gravity</em>, plus <em>viscosity</em> and <em>cohesion</em> forces that pull neighbours together and let overlaps relax apart, so the crowd flows and settles like a thick liquid. On screen it uses the classic…"
   },
   {
+    "id": "com.natureglass.midisurface",
+    "name": "MIDI Surface",
+    "version": "1.0.4",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "updated_at": "2026-08-19T14:06:02Z",
+    "entry": "index.html",
+    "logo": "assets/appbanner.jpg",
+    "description": "<p><strong>MIDI Surface</strong> is a touch-driven MIDI control surface and sample instrument. It draws your controller as an on-screen grid of glowing pads, knobs and faders that light up as you play the real hardware — and, on devices with lit pads, tapping the screen sends the signal back to illuminate the hardware in return. Every pad can also fire a looping audio sample shaped by live effects.</p>\r\n<p><strong>How it works.</strong> The app connects to your controller through the browser's…"
+  },
+  {
     "id": "com.natureglass.speedwatch",
     "name": "Speed Watch",
     "version": "1.0.4",
