@@ -1,0 +1,12 @@
+{
+  "id": "com.natureglass.esp32experiments",
+  "sizeBytes": 77174,
+  "files": [
+    "README.md",
+    "assets/appbanner.jpg",
+    "assets/appbanner.png",
+    "assets/docs/esp32_experiments_demo.ino",
+    "index.html",
+    "manifest.json"
+  ]
+}

@@ -30,6 +30,16 @@
     "description": "<p><strong>Dusk</strong> is a pocket planetarium that draws the real night sky in WebGL. For any moment and place it renders the stars, constellations, Milky Way, deep-sky objects and planets exactly where they sit in the sky above you — wrapped in a warm dusk glow that fades from the horizon up to the zenith.</p>\r\n<p><strong>How it works.</strong> Everything you see is placed by genuine astronomy rather than a static picture. The whole celestial sphere is rotated for your latitude, longitude…"
   },
   {
+    "id": "com.natureglass.esp32experiments",
+    "name": "ESP32 Experiments",
+    "version": "1.0.0",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "updated_at": "2026-08-19T19:31:08Z",
+    "entry": "index.html",
+    "logo": "assets/appbanner.jpg",
+    "description": "<p><strong>ESP32 Experiments</strong> is a lightweight bench tool for ESP32 boards on real Switch hardware. It talks to a board over <strong>WebSerial</strong> (USB CDC-ACM) and gives you three views:</p>\r\n<ul>\r\n<li><strong>Plot</strong> — a live serial plotter. Send comma/space-separated numbers (Arduino <code>Serial.println</code> style, or <code>name:value</code> pairs) and they graph in real time with auto-scaling and a legend.</li>\r\n<li><strong>Terminal</strong> — a raw serial monitor…"
+  },
+  {
     "id": "com.natureglass.fluiddynamics",
     "name": "Fluid dynamics",
     "version": "1.0.4",
