@@ -567,7 +567,13 @@ async function pump(now){
   if(now-lastSend < 1000/S.fps) return;
   lastSend=now; sending=true; dot.className='busy';
   try{ await sink.send(buildFrame()); if(sink) dot.className='ok'; }
-  catch(e){ await disconnect(); }
+  catch(e){
+    // DIAG: this catch used to be silent — that's why the last drop showed no
+    // error line. Log exactly what threw before tearing the link down.
+    console.error(`[BLE] send threw (frame ${bleFrames}, transport ${sink&&sink.type}):`,
+                  e && e.name, e && e.message, e);
+    await disconnect();
+  }
   sending=false;
 }
 
