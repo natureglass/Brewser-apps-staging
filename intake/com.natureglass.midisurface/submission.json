@@ -1,0 +1,17 @@
+{
+    "id": "com.natureglass.midisurface",
+    "name": "MIDI Surface",
+    "version": "1.0.6",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "zip_sha256": "e282b6c8f96a8097fd00912ae939e517e6ea3ad6586b6dc803688609700226bd",
+    "attestation": {
+        "ts": "2026-08-20T19:52:51+00:00",
+        "platforms": [
+            "mobile",
+            "switch",
+            "web"
+        ],
+        "zip_sha256": "e282b6c8f96a8097fd00912ae939e517e6ea3ad6586b6dc803688609700226bd"
+    },
+    "submitted_at": "2026-08-20T19:52:51+00:00"
+}
