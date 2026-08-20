@@ -518,6 +518,8 @@ const NUS_RX='6e400002-b5a3-f393-e0a9-e50e24dcca9e';
  * sketch's "[BLE] ..." serial lines to see which end drops first and after how
  * long. Remove once the disconnect cause is pinned down. */
 let bleT0=0, bleFrames=0, bleAcks=0;
+let sendFails=0;                 // consecutive send failures; resets on any success
+const MAX_SEND_FAILS=8;          // only tear down after this many in a row
 async function connectBle(){
   if(!navigator.bluetooth){ alert('Web Bluetooth not available in this runtime.'); return; }
   await disconnect();
@@ -527,7 +529,7 @@ async function connectBle(){
     dev.addEventListener('gattserverdisconnected',()=>{
       console.warn(`[BLE] gattserverdisconnected after ${((performance.now()-bleT0)/1000).toFixed(1)}s, `+
                    `${bleFrames} frames sent, ${bleAcks} acked`);
-      if(sink&&sink.type==='ble'){sink=null;setConn('offline',false);}
+      if(sink&&sink.type==='ble'){ sink.alive=false; sink=null; setConn('offline',false); }
     });
     const gatt=await dev.gatt.connect();
     const svc=await gatt.getPrimaryService(NUS);
@@ -538,9 +540,11 @@ async function connectBle(){
     const wrAck =rx.writeValueWithResponse ? b=>rx.writeValueWithResponse(b) : b=>rx.writeValue(b);
     const wrFast=canWNR ? b=>rx.writeValueWithoutResponse(b) : wrAck;
     const CH=180;
-    bleT0=performance.now(); bleFrames=0; bleAcks=0;
+    bleT0=performance.now(); bleFrames=0; bleAcks=0; sendFails=0;
     sink={
       type:'ble',
+      alive:true,
+      isConnected:()=>{ try{ return dev.gatt.connected; }catch(e){ return false; } },
       // Chunks stream out via write-without-response, but the LAST chunk of
       // every packet is a write WITH response. That ACK round-trip is the real
       // flow control: writeValueWithoutResponse resolves long before the bytes
@@ -566,13 +570,29 @@ async function pump(now){
   if(!sink||sending) return;
   if(now-lastSend < 1000/S.fps) return;
   lastSend=now; sending=true; dot.className='busy';
-  try{ await sink.send(buildFrame()); if(sink) dot.className='ok'; }
-  catch(e){
-    // DIAG: this catch used to be silent — that's why the last drop showed no
-    // error line. Log exactly what threw before tearing the link down.
-    console.error(`[BLE] send threw (frame ${bleFrames}, transport ${sink&&sink.type}):`,
-                  e && e.name, e && e.message, e);
-    await disconnect();
+  try{
+    await sink.send(buildFrame());
+    sendFails=0;                 // clean frame — clear the streak
+    if(sink) dot.className='ok';
+  }catch(e){
+    // A single failed write is NORMAL on BLE. Chrome throws
+    // "NotSupportedError: GATT operation failed for unknown reason" under
+    // momentary GATT congestion even on a perfectly healthy link. This is
+    // realtime video: the failed frame is already stale, so we DROP it (the
+    // next frame supersedes it) rather than retrying, and we do NOT tear down.
+    // Only a real disconnect (gattserverdisconnected sets sink.alive=false) or
+    // a sustained run of failures — meaning the link is actually gone, not just
+    // congested — ends the session.
+    sendFails++;
+    dot.className='busy';
+    const dead = !sink || sink.alive===false ||
+                 (sink.isConnected && !sink.isConnected());
+    if(dead || sendFails>=MAX_SEND_FAILS){
+      console.error(`[BLE] tearing down: ${sendFails} consecutive fails, `+
+                    `alive=${sink&&sink.alive}, lastErr=${e&&e.name}`);
+      await disconnect();
+    }
+    // else: silently skip this frame and let the next one try
   }
   sending=false;
 }
