@@ -514,27 +514,53 @@ async function connectSerial(){
 }
 const NUS='6e400001-b5a3-f393-e0a9-e50e24dcca9e';
 const NUS_RX='6e400002-b5a3-f393-e0a9-e50e24dcca9e';
+/* DIAG: BLE session counters, logged to console. Correlate these with the
+ * sketch's "[BLE] ..." serial lines to see which end drops first and after how
+ * long. Remove once the disconnect cause is pinned down. */
+let bleT0=0, bleFrames=0, bleAcks=0;
 async function connectBle(){
   if(!navigator.bluetooth){ alert('Web Bluetooth not available in this runtime.'); return; }
   await disconnect();
   try{
     const dev=await navigator.bluetooth.requestDevice({
       filters:[{services:[NUS]}], optionalServices:[NUS]});
-    dev.addEventListener('gattserverdisconnected',()=>{ if(sink&&sink.type==='ble'){sink=null;setConn('offline',false);} });
+    dev.addEventListener('gattserverdisconnected',()=>{
+      console.warn(`[BLE] gattserverdisconnected after ${((performance.now()-bleT0)/1000).toFixed(1)}s, `+
+                   `${bleFrames} frames sent, ${bleAcks} acked`);
+      if(sink&&sink.type==='ble'){sink=null;setConn('offline',false);}
+    });
     const gatt=await dev.gatt.connect();
     const svc=await gatt.getPrimaryService(NUS);
     const rx=await svc.getCharacteristic(NUS_RX);
-    const wr=rx.writeValueWithoutResponse ?
-      b=>rx.writeValueWithoutResponse(b) : b=>rx.writeValue(b);
+    // Capability check must use .properties — the method itself always exists
+    // on the prototype whether or not this characteristic supports it.
+    const canWNR=!!(rx.properties&&rx.properties.writeWithoutResponse);
+    const wrAck =rx.writeValueWithResponse ? b=>rx.writeValueWithResponse(b) : b=>rx.writeValue(b);
+    const wrFast=canWNR ? b=>rx.writeValueWithoutResponse(b) : wrAck;
     const CH=180;
+    bleT0=performance.now(); bleFrames=0; bleAcks=0;
     sink={
       type:'ble',
-      send:async b=>{ for(let o=0;o<b.length;o+=CH) await wr(b.subarray(o,Math.min(b.length,o+CH))); },
+      // Chunks stream out via write-without-response, but the LAST chunk of
+      // every packet is a write WITH response. That ACK round-trip is the real
+      // flow control: writeValueWithoutResponse resolves long before the bytes
+      // hit the air, so awaiting it alone lets the OS BLE queue silently grow
+      // until the central drops the link. The per-frame ACK self-clocks the
+      // stream to what the radio actually sustains — the fps setting becomes a
+      // ceiling, not a promise.
+      send:async b=>{
+        bleFrames++;
+        for(let o=0;o<b.length;o+=CH){
+          const chunk=b.subarray(o,Math.min(b.length,o+CH));
+          if(o+CH>=b.length){ await wrAck(chunk); bleAcks++; }
+          else await wrFast(chunk);
+        }
+      },
       close:async()=>{ try{dev.gatt.disconnect();}catch(e){} }
     };
     setConn('ble',true);
     await sink.send(configPacket());
-  }catch(e){ setConn('offline',false); }
+  }catch(e){ console.error('[BLE] connect/send failed:',e); setConn('offline',false); }
 }
 async function pump(now){
   if(!sink||sending) return;
@@ -610,6 +636,12 @@ if(!navigator.bluetooth) $('connBle').disabled=true;
 /* ================= main loop ================= */
 let tPrev=performance.now();
 function loop(now){
+  // The Settings overlay is opaque and covers the whole canvas, so while it's
+  // open there's nothing to see — skip the WebGL render AND the fluid/demo sim
+  // instead of burning a full frame on a hidden canvas (which, stacked with the
+  // engine compositing the settings panel, is what tanked the FPS). Keep the
+  // rAF loop alive and tPrev fresh so animation resumes cleanly on close.
+  if(setEl.classList.contains('open')){ tPrev=now; requestAnimationFrame(loop); return; }
   const dt=Math.min(0.1,(now-tPrev)/1000); tPrev=now;
   const t=now/1000;
   if(now<identUntil) identifyFrame(t);

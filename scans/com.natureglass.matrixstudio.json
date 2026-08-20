@@ -1,15 +1,15 @@
 {
   "verdict": "SUSPICIOUS",
-  "score": 21,
-  "scanned_at": "2026-08-16T18:00:07Z",
+  "score": 11,
+  "scanned_at": "2026-08-20T20:07:34Z",
   "scanner_version": "1.2.0",
-  "package_hash": "613f7ee6d8047e5d42db826a6206014406b2092572fb9848bab1f1abc7cd540f",
+  "package_hash": "897aef46eb74c1381e03944647ca7d3d99042d369b9e1b945d3184d3f144d5e8",
   "counts": {
     "info": 1,
-    "suspicious": 2,
+    "suspicious": 1,
     "dangerous": 0
   },
-  "rationale": "Suspicious: 2 signal(s) needing review; e.g. uses a peripheral api not declared in the manifest.",
+  "rationale": "Suspicious: 1 signal(s) needing review; e.g. uses a peripheral api not declared in the manifest.",
   "truncated": false,
   "findings": [
     {
@@ -20,15 +20,6 @@
       "file": "index.html <inline script>",
       "line": 375,
       "evidence": "navigator.serial.requestPort()"
-    },
-    {
-      "rule_id": "peripheral-undeclared",
-      "severity": "SUSPICIOUS",
-      "title": "Uses a peripheral API not declared in the manifest",
-      "detail": "Uses the bluetooth peripheral API but the manifest declares no matching permission. Undeclared peripheral use is suspicious; combined with off-package egress it is treated as dangerous.",
-      "file": "index.html <inline script>",
-      "line": 393,
-      "evidence": "navigator.bluetooth.requestDevice({ filters:[{services:[NUS]}], optionalServices:[NUS]})"
     },
     {
       "rule_id": "declared-unused-peripheral",
