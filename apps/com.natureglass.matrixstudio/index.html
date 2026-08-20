@@ -628,6 +628,13 @@ async function pump(now){
     // a sustained run of failures — meaning the link is actually gone, not just
     // congested — ends the session.
     sendFails++;
+    if(sendFails===1){
+      // DIAG: first failure of a streak — timestamp it so it can be lined up
+      // against the ESP32's "stream stalled" line. If the ESP32 logs a stall at
+      // the same wall-clock moment, both ends saw the link starve together (RF).
+      console.warn(`[BLE] first send fail at ${(performance.now()/1000).toFixed(1)}s `+
+                   `(frame ${bleFrames}, ${e&&e.name})`);
+    }
     dot.className='busy';
     const dead = !sink || sink.alive===false ||
                  (sink.isConnected && !sink.isConnected());
