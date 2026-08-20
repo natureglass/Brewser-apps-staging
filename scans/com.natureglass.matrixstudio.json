@@ -1,9 +1,9 @@
 {
   "verdict": "SUSPICIOUS",
   "score": 11,
-  "scanned_at": "2026-08-20T20:34:53Z",
+  "scanned_at": "2026-08-20T20:48:52Z",
   "scanner_version": "1.2.0",
-  "package_hash": "a2ddef0993d303abc02e330656feb401389a5863d934679d59a64cf462bfbb9f",
+  "package_hash": "6ee5436857d76ae4aa2db6243c18b3817d8305e623eb6970eb6250b621ce3c0d",
   "counts": {
     "info": 1,
     "suspicious": 1,
@@ -18,7 +18,7 @@
       "title": "Uses a peripheral API not declared in the manifest",
       "detail": "Uses the serial peripheral API but the manifest declares no matching permission. Undeclared peripheral use is suspicious; combined with off-package egress it is treated as dangerous.",
       "file": "index.html <inline script>",
-      "line": 375,
+      "line": 376,
       "evidence": "navigator.serial.requestPort()"
     },
     {
