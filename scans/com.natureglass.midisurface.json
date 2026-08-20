@@ -1,52 +1,34 @@
 {
   "verdict": "SUSPICIOUS",
-  "score": 42,
-  "scanned_at": "2026-08-19T14:06:02Z",
+  "score": 21,
+  "scanned_at": "2026-08-20T19:34:39Z",
   "scanner_version": "1.2.0",
-  "package_hash": "748f536bcad4b674ee325334601f0d5d1c1f2cdb2c49714af34aae610e02bb25",
+  "package_hash": "efb9f7bba0d2df96404e57822abb7a490cb553a4c8d1f9722b0fbc67e71f4002",
   "counts": {
-    "info": 2,
-    "suspicious": 4,
+    "info": 1,
+    "suspicious": 2,
     "dangerous": 0
   },
-  "rationale": "Suspicious: 4 signal(s) needing review; e.g. file content does not match its extension.",
+  "rationale": "Suspicious: 2 signal(s) needing review; e.g. uses a peripheral api not declared in the manifest.",
   "truncated": false,
   "findings": [
     {
-      "rule_id": "magic-byte-mismatch",
+      "rule_id": "peripheral-undeclared",
       "severity": "SUSPICIOUS",
-      "title": "File content does not match its extension",
-      "detail": "File extension .mp3 does not match its content signature.",
-      "file": "samples/alarmvoice.mp3",
-      "line": 0,
-      "evidence": "fff3e464001eca112213ac30009f795e4c09581800200043"
+      "title": "Uses a peripheral API not declared in the manifest",
+      "detail": "Uses the serial peripheral API but the manifest declares no matching permission. Undeclared peripheral use is suspicious; combined with off-package egress it is treated as dangerous.",
+      "file": "index.html <inline script>",
+      "line": 375,
+      "evidence": "navigator.serial.requestPort()"
     },
     {
-      "rule_id": "magic-byte-mismatch",
+      "rule_id": "peripheral-undeclared",
       "severity": "SUSPICIOUS",
-      "title": "File content does not match its extension",
-      "detail": "File extension .mp3 does not match its content signature.",
-      "file": "samples/fillingin.mp3",
-      "line": 0,
-      "evidence": "fff3e464001b35f94ccfa62400a0540a7c09462802030020"
-    },
-    {
-      "rule_id": "magic-byte-mismatch",
-      "severity": "SUSPICIOUS",
-      "title": "File content does not match its extension",
-      "detail": "File extension .mp3 does not match its content signature.",
-      "file": "samples/flute.mp3",
-      "line": 0,
-      "evidence": "fff3e464001fc9f90e00ac3c009f295608014f48018c4b2c"
-    },
-    {
-      "rule_id": "magic-byte-mismatch",
-      "severity": "SUSPICIOUS",
-      "title": "File content does not match its extension",
-      "detail": "File extension .mp3 does not match its content signature.",
-      "file": "samples/horn.mp3",
-      "line": 0,
-      "evidence": "fff3e46400000001a40000000000000348000000004c414d"
+      "title": "Uses a peripheral API not declared in the manifest",
+      "detail": "Uses the bluetooth peripheral API but the manifest declares no matching permission. Undeclared peripheral use is suspicious; combined with off-package egress it is treated as dangerous.",
+      "file": "index.html <inline script>",
+      "line": 393,
+      "evidence": "navigator.bluetooth.requestDevice({ filters:[{services:[NUS]}], optionalServices:[NUS]})"
     },
     {
       "rule_id": "declared-unused-peripheral",
@@ -56,15 +38,6 @@
       "file": "manifest.json",
       "line": 0,
       "evidence": "usb"
-    },
-    {
-      "rule_id": "html-injection-sink",
-      "severity": "INFO",
-      "title": "DOM HTML sink assigned a non-literal value",
-      "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
-      "file": "index.html <inline script>",
-      "line": 779,
-      "evidence": "dev.innerHTML = \"IN&nbsp;&nbsp;· \" + (ins.length ? ins.map(i => \"<b>\" + esc(i.name) + \"</b>\").join(\", \") : \"none\") + \"<…"
     }
   ],
   "capabilities": [
