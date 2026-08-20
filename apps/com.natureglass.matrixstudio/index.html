@@ -515,10 +515,6 @@ async function connectSerial(){
 }
 const NUS='6e400001-b5a3-f393-e0a9-e50e24dcca9e';
 const NUS_RX='6e400002-b5a3-f393-e0a9-e50e24dcca9e';
-/* DIAG: BLE session counters, logged to console. Correlate these with the
- * sketch's "[BLE] ..." serial lines to see which end drops first and after how
- * long. Remove once the disconnect cause is pinned down. */
-let bleT0=0, bleFrames=0, bleAcks=0;
 let sendFails=0;                 // consecutive send failures; resets on any success
 const MAX_SEND_FAILS=8;          // only tear down after this many in a row
 
@@ -544,25 +540,18 @@ async function attachBle(dev){
            : rx.writeValueWithResponse ? b=>rx.writeValueWithResponse(b)
            : b=>rx.writeValue(b);
   const CH=180;
-  bleT0=performance.now(); bleFrames=0; bleAcks=0; sendFails=0;
+  sendFails=0;
   sink={
     type:'ble',
     alive:true,
     isConnected:()=>{ try{ return dev.gatt.connected; }catch(e){ return false; } },
-    // Write-without-response only. The earlier per-frame ACK (writeWithResponse
-    // on the last chunk) was added to stop the OS queue overflowing, but at real
-    // usage rates (~5-20 fps for a 512-LED frame) the queue never grows, and
-    // writeWithResponse is the operation that WEDGES on Chrome ("NotSupportedError:
-    // GATT operation failed for unknown reason") — once an ACK is lost the pipe
-    // jams and every subsequent write fails. WNR can't wedge that way. Flow
-    // control now lives entirely in pump()'s fps cap; the ESP32's 8 KB ring
-    // absorbs any short burst. bleAcks now just counts frames fully written.
+    // Write-without-response only. WNR never wedges the way writeWithResponse can
+    // on Chrome ("NotSupportedError: GATT operation failed for unknown reason").
+    // Flow control lives in pump()'s fps cap; the ESP32's 8 KB ring absorbs bursts.
     send:async b=>{
-      bleFrames++;
       for(let o=0;o<b.length;o+=CH){
         await wr(b.subarray(o,Math.min(b.length,o+CH)));
       }
-      bleAcks++;
     },
     close:async()=>{ try{dev.gatt.disconnect();}catch(e){} }
   };
@@ -580,15 +569,12 @@ async function reconnectBle(){
     if(bleGiveUp) break;
     try{
       await attachBle(bleDev);
-      console.warn(`[BLE] reconnected on attempt ${i+1}`);
       bleReconnecting=false;
       return;
-    }catch(e){
-      console.warn(`[BLE] reconnect attempt ${i+1} failed:`, e&&e.name);
-    }
+    }catch(e){ /* try again with backoff */ }
   }
   bleReconnecting=false;
-  if(!bleGiveUp){ console.error('[BLE] giving up reconnect'); setConn('offline',false); }
+  if(!bleGiveUp) setConn('offline',false);
 }
 
 async function connectBle(){
@@ -600,15 +586,13 @@ async function connectBle(){
       filters:[{services:[NUS]}], optionalServices:[NUS]});
     bleDev=dev;
     dev.addEventListener('gattserverdisconnected',()=>{
-      console.warn(`[BLE] gattserverdisconnected after ${((performance.now()-bleT0)/1000).toFixed(1)}s, `+
-                   `${bleFrames} frames sent, ${bleAcks} acked`);
       if(sink&&sink.type==='ble'){ sink.alive=false; sink=null; }
       // Unintended drop -> attempt silent reconnect (unless the user bailed).
       if(!bleGiveUp) reconnectBle();
       else setConn('offline',false);
     });
     await attachBle(dev);
-  }catch(e){ console.error('[BLE] connect/send failed:',e); setConn('offline',false); }
+  }catch(e){ setConn('offline',false); }
 }
 async function pump(now){
   if(!sink||sending) return;
@@ -628,19 +612,10 @@ async function pump(now){
     // a sustained run of failures — meaning the link is actually gone, not just
     // congested — ends the session.
     sendFails++;
-    if(sendFails===1){
-      // DIAG: first failure of a streak — timestamp it so it can be lined up
-      // against the ESP32's "stream stalled" line. If the ESP32 logs a stall at
-      // the same wall-clock moment, both ends saw the link starve together (RF).
-      console.warn(`[BLE] first send fail at ${(performance.now()/1000).toFixed(1)}s `+
-                   `(frame ${bleFrames}, ${e&&e.name})`);
-    }
     dot.className='busy';
     const dead = !sink || sink.alive===false ||
                  (sink.isConnected && !sink.isConnected());
     if(dead || sendFails>=MAX_SEND_FAILS){
-      console.error(`[BLE] tearing down: ${sendFails} consecutive fails, `+
-                    `alive=${sink&&sink.alive}, lastErr=${e&&e.name}`);
       const wasBle = sink && sink.type==='ble';
       await disconnect();          // not "intentional" -> reconnect stays allowed
       // If the gattserverdisconnected event didn't fire (e.g. gatt already gone),
