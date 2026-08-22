@@ -1,15 +1,15 @@
 {
   "verdict": "SUSPICIOUS",
-  "score": 11,
-  "scanned_at": "2026-08-20T22:28:42Z",
+  "score": 21,
+  "scanned_at": "2026-08-22T21:56:21Z",
   "scanner_version": "1.2.0",
-  "package_hash": "c7b095158d318015c6a09262320c5d079751c61b725557ff03908172e39703b0",
+  "package_hash": "e833f298e8e7997f7788786855f70615c48db078412f4d7e605af27db4288ed8",
   "counts": {
     "info": 1,
-    "suspicious": 1,
+    "suspicious": 2,
     "dangerous": 0
   },
-  "rationale": "Suspicious: 1 signal(s) needing review; e.g. uses a peripheral api not declared in the manifest.",
+  "rationale": "Suspicious: 2 signal(s) needing review; e.g. uses a peripheral api not declared in the manifest.",
   "truncated": false,
   "findings": [
     {
@@ -18,8 +18,17 @@
       "title": "Uses a peripheral API not declared in the manifest",
       "detail": "Uses the serial peripheral API but the manifest declares no matching permission. Undeclared peripheral use is suspicious; combined with off-package egress it is treated as dangerous.",
       "file": "index.html <inline script>",
-      "line": 376,
+      "line": 473,
       "evidence": "navigator.serial.requestPort()"
+    },
+    {
+      "rule_id": "peripheral-undeclared",
+      "severity": "SUSPICIOUS",
+      "title": "Uses a peripheral API not declared in the manifest",
+      "detail": "Uses the serial peripheral API but the manifest declares no matching permission. Undeclared peripheral use is suspicious; combined with off-package egress it is treated as dangerous.",
+      "file": "index.html <inline script>",
+      "line": 499,
+      "evidence": "navigator.serial.addEventListener('disconnect',()=>{ if(sink&&sink.type==='usb') disconnect(); })"
     },
     {
       "rule_id": "declared-unused-peripheral",
