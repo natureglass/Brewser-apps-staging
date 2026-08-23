@@ -23,6 +23,12 @@ const CASES = [
   // (they ride the same usb:hs transport), so this must scan clean — no
   // undeclared-peripheral, and no declared-unused for `usb` (serial/hid exercise it).
   { dir: 'usb-umbrella', verdict: 'GOOD', must: [], mustNot: ['peripheral-undeclared', 'declared-unused-peripheral'] },
+  // Web MIDI rides the same usb:hs transport, so declaring `usb` and using ONLY
+  // navigator.requestMIDIAccess() must scan clean — the `usb` umbrella is
+  // exercised by the midi use (no declared-unused), and midi use is covered (no
+  // undeclared). requestMIDIAccess is a direct navigator method, not a
+  // navigator.<sub>.* surface, so it needs its own detection hook.
+  { dir: 'midi-umbrella', verdict: 'GOOD', must: [], mustNot: ['peripheral-undeclared', 'declared-unused-peripheral'] },
 ];
 
 function runScan(dir) {

@@ -12,6 +12,8 @@ exercises a specific band of the rule catalogue. `../test.mjs` runs the real
 | `obvious-bad/` | **DANGEROUS** | `decode-exec`, `external-egress`, `settimeout-string` | `eval(atob(...))` / `new Function(atob(...))` decode-then-execute, an inline `onclick` handler, and a plain external `fetch`. Tests HTML inline-script + handler extraction feeding the JS analyzer. |
 | `obfuscated/` | **DANGEROUS** | `constructor-escape`, `string-array-obfuscation`, `computed-sink-name`, `charcode-reconstruction` | obfuscator.io-style hex string array, `window['fe'+'tch']` / `self['ev'+'al']` computed sink names, the `[].constructor.constructor` eval-escape, and `String.fromCharCode` reconstruction. |
 | `undeclared-peripheral/` | **SUSPICIOUS** | `peripheral-undeclared` | Calls `navigator.usb.requestDevice()` with no matching manifest permission and **no** egress — must stay SUSPICIOUS, not escalate to DANGEROUS. Proves the manifest cross-reference and that undeclared-without-egress does not over-escalate. |
+| `usb-umbrella/` | **GOOD** | (none) | Declares only `usb` and drives `navigator.serial` + `navigator.hid`. The runtime grants serial/hid/midi off the same `usb:hs` transport, so this must scan clean — no `peripheral-undeclared`, no `declared-unused-peripheral`. |
+| `midi-umbrella/` | **GOOD** | (none) | Declares only `usb` and uses **only** Web MIDI (`navigator.requestMIDIAccess`). MIDI rides the same `usb:hs` transport, so the `usb` declaration is exercised — must scan clean with no `declared-unused-peripheral` (the regression that flagged `com.natureglass.midisurface`) and no `peripheral-undeclared`. Guards the direct-navigator-method detection path. |
 
 ## Adding a fixture
 

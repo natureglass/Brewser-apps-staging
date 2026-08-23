@@ -724,6 +724,18 @@ export function analyzeJs(code, file, ctx) {
         return;
       }
 
+      // Web MIDI: navigator.requestMIDIAccess() is a direct navigator METHOD, not
+      // a navigator.<sub>.* surface like usb/serial/hid, so the block above misses
+      // it. On Brewser, Web MIDI rides the same usb:hs host transport as WebUSB,
+      // so it maps to the `midi` family — which the `usb` umbrella grants (see
+      // manifest.mjs USB_UMBRELLA_GRANTS). Recording it here is what lets a
+      // MIDI-only app that declares `usb` avoid a false declared-unused note.
+      if (objName === 'navigator' && last === 'requestMIDIAccess') {
+        peripheralsUsed.add('midi');
+        recordPeripheralUse('midi', node, line);
+        return;
+      }
+
       // String.fromCharCode(a,b,c,...) reconstruction.
       if (last === 'fromCharCode' && node.arguments.length >= 8) {
         add({ rule_id: 'charcode-reconstruction', severity: SUSPICIOUS, file, line,
