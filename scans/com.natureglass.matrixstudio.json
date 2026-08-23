@@ -1,9 +1,9 @@
 {
   "verdict": "SUSPICIOUS",
   "score": 22,
-  "scanned_at": "2026-08-23T10:32:27Z",
+  "scanned_at": "2026-08-23T19:22:57Z",
   "scanner_version": "1.2.0",
-  "package_hash": "0599745e90182fae387aef0c7b7bd97b005d673a671ab92afdeb8a11f0b95638",
+  "package_hash": "fcb46a0360151450f55769423b222cb0151c2dfe027c02c02b8d135b691a7f80",
   "counts": {
     "info": 2,
     "suspicious": 2,
@@ -18,7 +18,7 @@
       "title": "Uses a peripheral API not declared in the manifest",
       "detail": "Uses the serial peripheral API but the manifest declares no matching permission. Undeclared peripheral use is suspicious; combined with off-package egress it is treated as dangerous.",
       "file": "index.html <inline script>",
-      "line": 444,
+      "line": 487,
       "evidence": "navigator.serial.requestPort()"
     },
     {
@@ -27,7 +27,7 @@
       "title": "Uses a peripheral API not declared in the manifest",
       "detail": "Uses the serial peripheral API but the manifest declares no matching permission. Undeclared peripheral use is suspicious; combined with off-package egress it is treated as dangerous.",
       "file": "index.html <inline script>",
-      "line": 470,
+      "line": 514,
       "evidence": "navigator.serial.addEventListener('disconnect',()=>{ if(sink&&sink.type==='usb') disconnect(); })"
     },
     {
