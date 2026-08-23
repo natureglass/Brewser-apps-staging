@@ -1,0 +1,17 @@
+{
+    "id": "com.natureglass.matrixstudio",
+    "name": "Matrix Studio",
+    "version": "1.0.10",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "zip_sha256": "9c93edf15acd49ef1779f9590cbedcc167cfdad2f4ac7de6ecc1d64edc16f157",
+    "attestation": {
+        "ts": "2026-08-23T09:49:47+00:00",
+        "platforms": [
+            "mobile",
+            "switch",
+            "web"
+        ],
+        "zip_sha256": "9c93edf15acd49ef1779f9590cbedcc167cfdad2f4ac7de6ecc1d64edc16f157"
+    },
+    "submitted_at": "2026-08-23T09:49:47+00:00"
+}
