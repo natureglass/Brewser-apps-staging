@@ -1,53 +1,17 @@
 {
-  "verdict": "SUSPICIOUS",
-  "score": 42,
-  "scanned_at": "2026-08-23T20:16:59Z",
-  "scanner_version": "1.3.0",
+  "verdict": "GOOD",
+  "score": 2,
+  "scanned_at": "2026-08-23T20:32:51Z",
+  "scanner_version": "1.3.1",
   "package_hash": "fea5c5de862279c638690e07a7da664f9cfdbeef837da8bb4441418558ab7ccb",
   "counts": {
     "info": 2,
-    "suspicious": 4,
+    "suspicious": 0,
     "dangerous": 0
   },
-  "rationale": "Suspicious: 4 signal(s) needing review; e.g. file content does not match its extension.",
+  "rationale": "No known-bad pattern matched (2 informational note(s)). Not proof of safety — human review still required.",
   "truncated": false,
   "findings": [
-    {
-      "rule_id": "magic-byte-mismatch",
-      "severity": "SUSPICIOUS",
-      "title": "File content does not match its extension",
-      "detail": "File extension .mp3 does not match its content signature.",
-      "file": "samples/alarmvoice.mp3",
-      "line": 0,
-      "evidence": "fff3e464001eca112213ac30009f795e4c09581800200043"
-    },
-    {
-      "rule_id": "magic-byte-mismatch",
-      "severity": "SUSPICIOUS",
-      "title": "File content does not match its extension",
-      "detail": "File extension .mp3 does not match its content signature.",
-      "file": "samples/fillingin.mp3",
-      "line": 0,
-      "evidence": "fff3e464001b35f94ccfa62400a0540a7c09462802030020"
-    },
-    {
-      "rule_id": "magic-byte-mismatch",
-      "severity": "SUSPICIOUS",
-      "title": "File content does not match its extension",
-      "detail": "File extension .mp3 does not match its content signature.",
-      "file": "samples/flute.mp3",
-      "line": 0,
-      "evidence": "fff3e464001fc9f90e00ac3c009f295608014f48018c4b2c"
-    },
-    {
-      "rule_id": "magic-byte-mismatch",
-      "severity": "SUSPICIOUS",
-      "title": "File content does not match its extension",
-      "detail": "File extension .mp3 does not match its content signature.",
-      "file": "samples/horn.mp3",
-      "line": 0,
-      "evidence": "fff3e46400000001a40000000000000348000000004c414d"
-    },
     {
       "rule_id": "declared-unused-peripheral",
       "severity": "INFO",
