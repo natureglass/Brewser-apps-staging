@@ -1,27 +1,17 @@
 {
-  "verdict": "SUSPICIOUS",
-  "score": 10,
-  "scanned_at": "2026-08-19T19:31:08Z",
-  "scanner_version": "1.2.0",
-  "package_hash": "798366c570673a87241c372167b36556abf2cdbdced70e4d33211c2e58951e1e",
+  "verdict": "GOOD",
+  "score": 0,
+  "scanned_at": "2026-08-23T19:44:52Z",
+  "scanner_version": "1.3.0",
+  "package_hash": "eafcaa6dd535bf6d2bb130d8533905ec50b46d9cd32ed34ef5a5a0b9627c221b",
   "counts": {
     "info": 0,
-    "suspicious": 1,
+    "suspicious": 0,
     "dangerous": 0
   },
-  "rationale": "Suspicious: 1 signal(s) needing review; e.g. uses a peripheral api not declared in the manifest.",
+  "rationale": "No known-bad pattern matched. Not proof of safety — human review still required.",
   "truncated": false,
-  "findings": [
-    {
-      "rule_id": "peripheral-undeclared",
-      "severity": "SUSPICIOUS",
-      "title": "Uses a peripheral API not declared in the manifest",
-      "detail": "Uses the serial peripheral API but the manifest declares no matching permission. Undeclared peripheral use is suspicious; combined with off-package egress it is treated as dangerous.",
-      "file": "index.html <inline script>",
-      "line": 65,
-      "evidence": "navigator.serial.requestPort()"
-    }
-  ],
+  "findings": [],
   "capabilities": [],
   "limitations": "Static heuristic scan. A GOOD verdict means no known-bad pattern matched, NOT proof of safety. Human review is still required for every submission."
 }

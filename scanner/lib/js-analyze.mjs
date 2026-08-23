@@ -788,7 +788,12 @@ export function analyzeJs(code, file, ctx) {
   }
 
   function recordPeripheralUse(fam, node, line) {
-    const declared = ctx.declaredPeripheralFamilies.has(fam);
+    // Consult the GRANTED set (declared families + the usb umbrella), not just
+    // the literally-declared families, so a `usb`-declaring app that uses
+    // navigator.serial / navigator.hid is correctly treated as covered — the
+    // runtime grants those off the same `usb:hs` transport (see manifest.mjs).
+    const granted = (ctx.grantedPeripheralFamilies || ctx.declaredPeripheralFamilies);
+    const declared = granted.has(fam);
     if (!declared) {
       add({ rule_id: 'peripheral-undeclared', severity: SUSPICIOUS, file, line,
         detail: 'Uses the ' + fam + ' peripheral API but the manifest declares no matching permission. Undeclared peripheral use is suspicious; combined with off-package egress it is treated as dangerous.',

@@ -30,7 +30,7 @@ import { INFO, SUSPICIOUS } from './lib/severity.mjs';
 import { scoreFindings, rationaleFor, sortFindings } from './lib/score.mjs';
 import { TYPOSQUAT_CDN } from './lib/signatures.mjs';
 
-export const SCANNER_VERSION = '1.2.0';
+export const SCANNER_VERSION = '1.3.0';
 
 const LIMITATIONS =
   'Static heuristic scan. A GOOD verdict means no known-bad pattern matched, ' +

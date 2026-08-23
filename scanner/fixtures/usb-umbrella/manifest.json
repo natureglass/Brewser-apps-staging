@@ -1,0 +1,16 @@
+{
+  "id": "com.test.usbumbrella",
+  "name": "USB Umbrella",
+  "version": "1.0.0",
+  "description": "Declares the `usb` umbrella permission and drives navigator.serial + navigator.hid over it, the way matrixstudio / esp32experiments do. The runtime grants serial/hid/midi off the same usb:hs transport, so this must scan GOOD — no peripheral-undeclared, no declared-unused-peripheral. No network egress.",
+  "logo": "assets/appbanner.jpg",
+  "entry": "index.html",
+  "categories": ["demo"],
+  "permissions": ["usb"],
+  "compatibility": ["web", "switch"],
+  "allowed_origins": [],
+  "developer": "Test Dev",
+  "license": "MIT",
+  "exitGame": "PLUS",
+  "fullscreen": true
+}

@@ -19,6 +19,10 @@ const CASES = [
   { dir: 'obvious-bad', verdict: 'DANGEROUS', must: ['decode-exec', 'external-egress'], mustNot: [] },
   { dir: 'obfuscated', verdict: 'DANGEROUS', must: ['constructor-escape', 'string-array-obfuscation', 'computed-sink-name'], mustNot: [] },
   { dir: 'undeclared-peripheral', verdict: 'SUSPICIOUS', must: ['peripheral-undeclared'], mustNot: ['auth-exfil-dataflow'] },
+  // The `usb` umbrella: declaring `usb` covers navigator.serial / navigator.hid
+  // (they ride the same usb:hs transport), so this must scan clean — no
+  // undeclared-peripheral, and no declared-unused for `usb` (serial/hid exercise it).
+  { dir: 'usb-umbrella', verdict: 'GOOD', must: [], mustNot: ['peripheral-undeclared', 'declared-unused-peripheral'] },
 ];
 
 function runScan(dir) {
