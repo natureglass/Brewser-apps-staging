@@ -1,8 +1,8 @@
 {
   "verdict": "GOOD",
   "score": 2,
-  "scanned_at": "2026-08-23T20:32:51Z",
-  "scanner_version": "1.3.1",
+  "scanned_at": "2026-08-23T20:47:52Z",
+  "scanner_version": "1.3.2",
   "package_hash": "fea5c5de862279c638690e07a7da664f9cfdbeef837da8bb4441418558ab7ccb",
   "counts": {
     "info": 2,
@@ -16,10 +16,10 @@
       "rule_id": "declared-unused-peripheral",
       "severity": "INFO",
       "title": "Peripheral declared in manifest but never used",
-      "detail": "The manifest declares a \"usb\" permission but no code uses that peripheral API. Harmless, but worth confirming the declaration is intended.",
+      "detail": "The manifest declares a \"bluetooth\" permission but no code uses that peripheral API. Harmless, but worth confirming the declaration is intended.",
       "file": "manifest.json",
       "line": 0,
-      "evidence": "usb"
+      "evidence": "bluetooth"
     },
     {
       "rule_id": "html-injection-sink",
