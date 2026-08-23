@@ -7,7 +7,7 @@ exercises a specific band of the rule catalogue. `../test.mjs` runs the real
 
 | Fixture | Expected verdict | Rules it must trip | What it proves |
 |---|---|---|---|
-| `clean/` | **GOOD** | (none) | A normal app — own-namespace storage, a fetch to a manifest-declared `allowed_origins` entry, canvas/WebGL2 — produces no findings. Guards against false positives. |
+| `clean/` | **GOOD** | (none) | A normal app — own-namespace storage, a fetch to a manifest-declared `allowed_origins` entry, canvas/WebGL2 — produces no findings. Guards against false positives. Includes `sound-mpeg2.mp3` (MPEG-2 Layer III, `FF F3`), `sound-mpeg25.mp3` (MPEG-2.5, `FF E3`) and `sound-id3.mp3` (ID3v2-tagged) so a valid MP3 with no ID3 tag / non-MPEG-1 frame sync must NOT trip `magic-byte-mismatch`. |
 | `auth-exfil/` | **DANGEROUS** | `auth-exfil-dataflow`, `auth-token-read` | Reads `localStorage['brewser_auth']` and ships it to an off-package origin *through a function boundary* — exercises both the intra-function taint and the file-level read+egress escalation. |
 | `obvious-bad/` | **DANGEROUS** | `decode-exec`, `external-egress`, `settimeout-string` | `eval(atob(...))` / `new Function(atob(...))` decode-then-execute, an inline `onclick` handler, and a plain external `fetch`. Tests HTML inline-script + handler extraction feeding the JS analyzer. |
 | `obfuscated/` | **DANGEROUS** | `constructor-escape`, `string-array-obfuscation`, `computed-sink-name`, `charcode-reconstruction` | obfuscator.io-style hex string array, `window['fe'+'tch']` / `self['ev'+'al']` computed sink names, the `[].constructor.constructor` eval-escape, and `String.fromCharCode` reconstruction. |

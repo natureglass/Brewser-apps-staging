@@ -22,7 +22,9 @@ const MAGIC = {
   '.woff2': [[0x77, 0x4f, 0x46, 0x32]],
   '.ttf': [[0x00, 0x01, 0x00, 0x00], [0x74, 0x72, 0x75, 0x65]],
   '.zip': [[0x50, 0x4b, 0x03, 0x04]],
-  '.mp3': [[0x49, 0x44, 0x33], [0xff, 0xfb]],
+  // '.mp3' is intentionally absent — MP3 has too many valid leading signatures
+  // to enumerate as fixed prefixes (ID3 tag, or an MPEG-1/2/2.5 Layer I/II/III
+  // frame sync, with/without CRC). It is checked via isMp3Signature() below.
   '.mp4': [], // box-based, ftyp at offset 4 — skip strict check
   '.ogg': [[0x4f, 0x67, 0x67, 0x53]],
   '.wav': [[0x52, 0x49, 0x46, 0x46]],
@@ -42,6 +44,22 @@ function startsWith(buf, sig) {
   return true;
 }
 
+// MP3 signature check. An MP3 is either ID3v2-tagged ("ID3" at offset 0) or
+// begins directly with an MPEG-audio frame. The frame sync is 11 bits — the
+// whole first byte (0xFF) plus the top 3 bits of the second byte — so a fixed
+// prefix like FF FB only matches MPEG-1 and misses legitimate MPEG-2 (FF F3 /
+// FF F2) and MPEG-2.5 (FF E3 / FF E2) files. Check the sync by bitmask and
+// reject only the reserved version/layer encodings, which never appear in a
+// real frame. Non-0xFF payloads (MZ/ELF/PK/scripts) still fail and escalate.
+function isMp3Signature(buf) {
+  if (buf.length >= 3 && buf[0] === 0x49 && buf[1] === 0x44 && buf[2] === 0x33) return true; // "ID3"
+  if (buf.length < 2) return false;
+  if (buf[0] !== 0xff || (buf[1] & 0xe0) !== 0xe0) return false; // 11-bit frame sync
+  const version = (buf[1] >> 3) & 0x03; // 01 = reserved
+  const layer = (buf[1] >> 1) & 0x03;   // 00 = reserved
+  return version !== 0b01 && layer !== 0b00;
+}
+
 function looksLikeScript(buf) {
   const head = buf.slice(0, 256).toString('utf8');
   return /<script|function\s*\(|=>|eval\(|document\.|window\.|var\s+\w+\s*=/.test(head);
@@ -54,8 +72,11 @@ export function analyzeAsset(fileObj, ctx) {
 
   // 1. Magic-byte vs extension mismatch.
   const expected = MAGIC[ext];
-  if (expected && expected.length > 0) {
-    const ok = expected.some((sig) => startsWith(buffer, sig));
+  const hasMagicCheck = ext === '.mp3' || (expected && expected.length > 0);
+  if (hasMagicCheck) {
+    const ok = ext === '.mp3'
+      ? isMp3Signature(buffer)
+      : expected.some((sig) => startsWith(buffer, sig));
     if (!ok) {
       // Only escalate to DANGEROUS if the real content is executable/archive/script.
       const suspect = SUSPECT_CONTENT.find((s) => startsWith(buffer, s.sig));

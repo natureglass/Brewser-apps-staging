@@ -14,7 +14,7 @@ const SCAN = path.join(__dirname, 'scan.mjs');
 const FIX = path.join(__dirname, 'fixtures');
 
 const CASES = [
-  { dir: 'clean', verdict: 'GOOD', must: [], mustNot: ['auth-exfil-dataflow', 'decode-exec', 'external-egress', 'cross-namespace-storage'] },
+  { dir: 'clean', verdict: 'GOOD', must: [], mustNot: ['auth-exfil-dataflow', 'decode-exec', 'external-egress', 'cross-namespace-storage', 'magic-byte-mismatch'] },
   { dir: 'auth-exfil', verdict: 'DANGEROUS', must: ['auth-exfil-dataflow', 'auth-token-read'], mustNot: [] },
   { dir: 'obvious-bad', verdict: 'DANGEROUS', must: ['decode-exec', 'external-egress'], mustNot: [] },
   { dir: 'obfuscated', verdict: 'DANGEROUS', must: ['constructor-escape', 'string-array-obfuscation', 'computed-sink-name'], mustNot: [] },
