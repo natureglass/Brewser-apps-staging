@@ -1,11 +1,11 @@
 {
   "verdict": "SUSPICIOUS",
-  "score": 21,
-  "scanned_at": "2026-08-23T09:50:12Z",
+  "score": 22,
+  "scanned_at": "2026-08-23T10:32:27Z",
   "scanner_version": "1.2.0",
-  "package_hash": "c50a046d0271c7f4eb040b1e733707ecdf6a28ddadae5432ab7702fc2a44b72e",
+  "package_hash": "0599745e90182fae387aef0c7b7bd97b005d673a671ab92afdeb8a11f0b95638",
   "counts": {
-    "info": 1,
+    "info": 2,
     "suspicious": 2,
     "dangerous": 0
   },
@@ -18,7 +18,7 @@
       "title": "Uses a peripheral API not declared in the manifest",
       "detail": "Uses the serial peripheral API but the manifest declares no matching permission. Undeclared peripheral use is suspicious; combined with off-package egress it is treated as dangerous.",
       "file": "index.html <inline script>",
-      "line": 473,
+      "line": 444,
       "evidence": "navigator.serial.requestPort()"
     },
     {
@@ -27,7 +27,7 @@
       "title": "Uses a peripheral API not declared in the manifest",
       "detail": "Uses the serial peripheral API but the manifest declares no matching permission. Undeclared peripheral use is suspicious; combined with off-package egress it is treated as dangerous.",
       "file": "index.html <inline script>",
-      "line": 499,
+      "line": 470,
       "evidence": "navigator.serial.addEventListener('disconnect',()=>{ if(sink&&sink.type==='usb') disconnect(); })"
     },
     {
@@ -38,6 +38,15 @@
       "file": "manifest.json",
       "line": 0,
       "evidence": "usb"
+    },
+    {
+      "rule_id": "declared-unused-peripheral",
+      "severity": "INFO",
+      "title": "Peripheral declared in manifest but never used",
+      "detail": "The manifest declares a \"bluetooth\" permission but no code uses that peripheral API. Harmless, but worth confirming the declaration is intended.",
+      "file": "manifest.json",
+      "line": 0,
+      "evidence": "bluetooth"
     }
   ],
   "capabilities": [
