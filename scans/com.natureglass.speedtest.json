@@ -1,9 +1,9 @@
 {
   "verdict": "GOOD",
   "score": 0,
-  "scanned_at": "2026-08-06T10:18:38Z",
-  "scanner_version": "1.2.0",
-  "package_hash": "18ef19c3bb1049a1ea4f910fb7aee541eee08154191ab46d322f683b0a74e783",
+  "scanned_at": "2026-08-31T19:36:47Z",
+  "scanner_version": "1.3.2",
+  "package_hash": "c05572eda4a2e5f6ae7cca73072d7ddb1c042bfb6bcb50655ebef9c48bcef79a",
   "counts": {
     "info": 0,
     "suspicious": 0,
