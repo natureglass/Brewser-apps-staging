@@ -1,0 +1,17 @@
+{
+    "id": "com.natureglass.threejsloadergltf",
+    "name": "ThreeJS Loader GLTF",
+    "version": "1.0.2",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "zip_sha256": "0834bf00d6df4a74667f723751d3e3b67aebb7b52a7d6218959cbb7d3068d024",
+    "attestation": {
+        "ts": "2026-08-31T19:06:23+00:00",
+        "platforms": [
+            "mobile",
+            "switch",
+            "web"
+        ],
+        "zip_sha256": "0834bf00d6df4a74667f723751d3e3b67aebb7b52a7d6218959cbb7d3068d024"
+    },
+    "submitted_at": "2026-08-31T19:06:23+00:00"
+}
