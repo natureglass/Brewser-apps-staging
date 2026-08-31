@@ -1,72 +1,82 @@
 [
-    {
-        "id": "com.natureglass.aether",
-        "name": "Aether",
-        "version": "1.0.2",
-        "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
-        "updated_at": "2026-08-17T11:18:55Z",
-        "entry": "index.html",
-        "logo": "assets/appbanner.jpg",
-        "description": "<p><strong>AETHER</strong> turns a written phrase into a fullscreen animated field. Describe a world, watch it assemble, then open the console and take it apart.</p>\r\n<p><strong>How it works</strong></p>\r\n<p>Type something like <em>stormy alien ocean at dusk</em> and press Render. AETHER reads the phrase against a vocabulary of 168 words covering subjects, moods, colours, materials, styles and times of day. Every word it recognises contributes to a set of 40 numbers — field scale, warp depth,…"
-    },
-    {
-        "id": "com.natureglass.compass",
-        "name": "Compass",
-        "version": "1.0.4",
-        "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
-        "updated_at": "2026-08-17T17:12:52Z",
-        "entry": "index.html",
-        "logo": "assets/appbanner.jpg",
-        "description": "<p><strong>Compass</strong> is a working magnetic compass rendered entirely in WebGL. It reads your device's orientation sensors to point at magnetic north, showing a precise heading in degrees and the cardinal direction you're facing — on a hand-drawn dial that swings smoothly like the real thing.</p>\r\n<p><strong>How it works.</strong> Every part of the dial — the graduated ring, the tick marks, the degree numbers, the cardinal letters and the needle — is built from scratch as WebGL geometry,…"
-    },
-    {
-        "id": "com.natureglass.dusk",
-        "name": "Dusk - Sky Atlas",
-        "version": "1.0.3",
-        "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
-        "updated_at": "2026-08-16T14:48:06Z",
-        "entry": "index.html",
-        "logo": "assets/appbanner.jpg",
-        "description": "<p><strong>Dusk</strong> is a pocket planetarium that draws the real night sky in WebGL. For any moment and place it renders the stars, constellations, Milky Way, deep-sky objects and planets exactly where they sit in the sky above you — wrapped in a warm dusk glow that fades from the horizon up to the zenith.</p>\r\n<p><strong>How it works.</strong> Everything you see is placed by genuine astronomy rather than a static picture. The whole celestial sphere is rotated for your latitude, longitude…"
-    },
-    {
-        "id": "com.natureglass.fluiddynamics",
-        "name": "Fluid dynamics",
-        "version": "1.0.4",
-        "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
-        "updated_at": "2026-08-18T16:51:28Z",
-        "entry": "index.html",
-        "logo": "assets/appbanner.jpg",
-        "description": "<p><strong>Fluid dynamics</strong> is a real-time fluid simulation you paint with your finger. Under the hood it solves the same equations that describe real smoke and water — the Navier–Stokes equations — entirely on the GPU using WebGL2, so thick, swirling dye reacts to every stroke at full frame rate.</p>\r\n<p><strong>How it works.</strong> Every frame the app runs a chain of GPU shader passes over floating-point textures. It first computes the fluid's <em>curl</em> and adds a vorticity…"
-    },
-    {
-        "id": "com.natureglass.gravityballs",
-        "name": "Gravity Balls",
-        "version": "1.0.3",
-        "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
-        "updated_at": "2026-08-17T19:25:57Z",
-        "entry": "index.html",
-        "logo": "assets/appbanner.jpg",
-        "description": "<p><strong>Gravity Balls</strong> is a relaxing physics sandbox where a set of colourful balls fall, bounce and jostle against each other and the walls — and gravity points wherever you tilt.</p>\r\n<p><strong>How it works.</strong> A proper physics engine runs behind the scenes. Each frame is broken into several small sub-steps, and within each step the app nudges every ball's velocity by gravity, then repeatedly resolves collisions — ball-against-wall and ball-against-ball — using impulses…"
-    },
-    {
-        "id": "com.natureglass.threejsdynamiccubemapreflection",
-        "name": "ThreeJS Dynamic Cubemap Reflection",
-        "version": "1.0.2",
-        "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
-        "updated_at": "2026-08-31T19:25:05Z",
-        "entry": "index.html",
-        "logo": "assets/appbanner.jpg",
-        "description": "<p><strong>ThreeJS Dynamic Cubemap Reflection</strong> is a shimmering showcase built around a chrome sphere that mirrors everything happening around it in real time — a tumbling cube and a twisting torus knot sweep past while the whole scene is reflected on its polished surface.</p>\r\n<p><strong>How it works.</strong> The mirror-ball trick relies on a technique called <em>dynamic cube-mapping</em>. Every frame a special six-sided camera — a <em>CubeCamera</em> — sits at the centre of the…"
-    },
-    {
-        "id": "com.natureglass.threejsgpgpuwater",
-        "name": "ThreeJS GPGPU Water",
-        "version": "1.0.2",
-        "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
-        "updated_at": "2026-08-31T19:23:02Z",
-        "entry": "index.html",
-        "logo": "assets/appbanner.jpg",
-        "description": "<p><strong>ThreeJS GPGPU Water</strong> is a reflective pool you can stir with a fingertip — press and drag across the surface and ripples spread out, run to the rim and slowly settle.</p>\r\n<p><strong>How it works.</strong> The surface is a grid of heights held in a texture and simulated entirely on the graphics card — this is the <em>GPGPU</em> (general-purpose GPU) technique, where a shader is used for maths rather than for drawing. Each frame a <em>compute shader</em> looks at every cell…"
-    }
+  {
+    "id": "com.natureglass.aether",
+    "name": "Aether",
+    "version": "1.0.2",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "updated_at": "2026-08-17T11:18:55Z",
+    "entry": "index.html",
+    "logo": "assets/appbanner.jpg",
+    "description": "<p><strong>AETHER</strong> turns a written phrase into a fullscreen animated field. Describe a world, watch it assemble, then open the console and take it apart.</p>\r\n<p><strong>How it works</strong></p>\r\n<p>Type something like <em>stormy alien ocean at dusk</em> and press Render. AETHER reads the phrase against a vocabulary of 168 words covering subjects, moods, colours, materials, styles and times of day. Every word it recognises contributes to a set of 40 numbers — field scale, warp depth,…"
+  },
+  {
+    "id": "com.natureglass.compass",
+    "name": "Compass",
+    "version": "1.0.4",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "updated_at": "2026-08-17T17:12:52Z",
+    "entry": "index.html",
+    "logo": "assets/appbanner.jpg",
+    "description": "<p><strong>Compass</strong> is a working magnetic compass rendered entirely in WebGL. It reads your device's orientation sensors to point at magnetic north, showing a precise heading in degrees and the cardinal direction you're facing — on a hand-drawn dial that swings smoothly like the real thing.</p>\r\n<p><strong>How it works.</strong> Every part of the dial — the graduated ring, the tick marks, the degree numbers, the cardinal letters and the needle — is built from scratch as WebGL geometry,…"
+  },
+  {
+    "id": "com.natureglass.dusk",
+    "name": "Dusk - Sky Atlas",
+    "version": "1.0.3",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "updated_at": "2026-08-16T14:48:06Z",
+    "entry": "index.html",
+    "logo": "assets/appbanner.jpg",
+    "description": "<p><strong>Dusk</strong> is a pocket planetarium that draws the real night sky in WebGL. For any moment and place it renders the stars, constellations, Milky Way, deep-sky objects and planets exactly where they sit in the sky above you — wrapped in a warm dusk glow that fades from the horizon up to the zenith.</p>\r\n<p><strong>How it works.</strong> Everything you see is placed by genuine astronomy rather than a static picture. The whole celestial sphere is rotated for your latitude, longitude…"
+  },
+  {
+    "id": "com.natureglass.fluiddynamics",
+    "name": "Fluid dynamics",
+    "version": "1.0.4",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "updated_at": "2026-08-18T16:51:28Z",
+    "entry": "index.html",
+    "logo": "assets/appbanner.jpg",
+    "description": "<p><strong>Fluid dynamics</strong> is a real-time fluid simulation you paint with your finger. Under the hood it solves the same equations that describe real smoke and water — the Navier–Stokes equations — entirely on the GPU using WebGL2, so thick, swirling dye reacts to every stroke at full frame rate.</p>\r\n<p><strong>How it works.</strong> Every frame the app runs a chain of GPU shader passes over floating-point textures. It first computes the fluid's <em>curl</em> and adds a vorticity…"
+  },
+  {
+    "id": "com.natureglass.gravityballs",
+    "name": "Gravity Balls",
+    "version": "1.0.3",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "updated_at": "2026-08-17T19:25:57Z",
+    "entry": "index.html",
+    "logo": "assets/appbanner.jpg",
+    "description": "<p><strong>Gravity Balls</strong> is a relaxing physics sandbox where a set of colourful balls fall, bounce and jostle against each other and the walls — and gravity points wherever you tilt.</p>\r\n<p><strong>How it works.</strong> A proper physics engine runs behind the scenes. Each frame is broken into several small sub-steps, and within each step the app nudges every ball's velocity by gravity, then repeatedly resolves collisions — ball-against-wall and ball-against-ball — using impulses…"
+  },
+  {
+    "id": "com.natureglass.threejsdynamiccubemapreflection",
+    "name": "ThreeJS Dynamic Cubemap Reflection",
+    "version": "1.0.2",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "updated_at": "2026-08-31T19:25:05Z",
+    "entry": "index.html",
+    "logo": "assets/appbanner.jpg",
+    "description": "<p><strong>ThreeJS Dynamic Cubemap Reflection</strong> is a shimmering showcase built around a chrome sphere that mirrors everything happening around it in real time — a tumbling cube and a twisting torus knot sweep past while the whole scene is reflected on its polished surface.</p>\r\n<p><strong>How it works.</strong> The mirror-ball trick relies on a technique called <em>dynamic cube-mapping</em>. Every frame a special six-sided camera — a <em>CubeCamera</em> — sits at the centre of the…"
+  },
+  {
+    "id": "com.natureglass.threejsequirectenvreflection",
+    "name": "ThreeJS Equirect Env Reflection",
+    "version": "1.0.2",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "updated_at": "2026-08-31T19:26:34Z",
+    "entry": "index.html",
+    "logo": "assets/appbanner.jpg",
+    "description": "<p><strong>ThreeJS Equirect Env Reflection</strong> is a glossy image-based-lighting demo in which a slowly spinning torus knot draws its colour and reflections entirely from a single wrap-around photograph of its surroundings.</p>\r\n<p><strong>How it works.</strong> The scene is lit by an <em>equirectangular environment map</em> — one panoramic image, stretched 360° like a flattened world map, that stands in for the sky and everything around the object. Before it can be used for realistic…"
+  },
+  {
+    "id": "com.natureglass.threejsgpgpuwater",
+    "name": "ThreeJS GPGPU Water",
+    "version": "1.0.2",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "updated_at": "2026-08-31T19:23:02Z",
+    "entry": "index.html",
+    "logo": "assets/appbanner.jpg",
+    "description": "<p><strong>ThreeJS GPGPU Water</strong> is a reflective pool you can stir with a fingertip — press and drag across the surface and ripples spread out, run to the rim and slowly settle.</p>\r\n<p><strong>How it works.</strong> The surface is a grid of heights held in a texture and simulated entirely on the graphics card — this is the <em>GPGPU</em> (general-purpose GPU) technique, where a shader is used for maths rather than for drawing. Each frame a <em>compute shader</em> looks at every cell…"
+  }
 ]
