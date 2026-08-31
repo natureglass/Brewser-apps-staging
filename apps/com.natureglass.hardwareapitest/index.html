@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hardware API Test</title>
+<style>
+:root{
+	--bg:#07050e; --panel:#0e0a1d; --panel2:#141028; --border:#5b21b6;
+	--border-soft:#2e1f57; --text:#e6e1f5; --muted:#9d94c4;
+	--cyan:#22d3ee; --yellow:#f5d90a; --green:#22c55e; --red:#fca5a5;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:"Segoe UI",Roboto,Arial,sans-serif;font-size:15px;line-height:1.5;padding:24px}
+.wrap{max-width:820px;margin:0 auto}
+h1{color:var(--cyan);font-size:24px;margin:0 0 4px}
+.tagline{color:var(--muted);margin:0 0 20px;font-size:14px}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:16px 18px;margin-bottom:16px}
+.card h2{margin:0 0 6px;font-size:15px;color:var(--yellow)}
+.card p.hint{margin:0 0 12px;color:var(--muted);font-size:13px}
+label{display:block;color:var(--muted);font-size:13px;margin-bottom:6px}
+input[type=text]{width:100%;background:var(--panel2);color:var(--text);border:1px solid var(--border-soft);border-radius:8px;padding:9px;font-family:ui-monospace,Menlo,monospace;font-size:13px}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+button{appearance:none;border:1px solid transparent;border-radius:8px;padding:10px 20px;font:inherit;font-weight:700;cursor:pointer}
+.btn-primary{background:var(--cyan);color:#04222a}
+.btn-ghost{background:var(--panel2);color:var(--text);border-color:var(--border-soft)}
+button:disabled{opacity:.5;cursor:not-allowed}
+.badge{display:inline-block;font-size:12px;padding:3px 10px;border-radius:999px;border:1px solid var(--border-soft);color:var(--muted);margin-right:6px}
+.badge.ok{color:var(--green);border-color:var(--green)}
+.badge.no{color:var(--red);border-color:var(--red)}
+.result{margin-top:12px;background:var(--panel2);border:1px solid var(--border-soft);border-radius:8px;padding:12px;font-family:ui-monospace,monospace;font-size:12px;white-space:pre-wrap;word-break:break-word;min-height:22px}
+.log{font-family:ui-monospace,monospace;font-size:12px;color:var(--muted);background:var(--panel2);border:1px solid var(--border-soft);border-radius:8px;padding:10px;max-height:220px;overflow:auto}
+.log div{padding:1px 0}
+.log .ok{color:var(--green)}.log .err{color:var(--red)}.log .info{color:var(--cyan)}
+</style>
+</head>
+<body>
+<div class="wrap">
+	<h1>Hardware API Test</h1>
+	<p class="tagline">Phase A verification for the Brewser device chooser. Each button calls a hardware Web API's <code>requestDevice()</code> — a picker should appear listing matching devices; pick one (or press B to cancel) and the result shows below.</p>
+
+	<div class="card">
+		<h2>Environment</h2>
+		<div id="env"></div>
+	</div>
+
+	<div class="card">
+		<h2>WebUSB — navigator.usb</h2>
+		<p class="hint">"Request device" calls <code>requestDevice({ filters: [{}] })</code> (matches every attached USB device), so the chooser lists everything on the USB-C port. Plug a device in first.</p>
+		<div class="row">
+			<button class="btn-primary" id="usb-request">Request USB device</button>
+			<button class="btn-ghost" id="usb-list">List devices (getDevices)</button>
+		</div>
+		<div class="result" id="usb-result">—</div>
+	</div>
+
+	<div class="card">
+		<h2>Web Bluetooth — navigator.bluetooth</h2>
+		<p class="hint">The Switch BLE scanner is filter-based: enter a <b>service UUID</b> your device advertises — a 16-bit alias like <code>0x180D</code> or a full 128-bit UUID. Then "Request device" scans (~8&nbsp;s) and shows the chooser.</p>
+		<label for="bt-uuid">Advertised service UUID</label>
+		<input type="text" id="bt-uuid" value="0x180D">
+		<div class="row">
+			<button class="btn-primary" id="bt-request">Request Bluetooth device</button>
+		</div>
+		<div class="result" id="bt-result">—</div>
+	</div>
+
+	<div class="card">
+		<h2>WebSerial — navigator.serial</h2>
+		<p class="hint">Requests a CDC-ACM serial port, opens it, and runs a read loop. Type + Write sends bytes; received bytes append below. (ESP32 native-USB / Arduino / Pico-class devices; FTDI/CP210x/CH340 not yet supported.)</p>
+		<label for="ser-baud">Baud rate</label>
+		<input type="text" id="ser-baud" value="115200">
+		<div class="row">
+			<button class="btn-primary" id="ser-open">Request + Open</button>
+			<button class="btn-ghost" id="ser-close">Close</button>
+		</div>
+		<label for="ser-tx" style="margin-top:12px">Send</label>
+		<input type="text" id="ser-tx" value="ping">
+		<div class="row">
+			<button class="btn-ghost" id="ser-write">Write + newline</button>
+		</div>
+		<div class="result" id="ser-result">—</div>
+		<label style="margin-top:12px">Received</label>
+		<div class="log" id="ser-rx" style="max-height:160px"></div>
+	</div>
+
+	<div class="card">
+		<h2>WebHID — navigator.hid</h2>
+		<p class="hint">Requests an HID device, opens it, parses its report descriptor, and logs incoming input reports. Send an output report with a report ID + hex bytes.</p>
+		<div class="row">
+			<button class="btn-primary" id="hid-open">Request + Open</button>
+			<button class="btn-ghost" id="hid-close">Close</button>
+		</div>
+		<div class="row" style="margin-top:12px">
+			<div style="flex:0 0 90px"><label for="hid-rid">Report ID</label><input type="text" id="hid-rid" value="0"></div>
+			<div style="flex:1;min-width:140px"><label for="hid-bytes">Bytes (hex)</label><input type="text" id="hid-bytes" value="00"></div>
+		</div>
+		<div class="row">
+			<button class="btn-ghost" id="hid-send">Send output report</button>
+		</div>
+		<div class="result" id="hid-result">—</div>
+		<label style="margin-top:12px">Input reports</label>
+		<div class="log" id="hid-rx" style="max-height:160px"></div>
+	</div>
+
+	<div class="card">
+		<h2>Web MIDI — navigator.requestMIDIAccess</h2>
+		<p class="hint">Requests MIDI access (a one-shot permission prompt, not a device picker), lists USB-MIDI ports, logs incoming messages, and sends a test note to the first output.</p>
+		<div class="row">
+			<button class="btn-primary" id="midi-req">Request MIDI access</button>
+			<button class="btn-ghost" id="midi-note">Send test note</button>
+		</div>
+		<div class="result" id="midi-result">—</div>
+		<label style="margin-top:12px">Incoming messages</label>
+		<div class="log" id="midi-rx" style="max-height:160px"></div>
+	</div>
+
+	<div class="card">
+		<h2>Web NFC — NDEFReader</h2>
+		<p class="hint">scan() shows a permission prompt, then waits for a tag tap. Citron has no reader, so use "Simulate tag" to inject a fake NDEF reading and verify parsing. write() needs real hardware + a tag.</p>
+		<div class="row">
+			<button class="btn-primary" id="nfc-scan">Start scan</button>
+			<button class="btn-ghost" id="nfc-sim">Simulate tag</button>
+			<button class="btn-ghost" id="nfc-write">Write text "Hello"</button>
+		</div>
+		<div class="result" id="nfc-result">—</div>
+		<label style="margin-top:12px">Readings</label>
+		<div class="log" id="nfc-rx" style="max-height:160px"></div>
+	</div>
+
+	<div class="card">
+		<h2>Simulation (Citron / no hardware)</h2>
+		<p class="hint">Citron doesn't emulate USB-host or BLE, so the real buttons above find nothing. These call the engine's <code>__nxjsDeviceChooserProbe</code> to open the <b>real</b> chooser (with the real permission gate) using fake devices — so you can verify the picker UI, title, selection, cancel (B) and gate without hardware.</p>
+		<div class="row">
+			<button class="btn-ghost" id="sim-usb">Simulate USB picker</button>
+			<button class="btn-ghost" id="sim-bt">Simulate Bluetooth picker</button>
+			<button class="btn-ghost" id="sim-serial">Simulate serial picker</button>
+		</div>
+		<div class="row">
+			<button class="btn-ghost" id="sim-hid">Simulate HID picker</button>
+			<button class="btn-ghost" id="sim-confirm">Simulate permission prompt</button>
+		</div>
+		<div class="result" id="sim-result">—</div>
+	</div>
+
+	<div class="card">
+		<h2>Activity</h2>
+		<div class="log" id="log"></div>
+	</div>
+</div>
+
+<script>
+(function () {
+	'use strict';
+
+	function log(kind, msg) {
+		var el = document.getElementById('log');
+		var line = document.createElement('div');
+		line.className = kind;
+		line.textContent = '[' + new Date().toLocaleTimeString() + '] ' + msg;
+		el.insertBefore(line, el.firstChild);
+	}
+
+	function badge(label, present) {
+		var b = document.createElement('span');
+		b.className = 'badge ' + (present ? 'ok' : 'no');
+		b.textContent = label + ': ' + (present ? 'present' : 'missing');
+		return b;
+	}
+
+	function hex4(n) { return (n >>> 0).toString(16).padStart(4, '0'); }
+
+	// --- environment feature detection --------------------------------------
+	(function () {
+		var env = document.getElementById('env');
+		env.appendChild(badge('navigator.usb', !!(navigator && navigator.usb)));
+		env.appendChild(badge('navigator.bluetooth', !!(navigator && navigator.bluetooth)));
+		env.appendChild(badge('navigator.serial', !!(navigator && navigator.serial)));
+		env.appendChild(badge('navigator.hid', !!(navigator && navigator.hid)));
+		env.appendChild(badge('requestMIDIAccess', !!(navigator && navigator.requestMIDIAccess)));
+		env.appendChild(badge('NDEFReader', typeof NDEFReader !== 'undefined'));
+	})();
+
+	// --- WebUSB --------------------------------------------------------------
+	function describeUsb(d) {
+		var name = d.productName || ('USB device ' + hex4(d.vendorId) + ':' + hex4(d.productId));
+		var lines = [
+			'name:          ' + name,
+			'vendorId:      0x' + hex4(d.vendorId),
+			'productId:     0x' + hex4(d.productId),
+			'deviceClass:   0x' + hex4(d.deviceClass) + '/' + hex4(d.deviceSubclass) + '/' + hex4(d.deviceProtocol),
+			'manufacturer:  ' + (d.manufacturerName || '(read on open)'),
+			'serial:        ' + (d.serialNumber || '(read on open)'),
+			'configs:       ' + (d.configurations ? d.configurations.length : 0)
+		];
+		// Dump every interface's class/subclass/protocol + endpoints so we can see
+		// exactly what usb:hs exposes (e.g. whether a MIDIStreaming 0x01/0x03
+		// interface is present for a class-compliant MIDI controller).
+		(d.configurations || []).forEach(function (cfg, ci) {
+			lines.push('config[' + ci + '] value=' + cfg.configurationValue + ' ifaces=' + cfg.interfaces.length);
+			cfg.interfaces.forEach(function (itf) {
+				(itf.alternates || []).forEach(function (alt) {
+					var eps = (alt.endpoints || []).map(function (e) {
+						return e.direction + ':' + e.endpointNumber + '/' + e.type + '/' + e.packetSize;
+					}).join(' ');
+					lines.push('  if#' + itf.interfaceNumber + '.alt' + alt.alternateSetting +
+						' class=0x' + hex4(alt.interfaceClass) + '/0x' + hex4(alt.interfaceSubclass) +
+						'/0x' + hex4(alt.interfaceProtocol) + ' eps[' + (alt.endpoints || []).length + ']: ' + (eps || '(none)'));
+				});
+			});
+		});
+		return lines.join('\n');
+	}
+
+	document.getElementById('usb-request').addEventListener('click', function () {
+		var out = document.getElementById('usb-result');
+		if (!navigator.usb) { out.textContent = 'navigator.usb is not available.'; return; }
+		out.textContent = 'Opening chooser…';
+		log('info', 'usb.requestDevice({ filters: [{}] })');
+		navigator.usb.requestDevice({ filters: [{}] }).then(function (d) {
+			out.textContent = describeUsb(d);
+			log('ok', 'USB device selected: ' + (d.productName || (hex4(d.vendorId) + ':' + hex4(d.productId))));
+			// Report whether a MIDIStreaming interface is present WITHOUT opening or
+			// claiming it — a claim here would hold the interface and starve a later
+			// "Request MIDI access" (usb:hs releases interfaces only lazily).
+			reportMidiIface(d, out);
+		}).catch(function (e) {
+			out.textContent = e.name + ': ' + e.message;
+			log('err', 'USB requestDevice: ' + e.name + ' — ' + e.message);
+		});
+	});
+
+	// Read-only: note the MIDIStreaming (0x01/0x03) interface + its endpoint count
+	// from the already-enumerated descriptor. Does not touch the device.
+	function reportMidiIface(d, out) {
+		var ms = null, eps = 0;
+		(d.configurations || []).forEach(function (cfg) {
+			cfg.interfaces.forEach(function (itf) {
+				(itf.alternates || []).forEach(function (alt) {
+					if (ms === null && alt.interfaceClass === 0x01 && alt.interfaceSubclass === 0x03) {
+						ms = itf; eps = (alt.endpoints || []).length;
+					}
+				});
+			});
+		});
+		if (!ms) { out.textContent += '\n\nmidi: no 0x01/0x03 MIDIStreaming interface exposed'; return; }
+		out.textContent += '\n\nmidi: MIDIStreaming if#' + ms.interfaceNumber + ' present, ' + eps + ' endpoint(s)' +
+			(eps >= 2 ? ' — use "Request MIDI access" to open it' : ' — MISSING endpoints');
+	}
+
+	document.getElementById('usb-list').addEventListener('click', function () {
+		var out = document.getElementById('usb-result');
+		if (!navigator.usb) { out.textContent = 'navigator.usb is not available.'; return; }
+		navigator.usb.getDevices().then(function (list) {
+			if (!list.length) { out.textContent = '(no already-granted devices)'; log('info', 'getDevices: none'); return; }
+			out.textContent = list.map(describeUsb).join('\n\n');
+			log('ok', 'getDevices: ' + list.length + ' device(s)');
+		}).catch(function (e) {
+			out.textContent = e.name + ': ' + e.message;
+			log('err', 'getDevices: ' + e.name + ' — ' + e.message);
+		});
+	});
+
+	// --- Web Bluetooth -------------------------------------------------------
+	// Accept "0x180D" / "180D" (16/32-bit alias -> number) or a full 128-bit
+	// UUID string; requestDevice() takes either form.
+	function parseService(raw) {
+		var s = String(raw || '').trim();
+		if (!s) return null;
+		if (/^0x[0-9a-fA-F]+$/.test(s)) return parseInt(s, 16);
+		if (/^[0-9a-fA-F]{1,8}$/.test(s)) return parseInt(s, 16);
+		return s; // assume 128-bit UUID string
+	}
+
+	document.getElementById('bt-request').addEventListener('click', function () {
+		var out = document.getElementById('bt-result');
+		if (!navigator.bluetooth) { out.textContent = 'navigator.bluetooth is not available.'; return; }
+		var svc = parseService(document.getElementById('bt-uuid').value);
+		if (svc === null) { out.textContent = 'Enter a service UUID first.'; return; }
+		out.textContent = 'Scanning (~8 s)…';
+		log('info', 'bluetooth.requestDevice services=[' + svc + ']');
+		navigator.bluetooth.requestDevice({
+			filters: [{ services: [svc] }],
+			optionalServices: [svc]
+		}).then(function (d) {
+			out.textContent = 'name: ' + (d.name || '(unnamed)') + '\nid:   ' + d.id;
+			log('ok', 'BT device selected: ' + (d.name || d.id));
+		}).catch(function (e) {
+			out.textContent = e.name + ': ' + e.message;
+			log('err', 'BT requestDevice: ' + e.name + ' — ' + e.message);
+		});
+	});
+
+	// --- WebSerial -----------------------------------------------------------
+	var serPort = null, serReader = null, serReadAbort = false;
+	var td = new TextDecoder();
+	var te = new TextEncoder();
+
+	function serAppend(text) {
+		var box = document.getElementById('ser-rx');
+		var line = document.createElement('div');
+		line.textContent = text;
+		box.appendChild(line);
+		while (box.children.length > 200) box.removeChild(box.firstChild);
+	}
+
+	function serReadLoop() {
+		if (!serPort || !serPort.readable) return;
+		serReader = serPort.readable.getReader();
+		serReadAbort = false;
+		(function pump() {
+			serReader.read().then(function (r) {
+				if (r.done || serReadAbort) { try { serReader.releaseLock(); } catch (e) {} return; }
+				if (r.value && r.value.length) serAppend(td.decode(r.value));
+				pump();
+			}).catch(function (e) {
+				log('err', 'read: ' + e.name + ' — ' + e.message);
+				try { serReader.releaseLock(); } catch (x) {}
+			});
+		})();
+	}
+
+	document.getElementById('ser-open').addEventListener('click', function () {
+		var out = document.getElementById('ser-result');
+		if (!navigator.serial) { out.textContent = 'navigator.serial is not available.'; return; }
+		if (serPort) { out.textContent = 'Already open — Close first.'; return; }
+		var baud = parseInt(document.getElementById('ser-baud').value, 10) || 115200;
+		out.textContent = 'Opening chooser…';
+		log('info', 'serial.requestPort()');
+		navigator.serial.requestPort().then(function (p) {
+			serPort = p;
+			log('ok', 'port selected: ' + JSON.stringify(p.getInfo()));
+			return p.open({ baudRate: baud });
+		}).then(function () {
+			var info = serPort.getInfo();
+			out.textContent = 'Open @ ' + baud + ' baud\nvendorId:  0x' + hex4(info.usbVendorId || 0) + '\nproductId: 0x' + hex4(info.usbProductId || 0);
+			log('ok', 'port open @ ' + baud);
+			serReadLoop();
+		}).catch(function (e) {
+			out.textContent = e.name + ': ' + e.message;
+			log('err', 'serial open: ' + e.name + ' — ' + e.message);
+			serPort = null;
+		});
+	});
+
+	document.getElementById('ser-write').addEventListener('click', function () {
+		if (!serPort || !serPort.writable) { document.getElementById('ser-result').textContent = 'Open a port first.'; return; }
+		var text = document.getElementById('ser-tx').value + '\n';
+		var w = serPort.writable.getWriter();
+		w.write(te.encode(text)).then(function () {
+			w.releaseLock();
+			log('ok', 'wrote ' + text.length + ' byte(s)');
+		}).catch(function (e) {
+			try { w.releaseLock(); } catch (x) {}
+			log('err', 'write: ' + e.name + ' — ' + e.message);
+		});
+	});
+
+	document.getElementById('ser-close').addEventListener('click', function () {
+		if (!serPort) { document.getElementById('ser-result').textContent = 'No open port.'; return; }
+		serReadAbort = true;
+		var p = serPort;
+		serPort = null;
+		var finish = function () {
+			p.close().then(function () {
+				log('ok', 'port closed');
+				document.getElementById('ser-result').textContent = 'Closed.';
+			}).catch(function (e) { log('err', 'close: ' + e.message); });
+			serReader = null;
+		};
+		if (serReader) {
+			serReader.cancel().then(function () { try { serReader.releaseLock(); } catch (e) {} finish(); }).catch(finish);
+		} else {
+			finish();
+		}
+	});
+
+	// --- WebHID --------------------------------------------------------------
+	var hidDev = null;
+
+	function hexToBytes(s) {
+		s = String(s || '').replace(/[^0-9a-fA-F]/g, '');
+		if (s.length % 2) s = '0' + s;
+		var out = new Uint8Array(s.length / 2);
+		for (var i = 0; i < out.length; i++) out[i] = parseInt(s.substr(i * 2, 2), 16);
+		return out;
+	}
+	function bytesToHex(dv) {
+		var s = '';
+		for (var i = 0; i < dv.byteLength; i++) {
+			var b = dv.getUint8(i);
+			s += (b < 16 ? '0' : '') + b.toString(16);
+		}
+		return s || '(empty)';
+	}
+	function hidAppend(text) {
+		var box = document.getElementById('hid-rx');
+		var line = document.createElement('div');
+		line.textContent = text;
+		box.appendChild(line);
+		while (box.children.length > 200) box.removeChild(box.firstChild);
+	}
+
+	document.getElementById('hid-open').addEventListener('click', function () {
+		var out = document.getElementById('hid-result');
+		if (!navigator.hid) { out.textContent = 'navigator.hid is not available.'; return; }
+		if (hidDev) { out.textContent = 'Already open — Close first.'; return; }
+		out.textContent = 'Opening chooser…';
+		log('info', 'hid.requestDevice({ filters: [] })');
+		navigator.hid.requestDevice({ filters: [] }).then(function (list) {
+			if (!list.length) { out.textContent = 'No device selected.'; return; }
+			hidDev = list[0];
+			hidDev.oninputreport = function (e) {
+				hidAppend('report ' + e.reportId + ': ' + bytesToHex(e.data));
+			};
+			return hidDev.open().then(function () {
+				var c = hidDev.collections || [];
+				var top = c[0];
+				out.textContent = 'Open. vendorId:  0x' + hex4(hidDev.vendorId) +
+					'\nproductId: 0x' + hex4(hidDev.productId) +
+					'\ncollections: ' + c.length +
+					(top ? ('\ntop usagePage/usage: 0x' + hex4(top.usagePage) + ' / 0x' + hex4(top.usage)) : '');
+				log('ok', 'HID open; ' + c.length + ' collection(s)');
+			});
+		}).catch(function (e) {
+			out.textContent = e.name + ': ' + e.message;
+			log('err', 'HID: ' + e.name + ' — ' + e.message);
+			hidDev = null;
+		});
+	});
+
+	document.getElementById('hid-send').addEventListener('click', function () {
+		if (!hidDev) { document.getElementById('hid-result').textContent = 'Open a device first.'; return; }
+		var rid = parseInt(document.getElementById('hid-rid').value, 10) || 0;
+		var bytes = hexToBytes(document.getElementById('hid-bytes').value);
+		hidDev.sendReport(rid, bytes).then(function () {
+			log('ok', 'sent output report ' + rid + ' (' + bytes.length + ' byte(s))');
+		}).catch(function (e) {
+			log('err', 'sendReport: ' + e.name + ' — ' + e.message);
+		});
+	});
+
+	document.getElementById('hid-close').addEventListener('click', function () {
+		if (!hidDev) { document.getElementById('hid-result').textContent = 'No open device.'; return; }
+		var d = hidDev; hidDev = null;
+		d.close().then(function () {
+			log('ok', 'HID closed');
+			document.getElementById('hid-result').textContent = 'Closed.';
+		}).catch(function (e) { log('err', 'close: ' + e.message); });
+	});
+
+	// --- Web MIDI ------------------------------------------------------------
+	var midiAccess = null;
+	function midiAppend(t) {
+		var box = document.getElementById('midi-rx');
+		var l = document.createElement('div');
+		l.textContent = t;
+		box.appendChild(l);
+		while (box.children.length > 200) box.removeChild(box.firstChild);
+	}
+	function midiHex(u8) {
+		var s = '';
+		for (var i = 0; i < u8.length; i++) { var b = u8[i]; s += (b < 16 ? '0' : '') + b.toString(16) + ' '; }
+		return s.trim() || '(empty)';
+	}
+
+	document.getElementById('midi-req').addEventListener('click', function () {
+		var out = document.getElementById('midi-result');
+		if (!navigator.requestMIDIAccess) { out.textContent = 'requestMIDIAccess is not available.'; return; }
+		out.textContent = 'Requesting…';
+		log('info', 'requestMIDIAccess()');
+		navigator.requestMIDIAccess().then(function (access) {
+			midiAccess = access;
+			var ins = [], outs = [];
+			access.inputs.forEach(function (p) {
+				ins.push(p.name || p.id);
+				p.onmidimessage = function (e) { midiAppend((p.name || p.id) + ': ' + midiHex(e.data)); };
+			});
+			access.outputs.forEach(function (p) { outs.push(p.name || p.id); });
+			out.textContent = 'Access granted. sysex=' + access.sysexEnabled +
+				'\ninputs (' + ins.length + '): ' + (ins.join(', ') || '(none)') +
+				'\noutputs (' + outs.length + '): ' + (outs.join(', ') || '(none)');
+			log('ok', 'MIDI access: ' + ins.length + ' in, ' + outs.length + ' out');
+		}).catch(function (e) {
+			out.textContent = e.name + ': ' + e.message;
+			log('err', 'requestMIDIAccess: ' + e.name + ' — ' + e.message);
+		});
+	});
+
+	document.getElementById('midi-note').addEventListener('click', function () {
+		if (!midiAccess) { document.getElementById('midi-result').textContent = 'Request access first.'; return; }
+		var first = null;
+		midiAccess.outputs.forEach(function (p) { if (!first) first = p; });
+		if (!first) { document.getElementById('midi-result').textContent = 'No MIDI output available.'; return; }
+		first.send([0x90, 60, 100]); // Note On, C4, velocity 100
+		setTimeout(function () { first.send([0x80, 60, 0]); }, 300); // Note Off
+		log('ok', 'sent Note On/Off C4 → ' + (first.name || first.id));
+	});
+
+	// --- Web NFC -------------------------------------------------------------
+	var nfcReader = null;
+	function nfcAppend(t) {
+		var box = document.getElementById('nfc-rx');
+		var l = document.createElement('div');
+		l.textContent = t;
+		box.appendChild(l);
+		while (box.children.length > 200) box.removeChild(box.firstChild);
+	}
+	function describeRecord(r) {
+		var s = r.recordType;
+		if (r.mediaType) s += ' (' + r.mediaType + ')';
+		if (r.data) {
+			try {
+				if (r.recordType === 'text') s += ': "' + new TextDecoder(r.encoding || 'utf-8').decode(r.data) + '" [' + (r.lang || '') + ']';
+				else if (r.recordType === 'url') s += ': ' + new TextDecoder().decode(r.data);
+				else s += ': ' + r.data.byteLength + ' bytes';
+			} catch (e) { s += ': <decode error>'; }
+		}
+		return s;
+	}
+	function ensureReader() {
+		if (!nfcReader) {
+			nfcReader = new NDEFReader();
+			nfcReader.onreading = function (e) {
+				var recs = (e.message.records || []).map(describeRecord);
+				nfcAppend('tag ' + e.serialNumber + ' — ' + recs.length + ' record(s)');
+				recs.forEach(function (x) { nfcAppend('  • ' + x); });
+			};
+			nfcReader.onreadingerror = function () { nfcAppend('reading error'); };
+		}
+		return nfcReader;
+	}
+
+	document.getElementById('nfc-scan').addEventListener('click', function () {
+		var out = document.getElementById('nfc-result');
+		if (typeof NDEFReader === 'undefined') { out.textContent = 'NDEFReader is not available.'; return; }
+		ensureReader();
+		out.textContent = 'Requesting permission…';
+		log('info', 'NDEFReader.scan()');
+		nfcReader.scan().then(function () {
+			out.textContent = 'Scanning. Tap a tag (or use "Simulate tag").';
+			log('ok', 'NFC scan started');
+		}).catch(function (e) {
+			out.textContent = e.name + ': ' + e.message;
+			log('err', 'NFC scan: ' + e.name + ' — ' + e.message);
+		});
+	});
+
+	document.getElementById('nfc-sim').addEventListener('click', function () {
+		var fn = (typeof globalThis !== 'undefined' ? globalThis : window).__nxjsSimulateNdefReading;
+		if (typeof fn !== 'function') { document.getElementById('nfc-result').textContent = 'sim hook unavailable (old build?)'; return; }
+		if (!nfcReader) { document.getElementById('nfc-result').textContent = 'Start scan first.'; return; }
+		fn('04:a1:b2:c3:d4:e5:f6', [
+			{ recordType: 'text', data: 'Hello from NFC', lang: 'en' },
+			{ recordType: 'url', data: 'https://brewser.tech' }
+		]);
+		log('info', 'injected simulated NFC reading');
+	});
+
+	document.getElementById('nfc-write').addEventListener('click', function () {
+		var out = document.getElementById('nfc-result');
+		if (typeof NDEFReader === 'undefined') { out.textContent = 'NDEFReader is not available.'; return; }
+		ensureReader();
+		out.textContent = 'Writing (needs a real tag)…';
+		log('info', 'NDEFReader.write("Hello")');
+		nfcReader.write('Hello').then(function () {
+			out.textContent = 'Wrote text record.';
+			log('ok', 'NFC write ok');
+		}).catch(function (e) {
+			out.textContent = e.name + ': ' + e.message;
+			log('err', 'NFC write: ' + e.name + ' — ' + e.message);
+		});
+	});
+
+	// --- simulation (Citron) -------------------------------------------------
+	function probe(req) {
+		var fn = (typeof globalThis !== 'undefined' ? globalThis : window).__nxjsDeviceChooserProbe;
+		if (typeof fn !== 'function') {
+			return Promise.reject(new Error('__nxjsDeviceChooserProbe unavailable (old engine build?)'));
+		}
+		return fn(req);
+	}
+
+	function runSim(req, describe) {
+		var out = document.getElementById('sim-result');
+		out.textContent = 'Opening chooser…';
+		log('info', 'probe: ' + req.kind + '/' + req.mode + ' (' + req.candidates.length + ' fake)');
+		probe(req).then(function (id) {
+			if (id === null || typeof id === 'undefined') {
+				out.textContent = 'Cancelled / denied (chooser returned null).';
+				log('info', 'probe result: null (cancel/deny)');
+			} else {
+				out.textContent = describe(id);
+				log('ok', 'probe result: ' + id);
+			}
+		}).catch(function (e) {
+			out.textContent = e.name + ': ' + e.message;
+			log('err', 'probe: ' + e.name + ' — ' + e.message);
+		});
+	}
+
+	document.getElementById('sim-usb').addEventListener('click', function () {
+		var candidates = [
+			{ id: 'sim-2341:0043', name: 'Simulated Arduino Uno', detail: '2341:0043 · Arduino LLC' },
+			{ id: 'sim-1a86:7523', name: 'USB device 1a86:7523', detail: '1a86:7523' },
+			{ id: 'sim-0944:0117', name: 'Simulated MIDI Keyboard', detail: '0944:0117 · KORG' }
+		];
+		runSim(
+			{ kind: 'usb', mode: 'select', title: 'Select a USB device', candidates: candidates },
+			function (id) {
+				var c = candidates.filter(function (x) { return x.id === id; })[0];
+				return c ? ('picked: ' + c.name + '\nid:     ' + id) : ('picked id: ' + id);
+			}
+		);
+	});
+
+	document.getElementById('sim-bt').addEventListener('click', function () {
+		var candidates = [
+			{ id: 'aa:bb:cc:dd:ee:01', name: 'Simulated Heart Rate Band', detail: 'aa:bb:cc:dd:ee:01' },
+			{ id: 'aa:bb:cc:dd:ee:02', name: 'Unknown device', detail: 'aa:bb:cc:dd:ee:02' }
+		];
+		runSim(
+			{ kind: 'bluetooth', mode: 'select', title: 'Select a Bluetooth device', candidates: candidates },
+			function (id) { return 'picked id: ' + id; }
+		);
+	});
+
+	document.getElementById('sim-serial').addEventListener('click', function () {
+		var candidates = [
+			{ id: 'sim-serial-1', name: 'Simulated ESP32-S3 (CDC)', detail: '303a:1001' },
+			{ id: 'sim-serial-2', name: 'Serial port 2341:0043', detail: '2341:0043' }
+		];
+		runSim(
+			{ kind: 'serial', mode: 'select', title: 'Select a serial port', candidates: candidates },
+			function (id) { return 'picked id: ' + id; }
+		);
+	});
+
+	document.getElementById('sim-hid').addEventListener('click', function () {
+		var candidates = [
+			{ id: 'sim-hid-1', name: 'Simulated Game Controller', detail: '045e:028e' },
+			{ id: 'sim-hid-2', name: 'HID device 16c0:27db', detail: '16c0:27db' }
+		];
+		runSim(
+			{ kind: 'hid', mode: 'select', title: 'Select an HID device', candidates: candidates },
+			function (id) { return 'picked id: ' + id; }
+		);
+	});
+
+	document.getElementById('sim-confirm').addEventListener('click', function () {
+		runSim(
+			{ kind: 'midi', mode: 'confirm', title: 'Allow MIDI access?', candidates: [{ id: '__grant__', name: 'Allow MIDI devices' }] },
+			function (id) { return id === '__grant__' ? 'GRANTED' : ('result: ' + id); }
+		);
+	});
+
+	log('info', 'Ready. USB is the primary Phase A check. On Citron, use the Simulation card.');
+})();
+</script>
+</body>
+</html>

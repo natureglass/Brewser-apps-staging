@@ -1,0 +1,11 @@
+{
+  "id": "com.natureglass.hardwareapitest",
+  "sizeBytes": 106374,
+  "files": [
+    "README.md",
+    "assets/appbanner.jpg",
+    "assets/appbanner.png",
+    "index.html",
+    "manifest.json"
+  ]
+}
