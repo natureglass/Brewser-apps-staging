@@ -1,0 +1,17 @@
+{
+    "id": "com.natureglass.speedwatch",
+    "name": "Speed Watch",
+    "version": "1.0.5",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "zip_sha256": "17e22e4541ff624ebc030f80a2ea66c2107916d77ae8c32b636f6af21315e63e",
+    "attestation": {
+        "ts": "2026-08-31T19:04:32+00:00",
+        "platforms": [
+            "mobile",
+            "switch",
+            "web"
+        ],
+        "zip_sha256": "17e22e4541ff624ebc030f80a2ea66c2107916d77ae8c32b636f6af21315e63e"
+    },
+    "submitted_at": "2026-08-31T19:04:32+00:00"
+}
