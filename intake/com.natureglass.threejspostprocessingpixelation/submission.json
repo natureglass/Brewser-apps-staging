@@ -1,0 +1,17 @@
+{
+    "id": "com.natureglass.threejspostprocessingpixelation",
+    "name": "ThreeJS Postprocessing Pixelation",
+    "version": "1.0.1",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "zip_sha256": "9c458cc7908c75e0b9ce61c9db06b4776e83e37a25bb787a12c4211cdc5148c1",
+    "attestation": {
+        "ts": "2026-08-31T19:31:49+00:00",
+        "platforms": [
+            "mobile",
+            "switch",
+            "web"
+        ],
+        "zip_sha256": "9c458cc7908c75e0b9ce61c9db06b4776e83e37a25bb787a12c4211cdc5148c1"
+    },
+    "submitted_at": "2026-08-31T19:31:49+00:00"
+}
