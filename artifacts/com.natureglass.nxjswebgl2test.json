@@ -1,8 +1,9 @@
 {
   "id": "com.natureglass.nxjswebgl2test",
-  "sizeBytes": 75297,
+  "sizeBytes": 2095331,
   "files": [
     "README.md",
+    "assets/appbanner.gif",
     "assets/appbanner.jpg",
     "assets/logo.png",
     "assets/main.js",
