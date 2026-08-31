@@ -48,15 +48,5 @@
         "entry": "index.html",
         "logo": "assets/appbanner.jpg",
         "description": "<p><strong>Gravity Balls</strong> is a relaxing physics sandbox where a set of colourful balls fall, bounce and jostle against each other and the walls — and gravity points wherever you tilt.</p>\r\n<p><strong>How it works.</strong> A proper physics engine runs behind the scenes. Each frame is broken into several small sub-steps, and within each step the app nudges every ball's velocity by gravity, then repeatedly resolves collisions — ball-against-wall and ball-against-ball — using impulses…"
-    },
-    {
-        "id": "com.natureglass.nxjswebgl2test",
-        "name": "nxjs WebGL2 Test",
-        "version": "1.0.2",
-        "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
-        "updated_at": "2026-08-31T19:34:09Z",
-        "entry": "index.html",
-        "logo": "assets/appbanner.jpg",
-        "description": "<p><strong>nxjs WebGL2 Test</strong> is a WebGL2 showpiece for the nx.js runtime — a procedural sunset sea, drawn entirely inside a single shader, with the nx.js logo on a cube drifting on the tide.</p>\r\n<p><strong>How it works.</strong> The whole scene is painted by one <em>fragment shader</em> in the ShaderToy style: a single full-screen triangle is drawn with no geometry data at all, and for every pixel the shader casts a <em>ray</em> out into an imagined world. It <em>ray-marches</em> a…"
     }
 ]
