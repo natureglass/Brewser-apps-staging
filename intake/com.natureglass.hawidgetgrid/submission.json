@@ -1,0 +1,17 @@
+{
+    "id": "com.natureglass.hawidgetgrid",
+    "name": "HA Widget Grid",
+    "version": "1.0.0",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "zip_sha256": "2a572683c7fa3fb4babb128076c3018a5ce87ebe4784368fdd691f379850b7b4",
+    "attestation": {
+        "ts": "2026-08-31T21:23:39+00:00",
+        "platforms": [
+            "mobile",
+            "switch",
+            "web"
+        ],
+        "zip_sha256": "2a572683c7fa3fb4babb128076c3018a5ce87ebe4784368fdd691f379850b7b4"
+    },
+    "submitted_at": "2026-08-31T21:23:39+00:00"
+}
