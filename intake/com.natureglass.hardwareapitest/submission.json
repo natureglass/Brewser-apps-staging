@@ -1,0 +1,16 @@
+{
+    "id": "com.natureglass.hardwareapitest",
+    "name": "Hardware API Test",
+    "version": "1.0.0",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "zip_sha256": "db43e35c2e226fc14e5bb2f59fd3f144eef74844789d6e2e0a7732e94b350e9a",
+    "attestation": {
+        "ts": "2026-08-31T22:02:52+00:00",
+        "platforms": [
+            "switch",
+            "web"
+        ],
+        "zip_sha256": "db43e35c2e226fc14e5bb2f59fd3f144eef74844789d6e2e0a7732e94b350e9a"
+    },
+    "submitted_at": "2026-08-31T22:02:52+00:00"
+}

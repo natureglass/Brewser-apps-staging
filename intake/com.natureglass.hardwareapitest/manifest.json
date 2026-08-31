@@ -1,0 +1,38 @@
+{
+    "id": "com.natureglass.hardwareapitest",
+    "name": "Hardware API Test",
+    "version": "1.0.0",
+    "description": "<p><strong>Hardware API Test</strong> is a developer diagnostic for Brewser's hardware Web APIs. It calls each API's <code>requestDevice()</code> and shows the device chooser + the selected device's details, so you can verify the picker, the permission gate, and the underlying enumeration on real hardware.</p>\r\n<ul>\r\n<li><strong>WebUSB</strong> — lists every device on the USB-C port and reports the chosen device's vendor/product ids and configuration count.</li>\r\n<li><strong>Web Bluetooth</strong> — scans for a service UUID you provide and lists matching BLE devices.</li>\r\n</ul>\r\n<p>Also feature-detects <code>navigator.serial</code>, <code>navigator.hid</code>, <code>requestMIDIAccess</code> and <code>NDEFReader</code> for the upcoming phases.</p>",
+    "logo": "assets/appbanner.jpg",
+    "entry": "index.html",
+    "categories": [
+        "Apps"
+    ],
+    "permissions": [
+        "bluetooth",
+        "nfc",
+        "usb"
+    ],
+    "compatibility": [
+        "switch",
+        "web"
+    ],
+    "allowed_origins": [],
+    "developer": "Alex Daskalakis",
+    "license": "MIT",
+    "exitGame": "PLUS",
+    "fullscreen": true,
+    "hideMouseDocked": false,
+    "hideMouseUndocked": false,
+    "freshProcessOnExit": false,
+    "publishedAt": "2026-08-31T22:02:52Z",
+    "updatedAt": "2026-08-31T22:02:52Z",
+    "summary": "A developer diagnostic that verifies Brewser's WebUSB / Web Bluetooth device chooser on real hardwar",
+    "features": [
+        "Web Bluetooth",
+        "Web HID",
+        "Web MIDI",
+        "Web Serial",
+        "Web USB"
+    ]
+}
