@@ -90,6 +90,16 @@
     "description": "<p><strong>Speed Watch</strong> turns your device into a GPS speedometer with a live map and automatic speed-limit alerts — a full driving head-up dashboard in a single page, with no libraries, no API keys, and no account.</p>\r\n<p><strong>How it works<br /></strong>A large canvas speedometer is the hero: your live speed swings an eased needle around a 270° dial styled after European road signage, with a big digital readout and a green \"legal\" zone that turns red past the posted…"
   },
   {
+    "id": "com.natureglass.threejsshaderssky",
+    "name": "ThreeJS Shaders Sky",
+    "version": "1.0.2",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "updated_at": "2026-08-31T18:57:37Z",
+    "entry": "index.html",
+    "logo": "assets/appbanner.jpg",
+    "description": "<p><strong>ThreeJS Shaders Sky</strong> is an interactive atmosphere — a procedurally generated sky where you can move the sun from dawn to dusk and watch the colours, haze and drifting clouds respond.</p>\r\n<p><strong>How it works.</strong> There is no sky photograph here; every pixel is computed by a shader based on the <em>Preetham analytic daylight model</em>, a physics-inspired formula for how sunlight scatters through the air. Two effects do most of the work: <em>Rayleigh scattering</em>,…"
+  },
+  {
     "id": "com.natureglass.threejsspotlightshadowcookie",
     "name": "ThreeJS Spotlight Shadow Cookie",
     "version": "1.0.2",
