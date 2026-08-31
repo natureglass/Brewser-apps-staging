@@ -1,8 +1,9 @@
 {
   "id": "com.natureglass.threejsgpgpuwater",
-  "sizeBytes": 3862056,
+  "sizeBytes": 6205867,
   "files": [
     "README.md",
+    "assets/appbanner.gif",
     "assets/appbanner.jpg",
     "build/three.core.js",
     "build/three.module.js",
