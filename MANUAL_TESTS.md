@@ -45,8 +45,8 @@ localStorage.setItem('brewser_auth', JSON.stringify({
   token: 'FAKE.TOKEN.PARTS',
   user: {
     sub: '104834891248918273467',       // some real Google sub of yours
-    name: 'Alex Daskalakis',
-    email: 'alex@example.com',
+    name: '@natureglass',
+    email: 'info@example.com',
     picture: '',
     exp: Math.floor(Date.now()/1000) + 3600
   }
