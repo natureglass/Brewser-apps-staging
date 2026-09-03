@@ -1,0 +1,15 @@
+{
+    "id": "com.natureglass.domhtmlcss",
+    "name": "DOM HTML CSS",
+    "version": "1.0.2",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "zip_sha256": "32699f0c82e1fa8c0cb74c6a5f96e5486e269a6f56fd0d1b835e72597fce5ac1",
+    "attestation": {
+        "ts": "2026-09-03T11:17:17+00:00",
+        "platforms": [
+            "switch"
+        ],
+        "zip_sha256": "32699f0c82e1fa8c0cb74c6a5f96e5486e269a6f56fd0d1b835e72597fce5ac1"
+    },
+    "submitted_at": "2026-09-03T11:17:17+00:00"
+}
