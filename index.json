@@ -22,9 +22,9 @@
   {
     "id": "com.natureglass.domhtmlcss",
     "name": "DOM HTML CSS",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
-    "updated_at": "2026-09-03T10:58:26Z",
+    "updated_at": "2026-09-03T11:18:03Z",
     "entry": "index.html",
     "logo": "assets/appbanner.jpg",
     "description": "<p><strong>DOM HTML CSS</strong> is a suite of self-contained fixtures for the Brewser rendering engine. Each page opens on its own and exercises exactly one part of the pipeline — document structure, the CSS cascade, embedded media, canvas and WebGL, the Web API surface, or raw paint performance — so you can see precisely how the runtime handles each feature.</p>\r\n<p><strong>How it works.</strong> The landing page is a plain hyperlinked index grouped by topic; following a link loads a small,…"
