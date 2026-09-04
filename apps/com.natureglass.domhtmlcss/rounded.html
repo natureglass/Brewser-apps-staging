@@ -1,0 +1,86 @@
+<!doctype html>
+<html>
+<head>
+<title>Test fixture: border-radius</title>
+<style>
+  body { background-color: #0b1220; color: #e0e8f4; font-size: 18px; padding: 28px 48px; }
+  body { background-color: #1a2b3c; color: #e0e8f4; }
+  h1 { color: #ffd35e; margin-top: 8px; }
+  h2 { color: #7aa2ff; margin-top: 24px; }
+  p { margin-top: 6px; margin-bottom: 6px; }
+  a { color: #7eda9f; }
+  .card {
+    background-color: #20324b; padding: 12px 16px;
+    border: 1px solid #3a4866; border-radius: 8px;
+    margin: 6px 0;
+  }
+  .pill {
+    background-color: #7aa2ff; color: #1a2b3c;
+    padding: 4px 14px;
+    border-radius: 999px;
+    margin: 4px 6px;
+  }
+  .chip {
+    background-color: #2a3d5a; color: #e0e8f4;
+    padding: 2px 10px;
+    border-radius: 4px;
+    border: 1px solid #7aa2ff;
+  }
+  .avatar {
+    border-radius: 50%;
+    border: 2px solid #7eda9f;
+  }
+  .thumbnail {
+    border-radius: 12px;
+    border: 1px solid #3a4866;
+  }
+  /* Per-corner border-radius. */
+  .pc { color:#e0e8f4; padding:14px 16px; margin:8px 8px 8px 0; display:inline-block;
+        width:190px; box-sizing:border-box; font-size:14px; }
+  .pc1 { background-color:#20324b; border:2px solid #7aa2ff; border-radius:30px 6px 30px 6px; } /* leaf */
+  .pc2 { background-color:#2a3d5a; border:2px solid #7eda9f; border-radius:16px 16px 16px 2px; } /* speech bubble */
+  .pc3 { background-color:#3a2b5a; border:2px solid #c471f5;
+         border-top-left-radius:34px; border-bottom-right-radius:34px; }                       /* diagonal (longhands) */
+  .pc4 { background-color:#5a2b3d; border:2px solid #ff8fb0; border-radius:0 24px; }            /* 2-value TL/BR=0, TR/BL=24 */
+</style>
+</head>
+<body>
+<h1>border-radius</h1>
+<p>Validates rounded rectangles for backgrounds + borders and clip-to-
+rounded for &lt;img&gt; / &lt;canvas&gt; through the live-DOM render
+path. Any visible divergence from real-browser <code>border-radius</code>
+output (corrupted image bands, missing clip, inline-block layout
+mismatch) is a live-overlay bug-of-record.</p>
+
+<h2>Rounded backgrounds</h2>
+<p class="card">A card with <code>background-color</code>, a 1px
+<code>border</code>, and <code>border-radius: 8px</code> &mdash; the
+bg fill is clipped to the rounded outline and the border stroke
+traces the same shape.</p>
+<p class="pill">Pill chip 1</p>
+<p class="pill">Pill chip 2 with longer text</p>
+<p class="chip">Smaller chip with 4px radius</p>
+
+<h2>Rounded images</h2>
+<p>Small avatar with <code>border-radius: 50%</code> (snowflake test
+image, cropped to a circle):</p>
+<img class="avatar" src="romfs:/test-images/snowflake1.png" width="64" height="64" />
+<p>Same image as a 12-px-radius thumbnail:</p>
+<img class="thumbnail" src="romfs:/test-images/snowflake2.png" width="120" height="120" />
+
+<h2>Per-corner radius</h2>
+<p>Each corner rounds independently &mdash; the background fill AND the border
+stroke both follow the per-corner shape:</p>
+<div class="pc pc1">30/6/30/6 &mdash; leaf</div>
+<div class="pc pc2">16/16/16/2 &mdash; speech bubble</div>
+<div class="pc pc3">TL + BR longhands (diagonal)</div>
+<div class="pc pc4"><code>0 24px</code> &mdash; 2-value</div>
+
+<h2>Rounded canvas placeholder</h2>
+<p>An empty <code>&lt;canvas&gt;</code> with
+<code>border-radius: 16px</code>:</p>
+<canvas width="240" height="120" style="border-radius: 16px; background-color: #2a3d5a"></canvas>
+
+<p><a href="index.html">back to web experiments</a></p>
+</body>
+</html>
