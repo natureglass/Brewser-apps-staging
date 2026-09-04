@@ -2,7 +2,13 @@
 
 _v1.0.0_
 
-The Switch homebrew scene is a direct descendant of the cracking scene, so pay tribute where it's due. Build a classic Amiga-style cracktro: a sine-wave scroller with greetings to the whole scene, copper bars, plasma, a 3D starfield, raster-bounced logo, all synced to a chiptune. Do it the scene way: no textures, no assets, everything procedural, the geometry from math, the music from oscillators or a .mod file played through Web Audio. Start with one effect (a plasma is 30 lines of shader) and stack them into a full intro with scene transitions.
+A procedural tribute to the classic Amiga cracktro and demoscene, created for the Switch homebrew community.
+
+ The project recreates the unmistakable style of old-school intros with a sine-wave scroller, copper bars, plasma effects, a 3D starfield, a raster-bounced logo, and a synchronized chiptune soundtrack. Everything is generated procedurally at runtime—no textures, pre-rendered graphics, or external visual assets. Geometry is created from mathematics and the visual effects are built with shaders and code.
+
+ The soundtrack is synchronized with the effects to create a complete scene-style intro, with individual effects introduced and combined through timed transitions.
+
+ A small tribute to where today's homebrew scene came from: **code, creativity, mathematics, music, and a lot of unnecessary visual effects.**
 
 ---
 
