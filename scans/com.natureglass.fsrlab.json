@@ -1,0 +1,29 @@
+{
+  "verdict": "GOOD",
+  "score": 1,
+  "scanned_at": "2026-09-04T09:37:18Z",
+  "scanner_version": "1.3.2",
+  "package_hash": "4027b46ecb1bf651a54ad6dd073e0bab5f054b39be475cf50cab03cb23d120ff",
+  "counts": {
+    "info": 1,
+    "suspicious": 0,
+    "dangerous": 0
+  },
+  "rationale": "No known-bad pattern matched (1 informational note(s)). Not proof of safety — human review still required.",
+  "truncated": false,
+  "findings": [
+    {
+      "rule_id": "html-injection-sink",
+      "severity": "INFO",
+      "title": "DOM HTML sink assigned a non-literal value",
+      "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
+      "file": "index.html <inline script>",
+      "line": 679,
+      "evidence": "resLine.innerHTML = `${renderW} \\u00d7 ${renderH} \\u2192 ${W} \\u00d7 ${H} <em>(${pct}% of the pixels)</em>${z}`"
+    }
+  ],
+  "capabilities": [
+    "webgl"
+  ],
+  "limitations": "Static heuristic scan. A GOOD verdict means no known-bad pattern matched, NOT proof of safety. Human review is still required for every submission."
+}
