@@ -1,6 +1,6 @@
 # Jellyfin Client
 
-_v1.0.2_
+_v1.0.3_
 
 What to verify on Switch
 
