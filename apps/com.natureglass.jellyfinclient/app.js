@@ -47,6 +47,7 @@
     for (const s of SCREENS) $('screen-' + s).classList.toggle('hidden', s !== name);
     if (name !== 'settings') settingsReturnTo = name;
     currentScreen = name;
+    document.body.style.overflow = name === 'player' ? 'hidden' : '';
     window.scrollTo(0, 0);
   }
 
@@ -98,9 +99,29 @@
 
   function runtimeText(ticks) {
     if (!ticks) return null;
-    const mins = Math.round(JF.ticksToSeconds(ticks) / 60);
+    const secs = JF.ticksToSeconds(ticks);
+    if (secs < 60) return Math.round(secs) + 's';
+    const mins = Math.round(secs / 60);
     if (mins < 60) return mins + 'm';
     return Math.floor(mins / 60) + 'h ' + (mins % 60) + 'm';
+  }
+
+  /** Precise clock duration: 1:23:45 or 4:05. */
+  function clockText(ticks) {
+    if (!ticks) return null;
+    let s = Math.round(JF.ticksToSeconds(ticks));
+    const h = Math.floor(s / 3600); s -= h * 3600;
+    const m = Math.floor(s / 60); s -= m * 60;
+    const pad = (n) => (n < 10 ? '0' + n : '' + n);
+    return h > 0 ? h + ':' + pad(m) + ':' + pad(s) : m + ':' + pad(s);
+  }
+
+  function sizeText(bytes) {
+    if (!bytes || bytes <= 0) return null;
+    const units = ['B', 'KB', 'MB', 'GB', 'TB'];
+    let i = 0, v = bytes;
+    while (v >= 1024 && i < units.length - 1) { v /= 1024; i++; }
+    return (v >= 100 || i === 0 ? Math.round(v) : v.toFixed(1)) + ' ' + units[i];
   }
 
   function endsAtText(remainingTicks) {
@@ -298,6 +319,8 @@
         a.Language || null,
       ].filter(Boolean).join(' '));
       if (sub.length) addKv(streams, 'Subtitles', sub.map((s) => s.Language || s.DisplayTitle || '?').join(', '));
+      addKv(streams, 'Duration', clockText(source.RunTimeTicks || item.RunTimeTicks));
+      addKv(streams, 'Size', sizeText(source.Size));
       if (source.Container) addKv(streams, 'Container', source.Container);
     }
     if (item.Genres && item.Genres.length) addKv(streams, 'Genre', item.Genres.join(', '));
@@ -356,6 +379,22 @@
   let progress = null;
   let progressTimer = null;
 
+  // Top overlay: fades out 5s after playback starts/resumes; stays put while
+  // paused; any pointer activity brings it back.
+  const overlay = $('player-overlay');
+  let overlayTimer = null;
+  function wakeOverlay() {
+    overlay.classList.remove('faded');
+    if (overlayTimer) { clearTimeout(overlayTimer); overlayTimer = null; }
+    if (!video.paused && !video.ended) {
+      overlayTimer = setTimeout(() => { overlay.classList.add('faded'); }, 5000);
+    }
+  }
+  video.addEventListener('play', wakeOverlay);
+  video.addEventListener('pause', wakeOverlay);
+  $('screen-player').addEventListener('pointermove', wakeOverlay);
+  $('screen-player').addEventListener('pointerdown', wakeOverlay);
+
   function qualityPolicy() {
     const v = $('quality').value;
     if (v === 'auto' || v === 'source') return { mode: v };
@@ -366,6 +405,7 @@
   async function play(item, resumeTicks) {
     await stopPlayback();
     $('player-title').textContent = item.Name || '';
+    wakeOverlay();
     go('player');
 
     if (item.MediaType === 'Audio') {
@@ -422,6 +462,8 @@
   }
 
   async function stopPlayback() {
+    if (overlayTimer) { clearTimeout(overlayTimer); overlayTimer = null; }
+    overlay.classList.remove('faded');
     if (progressTimer) { clearInterval(progressTimer); progressTimer = null; }
     if (client && progress) {
       try {

@@ -112,9 +112,16 @@
   .section-h { font-size: 21px; font-weight: 500; margin: 34px 0 14px; }
 
   /* ---- player ---- */
-  #screen-player { background: #000; display: flex; flex-direction: column; }
-  #screen-player .topbar { background: rgba(0,0,0,.75); border-bottom: 0; }
-  #player-video { flex: 1; width: 100%; min-height: 0; background: #000; }
+  #screen-player { position: fixed; inset: 0; z-index: 50; background: #000; overflow: hidden; }
+  #player-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; background: #000; }
+  .player-overlay {
+    position: absolute; top: 0; left: 0; right: 0; z-index: 2;
+    display: flex; align-items: center; gap: 14px; padding: 14px 18px 30px;
+    background: linear-gradient(to bottom, rgba(0,0,0,.75), rgba(0,0,0,0));
+    opacity: 1; transition: opacity .4s ease;
+  }
+  .player-overlay.faded { opacity: 0; pointer-events: none; }
+  .player-overlay .title { font-size: 17px; font-weight: 600; text-shadow: 0 1px 4px rgba(0,0,0,.8); }
 
   /* ---- settings ---- */
   .settings-block { background: var(--surface); border: 1px solid var(--edge); border-radius: 6px; padding: 18px; margin-bottom: 18px; max-width: 760px; }
@@ -244,13 +251,13 @@
 
   <!-- Player -->
   <div id="screen-player" class="screen hidden">
-    <div class="topbar">
+    <video id="player-video" controls playsinline></video>
+    <div class="player-overlay" id="player-overlay">
       <button class="iconbtn" id="btn-player-back" title="Back" aria-label="Back">
         <span class="emoji" aria-hidden="true">⬅️</span>
       </button>
       <span class="title" id="player-title"></span>
     </div>
-    <video id="player-video" controls playsinline></video>
   </div>
 
   <!-- Settings -->
