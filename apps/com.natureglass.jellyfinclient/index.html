@@ -3,127 +3,297 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Jellyfin core spike</title>
+<title>Jellyfin</title>
 <style>
-  /* Dev rig styling: dark, quiet, everything legible from the couch. */
   :root {
-    --bg: #14161a;
-    --panel: #1c1f25;
-    --edge: #2c313a;
-    --text: #d8dce3;
-    --dim: #8a919c;
-    --accent: #7aa2f7;
-    --ok: #9ece6a;
-    --err: #f7768e;
+    --bg: #101010;
+    --surface: #181818;
+    --surface-2: #202020;
+    --edge: #2e2e2e;
+    --text: #e8e8e8;
+    --dim: #9a9a9a;
+    --accent: #00a4dc;   /* Jellyfin blue */
+    --accent-2: #aa5cc3; /* Jellyfin purple */
+    --err: #e05c6e;
   }
   * { box-sizing: border-box; }
+  html, body { height: 100%; }
   body {
     margin: 0; background: var(--bg); color: var(--text);
-    font: 15px/1.45 system-ui, sans-serif;
-    display: grid; grid-template-rows: auto 1fr auto; min-height: 100vh;
+    font: 16px/1.5 system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   }
-  header { padding: 14px 18px; border-bottom: 1px solid var(--edge); display: flex; gap: 12px; align-items: baseline; flex-wrap: wrap; }
-  header h1 { font-size: 17px; margin: 0; font-weight: 600; }
-  header .who { color: var(--dim); font-size: 13px; }
-  main { padding: 16px 18px 6px; max-width: 1100px; width: 100%; margin: 0 auto; }
-  section { background: var(--panel); border: 1px solid var(--edge); border-radius: 8px; padding: 14px; margin-bottom: 14px; }
-  section h2 { margin: 0 0 10px; font-size: 14px; font-weight: 600; color: var(--dim); }
-  .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  button { font: inherit; cursor: pointer; border: 0; border-radius: 4px; }
+  button:focus-visible, input:focus-visible, .card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   input, select {
-    background: var(--bg); color: var(--text); border: 1px solid var(--edge);
-    border-radius: 6px; padding: 9px 10px; font-size: 15px; min-width: 0;
+    font: inherit; color: var(--text); background: var(--surface-2);
+    border: 1px solid var(--edge); border-radius: 4px; padding: 12px 14px; width: 100%;
   }
-  input:focus, select:focus, button:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
-  button {
-    background: var(--accent); color: #10131a; border: 0; border-radius: 6px;
-    padding: 9px 14px; font-size: 15px; font-weight: 600; cursor: pointer;
-  }
-  button.quiet { background: var(--edge); color: var(--text); font-weight: 500; }
-  button:disabled { opacity: .45; cursor: default; }
-  .grow { flex: 1 1 220px; }
   .hidden { display: none !important; }
-  .status { color: var(--dim); font-size: 13px; }
-  .status.ok { color: var(--ok); }
-  .status.err { color: var(--err); }
-  .qc-code { font-size: 40px; letter-spacing: .35em; font-variant-numeric: tabular-nums; padding: 6px 0 2px; }
-  .chips { display: flex; gap: 8px; flex-wrap: wrap; }
-  .chip { background: var(--edge); border-radius: 999px; padding: 7px 14px; cursor: pointer; border: 1px solid transparent; font-size: 14px; }
-  .chip.active { border-color: var(--accent); color: var(--accent); }
-  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; margin-top: 10px; }
-  .card { cursor: pointer; border-radius: 6px; overflow: hidden; background: var(--bg); border: 1px solid var(--edge); }
-  .card img { width: 100%; aspect-ratio: 2/3; object-fit: cover; display: block; background: #0d0f12; }
-  .card .t { padding: 6px 8px; font-size: 12.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  video { width: 100%; max-height: 56vh; background: #000; border-radius: 6px; }
-  .kv { font-size: 13px; color: var(--dim); word-break: break-all; margin-top: 8px; }
-  .kv b { color: var(--text); font-weight: 600; }
+  .screen { min-height: 100vh; }
+
+  /* ---- centered auth screens (reference: webOS-style connect) ---- */
+  .center-wrap {
+    min-height: 100vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; padding: 24px;
+  }
+  .center-col { width: min(460px, 92vw); }
+  .brand { display: flex; align-items: center; justify-content: center; gap: 18px; margin-bottom: 56px; }
+  .brand img { height: 96px; }
+  .brand .wordmark { font-size: 56px; font-weight: 700; letter-spacing: -1px; }
+  .field-label { font-size: 18px; margin: 0 0 10px; }
+  .btn-block {
+    display: block; width: 100%; margin-top: 14px; padding: 13px;
+    background: var(--surface-2); color: var(--text);
+    text-transform: uppercase; letter-spacing: .08em; font-size: 14px; font-weight: 600;
+  }
+  .btn-block:hover { background: #2a2a2a; }
+  .btn-block.primary { background: var(--accent); color: #06222c; }
+  .btn-block.primary:hover { filter: brightness(1.08); }
+  .form-status { min-height: 24px; margin-top: 14px; font-size: 14px; color: var(--dim); }
+  .form-status.err { color: var(--err); }
+  .divider { display: flex; align-items: center; gap: 12px; color: var(--dim); font-size: 13px; margin: 22px 0 8px; }
+  .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--edge); }
+  .qc-code { text-align: center; font-size: 52px; letter-spacing: .3em; font-variant-numeric: tabular-nums; margin: 18px 0 6px; }
+  .qc-hint { text-align: center; color: var(--dim); font-size: 14px; }
+  .linkish { background: none; color: var(--dim); margin-top: 22px; font-size: 14px; }
+  .linkish:hover { color: var(--text); }
+  .stack > * + * { margin-top: 12px; }
+
+  /* ---- app chrome ---- */
+  .topbar {
+    position: sticky; top: 0; z-index: 5; display: flex; align-items: center; gap: 14px;
+    padding: 12px 20px; background: rgba(16,16,16,.92); border-bottom: 1px solid #1e1e1e;
+    backdrop-filter: blur(6px);
+  }
+  .topbar .title { font-size: 17px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .topbar .spacer { flex: 1; }
+  .iconbtn {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 40px; height: 40px; border-radius: 50%; background: none; color: var(--dim); flex: none;
+  }
+  .iconbtn:hover { color: var(--text); background: var(--surface-2); }
+  .iconbtn svg { width: 22px; height: 22px; fill: currentColor; }
+  main.page { padding: 22px 20px 40px; max-width: 1400px; margin: 0 auto; }
+
+  /* ---- grids ---- */
+  .grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+  .grid.wide { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+  .card { cursor: pointer; background: none; border: 0; padding: 0; text-align: left; color: var(--text); }
+  .card .thumb {
+    width: 100%; border-radius: 6px; background: var(--surface);
+    object-fit: cover; display: block; aspect-ratio: 2/3;
+  }
+  .card .thumb.landscape { aspect-ratio: 16/9; }
+  .card .thumb.square { aspect-ratio: 1/1; }
+  .card:hover .thumb { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .card .label { margin-top: 8px; font-size: 14px; line-height: 1.3; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+  .card .sub { color: var(--dim); font-size: 12.5px; margin-top: 2px; }
+  .loadmore { margin: 26px auto 0; display: block; padding: 11px 26px; background: var(--surface-2); color: var(--text); }
+  .empty { color: var(--dim); padding: 40px 0; text-align: center; }
+
+  /* ---- detail (reference: jellyfin-web pre-launch view) ---- */
+  .detail-hero { display: flex; gap: 26px; padding: 26px 20px; background: var(--surface); align-items: center; }
+  .detail-hero img { width: min(300px, 34vw); border-radius: 4px; display: block; }
+  .detail-headline { flex: 1; min-width: 0; }
+  .detail-headline h1 { margin: 0 0 6px; font-size: clamp(20px, 3.2vw, 30px); font-weight: 600; word-break: break-word; }
+  .detail-meta { color: var(--dim); font-size: 14.5px; display: flex; gap: 16px; flex-wrap: wrap; }
+  .detail-actions { display: flex; gap: 12px; margin-top: 20px; flex-wrap: wrap; }
+  .btn-play {
+    display: inline-flex; align-items: center; gap: 10px; padding: 11px 22px;
+    background: var(--accent); color: #06222c; font-weight: 600; border-radius: 100px;
+  }
+  .btn-play.secondary { background: var(--surface-2); color: var(--text); }
+  .btn-play svg { width: 16px; height: 16px; fill: currentColor; }
+  .detail-body { max-width: 900px; padding: 26px 20px; }
+  .kv-row { display: grid; grid-template-columns: 110px 1fr; gap: 8px 18px; font-size: 15px; margin-bottom: 10px; }
+  .kv-row .k { color: var(--text); font-weight: 600; }
+  .kv-row .v { color: var(--dim); }
+  .overview { color: var(--dim); margin: 18px 0 0; max-width: 70ch; }
+  .section-h { font-size: 21px; font-weight: 500; margin: 34px 0 14px; }
+
+  /* ---- player ---- */
+  #screen-player { background: #000; display: flex; flex-direction: column; }
+  #screen-player .topbar { background: rgba(0,0,0,.75); border-bottom: 0; }
+  #player-video { flex: 1; width: 100%; min-height: 0; background: #000; }
+
+  /* ---- settings ---- */
+  .settings-block { background: var(--surface); border: 1px solid var(--edge); border-radius: 6px; padding: 18px; margin-bottom: 18px; max-width: 760px; }
+  .settings-block h2 { margin: 0 0 12px; font-size: 15px; font-weight: 600; color: var(--dim); text-transform: uppercase; letter-spacing: .06em; }
+  .settings-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 8px; }
+  .settings-row label { min-width: 130px; color: var(--dim); font-size: 14.5px; }
+  .settings-row select { width: auto; min-width: 160px; }
+  .settings-row .btn-inline { padding: 9px 16px; background: var(--surface-2); color: var(--text); }
   #log {
-    margin: 0 auto; max-width: 1100px; width: 100%; padding: 10px 18px 16px;
-    font: 12px/1.5 ui-monospace, monospace; color: var(--dim);
-    max-height: 200px; overflow-y: auto; white-space: pre-wrap;
+    font: 12px/1.55 ui-monospace, 'Cascadia Mono', Menlo, monospace; color: var(--dim);
+    background: var(--bg); border: 1px solid var(--edge); border-radius: 4px;
+    padding: 10px; max-height: 300px; overflow-y: auto; white-space: pre-wrap;
   }
   #log .e { color: var(--err); }
 </style>
 </head>
 <body>
-  <header>
-    <h1>Jellyfin core spike</h1>
-    <span class="who" id="who">not connected</span>
-  </header>
-  <main>
-    <section id="sec-connect">
-      <h2>Server</h2>
-      <div class="row">
-        <input id="server-url" class="grow" placeholder="192.168.1.x:8096 or https://jf.example.com" autocapitalize="off" autocorrect="off">
-        <button id="btn-connect">Connect</button>
-      </div>
-      <div class="status" id="connect-status"></div>
-    </section>
 
-    <section id="sec-auth" class="hidden">
-      <h2>Sign in</h2>
-      <div class="row">
-        <button id="btn-qc">Quick Connect</button>
-        <span class="status">or</span>
-        <input id="auth-user" placeholder="username" autocapitalize="off">
-        <input id="auth-pass" placeholder="password" type="password">
-        <button id="btn-login" class="quiet">Sign in</button>
+  <!-- Connect (reference layout: logo, Server Address, input, CONNECT) -->
+  <div id="screen-connect" class="screen center-wrap">
+    <div class="center-col">
+      <div class="brand">
+        <img id="logo-img" src="assets/logo.png" alt="" onerror="this.remove()">
+        <span class="wordmark" id="logo-fallback">Jellyfin</span>
       </div>
+      <p class="field-label">Server Address</p>
+      <input id="server-url" placeholder="192.168.1.100:8096 or https://myserver.com"
+             autocapitalize="off" autocorrect="off" spellcheck="false">
+      <button id="btn-connect" class="btn-block">Connect</button>
+      <div class="form-status" id="connect-status"></div>
+    </div>
+  </div>
+
+  <!-- Sign in -->
+  <div id="screen-auth" class="screen center-wrap hidden">
+    <div class="center-col">
+      <div class="brand">
+        <img src="assets/logo.png" alt="" onerror="this.remove()">
+        <span class="wordmark">Jellyfin</span>
+      </div>
+      <p class="field-label" id="auth-server-name">Sign in</p>
+
+      <div id="auth-choices">
+        <button id="btn-qc" class="btn-block primary">Use Quick Connect</button>
+        <div class="divider">or sign in with password</div>
+        <div class="stack">
+          <input id="auth-user" placeholder="Username" autocapitalize="off">
+          <input id="auth-pass" placeholder="Password" type="password">
+        </div>
+        <button id="btn-login" class="btn-block">Sign In</button>
+      </div>
+
       <div id="qc-panel" class="hidden">
         <div class="qc-code" id="qc-code"></div>
-        <div class="status">Enter this code in your Jellyfin app under Quick Connect. Waiting for approval…</div>
+        <p class="qc-hint">Enter this code in your Jellyfin app under<br>Settings &gt; Quick Connect</p>
+        <button id="btn-qc-cancel" class="btn-block">Cancel</button>
       </div>
-      <div class="status" id="auth-status"></div>
-    </section>
 
-    <section id="sec-browse" class="hidden">
-      <h2>Libraries</h2>
-      <div class="chips" id="views"></div>
-      <div class="grid" id="items"></div>
-      <div class="row" style="margin-top:10px">
-        <button id="btn-more" class="quiet hidden">Load more</button>
-        <span class="status" id="browse-status"></span>
-      </div>
-    </section>
+      <div class="form-status" id="auth-status"></div>
+      <button id="btn-change-server" class="linkish">Change server</button>
+    </div>
+  </div>
 
-    <section id="sec-player" class="hidden">
-      <h2 id="player-title">Player</h2>
-      <video id="player" controls playsinline></video>
-      <div class="row" style="margin-top:8px">
-        <button id="btn-seek" class="quiet">Seek +30s</button>
-        <button id="btn-stop" class="quiet">Stop &amp; report</button>
-        <select id="quality">
-          <option value="auto" selected>auto</option>
-          <option value="source">source</option>
-          <option value="1080">1080p</option>
-          <option value="720">720p</option>
-          <option value="480">480p30</option>
-        </select>
-        <button id="btn-bitrate" class="quiet">Measure bitrate</button>
+  <!-- Libraries (shared folders) -->
+  <div id="screen-library" class="screen hidden">
+    <div class="topbar">
+      <span class="title" id="library-title">Libraries</span>
+      <span class="spacer"></span>
+      <button class="iconbtn" id="btn-settings" title="Settings" aria-label="Settings">
+        <svg viewBox="0 0 24 24"><path d="M19.4 13a7.9 7.9 0 0 0 .06-1 7.9 7.9 0 0 0-.06-1l2.06-1.6a.5.5 0 0 0 .12-.63l-1.95-3.37a.5.5 0 0 0-.6-.22l-2.43.98a7.6 7.6 0 0 0-1.72-1l-.37-2.58A.5.5 0 0 0 14 2h-3.9a.5.5 0 0 0-.5.42l-.36 2.58c-.63.26-1.2.6-1.73 1l-2.43-.98a.5.5 0 0 0-.6.22L2.52 8.6a.5.5 0 0 0 .12.64L4.7 10.85a7.9 7.9 0 0 0 0 2.13l-2.06 1.6a.5.5 0 0 0-.12.64l1.95 3.37c.13.22.39.31.6.22l2.43-.98c.53.42 1.1.76 1.73 1.02l.36 2.58a.5.5 0 0 0 .5.42H14a.5.5 0 0 0 .5-.42l.37-2.58a7.6 7.6 0 0 0 1.72-1.02l2.43.98c.22.09.48 0 .6-.22l1.95-3.37a.5.5 0 0 0-.12-.63L19.4 13Zm-7.36 2.6a3.6 3.6 0 1 1 0-7.2 3.6 3.6 0 0 1 0 7.2Z"/></svg>
+      </button>
+    </div>
+    <main class="page">
+      <div class="grid wide" id="views-grid"></div>
+    </main>
+  </div>
+
+  <!-- Browse -->
+  <div id="screen-browse" class="screen hidden">
+    <div class="topbar">
+      <button class="iconbtn" id="btn-browse-back" title="Back" aria-label="Back">
+        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.6-5.6L12 4l-8 8 8 8 1.4-1.4-5.57-5.6H20v-2Z"/></svg>
+      </button>
+      <span class="title" id="browse-title"></span>
+      <span class="spacer"></span>
+      <button class="iconbtn" id="btn-settings-2" title="Settings" aria-label="Settings">
+        <svg viewBox="0 0 24 24"><path d="M19.4 13a7.9 7.9 0 0 0 .06-1 7.9 7.9 0 0 0-.06-1l2.06-1.6a.5.5 0 0 0 .12-.63l-1.95-3.37a.5.5 0 0 0-.6-.22l-2.43.98a7.6 7.6 0 0 0-1.72-1l-.37-2.58A.5.5 0 0 0 14 2h-3.9a.5.5 0 0 0-.5.42l-.36 2.58c-.63.26-1.2.6-1.73 1l-2.43-.98a.5.5 0 0 0-.6.22L2.52 8.6a.5.5 0 0 0 .12.64L4.7 10.85a7.9 7.9 0 0 0 0 2.13l-2.06 1.6a.5.5 0 0 0-.12.64l1.95 3.37c.13.22.39.31.6.22l2.43-.98c.53.42 1.1.76 1.73 1.02l.36 2.58a.5.5 0 0 0 .5.42H14a.5.5 0 0 0 .5-.42l.37-2.58a7.6 7.6 0 0 0 1.72-1.02l2.43.98c.22.09.48 0 .6-.22l1.95-3.37a.5.5 0 0 0-.12-.63L19.4 13Zm-7.36 2.6a3.6 3.6 0 1 1 0-7.2 3.6 3.6 0 0 1 0 7.2Z"/></svg>
+      </button>
+    </div>
+    <main class="page">
+      <div class="grid" id="items-grid"></div>
+      <div class="empty hidden" id="browse-empty">Nothing here</div>
+      <button id="btn-more" class="loadmore hidden">Load more</button>
+    </main>
+  </div>
+
+  <!-- Pre-launch detail -->
+  <div id="screen-detail" class="screen hidden">
+    <div class="topbar">
+      <button class="iconbtn" id="btn-detail-back" title="Back" aria-label="Back">
+        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.6-5.6L12 4l-8 8 8 8 1.4-1.4-5.57-5.6H20v-2Z"/></svg>
+      </button>
+      <span class="spacer"></span>
+    </div>
+    <div class="detail-hero">
+      <img id="detail-thumb" alt="">
+      <div class="detail-headline">
+        <h1 id="detail-title"></h1>
+        <div class="detail-meta" id="detail-meta"></div>
+        <div class="detail-actions">
+          <button class="btn-play hidden" id="btn-resume">
+            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg><span id="resume-label">Resume</span>
+          </button>
+          <button class="btn-play" id="btn-play">
+            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg><span>Play</span>
+          </button>
+        </div>
       </div>
-      <div class="kv" id="player-info"></div>
-    </section>
-  </main>
-  <div id="log"></div>
+    </div>
+    <div class="detail-body">
+      <div id="detail-streams"></div>
+      <p class="overview" id="detail-overview"></p>
+      <h2 class="section-h" id="similar-h">More Like This</h2>
+      <div class="grid" id="similar-grid"></div>
+    </div>
+  </div>
+
+  <!-- Player -->
+  <div id="screen-player" class="screen hidden">
+    <div class="topbar">
+      <button class="iconbtn" id="btn-player-back" title="Back" aria-label="Back">
+        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.6-5.6L12 4l-8 8 8 8 1.4-1.4-5.57-5.6H20v-2Z"/></svg>
+      </button>
+      <span class="title" id="player-title"></span>
+    </div>
+    <video id="player-video" controls playsinline></video>
+  </div>
+
+  <!-- Settings -->
+  <div id="screen-settings" class="screen hidden">
+    <div class="topbar">
+      <button class="iconbtn" id="btn-settings-back" title="Back" aria-label="Back">
+        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.6-5.6L12 4l-8 8 8 8 1.4-1.4-5.57-5.6H20v-2Z"/></svg>
+      </button>
+      <span class="title">Settings</span>
+    </div>
+    <main class="page">
+      <div class="settings-block">
+        <h2>Server</h2>
+        <div class="settings-row"><label>Server</label><span id="set-server"></span></div>
+        <div class="settings-row"><label>User</label><span id="set-user"></span></div>
+        <div class="settings-row"><label>Platform</label><span id="set-platform"></span></div>
+        <div class="settings-row"><button class="btn-inline" id="btn-signout">Sign out</button></div>
+      </div>
+      <div class="settings-block">
+        <h2>Playback</h2>
+        <div class="settings-row">
+          <label>Quality</label>
+          <select id="quality">
+            <option value="auto" selected>Auto</option>
+            <option value="source">Source</option>
+            <option value="1080">1080p</option>
+            <option value="720">720p</option>
+            <option value="480">480p30</option>
+          </select>
+        </div>
+        <div class="settings-row">
+          <label>Bandwidth</label>
+          <span id="set-bitrate">not measured</span>
+          <button class="btn-inline" id="btn-bitrate">Measure</button>
+        </div>
+      </div>
+      <div class="settings-block">
+        <h2>App log</h2>
+        <div id="log"></div>
+      </div>
+    </main>
+  </div>
+
   <script src="core.js"></script>
   <script src="app.js"></script>
 </body>

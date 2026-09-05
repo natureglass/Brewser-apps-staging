@@ -305,6 +305,13 @@
     return client.request('/Items/' + itemId, { query: { userId: client.userId || undefined } });
   }
 
+  /** GET /Items/{id}/Similar — the "More Like This" row. */
+  function getSimilarItems(client, itemId, limit) {
+    return client.request('/Items/' + itemId + '/Similar', {
+      query: { userId: client.userId || undefined, limit: limit || 8, fields: BROWSE_FIELDS },
+    });
+  }
+
   /**
    * Server-resized artwork URL, or null if the item has no such image.
    * opts: { type?: 'Primary'|'Backdrop'|'Thumb'|'Logo', fillWidth?, fillHeight?, quality? }
@@ -604,7 +611,7 @@
     JellyfinError, JellyfinClient, restoreSession, createOrRestoreDeviceId,
     getPublicSystemInfo, authenticateByName,
     isQuickConnectEnabled, initiateQuickConnect, waitForQuickConnect, logout,
-    getViews, getItems, getResumeItems, getItem, imageUrl,
+    getViews, getItems, getResumeItems, getItem, getSimilarItems, imageUrl,
     resolveQualityCaps, detectBitrate,
     buildBrewserDeviceProfile, buildWebDeviceProfile,
     getPlaybackInfo, resolveVideoSource, audioUniversalUrl,
