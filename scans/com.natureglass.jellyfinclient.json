@@ -1,0 +1,36 @@
+{
+  "verdict": "GOOD",
+  "score": 2,
+  "scanned_at": "2026-09-05T08:03:37Z",
+  "scanner_version": "1.3.2",
+  "package_hash": "4e1792b607d25f2ea2f818b011af8ea853748899a40e34252b3856973be052c0",
+  "counts": {
+    "info": 2,
+    "suspicious": 0,
+    "dangerous": 0
+  },
+  "rationale": "No known-bad pattern matched (2 informational note(s)). Not proof of safety — human review still required.",
+  "truncated": false,
+  "findings": [
+    {
+      "rule_id": "html-injection-sink",
+      "severity": "INFO",
+      "title": "DOM HTML sink assigned a non-literal value",
+      "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
+      "file": "app.js",
+      "line": 211,
+      "evidence": "$('player-info').innerHTML = '<b>audio/universal</b> · ' + url"
+    },
+    {
+      "rule_id": "html-injection-sink",
+      "severity": "INFO",
+      "title": "DOM HTML sink assigned a non-literal value",
+      "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
+      "file": "app.js",
+      "line": 268,
+      "evidence": "$('player-info').innerHTML = '<b>' + src.playMethod + '</b> · ' + src.protocol + ' · session ' + (src.playSessionId || …"
+    }
+  ],
+  "capabilities": [],
+  "limitations": "Static heuristic scan. A GOOD verdict means no known-bad pattern matched, NOT proof of safety. Human review is still required for every submission."
+}

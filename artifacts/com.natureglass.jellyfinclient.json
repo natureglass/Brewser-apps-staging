@@ -1,0 +1,12 @@
+{
+  "id": "com.natureglass.jellyfinclient",
+  "sizeBytes": 68557,
+  "files": [
+    "README.md",
+    "app.js",
+    "assets/appbanner.jpg",
+    "core.js",
+    "index.html",
+    "manifest.json"
+  ]
+}

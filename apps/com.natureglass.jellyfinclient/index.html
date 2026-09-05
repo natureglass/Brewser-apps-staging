@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jellyfin core spike</title>
+<style>
+  /* Dev rig styling: dark, quiet, everything legible from the couch. */
+  :root {
+    --bg: #14161a;
+    --panel: #1c1f25;
+    --edge: #2c313a;
+    --text: #d8dce3;
+    --dim: #8a919c;
+    --accent: #7aa2f7;
+    --ok: #9ece6a;
+    --err: #f7768e;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 15px/1.45 system-ui, sans-serif;
+    display: grid; grid-template-rows: auto 1fr auto; min-height: 100vh;
+  }
+  header { padding: 14px 18px; border-bottom: 1px solid var(--edge); display: flex; gap: 12px; align-items: baseline; flex-wrap: wrap; }
+  header h1 { font-size: 17px; margin: 0; font-weight: 600; }
+  header .who { color: var(--dim); font-size: 13px; }
+  main { padding: 16px 18px 6px; max-width: 1100px; width: 100%; margin: 0 auto; }
+  section { background: var(--panel); border: 1px solid var(--edge); border-radius: 8px; padding: 14px; margin-bottom: 14px; }
+  section h2 { margin: 0 0 10px; font-size: 14px; font-weight: 600; color: var(--dim); }
+  .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  input, select {
+    background: var(--bg); color: var(--text); border: 1px solid var(--edge);
+    border-radius: 6px; padding: 9px 10px; font-size: 15px; min-width: 0;
+  }
+  input:focus, select:focus, button:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+  button {
+    background: var(--accent); color: #10131a; border: 0; border-radius: 6px;
+    padding: 9px 14px; font-size: 15px; font-weight: 600; cursor: pointer;
+  }
+  button.quiet { background: var(--edge); color: var(--text); font-weight: 500; }
+  button:disabled { opacity: .45; cursor: default; }
+  .grow { flex: 1 1 220px; }
+  .hidden { display: none !important; }
+  .status { color: var(--dim); font-size: 13px; }
+  .status.ok { color: var(--ok); }
+  .status.err { color: var(--err); }
+  .qc-code { font-size: 40px; letter-spacing: .35em; font-variant-numeric: tabular-nums; padding: 6px 0 2px; }
+  .chips { display: flex; gap: 8px; flex-wrap: wrap; }
+  .chip { background: var(--edge); border-radius: 999px; padding: 7px 14px; cursor: pointer; border: 1px solid transparent; font-size: 14px; }
+  .chip.active { border-color: var(--accent); color: var(--accent); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; margin-top: 10px; }
+  .card { cursor: pointer; border-radius: 6px; overflow: hidden; background: var(--bg); border: 1px solid var(--edge); }
+  .card img { width: 100%; aspect-ratio: 2/3; object-fit: cover; display: block; background: #0d0f12; }
+  .card .t { padding: 6px 8px; font-size: 12.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  video { width: 100%; max-height: 56vh; background: #000; border-radius: 6px; }
+  .kv { font-size: 13px; color: var(--dim); word-break: break-all; margin-top: 8px; }
+  .kv b { color: var(--text); font-weight: 600; }
+  #log {
+    margin: 0 auto; max-width: 1100px; width: 100%; padding: 10px 18px 16px;
+    font: 12px/1.5 ui-monospace, monospace; color: var(--dim);
+    max-height: 200px; overflow-y: auto; white-space: pre-wrap;
+  }
+  #log .e { color: var(--err); }
+</style>
+</head>
+<body>
+  <header>
+    <h1>Jellyfin core spike</h1>
+    <span class="who" id="who">not connected</span>
+  </header>
+  <main>
+    <section id="sec-connect">
+      <h2>Server</h2>
+      <div class="row">
+        <input id="server-url" class="grow" placeholder="192.168.1.x:8096 or https://jf.example.com" autocapitalize="off" autocorrect="off">
+        <button id="btn-connect">Connect</button>
+      </div>
+      <div class="status" id="connect-status"></div>
+    </section>
+
+    <section id="sec-auth" class="hidden">
+      <h2>Sign in</h2>
+      <div class="row">
+        <button id="btn-qc">Quick Connect</button>
+        <span class="status">or</span>
+        <input id="auth-user" placeholder="username" autocapitalize="off">
+        <input id="auth-pass" placeholder="password" type="password">
+        <button id="btn-login" class="quiet">Sign in</button>
+      </div>
+      <div id="qc-panel" class="hidden">
+        <div class="qc-code" id="qc-code"></div>
+        <div class="status">Enter this code in your Jellyfin app under Quick Connect. Waiting for approval…</div>
+      </div>
+      <div class="status" id="auth-status"></div>
+    </section>
+
+    <section id="sec-browse" class="hidden">
+      <h2>Libraries</h2>
+      <div class="chips" id="views"></div>
+      <div class="grid" id="items"></div>
+      <div class="row" style="margin-top:10px">
+        <button id="btn-more" class="quiet hidden">Load more</button>
+        <span class="status" id="browse-status"></span>
+      </div>
+    </section>
+
+    <section id="sec-player" class="hidden">
+      <h2 id="player-title">Player</h2>
+      <video id="player" controls playsinline></video>
+      <div class="row" style="margin-top:8px">
+        <button id="btn-seek" class="quiet">Seek +30s</button>
+        <button id="btn-stop" class="quiet">Stop &amp; report</button>
+        <select id="quality">
+          <option value="auto" selected>auto</option>
+          <option value="source">source</option>
+          <option value="1080">1080p</option>
+          <option value="720">720p</option>
+          <option value="480">480p30</option>
+        </select>
+        <button id="btn-bitrate" class="quiet">Measure bitrate</button>
+      </div>
+      <div class="kv" id="player-info"></div>
+    </section>
+  </main>
+  <div id="log"></div>
+  <script src="core.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
