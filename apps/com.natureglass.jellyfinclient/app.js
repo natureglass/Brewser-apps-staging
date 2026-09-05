@@ -50,11 +50,18 @@
     window.scrollTo(0, 0);
   }
 
-  function el(tag, className, text) {
+  const el = (tag, className, text) => {
     const n = document.createElement(tag);
     if (className) n.className = className;
     if (text != null) n.textContent = text;
     return n;
+  };
+
+  // Missing or 404ing artwork falls back to the bundled placeholder.
+  const PLACEHOLDER = 'assets/default.png';
+  function setThumb(img, url) {
+    img.onerror = function () { img.onerror = null; img.src = PLACEHOLDER; };
+    img.src = url || PLACEHOLDER;
   }
 
   function thumbClass(item) {
@@ -70,7 +77,7 @@
     img.loading = 'lazy';
     img.alt = '';
     const w = img.className.indexOf('landscape') >= 0 ? 440 : 300;
-    img.src = JF.imageUrl(client, item, { fillWidth: w }) || '';
+    setThumb(img, JF.imageUrl(client, item, { fillWidth: w }));
     c.appendChild(img);
     c.appendChild(el('div', 'label', item.Name || '?'));
     const sub = subLabel(item);
@@ -255,9 +262,9 @@
     const item = await JF.getItem(client, itemId);
     detailItem = item;
 
-    $('detail-thumb').src =
+    setThumb($('detail-thumb'),
       JF.imageUrl(client, item, { fillWidth: 600 }) ||
-      JF.imageUrl(client, item, { type: 'Backdrop', fillWidth: 600 }) || '';
+      JF.imageUrl(client, item, { type: 'Backdrop', fillWidth: 600 }));
     $('detail-title').textContent = item.Name || '?';
 
     const meta = $('detail-meta');
@@ -305,10 +312,10 @@
       const mm = Math.floor(s / 60), ss = Math.floor(s % 60);
       $('resume-label').textContent = 'Resume from ' + mm + ':' + (ss < 10 ? '0' + ss : ss);
       $('btn-play').classList.add('secondary');
-      $('btn-play').querySelector('span').textContent = 'Play from beginning';
+      $('play-label').textContent = 'Play from beginning';
     } else {
       $('btn-play').classList.remove('secondary');
-      $('btn-play').querySelector('span').textContent = 'Play';
+      $('play-label').textContent = 'Play';
     }
 
     go('detail');
@@ -466,6 +473,18 @@
       $('set-bitrate').textContent = 'failed';
       fail(e, 'bitrate test');
     }
+  };
+
+  $('btn-exit').onclick = () => {
+    stopPlayback();
+    try {
+      const S = globalThis.Switch;
+      // Brewser/nx.js exit hook — if the runtime names it differently,
+      // this is the one line to change.
+      if (S && typeof S.exit === 'function') { S.exit(); return; }
+    } catch (e) { /* fall through */ }
+    try { window.close(); } catch (e) { /* browsers may block this */ }
+    log('exit not supported on this platform');
   };
 
   $('btn-signout').onclick = async () => {

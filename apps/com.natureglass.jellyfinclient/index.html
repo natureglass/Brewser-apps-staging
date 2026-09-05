@@ -72,7 +72,7 @@
     width: 40px; height: 40px; border-radius: 50%; background: none; color: var(--dim); flex: none;
   }
   .iconbtn:hover { color: var(--text); background: var(--surface-2); }
-  .iconbtn svg { width: 22px; height: 22px; fill: currentColor; }
+  .iconbtn .emoji { font-size: 19px; line-height: 1; }
   main.page { padding: 22px 20px 40px; max-width: 1400px; margin: 0 auto; }
 
   /* ---- grids ---- */
@@ -103,7 +103,7 @@
     background: var(--accent); color: #06222c; font-weight: 600; border-radius: 100px;
   }
   .btn-play.secondary { background: var(--surface-2); color: var(--text); }
-  .btn-play svg { width: 16px; height: 16px; fill: currentColor; }
+  .btn-play .emoji { font-size: 15px; line-height: 1; }
   .detail-body { max-width: 900px; padding: 26px 20px; }
   .kv-row { display: grid; grid-template-columns: 110px 1fr; gap: 8px 18px; font-size: 15px; margin-bottom: 10px; }
   .kv-row .k { color: var(--text); font-weight: 600; }
@@ -184,7 +184,7 @@
       <span class="title" id="library-title">Libraries</span>
       <span class="spacer"></span>
       <button class="iconbtn" id="btn-settings" title="Settings" aria-label="Settings">
-        <svg viewBox="0 0 24 24"><path d="M19.4 13a7.9 7.9 0 0 0 .06-1 7.9 7.9 0 0 0-.06-1l2.06-1.6a.5.5 0 0 0 .12-.63l-1.95-3.37a.5.5 0 0 0-.6-.22l-2.43.98a7.6 7.6 0 0 0-1.72-1l-.37-2.58A.5.5 0 0 0 14 2h-3.9a.5.5 0 0 0-.5.42l-.36 2.58c-.63.26-1.2.6-1.73 1l-2.43-.98a.5.5 0 0 0-.6.22L2.52 8.6a.5.5 0 0 0 .12.64L4.7 10.85a7.9 7.9 0 0 0 0 2.13l-2.06 1.6a.5.5 0 0 0-.12.64l1.95 3.37c.13.22.39.31.6.22l2.43-.98c.53.42 1.1.76 1.73 1.02l.36 2.58a.5.5 0 0 0 .5.42H14a.5.5 0 0 0 .5-.42l.37-2.58a7.6 7.6 0 0 0 1.72-1.02l2.43.98c.22.09.48 0 .6-.22l1.95-3.37a.5.5 0 0 0-.12-.63L19.4 13Zm-7.36 2.6a3.6 3.6 0 1 1 0-7.2 3.6 3.6 0 0 1 0 7.2Z"/></svg>
+        <span class="emoji" aria-hidden="true">⚙️</span>
       </button>
     </div>
     <main class="page">
@@ -196,12 +196,12 @@
   <div id="screen-browse" class="screen hidden">
     <div class="topbar">
       <button class="iconbtn" id="btn-browse-back" title="Back" aria-label="Back">
-        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.6-5.6L12 4l-8 8 8 8 1.4-1.4-5.57-5.6H20v-2Z"/></svg>
+        <span class="emoji" aria-hidden="true">⬅️</span>
       </button>
       <span class="title" id="browse-title"></span>
       <span class="spacer"></span>
       <button class="iconbtn" id="btn-settings-2" title="Settings" aria-label="Settings">
-        <svg viewBox="0 0 24 24"><path d="M19.4 13a7.9 7.9 0 0 0 .06-1 7.9 7.9 0 0 0-.06-1l2.06-1.6a.5.5 0 0 0 .12-.63l-1.95-3.37a.5.5 0 0 0-.6-.22l-2.43.98a7.6 7.6 0 0 0-1.72-1l-.37-2.58A.5.5 0 0 0 14 2h-3.9a.5.5 0 0 0-.5.42l-.36 2.58c-.63.26-1.2.6-1.73 1l-2.43-.98a.5.5 0 0 0-.6.22L2.52 8.6a.5.5 0 0 0 .12.64L4.7 10.85a7.9 7.9 0 0 0 0 2.13l-2.06 1.6a.5.5 0 0 0-.12.64l1.95 3.37c.13.22.39.31.6.22l2.43-.98c.53.42 1.1.76 1.73 1.02l.36 2.58a.5.5 0 0 0 .5.42H14a.5.5 0 0 0 .5-.42l.37-2.58a7.6 7.6 0 0 0 1.72-1.02l2.43.98c.22.09.48 0 .6-.22l1.95-3.37a.5.5 0 0 0-.12-.63L19.4 13Zm-7.36 2.6a3.6 3.6 0 1 1 0-7.2 3.6 3.6 0 0 1 0 7.2Z"/></svg>
+        <span class="emoji" aria-hidden="true">⚙️</span>
       </button>
     </div>
     <main class="page">
@@ -215,7 +215,7 @@
   <div id="screen-detail" class="screen hidden">
     <div class="topbar">
       <button class="iconbtn" id="btn-detail-back" title="Back" aria-label="Back">
-        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.6-5.6L12 4l-8 8 8 8 1.4-1.4-5.57-5.6H20v-2Z"/></svg>
+        <span class="emoji" aria-hidden="true">⬅️</span>
       </button>
       <span class="spacer"></span>
     </div>
@@ -226,10 +226,10 @@
         <div class="detail-meta" id="detail-meta"></div>
         <div class="detail-actions">
           <button class="btn-play hidden" id="btn-resume">
-            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg><span id="resume-label">Resume</span>
+            <span class="emoji" aria-hidden="true">▶️</span><span id="resume-label">Resume</span>
           </button>
           <button class="btn-play" id="btn-play">
-            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg><span>Play</span>
+            <span class="emoji" aria-hidden="true">▶️</span><span id="play-label">Play</span>
           </button>
         </div>
       </div>
@@ -246,7 +246,7 @@
   <div id="screen-player" class="screen hidden">
     <div class="topbar">
       <button class="iconbtn" id="btn-player-back" title="Back" aria-label="Back">
-        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.6-5.6L12 4l-8 8 8 8 1.4-1.4-5.57-5.6H20v-2Z"/></svg>
+        <span class="emoji" aria-hidden="true">⬅️</span>
       </button>
       <span class="title" id="player-title"></span>
     </div>
@@ -257,7 +257,7 @@
   <div id="screen-settings" class="screen hidden">
     <div class="topbar">
       <button class="iconbtn" id="btn-settings-back" title="Back" aria-label="Back">
-        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.6-5.6L12 4l-8 8 8 8 1.4-1.4-5.57-5.6H20v-2Z"/></svg>
+        <span class="emoji" aria-hidden="true">⬅️</span>
       </button>
       <span class="title">Settings</span>
     </div>
@@ -267,7 +267,10 @@
         <div class="settings-row"><label>Server</label><span id="set-server"></span></div>
         <div class="settings-row"><label>User</label><span id="set-user"></span></div>
         <div class="settings-row"><label>Platform</label><span id="set-platform"></span></div>
-        <div class="settings-row"><button class="btn-inline" id="btn-signout">Sign out</button></div>
+        <div class="settings-row">
+          <button class="btn-inline" id="btn-signout">Sign out</button>
+          <button class="btn-inline" id="btn-exit">Exit app</button>
+        </div>
       </div>
       <div class="settings-block">
         <h2>Playback</h2>
