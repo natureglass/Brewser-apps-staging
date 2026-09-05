@@ -1,0 +1,30 @@
+{
+    "id": "com.natureglass.jellyfinclient",
+    "name": "Jellyfin Client",
+    "version": "1.0.2",
+    "description": "<p>What to verify on Switch</p>\r\n<ol>\r\n<li>Direct play: an H.264/AAC mp4 or mkv plays via </li>\r\n<li>Transcode: a too-big source comes back as an HLS TranscodingUrl and plays</li>\r\n<li>Seek +30s on files (known good) and on HLS transcodes (server restarts the stream at the new offset — verify)</li>\r\n<li>Resume: stop mid-file, item appears in Continue watching with position</li>\r\n<li>Audio universal endpoint plays music</li>\r\n<li>Bitrate test returns a sane LAN number</li>\r\n</ol>\r\n<p>Verification notes</p>\r\n<p>Endpoint paths, methods, auth header format and field names checked against @jellyfin/sdk 0.13.0 (Jellyfin 10.11 OpenAPI). Targets Jellyfin &gt;= 10.9.</p>\r\n<p>Known open questions</p>\r\n<ul>\r\n<li>Brewser manifest allowed_origins vs user-typed LAN addresses — needs a wildcard or runtime permission story before the real app ships</li>\r\n<li>HEVC software decode budget: the Brewser direct-play list is optimistic on purpose; measure with the harness and trim so heavy sources transcode</li>\r\n</ul>",
+    "logo": "assets/appbanner.jpg",
+    "entry": "index.html",
+    "categories": [
+        "Apps"
+    ],
+    "permissions": [
+        "local_network"
+    ],
+    "compatibility": [
+        "mobile",
+        "switch",
+        "web"
+    ],
+    "allowed_origins": [],
+    "developer": "Alex Daskalakis",
+    "license": "MIT",
+    "exitGame": "PLUS",
+    "fullscreen": true,
+    "hideMouseDocked": false,
+    "hideMouseUndocked": true,
+    "freshProcessOnExit": false,
+    "publishedAt": "2026-09-05T12:04:12Z",
+    "updatedAt": "2026-09-05T12:04:12Z",
+    "summary": "The shared core for the dual-target Jellyfin client, as a generic webapp"
+}
