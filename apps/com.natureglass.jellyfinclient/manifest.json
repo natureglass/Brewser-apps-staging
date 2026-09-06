@@ -24,7 +24,7 @@
     "hideMouseDocked": false,
     "hideMouseUndocked": true,
     "freshProcessOnExit": false,
-    "publishedAt": "2026-09-06T17:21:02Z",
+    "publishedAt": "2026-09-06T17:23:55Z",
     "updatedAt": "2026-09-05T12:27:59Z",
     "summary": "The shared core for the dual-target Jellyfin client, as a generic webapp"
 }
