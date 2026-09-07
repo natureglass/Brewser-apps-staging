@@ -36,6 +36,10 @@
   function fail(e, where) {
     const m = e instanceof JF.JellyfinError ? e.message + ' (' + e.status + ')' : String(e && e.message || e);
     log(where + ': ' + m, true);
+    // Never leave the player's loading veil stuck if a load step threw.
+    // (hideLoading is a hoisted declaration; the refs it reads are set by
+    // the time any failure actually fires at runtime.)
+    try { hideLoading(); } catch (_) { /* defined later in scope; ignore pre-init */ }
     return m;
   }
 
@@ -156,8 +160,11 @@
       go('auth');
     } catch (e) {
       fail(e, 'connect');
+      const timedOut = e && e.name === 'TimeoutError';
       setStatus('connect-status',
-        'Could not reach a Jellyfin server there. Check the address (scheme, host, port).', true);
+        timedOut
+          ? 'No response from that address — check the port and that the server is running.'
+          : 'Could not reach a Jellyfin server there. Check the address (scheme, host, port).', true);
     }
   };
   $('server-url').addEventListener('keydown', (ev) => { if (ev.key === 'Enter') $('btn-connect').click(); });
@@ -383,10 +390,16 @@
   // paused; any pointer activity brings it back.
   const overlay = $('player-overlay');
   let overlayTimer = null;
+  function loadingVisible() {
+    return loadingEl && !loadingEl.classList.contains('hidden');
+  }
   function wakeOverlay() {
     overlay.classList.remove('faded');
     if (overlayTimer) { clearTimeout(overlayTimer); overlayTimer = null; }
-    if (!video.paused && !video.ended) {
+    // Keep the top bar (Back) visible while the loading veil is up — a long
+    // transcode start can exceed the fade timeout, and a faded overlay is
+    // pointer-events:none, which would trap the user with no way to exit.
+    if (!video.paused && !video.ended && !loadingVisible()) {
       overlayTimer = setTimeout(() => { overlay.classList.add('faded'); }, 5000);
     }
   }
@@ -395,14 +408,128 @@
   $('screen-player').addEventListener('pointermove', wakeOverlay);
   $('screen-player').addEventListener('pointerdown', wakeOverlay);
 
-  function qualityPolicy() {
-    const v = $('quality').value;
-    if (v === 'auto' || v === 'source') return { mode: v };
-    if (v === '480') return { mode: { maxHeight: 480, maxFps: 30 } };
-    return { mode: { maxHeight: Number(v) } };
+  // --- Video stats overlay ("Show video stats" setting) --------------------
+  // Top-right HUD: negotiated play method + source stream info + the ACTUAL
+  // decoded resolution (video.videoWidth/Height — reveals whether a source is
+  // being downscaled by the server or direct-played at full res) + a live
+  // render fps (rAF-counted = the shell's present rate, i.e. 60 vs 30). Paints
+  // over the blitted frame via the same above-composite pass as the top bar
+  // (z-index:2). Refreshed ~2x/s while active.
+  const statsEl = $('video-stats');
+  let currentPlaySrc = null; // last resolved { playMethod, protocol, source }
+  let currentPlayCaps = null; // last resolved quality caps (for the overlay)
+  let currentPlayItem = null; // the item currently playing (for the settings modal)
+  let playAudioIndex = null; // requested audio stream index (null = server default)
+  let playSubtitleIndex = null; // requested subtitle stream index (null=default, -1=off)
+  let statsActive = false;
+  let statsFrames = 0, statsLastT = 0, statsFps = 0;
+  function statsEnabled() {
+    return !!($('show-stats') && $('show-stats').checked);
+  }
+  function renderStats() {
+    if (!statsEl) return;
+    const s = currentPlaySrc;
+    const streams = s && s.source && s.source.MediaStreams;
+    const vs = streams ? streams.find((m) => m.Type === 'Video') : null;
+    const lines = [];
+    lines.push('Play   : ' + (s ? s.playMethod + ' (' + s.protocol + ')' : '—'));
+    if (vs) {
+      const fps = vs.RealFrameRate || vs.AverageFrameRate;
+      lines.push('Source : ' + (vs.Width || '?') + '×' + (vs.Height || '?')
+        + (vs.Codec ? ' ' + vs.Codec : '')
+        + (fps ? ' @' + (Math.round(fps * 100) / 100) : '')
+        + (vs.BitRate ? ' · ' + (vs.BitRate / 1e6).toFixed(1) + ' Mb/s' : ''));
+    }
+    const dw = video.videoWidth || 0, dh = video.videoHeight || 0;
+    lines.push('Decoded: ' + (dw && dh ? dw + '×' + dh : '—'));
+    lines.push('Render : ' + (statsFps || '—') + ' fps');
+    // Requested resolution cap — the resolution the app asked the server for.
+    if (currentPlayCaps) {
+      lines.push('Cap    : ' + (currentPlayCaps.maxWidth || 0) + '×'
+        + (currentPlayCaps.maxHeight || 0));
+    }
+    statsEl.textContent = lines.join('\n');
+  }
+  function statsLoop() {
+    if (!statsActive) return; // stopStats() clears the flag; loop stops here
+    statsFrames++;
+    const now = performance.now();
+    if (!statsLastT) statsLastT = now;
+    else if (now - statsLastT >= 500) {
+      statsFps = Math.round((statsFrames * 1000) / (now - statsLastT));
+      statsFrames = 0; statsLastT = now;
+      renderStats();
+    }
+    requestAnimationFrame(statsLoop);
+  }
+  function startStats() {
+    if (statsActive || !statsEl) return;
+    statsActive = true;
+    statsFrames = 0; statsLastT = 0; statsFps = 0;
+    statsEl.classList.remove('hidden');
+    renderStats();
+    requestAnimationFrame(statsLoop);
+  }
+  function stopStats() {
+    statsActive = false;
+    if (statsEl) statsEl.classList.add('hidden');
   }
 
-  async function play(item, resumeTicks) {
+  // Loading veil: shown from the moment we start opening a stream (before the
+  // PlaybackInfo round-trip has even resolved a URL) until the first frame is
+  // on screen — so the user sees "Loading stream, please wait…" instead of the
+  // engine's big play-triangle (which reads as a "tap me" button during the
+  // several-second transcode ramp-up). The dots animate via setInterval, which
+  // both signals progress and keeps the shell repainting while nothing else on
+  // the (otherwise static) loading screen changes.
+  const loadingEl = $('player-loading');
+  const loadingMsg = $('player-loading-msg');
+  let loadingDotsTimer = null;
+  let loadingGiveUp = null;
+  function showLoading() {
+    if (loadingEl) loadingEl.classList.remove('hidden');
+    if (loadingDotsTimer) { clearInterval(loadingDotsTimer); loadingDotsTimer = null; }
+    let dots = 0;
+    loadingDotsTimer = setInterval(() => {
+      dots = (dots + 1) % 4;
+      if (loadingMsg) loadingMsg.textContent = 'Loading stream, please wait' + '.'.repeat(dots);
+    }, 400);
+    // Never stick forever: if the first frame never arrives (silent decode
+    // stall, no error event), drop the veil after a generous window so the
+    // player is at least escapable / shows whatever the engine has.
+    if (loadingGiveUp) { clearTimeout(loadingGiveUp); }
+    loadingGiveUp = setTimeout(hideLoading, 45000);
+  }
+  function hideLoading() {
+    if (loadingDotsTimer) { clearInterval(loadingDotsTimer); loadingDotsTimer = null; }
+    if (loadingGiveUp) { clearTimeout(loadingGiveUp); loadingGiveUp = null; }
+    if (loadingEl) loadingEl.classList.add('hidden');
+    // Veil is down now → (re)start the top-bar fade cycle it was suppressing.
+    wakeOverlay();
+  }
+  // First visible frame → drop the veil (engine dispatches `playing` then).
+  // `ended`/`error` are safety nets so the veil never sticks.
+  video.addEventListener('playing', hideLoading);
+  video.addEventListener('ended', hideLoading);
+  video.addEventListener('error', hideLoading);
+
+  function qualityPolicy() {
+    // In brewser the <select>.value can come back '' / the label / undefined when
+    // the active choice is the default `selected` option (the live-DOM doesn't
+    // reflect the selected attribute into .value). That used to fall through to
+    // { maxHeight: Number(v) } → Number('')=0 / Number('Auto')=NaN → a 0×0
+    // resolution cap on Auto (the whole 4K-Auto bug). So: recognise the explicit
+    // qualities and DEFAULT everything else (incl. 'auto', '', unknown) to Auto.
+    const v = ($('quality') && $('quality').value) || '';
+    if (v === 'source') return { mode: 'source' };
+    if (v === '480') return { mode: { maxHeight: 480, maxFps: 30 } };
+    if (v === '1080' || v === '720') return { mode: { maxHeight: Number(v) } };
+    return { mode: 'auto' };
+  }
+
+  async function play(item, resumeTicks, opts) {
+    opts = opts || {};
+    currentPlayItem = item;
     await stopPlayback();
     $('player-title').textContent = item.Name || '';
     wakeOverlay();
@@ -416,23 +543,45 @@
       return;
     }
 
+    // Video: show the loading veil now, before the PlaybackInfo round-trip +
+    // transcode ramp-up. Dropped on the first frame (`playing`) or on error.
+    showLoading();
+
+    // Screen size drives the 'auto' resolution cap. innerWidth/innerHeight report
+    // brewser's fixed 1280×720 canvas fine; floor the result defensively so a bad
+    // reading can never collapse the cap to 0 (which would stop the server
+    // downscaling and leave the A57 decoding 4K → slow motion). Explicit
+    // qualities (720p/480p/…) ignore the screen size entirely.
+    const _dpr = (typeof devicePixelRatio === 'number' && devicePixelRatio > 0) ? devicePixelRatio : 1;
+    const _iw = (typeof innerWidth === 'number' && innerWidth > 0) ? innerWidth : 1280;
+    const _ih = (typeof innerHeight === 'number' && innerHeight > 0) ? innerHeight : 720;
+    let _sw = Math.round(_iw * _dpr);
+    let _sh = Math.round(_ih * _dpr);
+    if (!Number.isFinite(_sw) || _sw < 640) _sw = 1280;
+    if (!Number.isFinite(_sh) || _sh < 360) _sh = 720;
     const caps = JF.resolveQualityCaps(qualityPolicy(), {
-      screenWidth: Math.round(innerWidth * (devicePixelRatio || 1)),
-      screenHeight: Math.round(innerHeight * (devicePixelRatio || 1)),
+      screenWidth: _sw,
+      screenHeight: _sh,
       measuredBitrate: measuredBitrate,
       isBrewser: isBrewser,
     });
+    currentPlayCaps = caps; // feeds the video-stats overlay
     log('caps: ' + caps.maxWidth + 'x' + caps.maxHeight +
       (caps.maxFps ? '@' + caps.maxFps : '') +
       ' <= ' + (caps.maxStreamingBitrate / 1e6).toFixed(1) + ' Mbps');
 
+    playAudioIndex = (opts.audioStreamIndex != null) ? opts.audioStreamIndex : null;
+    playSubtitleIndex = (opts.subtitleStreamIndex != null) ? opts.subtitleStreamIndex : null;
     const profile = isBrewser ? JF.buildBrewserDeviceProfile(caps) : JF.buildWebDeviceProfile(caps);
     const info = await JF.getPlaybackInfo(client, item.Id, {
       deviceProfile: profile,
       maxStreamingBitrate: caps.maxStreamingBitrate,
       startTimeTicks: resumeTicks,
+      audioStreamIndex: opts.audioStreamIndex,
+      subtitleStreamIndex: opts.subtitleStreamIndex,
     });
-    const src = JF.resolveVideoSource(client, item.Id, info);
+    const src = JF.resolveVideoSource(client, item.Id, info, caps);
+    currentPlaySrc = src; // feeds the video-stats overlay
     log('play method: ' + src.playMethod + ' (' + src.protocol + ')');
     log('src: ' + src.url);
     if (src.playMethod === 'Transcode' && src.protocol === 'hls' && !isBrewser) {
@@ -446,6 +595,7 @@
       log('resuming at ' + JF.ticksToSeconds(resumeTicks).toFixed(0) + 's');
     }
     video.play().catch(() => { /* user gesture needed; fine */ });
+    if (statsEnabled()) startStats();
 
     progress = {
       itemId: item.Id,
@@ -462,6 +612,10 @@
   }
 
   async function stopPlayback() {
+    hideLoading();
+    stopStats();
+    closeSettingsModal();
+    currentPlaySrc = null;
     if (overlayTimer) { clearTimeout(overlayTimer); overlayTimer = null; }
     overlay.classList.remove('faded');
     if (progressTimer) { clearInterval(progressTimer); progressTimer = null; }
@@ -489,6 +643,177 @@
   $('btn-player-back').onclick = () => { exitPlayer(); };
   video.addEventListener('ended', () => { exitPlayer(); });
 
+  // ---- playback settings modal (engine control-bar gear) ------------------
+  // Aspect/Zoom/Crop map a dropdown to the engine's per-video display transform
+  // (data-aspect / data-crop = target aspect-ratio float, '' = default;
+  // data-zoom = scale factor). Applied live for instant preview. Audio/Subtitle
+  // re-request the stream (subtitles are burned in server-side). Chapter + Jump
+  // seek in real time.
+  const ASPECT_OPTS = [
+    ['Default', ''], ['16:9', 16 / 9], ['4:3', 4 / 3], ['1:1', 1], ['16:10', 1.6],
+    ['2.21:1', 2.21], ['2.35:1', 2.35], ['2.39:1', 2.39], ['5:4', 1.25],
+  ];
+  const ZOOM_OPTS = [
+    ['1:4 Quarter', 0.25], ['1:2 Half', 0.5], ['1:1 Original', 1], ['2:1 Double', 2],
+  ];
+  const CROP_OPTS = [
+    ['Default', ''], ['16:10', 1.6], ['16:9', 16 / 9], ['4:3', 4 / 3], ['1.85:1', 1.85],
+    ['2.21:1', 2.21], ['2.35:1', 2.35], ['2.39:1', 2.39], ['5:3', 5 / 3], ['5:4', 1.25], ['1:1', 1],
+  ];
+  let settingsSnapshot = null; // { aspect, zoom, crop, audioIndex, subtitleIndex } at open
+
+  function fillSelect(sel, opts, selectedValue) {
+    if (!sel) return;
+    sel.innerHTML = '';
+    for (const pair of opts) {
+      const o = document.createElement('option');
+      o.value = String(pair[1]);
+      o.textContent = pair[0];
+      sel.appendChild(o);
+    }
+    sel.value = String(selectedValue); // set explicitly (engine doesn't reflect `selected`)
+  }
+
+  // Push the aspect/zoom/crop selection onto the <video> as data-* attributes;
+  // the engine reads them when blitting each frame.
+  function applyDisplayTransform() {
+    const setRatio = (name, v) => {
+      if (v === '' || v == null) video.removeAttribute(name); else video.setAttribute(name, String(v));
+    };
+    setRatio('data-aspect', $('vs-aspect').value);
+    setRatio('data-crop', $('vs-crop').value);
+    const z = parseFloat($('vs-zoom').value);
+    video.setAttribute('data-zoom', String(Number.isFinite(z) && z > 0 ? z : 1));
+  }
+
+  function currentTransform() {
+    return {
+      aspect: video.getAttribute('data-aspect') || '',
+      zoom: video.getAttribute('data-zoom') || '1',
+      crop: video.getAttribute('data-crop') || '',
+    };
+  }
+
+  function streamsOfType(type) {
+    const s = currentPlaySrc && currentPlaySrc.source && currentPlaySrc.source.MediaStreams;
+    return (s || []).filter((m) => m.Type === type);
+  }
+  function streamLabel(m, fallback) {
+    return (m.DisplayTitle || ((m.Language || fallback) + ' ' + (m.Codec || ''))).trim() || fallback;
+  }
+
+  function openSettingsModal() {
+    const modal = $('settings-modal');
+    if (!modal) return;
+    // Audio tracks.
+    const audio = streamsOfType('Audio');
+    const audioOpts = audio.length
+      ? audio.map((m) => [streamLabel(m, 'Audio'), m.Index])
+      : [['Default', -1]];
+    const src = currentPlaySrc && currentPlaySrc.source;
+    const curAudio = (playAudioIndex != null) ? playAudioIndex
+      : (src && src.DefaultAudioStreamIndex != null ? src.DefaultAudioStreamIndex : audioOpts[0][1]);
+    fillSelect($('vs-audio'), audioOpts, curAudio);
+    // Subtitles (Off + each track).
+    const subs = streamsOfType('Subtitle');
+    const subOpts = [['Off', -1]].concat(subs.map((m) => [streamLabel(m, 'Subtitle'), m.Index]));
+    const curSub = (playSubtitleIndex != null) ? playSubtitleIndex : -1;
+    fillSelect($('vs-subtitle'), subOpts, curSub);
+    // Chapters.
+    const chapters = (currentPlayItem && currentPlayItem.Chapters) || [];
+    const chapOpts = [['— Jump to chapter —', -1]].concat(chapters.map((c, i) => {
+      const secs = JF.ticksToSeconds(c.StartPositionTicks || 0);
+      const m = Math.floor(secs / 60), s = Math.floor(secs % 60);
+      return [(c.Name || ('Chapter ' + (i + 1))) + '  ' + m + ':' + (s < 10 ? '0' : '') + s, i];
+    }));
+    fillSelect($('vs-chapter'), chapOpts, -1);
+    // Aspect / Zoom / Crop from the current transform.
+    const t = currentTransform();
+    fillSelect($('vs-aspect'), ASPECT_OPTS, t.aspect);
+    fillSelect($('vs-zoom'), ZOOM_OPTS, t.zoom);
+    fillSelect($('vs-crop'), CROP_OPTS, t.crop);
+    settingsSnapshot = {
+      aspect: t.aspect, zoom: t.zoom, crop: t.crop,
+      audioIndex: curAudio, subtitleIndex: curSub,
+    };
+    modal.classList.remove('hidden');
+  }
+
+  function closeSettingsModal() {
+    const modal = $('settings-modal');
+    if (modal) modal.classList.add('hidden');
+  }
+
+  function reloadStreamWith(opts) {
+    if (!currentPlayItem) return;
+    const t = video.currentTime || 0;
+    log('reload stream audio=' + opts.audioStreamIndex + ' sub=' + opts.subtitleStreamIndex +
+      ' @' + t.toFixed(0) + 's');
+    play(currentPlayItem, JF.secondsToTicks(t), opts).catch((e) => fail(e, 'reload stream'));
+  }
+
+  // Aspect/Zoom/Crop: live preview on change.
+  ['vs-aspect', 'vs-zoom', 'vs-crop'].forEach((id) => {
+    if ($(id)) $(id).onchange = applyDisplayTransform;
+  });
+  // Chapter: jump immediately (real time).
+  if ($('vs-chapter')) $('vs-chapter').onchange = () => {
+    const i = parseInt($('vs-chapter').value, 10);
+    const chapters = (currentPlayItem && currentPlayItem.Chapters) || [];
+    if (i >= 0 && chapters[i]) {
+      video.currentTime = JF.ticksToSeconds(chapters[i].StartPositionTicks || 0);
+    }
+  };
+  // Jump buttons: real-time ±10s.
+  if ($('vs-jump-back')) $('vs-jump-back').onclick = () => {
+    video.currentTime = Math.max(0, (video.currentTime || 0) - 10);
+  };
+  if ($('vs-jump-fwd')) $('vs-jump-fwd').onclick = () => {
+    const d = video.duration || 0;
+    let t = (video.currentTime || 0) + 10;
+    if (d > 0) t = Math.min(t, d - 0.5);
+    video.currentTime = t;
+  };
+  // Reset to Defaults: clear picture transform + default audio + subtitles off.
+  if ($('vs-reset')) $('vs-reset').onclick = () => {
+    $('vs-aspect').value = '';
+    $('vs-zoom').value = '1';
+    $('vs-crop').value = '';
+    applyDisplayTransform();
+    const a = $('vs-audio');
+    if (a && a.options.length) a.value = a.options[0].value;
+    if ($('vs-subtitle')) $('vs-subtitle').value = '-1';
+  };
+  // Cancel: revert the live picture transform to the open-time snapshot; drop
+  // any staged audio/subtitle change.
+  if ($('vs-cancel')) $('vs-cancel').onclick = () => {
+    if (settingsSnapshot) {
+      $('vs-aspect').value = settingsSnapshot.aspect;
+      $('vs-zoom').value = settingsSnapshot.zoom;
+      $('vs-crop').value = settingsSnapshot.crop;
+      applyDisplayTransform();
+    }
+    closeSettingsModal();
+  };
+  // Save: keep the picture transform; apply audio/subtitle (reload if changed).
+  if ($('vs-save')) $('vs-save').onclick = () => {
+    applyDisplayTransform();
+    const snap = settingsSnapshot || {};
+    const newAudio = parseInt($('vs-audio').value, 10);
+    const newSub = parseInt($('vs-subtitle').value, 10);
+    const audioChanged = Number.isFinite(newAudio) && newAudio >= 0 && newAudio !== snap.audioIndex;
+    const subChanged = newSub !== snap.subtitleIndex;
+    closeSettingsModal();
+    if (audioChanged || subChanged) {
+      reloadStreamWith({
+        audioStreamIndex: (Number.isFinite(newAudio) && newAudio >= 0) ? newAudio : undefined,
+        subtitleStreamIndex: newSub, // -1 = off
+      });
+    }
+  };
+  // The engine gear dispatches this on the video element.
+  video.addEventListener('brewservideosettings', openSettingsModal);
+
   // ---- settings ------------------------------------------------------------
   function openSettings() {
     $('set-server').textContent = client ? client.baseUrl : '-';
@@ -503,6 +828,13 @@
   $('btn-settings-back').onclick = () => { go(settingsReturnTo); };
 
   $('quality').onchange = () => { storage.set('quality', $('quality').value); };
+
+  $('show-stats').onchange = () => {
+    storage.set('showStats', $('show-stats').checked ? '1' : '');
+    // Toggling mid-playback: show immediately (a source is active) or hide.
+    if ($('show-stats').checked) { if (currentPlaySrc) startStats(); }
+    else stopStats();
+  };
 
   $('btn-bitrate').onclick = async () => {
     if (!client) return;
@@ -539,7 +871,10 @@
 
   // ---- boot ----------------------------------------------------------------
   const savedQuality = storage.get('quality');
-  if (savedQuality) $('quality').value = savedQuality;
+  // Set .value explicitly (defaulting to 'auto') so the select carries a known
+  // value even if the engine never applied the option's `selected` attribute.
+  $('quality').value = savedQuality || 'auto';
+  $('show-stats').checked = storage.get('showStats') === '1';
 
   log('platform: ' + (isBrewser ? 'Brewser/Switch' : 'browser') + ' · deviceId ' + identity.deviceId.slice(0, 8) + '…');
 

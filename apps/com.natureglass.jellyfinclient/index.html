@@ -28,6 +28,15 @@
     font: inherit; color: var(--text); background: var(--surface-2);
     border: 1px solid var(--edge); border-radius: 4px; padding: 12px 14px; width: 100%;
   }
+  /* Text inputs on the auth/connect screens should fill the column the same
+     width as the block buttons (they were rendering narrow / off-centre). */
+  #server-url, #auth-user, #auth-pass { display: block; width: 100%; }
+  .stack { width: 100%; }
+  /* A checkbox is a small square control, not a full-width bar — the global
+     `input { width: 100% }` above was stretching it across the settings row. */
+  input[type="checkbox"] {
+    width: 22px; height: 22px; flex: none; padding: 0; border-radius: 3px;
+  }
   .hidden { display: none !important; }
   .screen { min-height: 100vh; }
 
@@ -63,7 +72,6 @@
   .topbar {
     position: sticky; top: 0; z-index: 5; display: flex; align-items: center; gap: 14px;
     padding: 12px 20px; background: rgba(16,16,16,.92); border-bottom: 1px solid #1e1e1e;
-    backdrop-filter: blur(6px);
   }
   .topbar .title { font-size: 17px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .topbar .spacer { flex: 1; }
@@ -123,6 +131,54 @@
   }
   .player-overlay.faded { opacity: 0; pointer-events: none; }
   .player-overlay .title { font-size: 17px; font-weight: 600; text-shadow: 0 1px 4px rgba(0,0,0,.8); }
+  /* "Show video stats" overlay: top-right, above the video frame (same z as
+     the top-bar so the engine's above-composite pass repaints it over the
+     blitted frame). Non-interactive; stays visible while playing. */
+  #video-stats {
+    position: absolute; top: 8px; right: 8px; z-index: 2;
+    max-width: 66%; padding: 7px 10px; border-radius: 6px;
+    background: rgba(0,0,0,.62); color: #cfe3ff;
+    font: 12px/1.5 ui-monospace, Menlo, Consolas, monospace;
+    white-space: pre; text-align: left; pointer-events: none;
+    text-shadow: 0 1px 2px rgba(0,0,0,.9);
+  }
+  #video-stats.hidden { display: none; }
+  /* Playback settings modal (over the video frame; light backdrop so aspect/
+     zoom/crop changes are previewable behind it). z:4 keeps it above the frame
+     via the engine's above-composite repaint pass. */
+  #settings-modal {
+    position: absolute; inset: 0; z-index: 4;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(0,0,0,.4);
+  }
+  #settings-modal.hidden { display: none; }
+  .settings-panel {
+    width: min(540px, 94vw); max-height: 90vh; overflow-y: auto;
+    background: var(--surface); border: 1px solid var(--edge); border-radius: 10px;
+    padding: 20px 22px; box-shadow: 0 12px 40px rgba(0,0,0,.6);
+  }
+  .settings-panel h3 { margin: 0 0 16px; font-size: 18px; font-weight: 600; }
+  .srow { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
+  .srow > label { flex: none; width: 120px; color: var(--dim); font-size: 14.5px; }
+  .srow select { flex: 1; width: auto; min-width: 0; }
+  .jump-row { justify-content: center; gap: 18px; margin-top: 4px; }
+  .settings-actions { display: flex; align-items: center; gap: 10px; margin-top: 18px; }
+  .vs-spacer { flex: 1; }
+  .vs-btn { padding: 10px 16px; background: var(--surface-2); color: var(--text); border-radius: 6px; font-weight: 500; }
+  .vs-btn:hover { background: #2a2a2a; }
+  .vs-btn.primary { background: var(--accent); color: #06222c; font-weight: 600; }
+  .jump-row .vs-btn { min-width: 104px; }
+  /* Loading veil: covers the whole player (opaque black, above the video but
+     below the z:2 top-bar so Back stays visible) from tap-to-play until the
+     first frame lands. Hides the engine's placeholder + reads clearly as
+     "working, don't tap". */
+  #player-loading {
+    position: absolute; inset: 0; z-index: 1;
+    display: flex; align-items: center; justify-content: center;
+    background: #000; color: #e6ecf5;
+  }
+  #player-loading.hidden { display: none; }
+  #player-loading .msg { font-size: 19px; letter-spacing: .2px; }
 
   /* ---- settings ---- */
   .settings-block { background: var(--surface); border: 1px solid var(--edge); border-radius: 6px; padding: 18px; margin-bottom: 18px; max-width: 760px; }
@@ -252,12 +308,37 @@
 
   <!-- Player -->
   <div id="screen-player" class="screen hidden">
-    <video id="player-video" controls playsinline></video>
+    <video id="player-video" controls playsinline controlslist="nofullscreen" data-settings-menu data-zoom="1"></video>
+    <div id="player-loading" class="hidden"><span class="msg" id="player-loading-msg">Loading stream, please wait…</span></div>
     <div class="player-overlay" id="player-overlay">
       <button class="iconbtn" id="btn-player-back" title="Back" aria-label="Back">
         <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.6-5.6L12 4l-8 8 8 8 1.4-1.4-5.57-5.6H20v-2Z"/></svg>
       </button>
       <span class="title" id="player-title"></span>
+    </div>
+    <div id="video-stats" class="hidden"></div>
+
+    <!-- Playback settings (opened by the engine control-bar gear) -->
+    <div id="settings-modal" class="hidden">
+      <div class="settings-panel">
+        <h3>Playback Settings</h3>
+        <div class="srow"><label for="vs-audio">Audio Track</label><select id="vs-audio"></select></div>
+        <div class="srow"><label for="vs-subtitle">Subtitle</label><select id="vs-subtitle"></select></div>
+        <div class="srow"><label for="vs-chapter">Chapter</label><select id="vs-chapter"></select></div>
+        <div class="srow"><label for="vs-aspect">Aspect Ratio</label><select id="vs-aspect"></select></div>
+        <div class="srow"><label for="vs-zoom">Zoom</label><select id="vs-zoom"></select></div>
+        <div class="srow"><label for="vs-crop">Crop</label><select id="vs-crop"></select></div>
+        <div class="srow jump-row">
+          <button id="vs-jump-back" class="vs-btn">« 10s</button>
+          <button id="vs-jump-fwd" class="vs-btn">10s »</button>
+        </div>
+        <div class="settings-actions">
+          <button id="vs-reset" class="vs-btn">Reset to Defaults</button>
+          <span class="vs-spacer"></span>
+          <button id="vs-cancel" class="vs-btn">Cancel</button>
+          <button id="vs-save" class="vs-btn primary">Save</button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -291,6 +372,10 @@
             <option value="720">720p</option>
             <option value="480">480p30</option>
           </select>
+        </div>
+        <div class="settings-row">
+          <label>Show video stats</label>
+          <input type="checkbox" id="show-stats">
         </div>
         <div class="settings-row">
           <label>Bandwidth</label>

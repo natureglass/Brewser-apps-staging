@@ -11,6 +11,35 @@
 (function (global) {
   'use strict';
 
+  // ---- fetch with timeout --------------------------------------------------
+  // A wrong host/port makes fetch() hang on the TCP connect (the UI just sat on
+  // "Connecting…" forever). Bound every request so failures surface as an error
+  // instead of hanging. Aborts the socket when AbortController is available;
+  // otherwise a Promise.race still rejects so the UI can react (the orphaned
+  // fetch finishes in the background).
+  const DEFAULT_REQUEST_TIMEOUT_MS = 15000;
+  function fetchWithTimeout(url, init, ms) {
+    let controller = null;
+    try {
+      if (typeof AbortController !== 'undefined') controller = new AbortController();
+    } catch (e) { controller = null; }
+    const opts = Object.assign({}, init);
+    if (controller) opts.signal = controller.signal;
+    let timer = null;
+    const timeout = new Promise((_resolve, reject) => {
+      timer = setTimeout(() => {
+        if (controller) { try { controller.abort(); } catch (e) { /* ignore */ } }
+        const err = new Error('Request timed out after ' + ms + 'ms');
+        err.name = 'TimeoutError';
+        reject(err);
+      }, ms);
+    });
+    return Promise.race([fetch(url, opts), timeout]).then(
+      (res) => { if (timer) clearTimeout(timer); return res; },
+      (err) => { if (timer) clearTimeout(timer); throw err; },
+    );
+  }
+
   // ---- time ----------------------------------------------------------------
   // Jellyfin time unit: 1 tick = 100ns, so 10,000,000 ticks = 1 second.
   const TICKS_PER_SECOND = 10000000;
@@ -104,7 +133,8 @@
     }
 
     /**
-     * opts: { method?, query?, body?, empty? } — empty for 204/report endpoints.
+     * opts: { method?, query?, body?, empty?, timeoutMs? } — empty for
+     * 204/report endpoints; timeoutMs overrides the default request timeout.
      */
     async request(path, opts) {
       opts = opts || {};
@@ -115,7 +145,11 @@
         headers['Content-Type'] = 'application/json';
         body = JSON.stringify(opts.body);
       }
-      const res = await fetch(url, { method: opts.method || 'GET', headers: headers, body: body });
+      const res = await fetchWithTimeout(
+        url,
+        { method: opts.method || 'GET', headers: headers, body: body },
+        opts.timeoutMs || DEFAULT_REQUEST_TIMEOUT_MS,
+      );
       if (!res.ok) {
         let detail;
         try { detail = await res.text(); } catch (e) { /* body unreadable */ }
@@ -184,9 +218,11 @@
 
   // ---- auth ----------------------------------------------------------------
 
-  /** Unauthenticated ping — verifies the URL points at a Jellyfin server. */
-  function getPublicSystemInfo(client) {
-    return client.request('/System/Info/Public');
+  /** Unauthenticated ping — verifies the URL points at a Jellyfin server. Uses
+   * a shorter timeout than normal requests so a wrong host/port reports back
+   * quickly at the interactive connect step. */
+  function getPublicSystemInfo(client, opts) {
+    return client.request('/System/Info/Public', Object.assign({ timeoutMs: 8000 }, opts));
   }
 
   async function authenticateByName(client, username, password) {
@@ -300,9 +336,12 @@
     });
   }
 
-  /** GET /Items/{id} — full detail (includes UserData for the resume position). */
+  /** GET /Items/{id} — full detail (UserData for resume position + Chapters for
+   * the player's chapter menu). */
   function getItem(client, itemId) {
-    return client.request('/Items/' + itemId, { query: { userId: client.userId || undefined } });
+    return client.request('/Items/' + itemId, {
+      query: { userId: client.userId || undefined, fields: 'Chapters,MediaStreams' },
+    });
   }
 
   /** GET /Items/{id}/Similar — the "More Like This" row. */
@@ -361,11 +400,16 @@
         maxStreamingBitrate: bitrate,
       };
     }
-    // 'auto': never ask for more pixels than the screen shows; cap fps on Switch.
+    // 'auto': never ask for more pixels than the screen shows. Allow 60fps,
+    // but only within the Switch's software-decode budget: 720p60 is HW-proven
+    // smooth, whereas higher-res 60fps (1080p/4K) is decode-bound on the
+    // A57 (no hw decode on Tegra X1) and plays in slow motion — so cap those to
+    // 30fps. brewser renders at 720p, so a 60fps source plays at 720p60 while
+    // 30fps sources stay 30 (the engine keys the 60 Hz present off content fps).
     return {
       maxWidth: ctx.screenWidth,
       maxHeight: ctx.screenHeight,
-      maxFps: ctx.isBrewser ? 30 : undefined,
+      maxFps: ctx.isBrewser ? (ctx.screenHeight <= 720 ? 60 : 30) : undefined,
       maxStreamingBitrate: bitrate,
     };
   }
@@ -457,17 +501,30 @@
       CodecProfiles: [
         { Type: 'Video', Conditions: videoConditions(caps) },
       ],
+      // brewser has no client-side text-subtitle renderer, and this app runs in
+      // brewser even though isBrewser is false (Switch global isn't exposed to
+      // the page). So ask the server to BURN subtitles into the video (Encode)
+      // rather than deliver them as external tracks we can't draw.
       SubtitleProfiles: [
-        { Format: 'vtt', Method: 'External' },
-        { Format: 'subrip', Method: 'External' },
+        { Format: 'subrip', Method: 'Encode' },
+        { Format: 'ass', Method: 'Encode' },
+        { Format: 'ssa', Method: 'Encode' },
+        { Format: 'vtt', Method: 'Encode' },
+        { Format: 'pgssub', Method: 'Encode' },
+        { Format: 'dvdsub', Method: 'Encode' },
       ],
     };
   }
 
   function videoConditions(caps) {
+    // Width/Height are IsRequired:true so the server treats them as a hard cap
+    // for direct-play/-stream eligibility: an over-cap source (e.g. a 4K source
+    // under this 720p profile) MUST be transcoded down, never direct-played.
+    // Without this the server was direct-streaming full 4K to the device, which
+    // the A57 can't software-decode in real time (~27fps → slow motion).
     const conds = [
-      { Condition: 'LessThanEqual', Property: 'Width', Value: String(caps.maxWidth), IsRequired: false },
-      { Condition: 'LessThanEqual', Property: 'Height', Value: String(caps.maxHeight), IsRequired: false },
+      { Condition: 'LessThanEqual', Property: 'Width', Value: String(caps.maxWidth), IsRequired: true },
+      { Condition: 'LessThanEqual', Property: 'Height', Value: String(caps.maxHeight), IsRequired: true },
     ];
     if (caps.maxFps != null) {
       conds.push({ Condition: 'LessThanEqual', Property: 'VideoFramerate', Value: String(caps.maxFps), IsRequired: false });
@@ -495,6 +552,12 @@
         mediaSourceId: opts.mediaSourceId,
         audioStreamIndex: opts.audioStreamIndex,
         subtitleStreamIndex: opts.subtitleStreamIndex,
+        // Forbid video stream-copy: the server was copying the source video
+        // through the transcode (keeping 4K, only cutting bitrate), which the
+        // A57 can't decode. Forcing a re-encode makes the transcode honor the
+        // profile's Width/Height cap (downscale to <=720p). Only affects the
+        // transcode/direct-stream path; DirectPlay (native <=720p) is untouched.
+        allowVideoStreamCopy: false,
         autoOpenLiveStream: true,
       },
       body: { DeviceProfile: opts.deviceProfile },
@@ -508,7 +571,7 @@
    * returns { url, playMethod: 'DirectPlay'|'Transcode', protocol,
    *           mediaSourceId, playSessionId, source }
    */
-  function resolveVideoSource(client, itemId, info) {
+  function resolveVideoSource(client, itemId, info, caps) {
     if (info.ErrorCode) throw new Error('PlaybackInfo error: ' + info.ErrorCode);
     const source = info.MediaSources && info.MediaSources[0];
     if (!source || !source.Id) throw new Error('PlaybackInfo returned no media sources');
@@ -536,6 +599,23 @@
       const url = new URL(client.baseUrl + source.TranscodingUrl);
       if (!url.searchParams.has('api_key') && client.accessToken) {
         url.searchParams.set('api_key', client.accessToken);
+      }
+      // Force the transcode to DOWNSCALE. The DeviceProfile's CodecProfile
+      // Width/Height conditions gate direct-play eligibility but did NOT cap the
+      // transcode OUTPUT — the server cut bitrate but kept full 4K, which the
+      // A57 can't decode in real time (slow motion). Overriding maxWidth/
+      // maxHeight (+ a bitrate ceiling) directly on the transcode URL makes the
+      // server scale down; case-insensitive params, honored by the HLS endpoint.
+      if (caps) {
+        // Strip any server-supplied size caps (any casing; they arrived as
+        // 0 = "no limit") so our values aren't shadowed by a duplicate the
+        // server resolves to 0, then set ours.
+        for (const k of Array.from(url.searchParams.keys())) {
+          const lk = k.toLowerCase();
+          if (lk === 'maxwidth' || lk === 'maxheight') url.searchParams.delete(k);
+        }
+        if (caps.maxWidth) url.searchParams.set('maxWidth', String(caps.maxWidth));
+        if (caps.maxHeight) url.searchParams.set('maxHeight', String(caps.maxHeight));
       }
       return {
         url: url.toString(),
