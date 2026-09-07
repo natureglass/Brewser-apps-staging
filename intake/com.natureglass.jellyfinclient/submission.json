@@ -1,0 +1,17 @@
+{
+    "id": "com.natureglass.jellyfinclient",
+    "name": "Jellyfin Client",
+    "version": "1.0.8",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "zip_sha256": "1c4cda301f1ffea31f0db889b13bb51afc2330aa07839bf6fe3f1f65e34ddbdd",
+    "attestation": {
+        "ts": "2026-09-07T21:07:14+00:00",
+        "platforms": [
+            "mobile",
+            "switch",
+            "web"
+        ],
+        "zip_sha256": "1c4cda301f1ffea31f0db889b13bb51afc2330aa07839bf6fe3f1f65e34ddbdd"
+    },
+    "submitted_at": "2026-09-07T21:07:14+00:00"
+}
