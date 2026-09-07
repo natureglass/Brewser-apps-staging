@@ -8,7 +8,13 @@
   'use strict';
   const JF = globalThis.JF;
 
-  const isBrewser = typeof globalThis.Switch !== 'undefined';
+  // Detect the brewser runtime. `globalThis.Switch` is NOT exposed to
+  // sandboxed pages (it read false in brewser all along — the source of the
+  // 4K-Auto saga), so key off the `Brewser/<ver>` product token the engine
+  // appends to the page User-Agent. Keep the Switch check as a harmless
+  // secondary signal. False on a real browser → the web target.
+  const _ua = (typeof navigator !== 'undefined' && navigator.userAgent) || '';
+  const isBrewser = _ua.indexOf('Brewser/') >= 0 || typeof globalThis.Switch !== 'undefined';
   const storage = JF.localStorageAdapter();
   const identity = {
     clientName: 'BrewserJellyfin',
@@ -386,27 +392,175 @@
   let progress = null;
   let progressTimer = null;
 
-  // Top overlay: fades out 5s after playback starts/resumes; stays put while
-  // paused; any pointer activity brings it back.
+  // Player chrome = the top overlay (Back + title) AND the bottom HTML control
+  // bar. Both fade out together 5s after playback starts/resumes, stay put
+  // while paused, and any pointer activity brings them back.
   const overlay = $('player-overlay');
+  const ctrlBar = $('ctrl-bar');
   let overlayTimer = null;
   function loadingVisible() {
     return loadingEl && !loadingEl.classList.contains('hidden');
   }
+  function chromeVisible() { return !overlay.classList.contains('faded'); }
+  function setChromeFaded(faded) {
+    overlay.classList.toggle('faded', faded);
+    if (ctrlBar) ctrlBar.classList.toggle('faded', faded);
+  }
   function wakeOverlay() {
-    overlay.classList.remove('faded');
+    setChromeFaded(false);
     if (overlayTimer) { clearTimeout(overlayTimer); overlayTimer = null; }
-    // Keep the top bar (Back) visible while the loading veil is up — a long
-    // transcode start can exceed the fade timeout, and a faded overlay is
+    // Keep the chrome (Back) visible while the loading veil is up — a long
+    // transcode start can exceed the fade timeout, and faded chrome is
     // pointer-events:none, which would trap the user with no way to exit.
     if (!video.paused && !video.ended && !loadingVisible()) {
-      overlayTimer = setTimeout(() => { overlay.classList.add('faded'); }, 5000);
+      overlayTimer = setTimeout(() => { setChromeFaded(true); }, 5000);
     }
   }
   video.addEventListener('play', wakeOverlay);
   video.addEventListener('pause', wakeOverlay);
+  // Pointer MOVE reveals the chrome (web mouse hover); brewser touch has no
+  // hover, so there the frame hit-catcher (#ctrl-hit, below) drives reveal on
+  // tap. We deliberately do NOT wake on pointerdown here — that would un-fade
+  // the chrome before the frame-tap handler could tell a reveal-tap from a
+  // pause-tap.
   $('screen-player').addEventListener('pointermove', wakeOverlay);
-  $('screen-player').addEventListener('pointerdown', wakeOverlay);
+
+  // ---- HTML control bar (drives the <video> element API) -----------------
+  // One control UI for both targets: on brewser the frame is engine-blitted and
+  // this bar paints over it (above-composite pass, z:3); on the web it's a
+  // normal overlay on the native <video>. No engine `controls`, no
+  // `brewservideosettings` event — the bar reads/writes currentTime, paused,
+  // play()/pause(), duration, muted directly.
+  const ctrlPlay = $('ctrl-play');
+  const iPlay = $('i-play');
+  const iPause = $('i-pause');
+  const ctrlMute = $('ctrl-mute');
+  const iVol = $('i-vol');
+  const iMute = $('i-mute');
+  const ctrlCur = $('ctrl-cur');
+  const ctrlDur = $('ctrl-dur');
+  const ctrlTrack = $('ctrl-track');
+  const ctrlFill = $('ctrl-fill');
+  const ctrlKnob = $('ctrl-knob');
+  let uiTimer = 0;
+  let itemDurationSec = 0;    // fallback duration (item RunTimeTicks) when the
+                              // decoder reports 0 (common for HLS transcodes)
+  const uiLast = { pct: '', cur: '', dur: '', play: null, mute: null }; // change gate
+
+  function formatSecs(s) {
+    if (!Number.isFinite(s) || s < 0) s = 0;
+    s = Math.floor(s);
+    const h = Math.floor(s / 3600); s -= h * 3600;
+    const m = Math.floor(s / 60); const sec = s - m * 60;
+    const pad = (n) => (n < 10 ? '0' + n : '' + n);
+    return h > 0 ? h + ':' + pad(m) + ':' + pad(sec) : m + ':' + pad(sec);
+  }
+  function effectiveDuration() {
+    const d = video.duration;
+    if (Number.isFinite(d) && d > 0) return d;
+    return itemDurationSec > 0 ? itemDurationSec : 0;
+  }
+  function setIconPair(showFirst, first, second) {
+    if (first) first.classList.toggle('hidden', !showFirst);
+    if (second) second.classList.toggle('hidden', showFirst);
+  }
+  // Repaint the bar from the current <video> state. Only touches the DOM when a
+  // value actually changed, so brewser doesn't re-dirty/repaint every tick.
+  function updateControls() {
+    const playState = !!(video.paused || video.ended);
+    if (playState !== uiLast.play) { setIconPair(playState, iPlay, iPause); uiLast.play = playState; } // paused → ▶
+    const muteState = !video.muted;
+    if (muteState !== uiLast.mute) { setIconPair(muteState, iVol, iMute); uiLast.mute = muteState; }
+    const dur = effectiveDuration();
+    const cur = video.currentTime || 0;
+    const ratio = dur > 0 ? Math.max(0, Math.min(1, cur / dur)) : 0;
+    const pct = (ratio * 100).toFixed(2) + '%';
+    if (pct !== uiLast.pct) {
+      if (ctrlFill) ctrlFill.style.width = pct;
+      if (ctrlKnob) ctrlKnob.style.left = pct;
+      uiLast.pct = pct;
+    }
+    const curT = formatSecs(cur);
+    if (curT !== uiLast.cur) { if (ctrlCur) ctrlCur.textContent = curT; uiLast.cur = curT; }
+    const durT = dur > 0 ? formatSecs(dur) : '--:--';
+    if (durT !== uiLast.dur) { if (ctrlDur) ctrlDur.textContent = durT; uiLast.dur = durT; }
+  }
+  function startUiLoop() {
+    if (uiTimer) return;
+    updateControls();
+    uiTimer = setInterval(() => {
+      if (currentScreen !== 'player') { stopUiLoop(); return; }
+      updateControls();
+    }, 250);
+  }
+  function stopUiLoop() {
+    if (uiTimer) { clearInterval(uiTimer); uiTimer = 0; }
+    // Force the next updateControls to repaint (state may be stale next open).
+    uiLast.pct = ''; uiLast.cur = ''; uiLast.dur = ''; uiLast.play = null; uiLast.mute = null;
+  }
+
+  if (ctrlPlay) ctrlPlay.onclick = () => {
+    if (video.paused || video.ended) video.play().catch(() => {}); else video.pause();
+    wakeOverlay();
+  };
+  if (ctrlMute) ctrlMute.onclick = () => { video.muted = !video.muted; updateControls(); wakeOverlay(); };
+  if ($('ctrl-gear')) $('ctrl-gear').onclick = () => { openSettingsModal(); wakeOverlay(); };
+
+  // Progress seek. brewser's touch→DOM delivery during a drag is unreliable
+  // (the engine has a native scrub path for its OWN drawn bar, which we don't
+  // use), so we seek on every signal we might get — pointerdown, pointermove-
+  // while-pressed, and click — throttled so a web drag / transcode re-request
+  // doesn't thrash. getBoundingClientRect + clientX is correct for the fixed
+  // player (its layout box == screen coords: viewport 0, no scroll).
+  let seekPressed = false;
+  let lastSeekAt = 0;
+  function ratioFromEvent(ev) {
+    if (!ctrlTrack) return -1;
+    const r = ctrlTrack.getBoundingClientRect();
+    if (!r || !r.width) return -1;
+    return Math.max(0, Math.min(1, (ev.clientX - r.left) / r.width));
+  }
+  function seekToRatio(ratio, force) {
+    if (ratio < 0) return;
+    const now = performance.now();
+    if (!force && now - lastSeekAt < 200) return; // throttle live drags
+    lastSeekAt = now;
+    const dur = effectiveDuration();
+    if (dur > 0) { video.currentTime = ratio * dur; updateControls(); }
+  }
+  if (ctrlTrack) {
+    ctrlTrack.addEventListener('pointerdown', (ev) => {
+      seekPressed = true;
+      seekToRatio(ratioFromEvent(ev), true);
+      try { ctrlTrack.setPointerCapture(ev.pointerId); } catch (_) { /* optional */ }
+      ev.preventDefault(); ev.stopPropagation();
+      wakeOverlay();
+    });
+    ctrlTrack.addEventListener('pointermove', (ev) => {
+      if (!seekPressed) return;
+      seekToRatio(ratioFromEvent(ev), false);
+      ev.preventDefault();
+    });
+    const release = () => { seekPressed = false; };
+    ctrlTrack.addEventListener('pointerup', release);
+    ctrlTrack.addEventListener('pointercancel', release);
+    document.addEventListener('pointerup', release);
+    // Tap-to-seek fallback: the engine dispatches `click` on a tap even when it
+    // doesn't deliver pointer up/move to a plain element.
+    ctrlTrack.onclick = (ev) => { seekToRatio(ratioFromEvent(ev), true); ev.stopPropagation(); };
+  }
+
+  // Frame tap (the transparent hit-catcher over the video, NOT the <video> —
+  // see #ctrl-hit): chrome hidden → reveal it; chrome shown → toggle play/
+  // pause. `click` is reliably dispatched on a tap; the chrome only un-fades on
+  // pointer MOVE (web hover) — never on this tap — so a first tap reveals
+  // without also pausing. Paused always resumes.
+  const ctrlHit = $('ctrl-hit');
+  if (ctrlHit) ctrlHit.onclick = () => {
+    if (video.paused || video.ended) { video.play().catch(() => {}); wakeOverlay(); }
+    else if (!chromeVisible()) { wakeOverlay(); } // reveal only
+    else { video.pause(); wakeOverlay(); }        // pause, keep chrome up
+  };
 
   // --- Video stats overlay ("Show video stats" setting) --------------------
   // Top-right HUD: negotiated play method + source stream info + the ACTUAL
@@ -532,8 +686,12 @@
     currentPlayItem = item;
     await stopPlayback();
     $('player-title').textContent = item.Name || '';
+    // Fallback duration for the progress bar when the decoder reports 0 (HLS
+    // transcodes often do): the item's own runtime.
+    itemDurationSec = JF.ticksToSeconds(item.RunTimeTicks || 0);
     wakeOverlay();
     go('player');
+    startUiLoop();
 
     if (item.MediaType === 'Audio') {
       const url = JF.audioUniversalUrl(client, item.Id);
@@ -584,17 +742,11 @@
     currentPlaySrc = src; // feeds the video-stats overlay
     log('play method: ' + src.playMethod + ' (' + src.protocol + ')');
     log('src: ' + src.url);
-    if (src.playMethod === 'Transcode' && src.protocol === 'hls' && !isBrewser) {
-      log('note: plain <video> on web usually needs hls.js for HLS (player-web milestone)');
-    }
 
-    video.src = src.url;
-    if (resumeTicks > 0 && src.playMethod === 'DirectPlay') {
-      // Direct play: seek locally. (Transcodes start at startTimeTicks server-side.)
-      video.currentTime = JF.ticksToSeconds(resumeTicks);
-      log('resuming at ' + JF.ticksToSeconds(resumeTicks).toFixed(0) + 's');
-    }
-    video.play().catch(() => { /* user gesture needed; fine */ });
+    // Attach + start playback. Brewser demuxes HLS/files natively; on the web,
+    // transcoded HLS goes through hls.js (MSE), direct-play MP4 / Safari-HLS use
+    // the native <video>. Also (web) adds native subtitle <track>s.
+    attachSource(src, resumeTicks);
     if (statsEnabled()) startStats();
 
     progress = {
@@ -614,10 +766,12 @@
   async function stopPlayback() {
     hideLoading();
     stopStats();
+    stopUiLoop();
+    seekPressed = false;
     closeSettingsModal();
     currentPlaySrc = null;
     if (overlayTimer) { clearTimeout(overlayTimer); overlayTimer = null; }
-    overlay.classList.remove('faded');
+    setChromeFaded(false);
     if (progressTimer) { clearInterval(progressTimer); progressTimer = null; }
     if (client && progress) {
       try {
@@ -626,8 +780,17 @@
       } catch (e) { fail(e, 'stop report'); }
       progress = null;
     }
+    detachHls();
+    clearSubtitleTracks();
     video.removeAttribute('src');
     video.load();
+    // Clear the picture transform (both engine data-* and web CSS) for the
+    // next item.
+    resetVideoCss();
+    video.removeAttribute('data-aspect');
+    video.removeAttribute('data-crop');
+    video.setAttribute('data-zoom', '1');
+    displayTransform = { aspect: '', zoom: '1', crop: '' };
   }
 
   async function exitPlayer() {
@@ -643,11 +806,155 @@
   $('btn-player-back').onclick = () => { exitPlayer(); };
   video.addEventListener('ended', () => { exitPlayer(); });
 
-  // ---- playback settings modal (engine control-bar gear) ------------------
-  // Aspect/Zoom/Crop map a dropdown to the engine's per-video display transform
-  // (data-aspect / data-crop = target aspect-ratio float, '' = default;
-  // data-zoom = scale factor). Applied live for instant preview. Audio/Subtitle
-  // re-request the stream (subtitles are burned in server-side). Chapter + Jump
+  // ---- source attach (hls.js on web) --------------------------------------
+  let currentHls = null;       // active hls.js instance (web transcode only)
+  let hlsLoaderPromise = null; // memoised lazy <script> load
+
+  // hls.js is only needed on the WEB target for transcoded HLS in non-Safari
+  // browsers; load it lazily so brewser (native HLS) never pays for it.
+  function ensureHls() {
+    if (globalThis.Hls) return Promise.resolve(globalThis.Hls);
+    if (hlsLoaderPromise) return hlsLoaderPromise;
+    hlsLoaderPromise = new Promise((resolve, reject) => {
+      const s = document.createElement('script');
+      s.src = 'hls.min.js';
+      s.onload = () => resolve(globalThis.Hls);
+      s.onerror = () => { hlsLoaderPromise = null; reject(new Error('failed to load hls.min.js')); };
+      document.head.appendChild(s);
+    });
+    return hlsLoaderPromise;
+  }
+  function detachHls() {
+    if (currentHls) { try { currentHls.destroy(); } catch (_) { /* ignore */ } currentHls = null; }
+  }
+
+  function attachSource(src, resumeTicks) {
+    detachHls();
+    clearSubtitleTracks();
+    const url = src.url;
+    const isHls = src.protocol === 'hls' || /\.m3u8(\?|$)/i.test(url);
+    const doResume = () => {
+      if (resumeTicks > 0 && src.playMethod === 'DirectPlay') {
+        // Direct play seeks locally; transcodes already start at startTimeTicks.
+        video.currentTime = JF.ticksToSeconds(resumeTicks);
+        log('resuming at ' + JF.ticksToSeconds(resumeTicks).toFixed(0) + 's');
+      }
+    };
+
+    if (isBrewser) {
+      // Engine <video> demuxes HLS + files natively via libav.
+      video.src = url;
+      doResume();
+      video.play().catch(() => { /* user gesture needed; fine */ });
+      return;
+    }
+
+    // Web: native subtitle tracks (the web profile requests External delivery).
+    addWebSubtitleTracks(src);
+
+    const nativeHls = video.canPlayType && video.canPlayType('application/vnd.apple.mpegurl');
+    if (isHls && !nativeHls) {
+      ensureHls().then((Hls) => {
+        if (Hls && Hls.isSupported()) {
+          const hls = new Hls({ enableWorker: true, lowLatencyMode: false });
+          currentHls = hls;
+          hls.on(Hls.Events.ERROR, (_evt, data) => {
+            if (data && data.fatal) log('hls.js fatal: ' + data.type + ' / ' + data.details, true);
+          });
+          hls.on(Hls.Events.MANIFEST_PARSED, () => { video.play().catch(() => {}); });
+          hls.loadSource(url);
+          hls.attachMedia(video);
+        } else {
+          video.src = url; video.play().catch(() => {});
+        }
+      }).catch((e) => { fail(e, 'hls.js'); video.src = url; video.play().catch(() => {}); });
+      return;
+    }
+
+    // Safari native HLS, or direct-play MP4.
+    video.src = url;
+    doResume();
+    video.play().catch(() => {});
+  }
+
+  // ---- web subtitles (native <track>/WebVTT) ------------------------------
+  // On the web the server delivers subtitles as external tracks (see
+  // buildWebDeviceProfile's External SubtitleProfiles); brewser burns them in.
+  let subtitleTracks = []; // <track> elements added on the web
+  function clearSubtitleTracks() {
+    for (const t of subtitleTracks) { try { t.remove(); } catch (_) { /* ignore */ } }
+    subtitleTracks = [];
+  }
+  function addWebSubtitleTracks(src) {
+    const streams = (src.source && src.source.MediaStreams) || [];
+    const subs = streams.filter((m) =>
+      m.Type === 'Subtitle' && m.DeliveryUrl && (m.DeliveryMethod === 'External' || m.IsExternal));
+    if (!subs.length) return;
+    // Cross-origin text tracks require the media element in anonymous CORS mode
+    // (Jellyfin sends CORS headers). Only set when we actually add tracks.
+    try { video.crossOrigin = 'anonymous'; } catch (_) { /* ignore */ }
+    for (const m of subs) {
+      const track = document.createElement('track');
+      track.kind = 'subtitles';
+      track.src = JF.subtitleTrackUrl(client, m.DeliveryUrl);
+      if (m.Language) track.srclang = m.Language;
+      track.label = m.DisplayTitle || m.Language || ('Subtitle ' + m.Index);
+      track.setAttribute('data-index', String(m.Index));
+      video.appendChild(track);
+      subtitleTracks.push(track);
+    }
+    // Re-apply the current selection (survives an audio-change reload).
+    showSubtitleTrack(playSubtitleIndex != null ? playSubtitleIndex : -1);
+  }
+  function showSubtitleTrack(index) {
+    const tracks = video.textTracks;
+    for (let i = 0; i < subtitleTracks.length; i++) {
+      const el = subtitleTracks[i];
+      const on = parseInt(el.getAttribute('data-index'), 10) === index;
+      const tt = tracks && tracks[i];
+      if (tt) tt.mode = on ? 'showing' : 'disabled';
+    }
+  }
+
+  // ---- web display transform (CSS) ----------------------------------------
+  // Brewser applies aspect/zoom/crop as a real per-frame transform via data-*
+  // attrs (engine); the web replicates it with CSS on the <video>.
+  function resetVideoCss() {
+    const s = video.style;
+    s.transform = ''; s.transformOrigin = ''; s.objectFit = ''; s.objectPosition = '';
+    s.width = ''; s.height = ''; s.left = ''; s.top = ''; s.right = ''; s.bottom = '';
+  }
+  function sizeBoxToAR(ar, fit) {
+    const cw = window.innerWidth || 0, ch = window.innerHeight || 0;
+    if (!ar || !cw || !ch) return;
+    let w = cw, h = cw / ar;
+    if (h > ch) { h = ch; w = ch * ar; }
+    const s = video.style;
+    s.width = w + 'px'; s.height = h + 'px';
+    s.left = ((cw - w) / 2) + 'px'; s.top = ((ch - h) / 2) + 'px';
+    s.right = 'auto'; s.bottom = 'auto';
+    s.objectFit = fit;
+  }
+  function applyWebTransform(aspect, crop, zoom) {
+    resetVideoCss();
+    if (crop) {
+      // Center-crop the source to the crop AR (cover fills the box + clips).
+      sizeBoxToAR(parseFloat(crop), 'cover');
+    } else if (aspect) {
+      // Force a display AR (stretch the source into that AR box).
+      sizeBoxToAR(parseFloat(aspect), 'fill');
+    }
+    if (zoom && zoom !== 1) {
+      video.style.transformOrigin = 'center center';
+      video.style.transform = 'scale(' + zoom + ')';
+    }
+  }
+
+  // ---- playback settings modal (opened by the control-bar gear) -----------
+  // Aspect/Zoom/Crop map a dropdown to the display transform (brewser: engine
+  // data-* attrs; web: CSS on the <video>). Applied live for instant preview.
+  // Audio re-requests the stream on both targets. Subtitle: web toggles a
+  // native <track>; brewser re-requests (burned in server-side). Chapter + Jump
   // seek in real time.
   const ASPECT_OPTS = [
     ['Default', ''], ['16:9', 16 / 9], ['4:3', 4 / 3], ['1:1', 1], ['16:10', 1.6],
@@ -661,6 +968,9 @@
     ['2.21:1', 2.21], ['2.35:1', 2.35], ['2.39:1', 2.39], ['5:3', 5 / 3], ['5:4', 1.25], ['1:1', 1],
   ];
   let settingsSnapshot = null; // { aspect, zoom, crop, audioIndex, subtitleIndex } at open
+  // Current picture transform, tracked explicitly (not read back from data-*)
+  // so it's target-agnostic — the web path applies CSS, not data-* attrs.
+  let displayTransform = { aspect: '', zoom: '1', crop: '' };
 
   function fillSelect(sel, opts, selectedValue) {
     if (!sel) return;
@@ -674,24 +984,28 @@
     sel.value = String(selectedValue); // set explicitly (engine doesn't reflect `selected`)
   }
 
-  // Push the aspect/zoom/crop selection onto the <video> as data-* attributes;
-  // the engine reads them when blitting each frame.
+  // Read the aspect/zoom/crop selects and apply the transform for the current
+  // target: brewser sets data-* attrs (engine frame transform); web sets CSS.
   function applyDisplayTransform() {
-    const setRatio = (name, v) => {
-      if (v === '' || v == null) video.removeAttribute(name); else video.setAttribute(name, String(v));
-    };
-    setRatio('data-aspect', $('vs-aspect').value);
-    setRatio('data-crop', $('vs-crop').value);
+    const aspect = $('vs-aspect').value || '';
+    const crop = $('vs-crop').value || '';
     const z = parseFloat($('vs-zoom').value);
-    video.setAttribute('data-zoom', String(Number.isFinite(z) && z > 0 ? z : 1));
+    const zoom = Number.isFinite(z) && z > 0 ? z : 1;
+    displayTransform = { aspect: aspect, zoom: String(zoom), crop: crop };
+    if (isBrewser) {
+      const setRatio = (name, v) => {
+        if (v === '' || v == null) video.removeAttribute(name); else video.setAttribute(name, String(v));
+      };
+      setRatio('data-aspect', aspect);
+      setRatio('data-crop', crop);
+      video.setAttribute('data-zoom', String(zoom));
+    } else {
+      applyWebTransform(aspect, crop, zoom);
+    }
   }
 
   function currentTransform() {
-    return {
-      aspect: video.getAttribute('data-aspect') || '',
-      zoom: video.getAttribute('data-zoom') || '1',
-      crop: video.getAttribute('data-crop') || '',
-    };
+    return { aspect: displayTransform.aspect, zoom: displayTransform.zoom, crop: displayTransform.crop };
   }
 
   function streamsOfType(type) {
@@ -795,7 +1109,7 @@
     }
     closeSettingsModal();
   };
-  // Save: keep the picture transform; apply audio/subtitle (reload if changed).
+  // Save: keep the picture transform; apply audio/subtitle.
   if ($('vs-save')) $('vs-save').onclick = () => {
     applyDisplayTransform();
     const snap = settingsSnapshot || {};
@@ -804,6 +1118,20 @@
     const audioChanged = Number.isFinite(newAudio) && newAudio >= 0 && newAudio !== snap.audioIndex;
     const subChanged = newSub !== snap.subtitleIndex;
     closeSettingsModal();
+    // Web with native subtitle tracks: switch the <track> without re-fetching;
+    // only an audio change needs a reload (which re-adds + re-selects tracks).
+    if (!isBrewser && subtitleTracks.length) {
+      if (subChanged) { playSubtitleIndex = newSub; showSubtitleTrack(newSub); }
+      if (audioChanged) {
+        reloadStreamWith({
+          audioStreamIndex: newAudio,
+          subtitleStreamIndex: playSubtitleIndex, // preserved across the reload
+        });
+      }
+      return;
+    }
+    // Brewser (burn-in) / web-without-external-subs: any audio or subtitle
+    // change re-requests the stream.
     if (audioChanged || subChanged) {
       reloadStreamWith({
         audioStreamIndex: (Number.isFinite(newAudio) && newAudio >= 0) ? newAudio : undefined,
@@ -811,8 +1139,9 @@
       });
     }
   };
-  // The engine gear dispatches this on the video element.
-  video.addEventListener('brewservideosettings', openSettingsModal);
+  // (The control-bar gear button — wired in the control-bar block above —
+  // calls openSettingsModal() directly; no engine `brewservideosettings`
+  // event is used any more.)
 
   // ---- settings ------------------------------------------------------------
   function openSettings() {

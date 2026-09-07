@@ -501,15 +501,15 @@
       CodecProfiles: [
         { Type: 'Video', Conditions: videoConditions(caps) },
       ],
-      // brewser has no client-side text-subtitle renderer, and this app runs in
-      // brewser even though isBrewser is false (Switch global isn't exposed to
-      // the page). So ask the server to BURN subtitles into the video (Encode)
-      // rather than deliver them as external tracks we can't draw.
+      // A real browser renders WebVTT via native <track> — far cheaper than
+      // burning subtitles into the video. Deliver text subs externally as vtt
+      // (Jellyfin converts subrip/ass/ssa on the fly); the app adds a <track>
+      // per external stream and toggles it in the settings modal. Image-based
+      // subs (PGS/DVD) can't be text/vtt, so those still burn in.
+      // (Brewser has no text-subtitle renderer and uses buildBrewserDeviceProfile,
+      // which keeps Encode — see that profile above.)
       SubtitleProfiles: [
-        { Format: 'subrip', Method: 'Encode' },
-        { Format: 'ass', Method: 'Encode' },
-        { Format: 'ssa', Method: 'Encode' },
-        { Format: 'vtt', Method: 'Encode' },
+        { Format: 'vtt', Method: 'External' },
         { Format: 'pgssub', Method: 'Encode' },
         { Format: 'dvdsub', Method: 'Encode' },
       ],
@@ -648,6 +648,22 @@
     });
   }
 
+  /**
+   * Absolute URL for an external subtitle track, from a Subtitle MediaStream's
+   * server-relative DeliveryUrl. api_key is appended if missing — a <track>
+   * element can't send an Authorization header. Used only by the web target
+   * (native WebVTT <track>); brewser burns subtitles in server-side.
+   */
+  function subtitleTrackUrl(client, deliveryUrl) {
+    if (!deliveryUrl) return '';
+    const abs = /^https?:\/\//i.test(deliveryUrl) ? deliveryUrl : (client.baseUrl + deliveryUrl);
+    const u = new URL(abs);
+    if (!u.searchParams.has('api_key') && client.accessToken) {
+      u.searchParams.set('api_key', client.accessToken);
+    }
+    return u.toString();
+  }
+
   // Progress reporting — what lights up "Continue watching" and resume
   // points. Cadence used by official clients: start once, progress every
   // ~10s and on pause/seek, stopped on exit (stopped persists resume).
@@ -694,7 +710,7 @@
     getViews, getItems, getResumeItems, getItem, getSimilarItems, imageUrl,
     resolveQualityCaps, detectBitrate,
     buildBrewserDeviceProfile, buildWebDeviceProfile,
-    getPlaybackInfo, resolveVideoSource, audioUniversalUrl,
+    getPlaybackInfo, resolveVideoSource, audioUniversalUrl, subtitleTrackUrl,
     reportPlaybackStart, reportPlaybackProgress, reportPlaybackStopped,
   };
 })(typeof globalThis !== 'undefined' ? globalThis : window);
