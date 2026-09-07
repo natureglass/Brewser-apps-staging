@@ -1,17 +1,63 @@
 {
-  "verdict": "GOOD",
-  "score": 0,
-  "scanned_at": "2026-09-05T12:28:39Z",
+  "verdict": "SUSPICIOUS",
+  "score": 50,
+  "scanned_at": "2026-09-07T11:36:38Z",
   "scanner_version": "1.3.2",
-  "package_hash": "9b5d653aa10f1af878bb594eac4ac1d5ddb39e06ff965a1c8d64f7b42e519888",
+  "package_hash": "cea548a4480c82c2bcca016e3cf6a2fe745eae6144c7798950c33f183ba16973",
   "counts": {
     "info": 0,
-    "suspicious": 0,
+    "suspicious": 5,
     "dangerous": 0
   },
-  "rationale": "No known-bad pattern matched. Not proof of safety — human review still required.",
+  "rationale": "Suspicious: 5 signal(s) needing review; e.g. settimeout/setinterval called with a string (implicit eval).",
   "truncated": false,
-  "findings": [],
+  "findings": [
+    {
+      "rule_id": "settimeout-string",
+      "severity": "SUSPICIOUS",
+      "title": "setTimeout/setInterval called with a string (implicit eval)",
+      "detail": "setInterval() called with a string first argument — the string is eval()-ed.",
+      "file": "hls.min.js",
+      "line": 1,
+      "evidence": "this.setInterval(100)"
+    },
+    {
+      "rule_id": "settimeout-string",
+      "severity": "SUSPICIOUS",
+      "title": "setTimeout/setInterval called with a string (implicit eval)",
+      "detail": "setInterval() called with a string first argument — the string is eval()-ed.",
+      "file": "hls.min.js",
+      "line": 1,
+      "evidence": "this.setInterval(100)"
+    },
+    {
+      "rule_id": "settimeout-string",
+      "severity": "SUSPICIOUS",
+      "title": "setTimeout/setInterval called with a string (implicit eval)",
+      "detail": "setInterval() called with a string first argument — the string is eval()-ed.",
+      "file": "hls.min.js",
+      "line": 1,
+      "evidence": "this.setInterval(500)"
+    },
+    {
+      "rule_id": "settimeout-string",
+      "severity": "SUSPICIOUS",
+      "title": "setTimeout/setInterval called with a string (implicit eval)",
+      "detail": "setInterval() called with a string first argument — the string is eval()-ed.",
+      "file": "hls.min.js",
+      "line": 1,
+      "evidence": "this.setInterval(500)"
+    },
+    {
+      "rule_id": "settimeout-string",
+      "severity": "SUSPICIOUS",
+      "title": "setTimeout/setInterval called with a string (implicit eval)",
+      "detail": "setInterval() called with a string first argument — the string is eval()-ed.",
+      "file": "hls.min.js",
+      "line": 1,
+      "evidence": "this.setInterval(100)"
+    }
+  ],
   "capabilities": [],
   "limitations": "Static heuristic scan. A GOOD verdict means no known-bad pattern matched, NOT proof of safety. Human review is still required for every submission."
 }
