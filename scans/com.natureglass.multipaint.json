@@ -1,0 +1,29 @@
+{
+  "verdict": "SUSPICIOUS",
+  "score": 10,
+  "scanned_at": "2026-09-10T11:18:37Z",
+  "scanner_version": "1.3.2",
+  "package_hash": "df173bd18c0d20296b26027485f266a46588673f6bf7dca15d3b448abf2cc521",
+  "counts": {
+    "info": 0,
+    "suspicious": 1,
+    "dangerous": 0
+  },
+  "rationale": "Suspicious: 1 signal(s) needing review; e.g. network request to a runtime-assembled url.",
+  "truncated": false,
+  "findings": [
+    {
+      "rule_id": "external-egress-assembled",
+      "severity": "SUSPICIOUS",
+      "title": "Network request to a runtime-assembled URL",
+      "detail": "new WebSocket() targets a runtime-assembled URL containing the external fragment wss://ws.brewser.io/?room=.",
+      "file": "index.html <inline script>",
+      "line": 151,
+      "evidence": "new WebSocket(WS_URL)"
+    }
+  ],
+  "capabilities": [
+    "webrtc"
+  ],
+  "limitations": "Static heuristic scan. A GOOD verdict means no known-bad pattern matched, NOT proof of safety. Human review is still required for every submission."
+}

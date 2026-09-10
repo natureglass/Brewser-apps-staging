@@ -1,0 +1,10 @@
+{
+  "id": "com.natureglass.multipaint",
+  "sizeBytes": 35236,
+  "files": [
+    "README.md",
+    "assets/appbanner.jpg",
+    "index.html",
+    "manifest.json"
+  ]
+}
