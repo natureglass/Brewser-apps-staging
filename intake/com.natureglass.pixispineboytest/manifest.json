@@ -1,0 +1,30 @@
+{
+    "id": "com.natureglass.pixispineboytest",
+    "name": "PIXI - Spine Boy Test",
+    "version": "1.0.2",
+    "description": "<p>PIXI - Spine Boy Test</p>",
+    "logo": "assets/appbanner.jpg",
+    "entry": "index.html",
+    "categories": [
+        "Games"
+    ],
+    "permissions": [],
+    "compatibility": [
+        "web"
+    ],
+    "allowed_origins": [],
+    "developer": "Alex Daskalakis",
+    "license": "MIT",
+    "exitGame": "PLUS",
+    "fullscreen": true,
+    "hideMouseDocked": false,
+    "hideMouseUndocked": false,
+    "freshProcessOnExit": false,
+    "minBrewserVersion": "0.1.121",
+    "publishedAt": "2026-09-10T14:02:09Z",
+    "updatedAt": "2026-09-10T14:02:09Z",
+    "summary": "PIXI - Spine Boy Test",
+    "genre": [
+        "Action"
+    ]
+}
