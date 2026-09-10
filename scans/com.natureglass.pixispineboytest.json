@@ -1,0 +1,92 @@
+{
+  "verdict": "SUSPICIOUS",
+  "score": 44,
+  "scanned_at": "2026-09-10T13:38:00Z",
+  "scanner_version": "1.3.2",
+  "package_hash": "e89416ae4888afc5889e450708aa15023a59efd8ed84b0fa32b9ba248c9c63f8",
+  "counts": {
+    "info": 4,
+    "suspicious": 4,
+    "dangerous": 0
+  },
+  "rationale": "Suspicious: 4 signal(s) needing review; e.g. function() code construction from a non-literal.",
+  "truncated": false,
+  "findings": [
+    {
+      "rule_id": "function-constructor",
+      "severity": "SUSPICIOUS",
+      "title": "Function() code construction from a non-literal",
+      "detail": "Function() constructs code from a non-literal — a runtime-decided code path.",
+      "file": "WebGLRenderer.3e79c3df.js",
+      "line": 57,
+      "evidence": "Function(\"uv\",\"data\",\"dataInt32\",\"offset\",a.join(\"\\n\"))"
+    },
+    {
+      "rule_id": "function-constructor",
+      "severity": "SUSPICIOUS",
+      "title": "Function() code construction from a non-literal",
+      "detail": "Function() constructs code from a non-literal — a runtime-decided code path.",
+      "file": "WebGLRenderer.3e79c3df.js",
+      "line": 225,
+      "evidence": "Function(\"r\",\"s\",\"sD\",[...a,...r].join(\"\\n\"))"
+    },
+    {
+      "rule_id": "function-constructor",
+      "severity": "SUSPICIOUS",
+      "title": "Function() code construction from a non-literal",
+      "detail": "Function() constructs code from a non-literal — a runtime-decided code path.",
+      "file": "WebGLRenderer.3e79c3df.js",
+      "line": 242,
+      "evidence": "Function(\"ud\",\"uv\",\"renderer\",\"syncData\",r.join(\"\\n\"))"
+    },
+    {
+      "rule_id": "function-constructor",
+      "severity": "SUSPICIOUS",
+      "title": "Function() code construction from a non-literal",
+      "detail": "Function() constructs code from a non-literal — a runtime-decided code path.",
+      "file": "WebGPURenderer.055fd528.js",
+      "line": 38,
+      "evidence": "Function(\"uv\",\"data\",\"dataInt32\",\"offset\",a.join(\"\\n\"))"
+    },
+    {
+      "rule_id": "file-parse-error",
+      "severity": "INFO",
+      "title": "A source file could not be parsed",
+      "detail": "Could not parse as JS (SyntaxError); ran regex backstop only.",
+      "file": "index.html <inline script>",
+      "line": 1,
+      "evidence": "Unexpected token (1:10)"
+    },
+    {
+      "rule_id": "high-entropy-string",
+      "severity": "INFO",
+      "title": "High-entropy string literal (possible packed payload)",
+      "detail": "1 high-entropy base64-like string literal(s); largest 711 chars. Possible packed/encoded payload.",
+      "file": "spine-boy-test.96aef2a6.js",
+      "line": 0,
+      "evidence": "data:video/webm;base64,GkXfo59ChoEBQveBAULygQRC84EIQoKEd2VibUKHgQJChYECGFOAZwEAAAAAAAHTEU2bdLpNu4tTq4QVSalmU6yBoU27i1Or…"
+    },
+    {
+      "rule_id": "html-injection-sink",
+      "severity": "INFO",
+      "title": "DOM HTML sink assigned a non-literal value",
+      "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
+      "file": "browserAll.8760cf60.js",
+      "line": 1,
+      "evidence": "e.innerHTML=`type: ${e.type}</br> title : ${e.title}</br> tabIndex: ${e.tabIndex}`"
+    },
+    {
+      "rule_id": "html-injection-sink",
+      "severity": "INFO",
+      "title": "DOM HTML sink assigned a non-literal value",
+      "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
+      "file": "spine-boy-test.96aef2a6.js",
+      "line": 255,
+      "evidence": "e.innerHTML=t.trim()"
+    }
+  ],
+  "capabilities": [
+    "webgl"
+  ],
+  "limitations": "Static heuristic scan. A GOOD verdict means no known-bad pattern matched, NOT proof of safety. Human review is still required for every submission."
+}
