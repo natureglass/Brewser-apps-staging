@@ -1,0 +1,15 @@
+{
+    "id": "com.natureglass.multipaint",
+    "name": "Multi Paint",
+    "version": "1.0.0",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "zip_sha256": "e979dd39bd1c4b93fcd8fbc40b3b61a5aba16e9a7b62fe81f64869a19ffee047",
+    "attestation": {
+        "ts": "2026-09-10T11:18:09+00:00",
+        "platforms": [
+            "web"
+        ],
+        "zip_sha256": "e979dd39bd1c4b93fcd8fbc40b3b61a5aba16e9a7b62fe81f64869a19ffee047"
+    },
+    "submitted_at": "2026-09-10T11:18:09+00:00"
+}
