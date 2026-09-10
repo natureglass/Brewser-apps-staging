@@ -1,6 +1,6 @@
 # PIXI - Spine Boy Test
 
-_v1.0.1_
+_v1.0.2_
 
 PIXI - Spine Boy Test
 

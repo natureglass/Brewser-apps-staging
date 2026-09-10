@@ -62,9 +62,9 @@
   {
     "id": "com.natureglass.pixispineboytest",
     "name": "PIXI - Spine Boy Test",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
-    "updated_at": "2026-09-10T13:54:25Z",
+    "updated_at": "2026-09-10T14:02:42Z",
     "entry": "index.html",
     "logo": "assets/appbanner.jpg",
     "description": "<p>PIXI - Spine Boy Test</p>"
