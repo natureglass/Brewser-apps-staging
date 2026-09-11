@@ -1,0 +1,33 @@
+{
+    "id": "com.natureglass.graveyardshift",
+    "name": "Graveyard Shift",
+    "version": "1.0.0",
+    "description": "<p>Graveyard Shift</p>",
+    "logo": "assets/appbanner.jpg",
+    "entry": "index.html",
+    "categories": [
+        "Games"
+    ],
+    "permissions": [],
+    "compatibility": [
+        "mobile",
+        "switch",
+        "web"
+    ],
+    "allowed_origins": [],
+    "developer": "Alex Daskalakis",
+    "license": "MIT",
+    "exitGame": "PLUS",
+    "fullscreen": true,
+    "hideMouseDocked": false,
+    "hideMouseUndocked": false,
+    "freshProcessOnExit": false,
+    "minBrewserVersion": "0.1.121",
+    "publishedAt": "2026-09-11T06:41:48Z",
+    "updatedAt": "2026-09-11T06:41:48Z",
+    "summary": "Graveyard Shift",
+    "genre": [
+        "Puzzle",
+        "Strategy"
+    ]
+}

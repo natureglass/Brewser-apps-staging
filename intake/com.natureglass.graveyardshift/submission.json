@@ -1,0 +1,17 @@
+{
+    "id": "com.natureglass.graveyardshift",
+    "name": "Graveyard Shift",
+    "version": "1.0.0",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "zip_sha256": "db7620f86c3afa20b9ffb3b5717ab4a09cc8915fa84368337ede14326cd7ffa5",
+    "attestation": {
+        "ts": "2026-09-11T06:41:48+00:00",
+        "platforms": [
+            "mobile",
+            "switch",
+            "web"
+        ],
+        "zip_sha256": "db7620f86c3afa20b9ffb3b5717ab4a09cc8915fa84368337ede14326cd7ffa5"
+    },
+    "submitted_at": "2026-09-11T06:41:48+00:00"
+}
