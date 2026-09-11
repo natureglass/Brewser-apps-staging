@@ -1,0 +1,29 @@
+{
+  "verdict": "SUSPICIOUS",
+  "score": 10,
+  "scanned_at": "2026-09-11T06:42:22Z",
+  "scanner_version": "1.3.2",
+  "package_hash": "1a964084ccded8aca97b1952eff13e57cff97640a53ced48cf61c59c42570cb3",
+  "counts": {
+    "info": 0,
+    "suspicious": 1,
+    "dangerous": 0
+  },
+  "rationale": "Suspicious: 1 signal(s) needing review; e.g. network request to an off-package external origin.",
+  "truncated": false,
+  "findings": [
+    {
+      "rule_id": "external-egress",
+      "severity": "SUSPICIOUS",
+      "title": "Network request to an off-package external origin",
+      "detail": "new WebSocket() targets wss://ws.brewswer.io, an origin not in the manifest allowed_origins.",
+      "file": "index.html <inline script>",
+      "line": 32,
+      "evidence": "new WebSocket(RELAY_URL)"
+    }
+  ],
+  "capabilities": [
+    "webrtc"
+  ],
+  "limitations": "Static heuristic scan. A GOOD verdict means no known-bad pattern matched, NOT proof of safety. Human review is still required for every submission."
+}
