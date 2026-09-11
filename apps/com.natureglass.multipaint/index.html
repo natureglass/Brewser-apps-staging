@@ -129,7 +129,8 @@
 */
 
 const ROOM = new URLSearchParams(location.search).get("room") || "paint";
-const WS_URL = "wss://ws.brewser.io/?room=" + encodeURIComponent(ROOM);
+const APPNAME = "com.natureglass.multipaint";
+const WS_URL = "wss://ws.brewser.io/?app=" + encodeURIComponent(APPNAME) + "&room=" + encodeURIComponent(ROOM);
 
 const ME = {
   id: Math.random().toString(36).slice(2, 6),
