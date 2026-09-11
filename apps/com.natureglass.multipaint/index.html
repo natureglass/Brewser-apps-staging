@@ -121,12 +121,23 @@
 
 <script>
 /*
-  Protocol (all JSON):
+  Multipaint — ported to Brewser WebSocket Protocol v1.1
+
+  App-level protocol (unchanged, now carried inside the v1.1 "data" field):
   {t:"s", c:color, w:width, p:[[x,y],...]}   stroke segment, logical 1280x720 coords
   {t:"cur", id, c:color, x, y}               cursor position
   {t:"clear"}                                wipe canvas
-  Relay broadcasts to everyone in the room except the sender.
+
+  Wire format change vs the old opaque relay:
+    - Every message is wrapped in the v1.1 envelope.
+      Outbound app event:  {v:1, channel:"app", op:<t>, data:{...}}
+      Inbound relayed app: {v:1, channel:"app", op:"message", event:<t>, data:{...}, clientId, seq}
+    - The server also sends system-channel frames (joined, presence, error,
+      shutdown, ...). We ignore everything that is not channel:"app".
+    - app + room are required query params (already provided here).
 */
+
+const PROTOCOL_VERSION = 1;
 
 const ROOM = new URLSearchParams(location.search).get("room") || "paint";
 const APPNAME = "com.natureglass.multipaint";
@@ -231,13 +242,13 @@ paint.addEventListener("pointermove", e => {
 setInterval(() => { if (drawing) flushStroke(); }, 40);
 function flushStroke() {
   if (pending.length === 0) return;
-  send({ t: "s", c: color, w: width, p: pending });
+  sendApp("s", { c: color, w: width, p: pending });
   pending = [lastPoint]; // keep continuity into next batch
 }
 
 document.getElementById("clearBtn").onclick = () => {
   pctx.clearRect(0, 0, 1280, 720);
-  send({ t: "clear" });
+  sendApp("clear", {});
 };
 
 // Remote cursors
@@ -246,7 +257,7 @@ function sendCursor(pt) {
   const now = performance.now();
   if (now - (sendCursor.last || 0) < 50) return;
   sendCursor.last = now;
-  send({ t: "cur", id: ME.id, c: ME.cursorColor, x: pt[0], y: pt[1] });
+  sendApp("cur", { id: ME.id, c: ME.cursorColor, x: pt[0], y: pt[1] });
 }
 function renderCursors() {
   octx.clearRect(0, 0, 1280, 720);
@@ -266,31 +277,66 @@ renderCursors();
 
 // WebSocket with auto-reconnect
 let ws = null;
+let reconnectDelay = 2000;
 const statusDot = document.getElementById("statusDot");
 const statusText = document.getElementById("statusText");
 
 function connect() {
   ws = new WebSocket(WS_URL);
+
   ws.onopen = () => {
+    // Optional v1.1 handshake: advertise ourselves. Any valid message
+    // completes the handshake; hello also lets the server label this client.
+    sendRaw({
+      v: PROTOCOL_VERSION,
+      channel: "system",
+      op: "hello",
+      data: { client: "multipaint/1.1" }
+    });
     statusDot.classList.add("on");
     statusText.textContent = "connected";
   };
+
   ws.onclose = () => {
     statusDot.classList.remove("on");
     statusText.textContent = "reconnecting";
-    setTimeout(connect, 2000);
+    // The server may send a reconnectAfterMs hint on some closes; a fixed
+    // backoff is fine for a drawing toy.
+    setTimeout(connect, reconnectDelay);
   };
+
   ws.onmessage = e => {
     let m;
     try { m = JSON.parse(e.data); } catch { return; }
-    if (m.t === "s") drawSegment(m.c, m.w, m.p);
-    else if (m.t === "cur") cursors.set(m.id, { x: m.x, y: m.y, c: m.c, seen: performance.now() });
-    else if (m.t === "clear") pctx.clearRect(0, 0, 1280, 720);
+
+    // v1.1: only app-channel relays carry drawing data. Everything else
+    // (joined / presence / welcome / error / shutdown) is ignored here.
+    if (m.channel !== "app" || m.op !== "message") return;
+
+    const d = m.data || {};
+    switch (m.event) {
+      case "s":
+        drawSegment(d.c, d.w, d.p);
+        break;
+      case "cur":
+        cursors.set(d.id, { x: d.x, y: d.y, c: d.c, seen: performance.now() });
+        break;
+      case "clear":
+        pctx.clearRect(0, 0, 1280, 720);
+        break;
+    }
   };
 }
-function send(obj) {
+
+// Send a v1.1 app event: op is the old "t", payload goes in data.
+function sendApp(op, data) {
+  sendRaw({ v: PROTOCOL_VERSION, channel: "app", op: op, data: data });
+}
+
+function sendRaw(obj) {
   if (ws && ws.readyState === 1) ws.send(JSON.stringify(obj));
 }
+
 connect();
 </script>
 </body>
