@@ -1,0 +1,28 @@
+{
+    "id": "com.natureglass.websocketsdemo",
+    "name": "WebSockets Demo",
+    "version": "1.0.0",
+    "description": "<p>WebSockets Demo</p>",
+    "logo": "assets/appbanner.jpg",
+    "entry": "index.html",
+    "categories": [
+        "Apps"
+    ],
+    "permissions": [],
+    "compatibility": [
+        "switch",
+        "web"
+    ],
+    "allowed_origins": [],
+    "developer": "Alex Daskalakis",
+    "license": "MIT",
+    "exitGame": "PLUS",
+    "fullscreen": true,
+    "hideMouseDocked": true,
+    "hideMouseUndocked": true,
+    "freshProcessOnExit": false,
+    "minBrewserVersion": "0.1.122",
+    "publishedAt": "2026-09-12T20:11:18Z",
+    "updatedAt": "2026-09-12T20:11:18Z",
+    "summary": "WebSockets Demo"
+}
