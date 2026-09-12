@@ -29,6 +29,14 @@ const CASES = [
   // undeclared). requestMIDIAccess is a direct navigator method, not a
   // navigator.<sub>.* surface, so it needs its own detection hook.
   { dir: 'midi-umbrella', verdict: 'GOOD', must: [], mustNot: ['peripheral-undeclared', 'declared-unused-peripheral'] },
+  // Realtime-relay false-positive guard. A well-behaved multiplayer app declares
+  // its relay origin and only ever connects under its OWN app id — literal,
+  // concatenated and templated. All three must scan clean, and declaring the
+  // endpoint as `wss://` must satisfy an allowlist check that normalizes to
+  // `https://` (otherwise every multiplayer app is flagged as external egress and
+  // reviewers learn to ignore the signal).
+  { dir: 'ws-legit', verdict: 'GOOD', must: [],
+    mustNot: ['ws-app-impersonation', 'ws-app-computed', 'external-egress', 'external-egress-assembled', 'unbounded-egress-declaration'] },
 ];
 
 function runScan(dir) {

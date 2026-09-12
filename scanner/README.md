@@ -20,7 +20,24 @@ scanner reasons about ordinary web sinks plus a few Brewser-specific facts:
   allowed; **reading it and transmitting it off-device is the single
   highest-severity pattern** (`auth-exfil-dataflow`).
 - The manifest's **`allowed_origins[]`** is the exact per-app egress allowlist —
-  any absolute `http(s)://` request to an origin not in it is flagged.
+  any absolute `http(s)://` / `ws(s)://` request to an origin not in it is flagged.
+  `ws:`/`wss:` canonicalize to `http:`/`https:`, so a relay endpoint may be declared
+  in either spelling (and the Switch runtime folds the same way). A **non-empty**
+  list is also **enforced at runtime** by the Brewser runtime's permission policy,
+  which is what stops an app that passed review from later pulling a payload from an
+  origin nobody looked at. An **empty** list means the app cannot enumerate its
+  destinations (a client aimed at a user-supplied LAN server) — it is not
+  origin-restricted at launch, so every absolute URL it requests reads as
+  un-declared egress here, and `network` + empty is flagged on its own
+  (`unbounded-egress-declaration`).
+- The realtime relay (`wss://ws.brewser.io`) namespaces rooms by a client-supplied
+  **`app` query parameter**. On Switch that claim is verified — app code cannot open
+  a socket, so the runtime stamps the manifest id and the relay enforces it. On the
+  web it cannot be: every app shares `play.brewser.io`, so app A can read app B's
+  bundle and nothing a page sends distinguishes them. Joining another app's room
+  grants read/write of its messages and shared state, and lets the intruder seize
+  state ownership. **Submission-time detection is the control that covers that gap**
+  (`ws-app-impersonation`, `ws-app-computed`).
 - The manifest's flat **`permissions[]`** declares peripheral intent (WebUSB /
   WebSerial / WebHID / WebBluetooth / Web NFC). There are **no** VID/PID fields, so
   peripheral cross-referencing is a family-name heuristic: a peripheral API used

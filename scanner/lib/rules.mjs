@@ -31,6 +31,16 @@ export const RULES = {
   'auth-token-read':        { base: SUSPICIOUS, title: "Reads the shared session envelope localStorage['brewser_auth']" },
   'auth-exfil-dataflow':    { base: DANGEROUS,  title: 'Auth token / storage / cookie read transmitted off-device' },
 
+  // --- Realtime-relay app impersonation ---------------------------------
+  // The relay namespaces rooms by a client-supplied `app` parameter it cannot
+  // verify for web clients (all apps share play.brewser.io). Connecting under
+  // another app's id grants full access to that app's rooms — its messages,
+  // its shared state, and the ability to seize state ownership. A legitimate
+  // app hardcodes its own id, so a literal mismatch is unambiguous; a computed
+  // one is uncommon enough to be worth a human look.
+  'ws-app-impersonation':   { base: DANGEROUS,  title: 'Connects to the realtime relay under a different app id' },
+  'ws-app-computed':        { base: SUSPICIOUS, title: 'Realtime-relay app id is assembled at runtime' },
+
   // --- Cross-namespace / storage abuse (§1.3) ---------------------------
   'cross-namespace-storage': { base: SUSPICIOUS, title: 'localStorage access outside the app namespace' },
   'indexeddb-enumeration':  { base: SUSPICIOUS, title: 'Enumerates IndexedDB databases' },
@@ -90,6 +100,15 @@ export const RULES = {
 
   // --- Manifest cross-reference (§1.5) ----------------------------------
   'declared-unused-peripheral': { base: INFO,   title: 'Peripheral declared in manifest but never used' },
+  // `allowed_origins` is the lever both the scanner and the runtime hang the
+  // egress story on: a NON-EMPTY list is enforced at launch, so an app that
+  // passed review cannot later fetch a payload from somewhere it never
+  // declared. Declaring full `network` with an EMPTY list opts out of that
+  // enforcement entirely, which is the one shape a "clean at review time,
+  // hostile afterwards" app wants. Not automatically bad — `local_network`
+  // apps like a Jellyfin client genuinely cannot enumerate a user-supplied
+  // LAN server — but full-internet + unbounded deserves a human.
+  'unbounded-egress-declaration': { base: SUSPICIOUS, title: 'Declares `network` with an empty allowed_origins allowlist' },
 
   // --- Harness ----------------------------------------------------------
   'scan-error':             { base: SUSPICIOUS, title: 'The scanner failed to complete (fail-safe verdict)' },

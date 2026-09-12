@@ -38,8 +38,9 @@
     },
     "allowed_origins": {
       "type": "array",
-      "items": { "type": "string", "pattern": "^https?://" },
-      "uniqueItems": true
+      "items": { "type": "string", "pattern": "^(https?|wss?)://(\\*\\.)?[a-z0-9-]+(\\.[a-z0-9-]+)*(:[0-9]+)?/?$" },
+      "uniqueItems": true,
+      "description": "Per-app egress allowlist, one `scheme://[*.]host[:port]` entry per origin this app may reach. WebSocket endpoints may be declared as either wss://host or https://host — the WordPress validator, the scanner and the Switch runtime all canonicalize ws:->http: / wss:->https:, so the two spellings are equivalent. The port is part of the origin (a default port is dropped on both sides). A leading `*.` matches one or more subdomain labels but NOT the apex, following CSP host-wildcard semantics, and must leave at least two labels behind it (`https://*.com` is rejected); it exists for CDN-backed media whose edge hostnames cannot be enumerated ahead of time, e.g. `https://*.hls.ttvnw.net`. A NON-EMPTY list is ENFORCED at runtime by the Brewser runtime's permission policy — on fetch, on WebSocket, and on `<video>`/`<audio>` sources — in addition to the `network` / `local_network` permission. An EMPTY list means the app cannot enumerate its destinations (e.g. a user-supplied LAN server) and is not origin-restricted at runtime, which is why the scanner flags every absolute URL such an app requests and flags `network` + empty as unbounded egress."
     },
     "developer": { "type": "string", "minLength": 1, "maxLength": 191 },
     "license":   {

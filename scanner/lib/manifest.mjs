@@ -6,7 +6,7 @@
 // So: the allowed_origins lever is exact; the peripheral lever is a family-name
 // heuristic (does any declared permission string mention the API family?).
 import { makeFinding } from './finding.mjs';
-import { INFO } from './severity.mjs';
+import { INFO, SUSPICIOUS } from './severity.mjs';
 import { buildAllowlist } from './origins.mjs';
 
 const PERIPHERAL_FAMILIES = ['usb', 'serial', 'hid', 'bluetooth', 'nfc'];
@@ -72,9 +72,29 @@ function peripheralFamilyIsUsed(fam, used) {
   return false;
 }
 
-// Post-analysis notes: peripherals declared but never used (harmless, INFO).
+// Post-analysis notes: peripherals declared but never used (harmless, INFO),
+// plus unbounded egress declarations.
 export function manifestNotes(ctx, peripheralsUsedGlobal) {
   const findings = [];
+
+  // `network` + empty allowed_origins. A NON-EMPTY allowlist is enforced by
+  // the Brewser runtime at launch, so an app that passed review cannot later
+  // pull a payload from an origin it never declared — which is the standard
+  // way to defeat static analysis. An empty list opts out of that enforcement
+  // entirely, so full-internet access with no declared destinations is the
+  // exact shape a "clean at review, hostile afterwards" app wants.
+  //
+  // `local_network` is deliberately NOT flagged: an app pointed at a
+  // user-supplied LAN server (a Jellyfin client, a NAS browser) genuinely
+  // cannot enumerate its destinations, and it is confined to the LAN anyway.
+  if (ctx.permissions.includes('network') && ctx.allowlist.size === 0) {
+    findings.push(makeFinding({ rule_id: 'unbounded-egress-declaration', severity: SUSPICIOUS,
+      file: 'manifest.json', line: 0,
+      detail: 'The manifest declares the full `network` permission but lists no allowed_origins, ' +
+        'so the runtime applies no per-origin restriction and the app may reach any host. ' +
+        'Confirm the destinations cannot be enumerated; if they can, declare them.',
+      evidence: 'network + allowed_origins: []' }));
+  }
   for (const fam of ctx.declaredPeripheralFamilies) {
     if (!peripheralFamilyIsUsed(fam, peripheralsUsedGlobal)) {
       findings.push(makeFinding({ rule_id: 'declared-unused-peripheral', severity: INFO,

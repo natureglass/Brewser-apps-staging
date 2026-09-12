@@ -1,0 +1,16 @@
+{
+  "id": "com.natureglass.wslegit",
+  "name": "Legit Multiplayer",
+  "version": "1.0.0",
+  "description": "A well-behaved multiplayer app: declares its relay origin and only ever connects under its own app id. Regression guard against false positives on the realtime-relay rules.",
+  "logo": "assets/logo.png",
+  "entry": "index.html",
+  "categories": ["demo"],
+  "permissions": ["network"],
+  "compatibility": ["web", "switch"],
+  "allowed_origins": ["wss://ws.brewser.io"],
+  "developer": "Security Tester",
+  "license": "MIT",
+  "exitGame": "PLUS",
+  "fullscreen": true
+}

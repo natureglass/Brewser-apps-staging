@@ -18,6 +18,7 @@ import {
   PERIPHERAL_APIS, NFC_CTOR, isPeripheralNavProp, MINER_SIGNATURES,
 } from './signatures.mjs';
 import { isExternalUrl } from './origins.mjs';
+import { relayAppClaim, mentionsRelayHost } from './relay.mjs';
 
 const traverse = _traverse.default || _traverse;
 
@@ -301,6 +302,47 @@ export function analyzeJs(code, file, ctx) {
       }
     }
     return node;
+  }
+
+  // Realtime-relay app-identity claim. Runs BEFORE handleNetworkSink, which
+  // returns early on taint hits and would otherwise skip this entirely.
+  //
+  // `ctx.selfNamespace` is the manifest `id` (falling back to the package dir
+  // name). With no id there is nothing to compare against, so the check is
+  // skipped rather than guessed at.
+  function checkRelayAppClaim(callNode, urlNode, scope) {
+    if (!urlNode || !ctx.selfNamespace) return;
+    const line = lineOf(callNode);
+    const ev = snippet(code, callNode);
+    // Resolve through a one-hop binding first, so `const u = 'wss://...';
+    // new WebSocket(u)` is analyzed as the literal it is — same as the
+    // network-sink path does.
+    const s = staticString(resolveValueNode(urlNode, scope) || urlNode);
+
+    if (s.static) {
+      const claim = relayAppClaim(s.value);
+      if (!claim || claim.app === null) return;
+      if (claim.app !== ctx.selfNamespace) {
+        add({ rule_id: 'ws-app-impersonation', severity: DANGEROUS, file, line, evidence: ev,
+          detail: 'Connects to the Brewser realtime relay as app "' + claim.app +
+            '", but this package is "' + ctx.selfNamespace + '". Joining another package\'s ' +
+            'rooms grants read/write of its messages and shared state.' });
+      }
+      return;
+    }
+
+    // Non-static URL. Flag only when a literal fragment names the relay, so
+    // apps assembling ordinary same-origin URLs at runtime stay quiet.
+    const fragments = s.fragments || [];
+    if (!fragments.some(mentionsRelayHost)) return;
+
+    // An assembled URL that already pins `app=` to this package's own id is
+    // the normal shape (only the room varies), and must not be flagged.
+    if (fragments.some((f) => typeof f === 'string' && f.includes('app=' + ctx.selfNamespace))) return;
+
+    add({ rule_id: 'ws-app-computed', severity: SUSPICIOUS, file, line, evidence: ev,
+      detail: 'Builds a Brewser realtime-relay URL at runtime without pinning the app id ' +
+        'to "' + ctx.selfNamespace + '". Confirm it cannot resolve to another package\'s namespace.' });
   }
 
   // Emit the right finding for a network sink given its URL-argument node.
@@ -761,7 +803,11 @@ export function analyzeJs(code, file, ctx) {
       if (SENSOR_CTORS.has(ctorTail)) capabilitiesUsed.add('sensors');
 
       if (name === 'Function') { handleCodeCtor(node, path.scope); return; }
-      if (name === 'WebSocket') { handleNetworkSink(node, node.arguments[0], path.scope, 'new WebSocket()'); return; }
+      if (name === 'WebSocket') {
+        checkRelayAppClaim(node, node.arguments[0], path.scope);
+        handleNetworkSink(node, node.arguments[0], path.scope, 'new WebSocket()');
+        return;
+      }
       if (name === 'EventSource') { handleNetworkSink(node, node.arguments[0], path.scope, 'new EventSource()'); return; }
       if (name === NFC_CTOR) {
         peripheralsUsed.add('nfc');
