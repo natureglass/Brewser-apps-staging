@@ -1,0 +1,38 @@
+{
+  "verdict": "DANGEROUS",
+  "score": 110,
+  "scanned_at": "2026-09-12T20:11:45Z",
+  "scanner_version": "1.3.2",
+  "package_hash": "f7d90740e7d177bda26f51bfa66da49c9c9ca57d1db8db269ae6d30947395d92",
+  "counts": {
+    "info": 0,
+    "suspicious": 1,
+    "dangerous": 1
+  },
+  "rationale": "Dangerous: connects to the realtime relay under a different app id in index.html <inline script>:29.",
+  "truncated": false,
+  "findings": [
+    {
+      "rule_id": "ws-app-impersonation",
+      "severity": "DANGEROUS",
+      "title": "Connects to the realtime relay under a different app id",
+      "detail": "Connects to the Brewser realtime relay as app \"ws-test\", but this package is \"com.natureglass.websocketsdemo\". Joining another package's rooms grants read/write of its messages and shared state.",
+      "file": "index.html <inline script>",
+      "line": 29,
+      "evidence": "new WebSocket(URL_)"
+    },
+    {
+      "rule_id": "external-egress",
+      "severity": "SUSPICIOUS",
+      "title": "Network request to an off-package external origin",
+      "detail": "new WebSocket() targets wss://ws.brewser.io?app=ws-test&room=lobby, an origin not in the manifest allowed_origins.",
+      "file": "index.html <inline script>",
+      "line": 29,
+      "evidence": "new WebSocket(URL_)"
+    }
+  ],
+  "capabilities": [
+    "webrtc"
+  ],
+  "limitations": "Static heuristic scan. A GOOD verdict means no known-bad pattern matched, NOT proof of safety. Human review is still required for every submission."
+}
