@@ -1,15 +1,15 @@
 {
   "verdict": "SUSPICIOUS",
-  "score": 20,
-  "scanned_at": "2026-09-13T07:21:43Z",
+  "score": 30,
+  "scanned_at": "2026-09-13T08:14:21Z",
   "scanner_version": "1.3.2",
-  "package_hash": "bb69a37a35f713de723805779ee8e155fde7a75a14f3b1b4831970c94dc58026",
+  "package_hash": "fc32a811c4d5bca25a38211ffb3b80d7085460822a7dc80defa5470d7932a73d",
   "counts": {
     "info": 0,
-    "suspicious": 2,
+    "suspicious": 3,
     "dangerous": 0
   },
-  "rationale": "Suspicious: 2 signal(s) needing review; e.g. network request to a runtime-assembled url.",
+  "rationale": "Suspicious: 3 signal(s) needing review; e.g. network request to a runtime-assembled url.",
   "truncated": false,
   "findings": [
     {
@@ -18,8 +18,17 @@
       "title": "Network request to a runtime-assembled URL",
       "detail": "new WebSocket() targets a runtime-assembled URL containing the external fragment wss://ws.brewser.io/?app=.",
       "file": "index.html <inline script>",
-      "line": 507,
+      "line": 164,
       "evidence": "new WebSocket(WS_URL)"
+    },
+    {
+      "rule_id": "unbounded-egress-declaration",
+      "severity": "SUSPICIOUS",
+      "title": "Declares `network` with an empty allowed_origins allowlist",
+      "detail": "The manifest declares the full `network` permission but lists no allowed_origins, so the runtime applies no per-origin restriction and the app may reach any host. Confirm the destinations cannot be enumerated; if they can, declare them.",
+      "file": "manifest.json",
+      "line": 0,
+      "evidence": "network + allowed_origins: []"
     },
     {
       "rule_id": "ws-app-computed",
@@ -27,7 +36,7 @@
       "title": "Realtime-relay app id is assembled at runtime",
       "detail": "Builds a Brewser realtime-relay URL at runtime without pinning the app id to \"com.natureglass.artistemultiplayerpaint\". Confirm it cannot resolve to another package's namespace.",
       "file": "index.html <inline script>",
-      "line": 507,
+      "line": 164,
       "evidence": "new WebSocket(WS_URL)"
     }
   ],
