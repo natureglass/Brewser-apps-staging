@@ -1,0 +1,17 @@
+{
+    "id": "com.natureglass.nvrthewatcher",
+    "name": "NVR - The Watcher",
+    "version": "1.0.2",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "zip_sha256": "92589826ce6ed0eacb695a91c67ddd81c9af0949cdccb6711440d0f15e6fd93f",
+    "attestation": {
+        "ts": "2026-09-13T14:43:50+00:00",
+        "platforms": [
+            "mobile",
+            "switch",
+            "web"
+        ],
+        "zip_sha256": "92589826ce6ed0eacb695a91c67ddd81c9af0949cdccb6711440d0f15e6fd93f"
+    },
+    "submitted_at": "2026-09-13T14:43:50+00:00"
+}
