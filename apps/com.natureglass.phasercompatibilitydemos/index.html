@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Phaser compatibility demos for Brewser</title>
+<style>
+  body { font: 18px/1.5 monospace; background: #101820; color: #ddd; margin: 0; padding: 24px; }
+  a { color: #8ecae6; } li { margin-bottom: 18px; } small { color: #999; }
+  h1 { font-size: 24px; } .note { color: #ffd166; }
+</style>
+</head>
+<body>
+<h1>Phaser compatibility demos for Brewser</h1>
+<p>Run the same demo across the four variants. Phaser 3 Canvas is the control: if it works there and not in WebGL, the bug is in the GL bridge; if it fails in both, it is canvas 2D, DOM, loader or JS.</p>
+<p class="note">Overlay top-left shows Phaser version, requested vs actual renderer, GL version string, rAF fps, and any error/warning. Green = clean, red = something threw.</p>
+<ol>
+<li><b>01 Platformer baseline</b><br><small>Arcade physics, spritesheet anims, Gamepad API</small><br><a href="01-platformer/index.html">Phaser 3.90 / WebGL</a> &nbsp;|&nbsp; <a href="01-platformer/canvas.html">Phaser 3.90 / Canvas</a> &nbsp;|&nbsp; <a href="01-platformer/v4.html">Phaser 4.2.1 / WebGL</a> &nbsp;|&nbsp; <a href="01-platformer/v4-canvas.html">Phaser 4.2.1 / Canvas</a></li>
+<li><b>02 Text vs BitmapText</b><br><small>canvas-rasterised Text (measureText/fillText -> texture upload) vs atlas BitmapText control</small><br><a href="02-text/index.html">Phaser 3.90 / WebGL</a> &nbsp;|&nbsp; <a href="02-text/canvas.html">Phaser 3.90 / Canvas</a> &nbsp;|&nbsp; <a href="02-text/v4.html">Phaser 4.2.1 / WebGL</a> &nbsp;|&nbsp; <a href="02-text/v4-canvas.html">Phaser 4.2.1 / Canvas</a></li>
+<li><b>03 Particles</b><br><small>sprite batch throughput, ADD vs NORMAL blend, tint</small><br><a href="03-particles/index.html">Phaser 3.90 / WebGL</a> &nbsp;|&nbsp; <a href="03-particles/canvas.html">Phaser 3.90 / Canvas</a> &nbsp;|&nbsp; <a href="03-particles/v4.html">Phaser 4.2.1 / WebGL</a> &nbsp;|&nbsp; <a href="03-particles/v4-canvas.html">Phaser 4.2.1 / Canvas</a></li>
+<li><b>04 Tilemap</b><br><small>JSON via XHR, tilemap layer renderer, camera scroll, tile collision</small><br><a href="04-tilemap/index.html">Phaser 3.90 / WebGL</a> &nbsp;|&nbsp; <a href="04-tilemap/canvas.html">Phaser 3.90 / Canvas</a> &nbsp;|&nbsp; <a href="04-tilemap/v4.html">Phaser 4.2.1 / WebGL</a> &nbsp;|&nbsp; <a href="04-tilemap/v4-canvas.html">Phaser 4.2.1 / Canvas</a></li>
+<li><b>05 FX + Shader + Graphics</b><br><small>framebuffer FX passes, custom GLSL quad, tessellated Graphics</small><br><a href="05-fx-shader/index.html">Phaser 3.90 / WebGL</a> &nbsp;|&nbsp; <a href="05-fx-shader/canvas.html">Phaser 3.90 / Canvas</a> &nbsp;|&nbsp; <a href="05-fx-shader/v4.html">Phaser 4.2.1 / WebGL</a> &nbsp;|&nbsp; <a href="05-fx-shader/v4-canvas.html">Phaser 4.2.1 / Canvas</a></li>
+</ol>
+<p><small>Phaser is MIT licensed (lib/PHASER-LICENSE.md). Sprites, skies, bitmap fonts and the tilemap are from the phaserjs/examples repository; particle textures are procedurally generated. See README.md for the full checklist.</small></p>
+</body>
+</html>
