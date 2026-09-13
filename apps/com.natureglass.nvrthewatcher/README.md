@@ -1,6 +1,6 @@
 # NVR - The Watcher
 
-_v1.0.1_
+_v1.0.2_
 
 The "Fill in a common address" dropdown has these ready to edit.
 
