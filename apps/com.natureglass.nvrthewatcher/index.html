@@ -4,123 +4,118 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>NVR - The Watcher</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#06070d; --bg-2:#0b0d19; --bg-3:#12152a;
-  --line:rgba(60,224,255,.22); --line-2:rgba(60,224,255,.5);
-  --ink:#e6f4ff; --ink-2:#8fb3c9; --ink-3:#4c657a;
-  --cyan:#3ce0ff; --pink:#ff3fd0; --lime:#5cff8a; --amber:#ffb23d; --red:#ff3860;
-  --display:"Orbitron",system-ui,sans-serif;
-  --font:"Rajdhani",system-ui,"Segoe UI",Roboto,sans-serif;
-  --mono:ui-monospace,"JetBrains Mono",Consolas,"Liberation Mono",monospace;
+  /* palette lifted from dark.css */
+  --bg:#0b1220; --bg-2:#0e1830; --bg-3:#14202d; --bg-4:#1f2c4d;
+  --line:#28365c; --line-2:#3a4f7a; --line-3:#2a3a66;
+  --ink:#e0e8f4; --ink-strong:#eaf2ff; --ink-2:#9bb1d6; --ink-3:#6a7c95;
+  --yellow:#ffd35e; --blue:#7aa2ff; --green:#7eda9f; --orange:#ffb86b; --red:#ff8676;
+  --danger-bg:#572c2c; --danger-line:#7a3338; --danger-ink:#ffb8b8;
+  --font:Tahoma,"Segoe UI",Arial,Helvetica,sans-serif;
+  --mono:ui-monospace,Consolas,"Liberation Mono",Menlo,monospace;
 }
 *{box-sizing:border-box}
 html,body{height:100%;margin:0;overflow:hidden}
-body{color:var(--ink);font:16px/1.4 var(--font);font-weight:500;background:var(--bg)}
+body{color:var(--ink);font:15px/1.45 var(--font);background:var(--bg)}
 button,input,select{font:inherit;color:inherit}
-a{color:var(--cyan)}
+a{color:var(--green)}
 h1,h2{margin:0}
 .app{height:100vh;height:100dvh;display:grid;grid-template-rows:auto minmax(0,1fr)}
 
-.top{display:flex;align-items:center;gap:14px;padding:9px 18px;border-bottom:1px solid var(--line);background:rgba(6,7,13,.85);position:relative;z-index:30}
-.top::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:linear-gradient(90deg,transparent 0,var(--cyan) 30%,var(--pink) 70%,transparent 100%);opacity:.8}
-.brand{display:flex;align-items:baseline;gap:12px;font-family:var(--display);font-weight:800;font-size:19px;letter-spacing:.16em;color:var(--cyan);text-transform:uppercase;white-space:nowrap}
-.brand small{font-weight:600;font-size:11px;letter-spacing:.3em;color:var(--pink)}
-.relay{margin-left:auto;position:relative;display:flex;align-items:center;font-size:13px;color:var(--ink-2)}
-.relay summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:8px;padding:6px 10px;border:1px solid transparent;border-radius:3px;letter-spacing:.06em;text-transform:uppercase;font-weight:600;font-size:12px}
-.relay summary::-webkit-details-marker{display:none}
-.relay summary:hover,.relay[open] summary{border-color:var(--line);background:rgba(60,224,255,.06)}
-.relay .pop{position:absolute;right:0;top:calc(100% + 8px);width:340px;background:var(--bg-2);border:1px solid var(--line-2);border-radius:4px;padding:14px;z-index:40;box-shadow:0 8px 24px rgba(0,0,0,.5);color:var(--ink);font-size:14px;text-transform:none;letter-spacing:0}
-.dot{width:8px;height:8px;border-radius:50%;background:var(--ink-3);flex:none}
-.dot.ok{background:var(--lime)}
-.dot.bad{background:var(--amber)}
+.top{display:flex;align-items:center;gap:14px;padding:10px 20px;border-bottom:1px solid var(--line);background:var(--bg-2);position:relative;z-index:30}
+.brand{display:flex;align-items:baseline;gap:10px;font-weight:700;font-size:20px;color:var(--yellow);white-space:nowrap;line-height:1.12}
+.brand small{font-weight:700;font-size:13px;color:var(--ink-2)}
+.top .spacer{margin-left:auto}
+.top .keys{font-size:12px;color:var(--ink-3)}
+.top .keys kbd{font-family:var(--mono);color:#c2e0ff;background:var(--bg-3);border:1px solid var(--line);border-radius:4px;padding:0 5px}
 
-.btn{background:transparent;border:1px solid var(--line-2);color:var(--cyan);border-radius:3px;padding:6px 10px;cursor:pointer;line-height:1.2;white-space:nowrap;font-weight:600;font-size:13px;letter-spacing:.07em;text-transform:uppercase;transition:background .15s}
-.btn:hover{background:rgba(60,224,255,.12)}
-.btn:disabled{opacity:.3;cursor:default;background:transparent}
-.btn.primary{background:var(--cyan);color:#03131a;border-color:var(--cyan)}
-.btn.primary:hover{background:#86edff}
-.btn.pink{border-color:rgba(255,63,208,.55);color:var(--pink)}
-.btn.pink:hover{background:rgba(255,63,208,.14)}
-.btn.ghost{border-color:transparent;color:var(--ink-2)}
-.btn.ghost:hover{border-color:var(--line);color:var(--cyan)}
-.btn.small{padding:4px 9px;font-size:12px}
+.btn{background:var(--bg-3);border:1px solid var(--line-2);color:var(--ink-strong);border-radius:999px;padding:7px 15px;cursor:pointer;line-height:1.2;white-space:nowrap;font-weight:700;font-size:13.5px;letter-spacing:.01em}
+.btn:hover{background:var(--bg-4);border-color:var(--blue)}
+.btn:disabled{opacity:.4;cursor:default;background:var(--bg-3);border-color:var(--line-2)}
+.btn.primary{background:var(--yellow);color:var(--bg);border-color:var(--yellow)}
+.btn.primary:hover{background:var(--green);border-color:var(--green)}
+.btn.accent{border-color:var(--green);color:var(--green)}
+.btn.accent:hover{background:var(--green);color:var(--bg)}
+.btn.danger{background:var(--danger-bg);border-color:var(--danger-line);color:var(--danger-ink)}
+.btn.danger:hover{background:#6b3535;border-color:var(--red)}
+.btn.danger:disabled{background:var(--danger-bg);border-color:var(--danger-line)}
+.btn.ghost{background:transparent;border-color:transparent;color:var(--ink-2)}
+.btn.ghost:hover{border-color:var(--line-2);color:var(--ink-strong);background:var(--bg-3)}
+.btn.small{padding:5px 11px;font-size:12.5px}
 
 .main{display:grid;grid-template-columns:320px minmax(0,1fr);min-height:0}
 .app.nopanel .main{grid-template-columns:0 minmax(0,1fr)}
-.side{border-right:1px solid var(--line);padding:16px;display:flex;flex-direction:column;gap:22px;overflow:hidden auto;scrollbar-width:none;min-height:0;background:rgba(6,7,13,.5)}
+.side{border-right:1px solid var(--line);padding:18px 16px;display:flex;flex-direction:column;gap:22px;overflow:hidden auto;scrollbar-width:none;min-height:0;background:var(--bg-2)}
 .side::-webkit-scrollbar{display:none}
 .app.nopanel .side{visibility:hidden;padding:0;border:0;overflow:hidden}
 .view{display:grid;grid-template-rows:minmax(0,1fr) auto;gap:10px;min-height:0;min-width:0;padding:12px 14px 10px}
-h2{font-family:var(--display);font-weight:600;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--pink);margin-bottom:10px}
+h2{font-weight:700;font-size:15px;color:var(--blue);margin-bottom:10px}
 .field{display:flex;flex-direction:column;gap:4px;margin-bottom:9px;min-width:0}
-.field label{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
-input,select{background:var(--bg-2);border:1px solid var(--line);border-radius:3px;padding:7px 9px;width:100%;min-width:0;color:var(--ink);font-weight:500}
+.field label{font-size:12.5px;color:var(--ink-2)}
+input,select{background:var(--bg-3);border:1px solid var(--line-2);border-radius:6px;padding:7px 10px;width:100%;min-width:0;color:var(--ink-strong)}
 input::placeholder{color:var(--ink-3)}
-select option,select optgroup{background:var(--bg-2);color:var(--ink)}
-input:focus-visible,select:focus-visible{outline:none;border-color:var(--cyan)}
-button:focus-visible,summary:focus-visible,a:focus-visible,li:focus-visible{outline:1px solid var(--cyan);outline-offset:2px}
+select option,select optgroup{background:var(--bg-3);color:var(--ink)}
+input:focus-visible,select:focus-visible{outline:none;border-color:var(--green)}
+button:focus-visible,summary:focus-visible,a:focus-visible,li:focus-visible{outline:2px solid var(--green);outline-offset:2px}
 .row{display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap}
 .row>.field{flex:1}
-details.adv summary{cursor:pointer;color:var(--ink-2);font-size:12px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;margin:2px 0 8px}
+details.adv summary{cursor:pointer;color:var(--ink-2);font-size:13px;font-weight:700;margin:2px 0 8px}
 details.adv .grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 10px}
 .hint{font-size:13px;color:var(--ink-2);margin:6px 0 0;line-height:1.45}
-.hint code{background:var(--bg-3);padding:0 4px;border-radius:2px;font-size:12px;font-family:var(--mono);color:var(--cyan)}
+.hint code{background:var(--bg-3);padding:0 4px;border-radius:4px;font-size:12px;font-family:var(--mono);color:#c2e0ff}
 .list{display:flex;flex-direction:column;gap:2px;margin:0;padding:0;list-style:none}
-.list li{display:flex;align-items:center;gap:8px;padding:7px 9px;border-radius:3px;cursor:pointer;border:1px solid transparent;border-left:2px solid transparent}
-.list li:hover{background:rgba(60,224,255,.06);border-left-color:var(--line-2)}
-.list li.active{border-left-color:var(--pink);background:rgba(255,63,208,.08)}
+.list li{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:6px;cursor:pointer;background:var(--bg-3);border:1px solid var(--line);border-left:3px solid var(--line-2)}
+.list li:hover{border-color:var(--line-2);border-left-color:var(--blue)}
+.list li.active{border-left-color:var(--yellow);background:var(--bg-4)}
 .list .meta{flex:1;min-width:0}
-.list .meta b{display:block;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.list .meta b{display:block;font-weight:700;color:var(--ink-strong);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .list .meta span{display:block;font-size:12px;color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:var(--mono)}
 .list .x{background:none;border:0;color:var(--ink-3);cursor:pointer;padding:2px 6px;border-radius:3px;font-size:16px;line-height:1}
 .list .x:hover{color:var(--red)}
-.empty{color:var(--ink-3);font-size:13.5px;padding:6px 8px;cursor:default}
+.empty{color:var(--ink-2);font-size:13.5px;padding:12px 14px;cursor:default;background:var(--bg-3);border-left:3px solid var(--blue);border-radius:6px}
 
-.stage{position:relative;background:#020309;min-height:0;border:1px solid var(--line);border-radius:4px;overflow:hidden}
-.stage.armed{border-color:var(--line-2)}
+.stage{position:relative;background:#0a1220;min-height:0;border:1px solid var(--line-2);border-radius:6px;overflow:hidden}
+.stage.armed{border-color:var(--line-3)}
 .stage:fullscreen{border:0;border-radius:0}
 .stage video,.stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:none;user-select:none}
 .stage.mode-video video{display:block}
 .stage.mode-img img{display:block}
-.stage:not(.armed)::before{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(60,224,255,.05) 0 1px,transparent 1px 4px);z-index:1}
 .hud{position:absolute;inset:14px;pointer-events:none;opacity:0;transition:opacity .25s;z-index:2}
 .stage.armed .hud{opacity:1}
-.hud .c{position:absolute;width:22px;height:22px;border:2px solid var(--cyan))}
+.hud .c{position:absolute;width:22px;height:22px;border:2px solid var(--blue)}
 .hud .c1{left:0;top:0;border-right:0;border-bottom:0}
 .hud .c2{right:0;top:0;border-left:0;border-bottom:0}
 .hud .c3{left:0;bottom:0;border-right:0;border-top:0}
 .hud .c4{right:0;bottom:0;border-left:0;border-top:0}
-.hud .pill{position:absolute;display:flex;gap:7px;align-items:center;background:rgba(2,3,9,.72);border:1px solid var(--line);padding:4px 9px;border-radius:2px;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap}
+.hud .pill{position:absolute;display:flex;gap:7px;align-items:center;background:rgba(11,18,32,.8);border:1px solid var(--line-2);padding:4px 10px;border-radius:999px;font-size:12.5px;font-weight:700;white-space:nowrap;color:var(--ink-strong)}
 .hud .live{left:10px;bottom:10px;color:var(--ink-2)}
 .hud .live i{width:8px;height:8px;border-radius:50%;background:var(--ink-3);flex:none}
-.hud .live.on{color:var(--pink);border-color:rgba(255,63,208,.5)}
-.hud .live.on i{background:var(--pink);animation:blink 1.3s infinite}
-.hud .ro{right:10px;bottom:10px;color:var(--cyan);font-family:var(--mono);font-weight:500;letter-spacing:0;text-transform:none}
-.hud .nm{left:10px;top:10px;color:var(--ink);max-width:60%;overflow:hidden;text-overflow:ellipsis;letter-spacing:.06em}
+.hud .live.on{color:var(--ink-strong)}
+.hud .live.on i{background:var(--red);animation:blink 1.3s infinite}
+.hud .ro{right:10px;bottom:10px;color:#c2e0ff;font-family:var(--mono);font-weight:500;font-size:12px}
+.hud .nm{left:10px;top:10px;max-width:60%;overflow:hidden;text-overflow:ellipsis}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
 @media (prefers-reduced-motion:reduce){.hud .live.on i{animation:none}.hud{transition:none}}
 .notice{position:absolute;inset:0;display:grid;place-items:center;color:var(--ink-2);text-align:center;padding:28px;font-size:15px;line-height:1.5;z-index:3}
 .notice.hide{display:none}
 .notice .box{max-width:520px}
 .notice .box p{margin:0 0 10px}
-.notice .eye{width:96px;height:56px;margin:0 auto 18px;display:block)}
+.notice .eye{width:96px;height:56px;margin:0 auto 18px;display:block}
 .notice .box .btn{pointer-events:auto}
 
 .bar{display:flex;align-items:center;gap:10px;min-width:0;flex-wrap:wrap}
-.now{flex:1 1 0;min-width:60px;display:flex;align-items:center;gap:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:14px;color:var(--ink-2);font-family:var(--mono)}
-.now b{color:var(--ink);font-weight:600;font-family:var(--font);font-size:15px}
-.tag{display:inline-block;font-size:10px;padding:1px 6px;border-radius:2px;border:1px solid var(--line);color:var(--cyan);letter-spacing:.14em;text-transform:uppercase;font-family:var(--font);font-weight:600}
+.now{flex:1 1 0;min-width:60px;display:flex;align-items:center;gap:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:13px;color:var(--ink-2);font-family:var(--mono)}
+.now b{color:var(--ink-strong);font-weight:700;font-family:var(--font);font-size:15px}
+.tag{display:inline-block;font-size:11px;padding:1px 8px;border-radius:999px;border:1px solid var(--line-2);background:var(--bg-3);color:var(--blue);font-family:var(--font);font-weight:700}
 .stats{display:flex;gap:5px;flex:none}
-.stat{display:flex;flex-direction:column;padding:4px 9px 3px;border:1px solid var(--line);border-radius:3px;background:rgba(60,224,255,.04);min-width:64px}
-.stat b{font-weight:600;font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3);line-height:1.2}
-.stat span{font-family:var(--mono);font-size:13px;color:var(--cyan);white-space:nowrap;line-height:1.3}
+.stat{display:flex;flex-direction:column;padding:4px 10px 3px;border:1px solid var(--line-2);border-radius:6px;background:var(--bg-3);min-width:64px}
+.stat b{font-weight:700;font-size:10.5px;color:var(--ink-2);line-height:1.2}
+.stat span{font-family:var(--mono);font-size:13px;color:var(--ink-strong);white-space:nowrap;line-height:1.3}
 .stat span.dim{color:var(--ink-3)}
-.stat span.ok{color:var(--lime)}
+.stat span.ok{color:var(--green)}
 .stat span.err{color:var(--red)}
-.stat span.warn{color:var(--amber)}
+.stat span.warn{color:var(--orange)}
 .controls{display:flex;gap:6px;flex:none}
 
 @media (max-width:980px){
@@ -129,7 +124,7 @@ details.adv .grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 10px}
   .side{max-height:44vh;border-right:0;border-bottom:1px solid var(--line)}
   .brand small{display:none}
   .stats{display:none}
-  .relay .pop{width:min(340px,calc(100vw - 32px))}
+  .top .keys{display:none}
 }
 </style>
 </head>
@@ -138,20 +133,8 @@ details.adv .grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 10px}
   <header class="top">
     <h1 class="brand">NVR<small>The Watcher</small></h1>
     <button class="btn ghost small" id="btnPanel" type="button" title="Show or hide the side panel (h)">Panel</button>
-    <details class="relay" id="relayBox">
-      <summary><span class="dot" id="relayDot"></span><span id="relayText">Looking for relay</span></summary>
-      <div class="pop">
-        <div class="field">
-          <label for="relayInput">Relay address</label>
-          <input id="relayInput" placeholder="http://127.0.0.1:8080" spellcheck="false">
-        </div>
-        <div class="row" style="align-items:center;gap:10px">
-          <button class="btn small" id="btnRelayCheck" type="button">Check</button>
-          <span id="relayDetail" style="font-size:12.5px;color:var(--ink-2)"></span>
-        </div>
-        <p class="hint">The relay is the optional <code>server.js</code>. It turns RTSP into something the browser can play (needs ffmpeg), signs in to cameras that ask for a password, and gets around CORS.</p>
-      </div>
-    </details>
+    <span class="spacer"></span>
+    <span class="keys"><kbd>h</kbd> panel &nbsp; <kbd>f</kbd> fullscreen &nbsp; <kbd>Esc</kbd> stop</span>
   </header>
 
   <div class="main">
@@ -160,14 +143,13 @@ details.adv .grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 10px}
         <h2>Open a camera</h2>
         <div class="field">
           <label for="url">Stream address</label>
-          <input id="url" placeholder="rtsp://user:pass@192.168.1.64/… or https://…/stream.m3u8" spellcheck="false" autocomplete="off">
+          <input id="url" placeholder="http://192.168.1.80/video.mjpg or https://…/stream.m3u8" spellcheck="false" autocomplete="off">
         </div>
         <div class="row">
           <div class="field">
             <label for="type">Kind</label>
             <select id="type">
               <option value="auto">Auto-detect</option>
-              <option value="rtsp">RTSP (through relay)</option>
               <option value="hls">HLS (.m3u8)</option>
               <option value="mjpeg">MJPEG stream</option>
               <option value="whep">WebRTC (WHEP)</option>
@@ -183,39 +165,25 @@ details.adv .grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 10px}
         <details class="adv">
           <summary>Options</summary>
           <div class="grid2">
-            <div class="field"><label for="optFps">Relay frame rate</label><input id="optFps" type="number" min="1" max="30" value="15"></div>
-            <div class="field"><label for="optWidth">Relay max width</label><input id="optWidth" type="number" min="160" max="3840" step="10" value="1280"></div>
-            <div class="field"><label for="optQ">Relay JPEG quality (2 best, 31 worst)</label><input id="optQ" type="number" min="2" max="31" value="6"></div>
             <div class="field"><label for="optInterval">Snapshot refresh (ms)</label><input id="optInterval" type="number" min="200" step="100" value="1000"></div>
-            <div class="field"><label for="optRoute">Fetch through relay</label>
-              <select id="optRoute"><option value="auto">Only when needed</option><option value="always">Always</option><option value="never">Never</option></select></div>
-            <div class="field"><label for="optTransport">RTSP transport</label>
-              <select id="optTransport"><option value="tcp">TCP</option><option value="udp">UDP</option></select></div>
           </div>
         </details>
         <div class="row">
           <button class="btn primary" id="btnPlay" type="button">Watch</button>
           <button class="btn" id="btnSave" type="button">Save</button>
-          <button class="btn ghost" id="btnClear" type="button" title="Reset every field to its default">Clear all</button>
+          <button class="btn danger" id="btnClear" type="button" title="Reset every field to its default">Clear all</button>
         </div>
         <div class="field" style="margin-top:12px">
           <label for="presets">Fill in a common address</label>
           <select id="presets">
             <option value="">Choose a camera type…</option>
-            <optgroup label="Local cameras (RTSP, needs relay)">
-              <option value="rtsp://user:pass@192.168.1.64:554/Streaming/Channels/101|rtsp|Hikvision">Hikvision main stream</option>
-              <option value="rtsp://user:pass@192.168.1.108:554/cam/realmonitor?channel=1&subtype=0|rtsp|Dahua / Amcrest">Dahua / Amcrest</option>
-              <option value="rtsp://user:pass@192.168.1.100:554/h264Preview_01_main|rtsp|Reolink">Reolink</option>
-              <option value="rtsp://user:pass@192.168.1.90/axis-media/media.amp|rtsp|Axis">Axis</option>
-              <option value="rtsp://user:pass@192.168.1.10:554/live|rtsp|Generic RTSP">Generic RTSP</option>
-            </optgroup>
             <optgroup label="Local cameras (HTTP)">
               <option value="http://192.168.1.90/axis-cgi/mjpg/video.cgi|mjpeg|Axis MJPEG">Axis MJPEG</option>
               <option value="http://192.168.1.80:81/stream|mjpeg|ESP32-CAM">ESP32-CAM stream</option>
               <option value="http://192.168.1.50:88/cgi-bin/CGIStream.cgi?cmd=GetMJStream&usr=user&pwd=pass|mjpeg|Foscam">Foscam MJPEG</option>
               <option value="http://192.168.1.90/axis-cgi/jpg/image.cgi|snapshot|Axis snapshot">Axis JPEG snapshot</option>
             </optgroup>
-            <optgroup label="Gateways">
+            <optgroup label="Gateways (turn RTSP cameras into WebRTC or HLS)">
               <option value="http://127.0.0.1:1984/api/webrtc?src=camera1|whep|go2rtc camera1">go2rtc (WebRTC)</option>
               <option value="http://127.0.0.1:8889/mystream/whep|whep|MediaMTX mystream">MediaMTX (WebRTC)</option>
               <option value="http://127.0.0.1:8888/mystream/index.m3u8|hls|MediaMTX HLS">MediaMTX (HLS)</option>
@@ -251,11 +219,11 @@ details.adv .grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 10px}
         <div class="now" id="now">Nothing playing</div>
         <div class="stats" id="stats"></div>
         <div class="controls">
-          <button class="btn pink" id="btnSaveNow" type="button" hidden>Save camera</button>
+          <button class="btn accent" id="btnSaveNow" type="button" hidden>Save camera</button>
           <button class="btn" id="btnMute" type="button" hidden>Unmute</button>
           <button class="btn" id="btnShot" type="button" disabled>Snapshot</button>
           <button class="btn" id="btnFull" type="button" disabled>Fullscreen</button>
-          <button class="btn" id="btnStop" type="button" disabled>Stop</button>
+          <button class="btn danger" id="btnStop" type="button" disabled>Stop</button>
         </div>
       </div>
     </main>
@@ -285,7 +253,7 @@ try {
     store.set('cameras', old.filter(c => c && c.url));
   }
 } catch { /* storage unavailable */ }
-const settings = Object.assign({ relayUrl: '', panel: true }, store.get('settings', {}));
+const settings = Object.assign({ panel: true }, store.get('settings', {}));
 let cameras = store.get('cameras', []);
 
 // ---------- small helpers ----------
@@ -335,41 +303,6 @@ async function probeType(url) {
     return null;
   } catch { return null; } finally { clearTimeout(t); }
 }
-
-// ---------- relay discovery ----------
-const relay = { base: null, ok: false, ffmpeg: false, info: null };
-async function checkRelay(base) {
-  const ac = new AbortController(); const t = setTimeout(() => ac.abort(), 2000);
-  try {
-    const r = await fetch(base.replace(/\/$/, '') + '/api/health', { signal: ac.signal, cache: 'no-store' });
-    const j = await r.json();
-    return j && j.ok ? j : null;
-  } catch { return null; } finally { clearTimeout(t); }
-}
-async function detectRelay() {
-  const cands = [];
-  if (settings.relayUrl) cands.push(settings.relayUrl);
-  if (/^https?:$/.test(location.protocol)) cands.push(location.origin);
-  cands.push('http://127.0.0.1:8080', 'http://localhost:8080');
-  for (const c of [...new Set(cands)]) {
-    const info = await checkRelay(c);
-    if (info) { relay.base = c.replace(/\/$/, ''); relay.ok = true; relay.ffmpeg = !!info.ffmpeg; relay.info = info; renderRelay(); return; }
-  }
-  relay.base = null; relay.ok = false; relay.ffmpeg = false; relay.info = null; renderRelay();
-}
-function renderRelay() {
-  const dot = $('#relayDot'), txt = $('#relayText'), det = $('#relayDetail');
-  if (relay.ok) {
-    dot.className = 'dot ' + (relay.ffmpeg ? 'ok' : 'bad');
-    txt.textContent = relay.ffmpeg ? 'Relay online, RTSP ready' : 'Relay online, no ffmpeg';
-    det.textContent = relay.base + (relay.info.ffmpegVersion ? ' (' + relay.info.ffmpegVersion.replace(/ copyright.*$/i, '') + ')' : ' (install ffmpeg to enable RTSP)');
-  } else {
-    dot.className = 'dot'; txt.textContent = 'No relay, RTSP off';
-    det.textContent = 'Run "node server.js" and check again.';
-  }
-}
-const relayUrl = p => relay.base + p;
-const proxied = u => relayUrl('/api/proxy?url=' + encodeURIComponent(u));
 
 // ---------- JPEG frame scanner (works for multipart MJPEG and raw concatenated JPEGs) ----------
 function findSOI(b, from) {
@@ -460,14 +393,8 @@ function videoStats(st) {
     st.state = (video.readyState >= 3 && !video.paused) ? (st.isVod ? 'playing' : 'live') : 'buffering';
   }
 }
-function routeThroughRelay(url, route) {
-  if (!relay.ok || route === 'never') return false;
-  if (route === 'always') return true;
-  return hasCreds(url);
-}
-
 // ---------- players ----------
-function startMjpeg(source, { viaRelay = false, label = 'MJPEG' } = {}) {
+function startMjpeg(source, { label = 'MJPEG' } = {}) {
   const st = newStats(label);
   const ac = new AbortController();
   let stopped = false, pending = false, lastUrl = null;
@@ -484,11 +411,10 @@ function startMjpeg(source, { viaRelay = false, label = 'MJPEG' } = {}) {
   (async () => {
     let backoff = 1000;
     const url = source.url;
-    let useProxy = !viaRelay && routeThroughRelay(url, source.opts?.route);
-    if (!viaRelay && hasCreds(url) && !relay.ok) st.note = 'Browsers refuse addresses with a password in them. Start the relay so it can sign in for you.';
+    if (hasCreds(url)) st.note = 'Browsers refuse addresses with a password in them. Use the camera\u2019s guest view or a gateway that signs in for you.';
     while (!stopped) {
-      const target = viaRelay ? url : (useProxy ? proxied(url) : url);
-      st.protocol = viaRelay ? label : (useProxy ? label + ' through relay' : label);
+      const target = url;
+      st.protocol = label;
       if (!st.frames) st.state = 'connecting';
       try {
         const r = await readMjpeg(target, ac.signal, paint, ct => { st.extra['Content type'] = ct.split(';')[0].trim(); });
@@ -499,11 +425,10 @@ function startMjpeg(source, { viaRelay = false, label = 'MJPEG' } = {}) {
         if (stopped || e.name === 'AbortError') break;
         st.errors++; st.lastError = e.message;
         if (e.suggest) { st.state = 'error'; st.suggest = e.suggest; return; }
-        if (st.frames === 0 && !viaRelay && e instanceof TypeError) {
-          if (!useProxy && relay.ok && source.opts?.route !== 'never') { useProxy = true; st.note = 'Direct fetch was blocked (usually CORS); retrying through the relay.'; continue; }
-          // Last resort: let the browser render it directly. No byte counter in this mode.
+        if (st.frames === 0 && e instanceof TypeError) {
+          // The camera sends no CORS headers: let the browser render it directly. No byte counter in this mode.
           st.protocol = label + ' (direct, limited stats)'; st.bytesKnown = false; st.fpsKnown = false;
-          st.note = 'The browser would not let the page read this stream (CORS), so it is shown directly. Start the relay for full stats.';
+          st.note = 'The camera does not allow cross-origin reads (CORS), so the picture is shown directly; frame rate and bitrate cannot be measured.';
           img.onload = () => { st.frames++; st.width = img.naturalWidth; st.height = img.naturalHeight; st.state = 'live'; };
           img.onerror = () => { st.errors++; st.lastError = 'The browser could not load the stream'; st.state = 'error'; };
           img.src = url; return;
@@ -533,13 +458,11 @@ function startSnapshot(source, { intervalMs = 1000, label = 'JPEG snapshot', cac
   });
   const showDirect = u => new Promise((resolve, reject) => { img.onload = resolve; img.onerror = () => reject(new Error('The browser could not load the image')); img.src = u; });
   (async () => {
-    let useProxy = routeThroughRelay(url, source.opts?.route);
-    if (hasCreds(url) && !relay.ok) st.note = 'Browsers refuse addresses with a password in them. Start the relay so it can sign in for you.';
+    if (hasCreds(url)) st.note = 'Browsers refuse addresses with a password in them. Use the camera\u2019s guest view or a gateway that signs in for you.';
     while (!stopped) {
       const t0 = performance.now();
-      const target = useProxy ? proxied(url) : url;
-      const fetchUrl = cacheBust ? bust(target) : target;
-      st.protocol = direct ? label + ' (direct, limited stats)' : (useProxy ? label + ' through relay' : label);
+      const fetchUrl = cacheBust ? bust(url) : url;
+      st.protocol = direct ? label + ' (direct, limited stats)' : label;
       try {
         if (direct) {
           await showDirect(fetchUrl);
@@ -558,8 +481,7 @@ function startSnapshot(source, { intervalMs = 1000, label = 'JPEG snapshot', cac
         if (stopped || e.name === 'AbortError') break;
         st.errors++; st.lastError = e.message;
         if (!direct && st.frames === 0 && e instanceof TypeError) {
-          if (!useProxy && relay.ok && source.opts?.route !== 'never') { useProxy = true; st.note = 'Direct fetch was blocked (usually CORS); retrying through the relay.'; continue; }
-          direct = true; st.bytesKnown = false; st.note = 'The browser would not let the page read this image (CORS), so it is shown directly. Start the relay for full stats.'; continue;
+          direct = true; st.bytesKnown = false; st.note = 'The camera does not allow cross-origin reads (CORS), so the picture is shown directly; bitrate cannot be measured.'; continue;
         }
         if (refreshUrl && /^HTTP (4|5)/.test(e.message)) { const nu = await refreshUrl().catch(() => null); if (nu) url = nu; }
         st.state = st.frames ? 'stale' : 'error';
@@ -705,42 +627,9 @@ function startVideoFile(source) {
   };
 }
 
-function startRtsp(source) {
-  if (!relay.ok || !relay.ffmpeg) {
-    const st = newStats('RTSP'); st.state = 'error'; st.bytesKnown = false; st.fpsKnown = false;
-    st.lastError = relay.ok ? 'The relay is running but ffmpeg is not installed on it' : 'No relay is running';
-    st.note = 'Browsers cannot play RTSP directly. Start the relay (node server.js, needs ffmpeg) and press Watch again, or point The Watcher at a WebRTC or HLS gateway such as go2rtc or MediaMTX.';
-    showImg();
-    return { kind: 'rtsp', stats: () => st, stop() {} };
-  }
-  const o = source.opts || {};
-  const q = new URLSearchParams({ url: source.url, fps: o.fps || 15, width: o.width || 1280, quality: o.quality || 6, transport: o.transport || 'tcp' });
-  const inner = startMjpeg({ url: relayUrl('/api/rtsp?' + q), opts: {} }, { viaRelay: true, label: 'RTSP via relay (MJPEG)' });
-  let server = null;
-  const poll = setInterval(async () => {
-    try { server = await (await fetch(relayUrl('/api/rtsp/stats?' + q), { cache: 'no-store' })).json(); } catch { server = null; }
-  }, 2000);
-  return {
-    kind: 'rtsp',
-    stats() {
-      const st = inner.stats();
-      if (server && server.state) {
-        st.extra['Relay encoder'] = server.state + (server.fps != null ? ', ' + server.fps.toFixed(1) + ' fps out' : '');
-        if (server.width) st.extra['Relay output'] = server.width + '×' + server.height;
-        if (server.clients != null) st.extra['Relay viewers'] = server.clients;
-        if (server.restarts) st.extra['Relay restarts'] = server.restarts;
-        if (server.lastError) st.extra['ffmpeg says'] = server.lastError;
-        if (server.state === 'error' && st.state !== 'live') { st.state = 'error'; st.lastError = server.lastError || st.lastError; }
-      }
-      return st;
-    },
-    stop() { clearInterval(poll); inner.stop(); }
-  };
-}
-
 // ---------- controller ----------
 let current = null, playToken = 0, ticker = null;
-const EYE = '<svg class="eye" viewBox="0 0 96 56" fill="none" stroke="#3ce0ff" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 28C18 8 34 2 48 2s30 6 44 26C78 48 62 54 48 54S18 48 4 28Z"/><circle cx="48" cy="28" r="12"/><circle cx="48" cy="28" r="4" fill="#ff3fd0" stroke="none"/><path d="M12 28h6M78 28h6" opacity=".6"/></svg>';
+const EYE = '<svg class="eye" viewBox="0 0 96 56" fill="none" stroke="#7aa2ff" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 28C18 8 34 2 48 2s30 6 44 26C78 48 62 54 48 54S18 48 4 28Z"/><circle cx="48" cy="28" r="12"/><circle cx="48" cy="28" r="4" fill="#ffd35e" stroke="none"/><path d="M12 28h6M78 28h6" opacity=".6"/></svg>';
 const IDLE = EYE + '<p>Paste a camera address in the panel or pick a saved camera.</p>';
 function notice(html) { const n = $('#notice'); n.classList.remove('hide'); n.innerHTML = '<div class="box">' + html + '</div>'; }
 function hideNotice() { $('#notice').classList.add('hide'); }
@@ -756,12 +645,12 @@ async function play(source) {
   notice('<p>Connecting to ' + esc(src.name || maskUrl(src.url)) + '.</p>');
   setControls(true); stage.classList.add('armed'); $('#hudName').textContent = src.name || '';
   let type = src.type && src.type !== 'auto' ? src.type : detectType(src.url || '');
-  if (type === 'invalid') { notice('<p>That does not look like a camera address. It should start with rtsp://, http:// or https://.</p>'); setControls(false); return; }
+  if (type === 'invalid') { notice('<p>That does not look like a camera address. It should start with http:// or https://.</p>'); setControls(false); return; }
+  if (type === 'rtsp') { notice('<p>Browsers cannot play RTSP, and this app runs entirely in the browser.</p><p>Put a small gateway such as go2rtc or MediaMTX next to the camera and paste its WebRTC or HLS address instead. The presets list has the usual addresses.</p>'); setControls(false); return; }
   if (type === 'guess') {
     notice('<p>Checking what kind of stream this is.</p>');
     type = await probeType(src.url);
     if (token !== playToken) return;
-    if (!type && relay.ok && src.opts.route !== 'never') { type = await probeType(proxied(src.url)); if (token !== playToken) return; }
     if (type === 'html') { notice('<p>That address returns a web page, not a video stream.</p><p>Open the page and look for the camera\u2019s direct stream link, usually ending in .m3u8, .mjpg, or a .cgi path. Then paste that instead.</p>'); setControls(false); return; }
     type = type || 'mjpeg';
   }
@@ -770,7 +659,6 @@ async function play(source) {
   let player;
   try {
     switch (type) {
-      case 'rtsp': player = startRtsp(src); break;
       case 'hls': player = await startHls(src); break;
       case 'whep': player = await startWhep(src); break;
       case 'video': player = startVideoFile(src); break;
@@ -825,7 +713,7 @@ async function tick() {
   renderStats(st, d);
   renderHud(st, d);
   if (st.state === 'error' && !st.frames) {
-    notice('<p>' + esc(st.lastError || 'Something went wrong') + '</p>' + (st.note ? '<p>' + linkify(esc(st.note)) + '</p>' : '') + (cur.source.mixed ? '<p>This page is on https, so the browser blocks plain http streams. Open The Watcher over http (the relay serves it that way) or use an https stream.</p>' : ''));
+    notice('<p>' + esc(st.lastError || 'Something went wrong') + '</p>' + (st.note ? '<p>' + linkify(esc(st.note)) + '</p>' : '') + (cur.source.mixed ? '<p>This page is on https, so the browser blocks plain http streams. Open this page over http, or use an https stream.</p>' : ''));
   } else if (st.frames > 0 || st.state === 'live' || st.state === 'playing') hideNotice();
 }
 function linkify(s) { return s.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>'); }
@@ -857,7 +745,7 @@ function renderHud(st, d) {
 }
 function renderNow(src) {
   const n = $('#now');
-  const kind = ({ rtsp: 'RTSP', hls: 'HLS', mjpeg: 'MJPEG', whep: 'WebRTC', video: 'Video file', snapshot: 'Snapshot' })[src.resolvedType || src.type] || 'Detecting';
+  const kind = ({ hls: 'HLS', mjpeg: 'MJPEG', whep: 'WebRTC', video: 'Video file', snapshot: 'Snapshot' })[src.resolvedType || src.type] || 'Detecting';
   n.innerHTML = '<b>' + esc(src.name || 'Untitled camera') + '</b> <span class="tag">' + esc(kind) + '</span> ' + esc(maskUrl(src.url));
 }
 
@@ -893,7 +781,7 @@ function formSource() {
   const url = $('#url').value.trim();
   return {
     type: $('#type').value, url, name: $('#name').value.trim() || guessName(url),
-    opts: { fps: +$('#optFps').value || 15, width: +$('#optWidth').value || 1280, quality: +$('#optQ').value || 6, intervalMs: +$('#optInterval').value || 1000, route: $('#optRoute').value, transport: $('#optTransport').value }
+    opts: { intervalMs: +$('#optInterval').value || 1000 }
   };
 }
 function guessName(url) { try { const u = new URL(url); return u.hostname + (u.pathname.length > 1 ? u.pathname.replace(/\/$/, '') : ''); } catch { return url; } }
@@ -903,8 +791,7 @@ $('#name').addEventListener('keydown', e => { if (e.key === 'Enter') $('#btnPlay
 $('#btnSave').addEventListener('click', () => { const s = formSource(); if (!s.url) { $('#url').focus(); return; } saveCamera(s); });
 function clearForm() {
   $('#url').value = ''; $('#type').value = 'auto'; $('#name').value = ''; $('#presets').value = '';
-  $('#optFps').value = 15; $('#optWidth').value = 1280; $('#optQ').value = 6; $('#optInterval').value = 1000;
-  $('#optRoute').value = 'auto'; $('#optTransport').value = 'tcp';
+  $('#optInterval').value = 1000;
   $('#url').focus();
 }
 $('#btnClear').addEventListener('click', clearForm);
@@ -933,7 +820,7 @@ $('#btnShot').addEventListener('click', () => {
       a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 5000);
     }, 'image/png');
   } catch (e) {
-    notice('<p>The browser will not let the page copy frames from this cross-origin stream. Route it through the relay to save frames.</p>');
+    notice('<p>The browser will not let the page copy frames from this stream, because the camera does not allow cross-origin access (CORS).</p>');
     setTimeout(hideNotice, 4000);
   }
 });
@@ -945,13 +832,10 @@ document.addEventListener('keydown', e => {
   if (e.key === 'h') setPanel(!settings.panel);
   if (e.key === 'Escape' && !document.fullscreenElement) stop();
 });
-$('#relayInput').value = settings.relayUrl;
-$('#btnRelayCheck').addEventListener('click', async () => { settings.relayUrl = $('#relayInput').value.trim(); store.set('settings', settings); $('#relayText').textContent = 'Checking'; await detectRelay(); });
 window.addEventListener('beforeunload', () => { if (current) current.player.stop(); });
 
 setPanel(settings.panel !== false);
 renderList(); renderStats(null); notice(IDLE);
-detectRelay();
 })();
 </script>
 </body>

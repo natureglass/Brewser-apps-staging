@@ -1,35 +1,17 @@
 {
   "verdict": "SUSPICIOUS",
-  "score": 35,
-  "scanned_at": "2026-09-13T14:23:31Z",
+  "score": 15,
+  "scanned_at": "2026-09-13T14:43:32Z",
   "scanner_version": "1.3.2",
-  "package_hash": "1ab50cd335e33b5a7de183fa70a054e1f1e5f7ad6c3bcd016619f8f04e3aed7f",
+  "package_hash": "9248a80a13db8f74b4de3d73d6af35c7f22814f8716001c43c81fcb63e8d620c",
   "counts": {
     "info": 5,
-    "suspicious": 3,
+    "suspicious": 1,
     "dangerous": 0
   },
-  "rationale": "Suspicious: 3 signal(s) needing review; e.g. settimeout/setinterval called with a string (implicit eval).",
+  "rationale": "Suspicious: 1 signal(s) needing review; e.g. declares `network` with an empty allowed_origins allowlist.",
   "truncated": false,
   "findings": [
-    {
-      "rule_id": "settimeout-string",
-      "severity": "SUSPICIOUS",
-      "title": "setTimeout/setInterval called with a string (implicit eval)",
-      "detail": "setTimeout() called with a string first argument — the string is eval()-ed.",
-      "file": "server.js",
-      "line": 294,
-      "evidence": "r.setTimeout(0)"
-    },
-    {
-      "rule_id": "settimeout-string",
-      "severity": "SUSPICIOUS",
-      "title": "setTimeout/setInterval called with a string (implicit eval)",
-      "detail": "setTimeout() called with a string first argument — the string is eval()-ed.",
-      "file": "server.js",
-      "line": 314,
-      "evidence": "r.setTimeout(15000, () => r.destroy(new Error('Upstream did not answer within 15 s')))"
-    },
     {
       "rule_id": "unbounded-egress-declaration",
       "severity": "SUSPICIOUS",
@@ -45,7 +27,7 @@
       "title": "DOM HTML sink assigned a non-literal value",
       "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
       "file": "index.html <inline script>",
-      "line": 481,
+      "line": 402,
       "evidence": "n.innerHTML = '<div class=\"box\">' + html + '</div>'"
     },
     {
@@ -54,7 +36,7 @@
       "title": "DOM HTML sink assigned a non-literal value",
       "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
       "file": "index.html <inline script>",
-      "line": 574,
+      "line": 494,
       "evidence": "el.innerHTML = chip('State', 'Idle', 'dim') + chip('Resolution') + chip('FPS') + chip('Bitrate') + chip('Uptime')"
     },
     {
@@ -63,7 +45,7 @@
       "title": "DOM HTML sink assigned a non-literal value",
       "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
       "file": "index.html <inline script>",
-      "line": 576,
+      "line": 496,
       "evidence": "el.innerHTML = chip('State', stateLabel[st.state] || st.state, stateCls) + chip('Resolution', st.width ? st.width + '\\u…"
     },
     {
@@ -72,7 +54,7 @@
       "title": "DOM HTML sink assigned a non-literal value",
       "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
       "file": "index.html <inline script>",
-      "line": 597,
+      "line": 517,
       "evidence": "n.innerHTML = '<b>' + esc(src.name || 'Untitled camera') + '</b> <span class=\"tag\">' + esc(kind) + '</span> ' + esc(mas…"
     },
     {
@@ -81,7 +63,7 @@
       "title": "DOM HTML sink assigned a non-literal value",
       "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
       "file": "index.html <inline script>",
-      "line": 605,
+      "line": 525,
       "evidence": "ul.innerHTML = cameras.map((c, i) => '<li data-i=\"' + i + '\" tabindex=\"0\" role=\"button\"><div class=\"meta\"><b>' + esc(c.…"
     }
   ],

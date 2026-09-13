@@ -52,9 +52,9 @@
   {
     "id": "com.natureglass.nvrthewatcher",
     "name": "NVR - The Watcher",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
-    "updated_at": "2026-09-13T14:23:31Z",
+    "updated_at": "2026-09-13T14:43:32Z",
     "entry": "index.html",
     "logo": "assets/appbanner.jpg",
     "description": "<p>The \"Fill in a common address\" dropdown has these ready to edit.</p>\r\n<p><code>Hikvision   rtsp://user:pass@IP:554/Streaming/Channels/101      (102 = sub stream)\r\nDahua/Amcrest rtsp://user:pass@IP:554/cam/realmonitor?channel=1&amp;subtype=0\r\nReolink     rtsp://user:pass@IP:554/h264Preview_01_main\r\nAxis        rtsp://user:pass@IP/axis-media/media.amp\r\n            http://IP/axis-cgi/mjpg/video.cgi      http://IP/axis-cgi/jpg/image.cgi\r\nESP32-CAM   http://IP:81/stream                   …"
