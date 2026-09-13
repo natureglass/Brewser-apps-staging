@@ -1,0 +1,31 @@
+{
+    "id": "com.natureglass.phasercompatibilitydemos",
+    "name": "Phaser Compatibility Demos",
+    "version": "1.0.0",
+    "description": "<p>Phaser Compatibility Demos</p>",
+    "logo": "assets/appbanner.jpg",
+    "entry": "index.html",
+    "categories": [
+        "Demos"
+    ],
+    "permissions": [],
+    "compatibility": [
+        "switch",
+        "web"
+    ],
+    "allowed_origins": [],
+    "developer": "Alex Daskalakis",
+    "license": "MIT",
+    "exitGame": "PLUS",
+    "fullscreen": true,
+    "hideMouseDocked": false,
+    "hideMouseUndocked": false,
+    "freshProcessOnExit": false,
+    "minBrewserVersion": "0.1.126",
+    "publishedAt": "2026-09-13T14:39:22Z",
+    "updatedAt": "2026-09-13T14:39:22Z",
+    "summary": "Phaser Compatibility Demos",
+    "features": [
+        "Gamepad"
+    ]
+}
