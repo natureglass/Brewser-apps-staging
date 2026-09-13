@@ -1,9 +1,9 @@
 {
   "verdict": "SUSPICIOUS",
   "score": 30,
-  "scanned_at": "2026-09-13T08:16:41Z",
+  "scanned_at": "2026-09-13T08:35:35Z",
   "scanner_version": "1.3.2",
-  "package_hash": "cd8f0152d8e60c8bd479c8a20a7c894ab5f3b9dc22ec9112da20777403a9de33",
+  "package_hash": "ba9039fa8114172c74cc835b78310f5a4c52e7640bf09f2fc21170fadf85a797",
   "counts": {
     "info": 0,
     "suspicious": 3,
@@ -18,7 +18,7 @@
       "title": "Network request to a runtime-assembled URL",
       "detail": "new WebSocket() targets a runtime-assembled URL containing the external fragment wss://ws.brewser.io/?app=.",
       "file": "index.html <inline script>",
-      "line": 164,
+      "line": 507,
       "evidence": "new WebSocket(WS_URL)"
     },
     {
@@ -36,7 +36,7 @@
       "title": "Realtime-relay app id is assembled at runtime",
       "detail": "Builds a Brewser realtime-relay URL at runtime without pinning the app id to \"com.natureglass.artistemultiplayerpaint\". Confirm it cannot resolve to another package's namespace.",
       "file": "index.html <inline script>",
-      "line": 164,
+      "line": 507,
       "evidence": "new WebSocket(WS_URL)"
     }
   ],
