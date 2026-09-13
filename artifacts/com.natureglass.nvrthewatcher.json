@@ -1,0 +1,11 @@
+{
+  "id": "com.natureglass.nvrthewatcher",
+  "sizeBytes": 99048,
+  "files": [
+    "README.md",
+    "assets/appbanner.jpg",
+    "index.html",
+    "manifest.json",
+    "server.js"
+  ]
+}

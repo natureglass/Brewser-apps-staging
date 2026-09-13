@@ -1,0 +1,92 @@
+{
+  "verdict": "SUSPICIOUS",
+  "score": 35,
+  "scanned_at": "2026-09-13T14:23:31Z",
+  "scanner_version": "1.3.2",
+  "package_hash": "1ab50cd335e33b5a7de183fa70a054e1f1e5f7ad6c3bcd016619f8f04e3aed7f",
+  "counts": {
+    "info": 5,
+    "suspicious": 3,
+    "dangerous": 0
+  },
+  "rationale": "Suspicious: 3 signal(s) needing review; e.g. settimeout/setinterval called with a string (implicit eval).",
+  "truncated": false,
+  "findings": [
+    {
+      "rule_id": "settimeout-string",
+      "severity": "SUSPICIOUS",
+      "title": "setTimeout/setInterval called with a string (implicit eval)",
+      "detail": "setTimeout() called with a string first argument — the string is eval()-ed.",
+      "file": "server.js",
+      "line": 294,
+      "evidence": "r.setTimeout(0)"
+    },
+    {
+      "rule_id": "settimeout-string",
+      "severity": "SUSPICIOUS",
+      "title": "setTimeout/setInterval called with a string (implicit eval)",
+      "detail": "setTimeout() called with a string first argument — the string is eval()-ed.",
+      "file": "server.js",
+      "line": 314,
+      "evidence": "r.setTimeout(15000, () => r.destroy(new Error('Upstream did not answer within 15 s')))"
+    },
+    {
+      "rule_id": "unbounded-egress-declaration",
+      "severity": "SUSPICIOUS",
+      "title": "Declares `network` with an empty allowed_origins allowlist",
+      "detail": "The manifest declares the full `network` permission but lists no allowed_origins, so the runtime applies no per-origin restriction and the app may reach any host. Confirm the destinations cannot be enumerated; if they can, declare them.",
+      "file": "manifest.json",
+      "line": 0,
+      "evidence": "network + allowed_origins: []"
+    },
+    {
+      "rule_id": "html-injection-sink",
+      "severity": "INFO",
+      "title": "DOM HTML sink assigned a non-literal value",
+      "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
+      "file": "index.html <inline script>",
+      "line": 481,
+      "evidence": "n.innerHTML = '<div class=\"box\">' + html + '</div>'"
+    },
+    {
+      "rule_id": "html-injection-sink",
+      "severity": "INFO",
+      "title": "DOM HTML sink assigned a non-literal value",
+      "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
+      "file": "index.html <inline script>",
+      "line": 574,
+      "evidence": "el.innerHTML = chip('State', 'Idle', 'dim') + chip('Resolution') + chip('FPS') + chip('Bitrate') + chip('Uptime')"
+    },
+    {
+      "rule_id": "html-injection-sink",
+      "severity": "INFO",
+      "title": "DOM HTML sink assigned a non-literal value",
+      "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
+      "file": "index.html <inline script>",
+      "line": 576,
+      "evidence": "el.innerHTML = chip('State', stateLabel[st.state] || st.state, stateCls) + chip('Resolution', st.width ? st.width + '\\u…"
+    },
+    {
+      "rule_id": "html-injection-sink",
+      "severity": "INFO",
+      "title": "DOM HTML sink assigned a non-literal value",
+      "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
+      "file": "index.html <inline script>",
+      "line": 597,
+      "evidence": "n.innerHTML = '<b>' + esc(src.name || 'Untitled camera') + '</b> <span class=\"tag\">' + esc(kind) + '</span> ' + esc(mas…"
+    },
+    {
+      "rule_id": "html-injection-sink",
+      "severity": "INFO",
+      "title": "DOM HTML sink assigned a non-literal value",
+      "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
+      "file": "index.html <inline script>",
+      "line": 605,
+      "evidence": "ul.innerHTML = cameras.map((c, i) => '<li data-i=\"' + i + '\" tabindex=\"0\" role=\"button\"><div class=\"meta\"><b>' + esc(c.…"
+    }
+  ],
+  "capabilities": [
+    "webrtc"
+  ],
+  "limitations": "Static heuristic scan. A GOOD verdict means no known-bad pattern matched, NOT proof of safety. Human review is still required for every submission."
+}

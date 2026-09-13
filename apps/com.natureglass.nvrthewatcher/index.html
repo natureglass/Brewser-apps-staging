@@ -1,0 +1,958 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NVR - The Watcher</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06070d; --bg-2:#0b0d19; --bg-3:#12152a;
+  --line:rgba(60,224,255,.22); --line-2:rgba(60,224,255,.5);
+  --ink:#e6f4ff; --ink-2:#8fb3c9; --ink-3:#4c657a;
+  --cyan:#3ce0ff; --pink:#ff3fd0; --lime:#5cff8a; --amber:#ffb23d; --red:#ff3860;
+  --display:"Orbitron",system-ui,sans-serif;
+  --font:"Rajdhani",system-ui,"Segoe UI",Roboto,sans-serif;
+  --mono:ui-monospace,"JetBrains Mono",Consolas,"Liberation Mono",monospace;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;overflow:hidden}
+body{color:var(--ink);font:16px/1.4 var(--font);font-weight:500;background:var(--bg)}
+button,input,select{font:inherit;color:inherit}
+a{color:var(--cyan)}
+h1,h2{margin:0}
+.app{height:100vh;height:100dvh;display:grid;grid-template-rows:auto minmax(0,1fr)}
+
+.top{display:flex;align-items:center;gap:14px;padding:9px 18px;border-bottom:1px solid var(--line);background:rgba(6,7,13,.85);position:relative;z-index:30}
+.top::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:linear-gradient(90deg,transparent 0,var(--cyan) 30%,var(--pink) 70%,transparent 100%);opacity:.8}
+.brand{display:flex;align-items:baseline;gap:12px;font-family:var(--display);font-weight:800;font-size:19px;letter-spacing:.16em;color:var(--cyan);text-transform:uppercase;white-space:nowrap}
+.brand small{font-weight:600;font-size:11px;letter-spacing:.3em;color:var(--pink)}
+.relay{margin-left:auto;position:relative;display:flex;align-items:center;font-size:13px;color:var(--ink-2)}
+.relay summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:8px;padding:6px 10px;border:1px solid transparent;border-radius:3px;letter-spacing:.06em;text-transform:uppercase;font-weight:600;font-size:12px}
+.relay summary::-webkit-details-marker{display:none}
+.relay summary:hover,.relay[open] summary{border-color:var(--line);background:rgba(60,224,255,.06)}
+.relay .pop{position:absolute;right:0;top:calc(100% + 8px);width:340px;background:var(--bg-2);border:1px solid var(--line-2);border-radius:4px;padding:14px;z-index:40;box-shadow:0 8px 24px rgba(0,0,0,.5);color:var(--ink);font-size:14px;text-transform:none;letter-spacing:0}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--ink-3);flex:none}
+.dot.ok{background:var(--lime)}
+.dot.bad{background:var(--amber)}
+
+.btn{background:transparent;border:1px solid var(--line-2);color:var(--cyan);border-radius:3px;padding:6px 10px;cursor:pointer;line-height:1.2;white-space:nowrap;font-weight:600;font-size:13px;letter-spacing:.07em;text-transform:uppercase;transition:background .15s}
+.btn:hover{background:rgba(60,224,255,.12)}
+.btn:disabled{opacity:.3;cursor:default;background:transparent}
+.btn.primary{background:var(--cyan);color:#03131a;border-color:var(--cyan)}
+.btn.primary:hover{background:#86edff}
+.btn.pink{border-color:rgba(255,63,208,.55);color:var(--pink)}
+.btn.pink:hover{background:rgba(255,63,208,.14)}
+.btn.ghost{border-color:transparent;color:var(--ink-2)}
+.btn.ghost:hover{border-color:var(--line);color:var(--cyan)}
+.btn.small{padding:4px 9px;font-size:12px}
+
+.main{display:grid;grid-template-columns:320px minmax(0,1fr);min-height:0}
+.app.nopanel .main{grid-template-columns:0 minmax(0,1fr)}
+.side{border-right:1px solid var(--line);padding:16px;display:flex;flex-direction:column;gap:22px;overflow:hidden auto;scrollbar-width:none;min-height:0;background:rgba(6,7,13,.5)}
+.side::-webkit-scrollbar{display:none}
+.app.nopanel .side{visibility:hidden;padding:0;border:0;overflow:hidden}
+.view{display:grid;grid-template-rows:minmax(0,1fr) auto;gap:10px;min-height:0;min-width:0;padding:12px 14px 10px}
+h2{font-family:var(--display);font-weight:600;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--pink);margin-bottom:10px}
+.field{display:flex;flex-direction:column;gap:4px;margin-bottom:9px;min-width:0}
+.field label{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+input,select{background:var(--bg-2);border:1px solid var(--line);border-radius:3px;padding:7px 9px;width:100%;min-width:0;color:var(--ink);font-weight:500}
+input::placeholder{color:var(--ink-3)}
+select option,select optgroup{background:var(--bg-2);color:var(--ink)}
+input:focus-visible,select:focus-visible{outline:none;border-color:var(--cyan)}
+button:focus-visible,summary:focus-visible,a:focus-visible,li:focus-visible{outline:1px solid var(--cyan);outline-offset:2px}
+.row{display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap}
+.row>.field{flex:1}
+details.adv summary{cursor:pointer;color:var(--ink-2);font-size:12px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;margin:2px 0 8px}
+details.adv .grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 10px}
+.hint{font-size:13px;color:var(--ink-2);margin:6px 0 0;line-height:1.45}
+.hint code{background:var(--bg-3);padding:0 4px;border-radius:2px;font-size:12px;font-family:var(--mono);color:var(--cyan)}
+.list{display:flex;flex-direction:column;gap:2px;margin:0;padding:0;list-style:none}
+.list li{display:flex;align-items:center;gap:8px;padding:7px 9px;border-radius:3px;cursor:pointer;border:1px solid transparent;border-left:2px solid transparent}
+.list li:hover{background:rgba(60,224,255,.06);border-left-color:var(--line-2)}
+.list li.active{border-left-color:var(--pink);background:rgba(255,63,208,.08)}
+.list .meta{flex:1;min-width:0}
+.list .meta b{display:block;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.list .meta span{display:block;font-size:12px;color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:var(--mono)}
+.list .x{background:none;border:0;color:var(--ink-3);cursor:pointer;padding:2px 6px;border-radius:3px;font-size:16px;line-height:1}
+.list .x:hover{color:var(--red)}
+.empty{color:var(--ink-3);font-size:13.5px;padding:6px 8px;cursor:default}
+
+.stage{position:relative;background:#020309;min-height:0;border:1px solid var(--line);border-radius:4px;overflow:hidden}
+.stage.armed{border-color:var(--line-2)}
+.stage:fullscreen{border:0;border-radius:0}
+.stage video,.stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:none;user-select:none}
+.stage.mode-video video{display:block}
+.stage.mode-img img{display:block}
+.stage:not(.armed)::before{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(60,224,255,.05) 0 1px,transparent 1px 4px);z-index:1}
+.hud{position:absolute;inset:14px;pointer-events:none;opacity:0;transition:opacity .25s;z-index:2}
+.stage.armed .hud{opacity:1}
+.hud .c{position:absolute;width:22px;height:22px;border:2px solid var(--cyan))}
+.hud .c1{left:0;top:0;border-right:0;border-bottom:0}
+.hud .c2{right:0;top:0;border-left:0;border-bottom:0}
+.hud .c3{left:0;bottom:0;border-right:0;border-top:0}
+.hud .c4{right:0;bottom:0;border-left:0;border-top:0}
+.hud .pill{position:absolute;display:flex;gap:7px;align-items:center;background:rgba(2,3,9,.72);border:1px solid var(--line);padding:4px 9px;border-radius:2px;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap}
+.hud .live{left:10px;bottom:10px;color:var(--ink-2)}
+.hud .live i{width:8px;height:8px;border-radius:50%;background:var(--ink-3);flex:none}
+.hud .live.on{color:var(--pink);border-color:rgba(255,63,208,.5)}
+.hud .live.on i{background:var(--pink);animation:blink 1.3s infinite}
+.hud .ro{right:10px;bottom:10px;color:var(--cyan);font-family:var(--mono);font-weight:500;letter-spacing:0;text-transform:none}
+.hud .nm{left:10px;top:10px;color:var(--ink);max-width:60%;overflow:hidden;text-overflow:ellipsis;letter-spacing:.06em}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+@media (prefers-reduced-motion:reduce){.hud .live.on i{animation:none}.hud{transition:none}}
+.notice{position:absolute;inset:0;display:grid;place-items:center;color:var(--ink-2);text-align:center;padding:28px;font-size:15px;line-height:1.5;z-index:3}
+.notice.hide{display:none}
+.notice .box{max-width:520px}
+.notice .box p{margin:0 0 10px}
+.notice .eye{width:96px;height:56px;margin:0 auto 18px;display:block)}
+.notice .box .btn{pointer-events:auto}
+
+.bar{display:flex;align-items:center;gap:10px;min-width:0;flex-wrap:wrap}
+.now{flex:1 1 0;min-width:60px;display:flex;align-items:center;gap:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:14px;color:var(--ink-2);font-family:var(--mono)}
+.now b{color:var(--ink);font-weight:600;font-family:var(--font);font-size:15px}
+.tag{display:inline-block;font-size:10px;padding:1px 6px;border-radius:2px;border:1px solid var(--line);color:var(--cyan);letter-spacing:.14em;text-transform:uppercase;font-family:var(--font);font-weight:600}
+.stats{display:flex;gap:5px;flex:none}
+.stat{display:flex;flex-direction:column;padding:4px 9px 3px;border:1px solid var(--line);border-radius:3px;background:rgba(60,224,255,.04);min-width:64px}
+.stat b{font-weight:600;font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3);line-height:1.2}
+.stat span{font-family:var(--mono);font-size:13px;color:var(--cyan);white-space:nowrap;line-height:1.3}
+.stat span.dim{color:var(--ink-3)}
+.stat span.ok{color:var(--lime)}
+.stat span.err{color:var(--red)}
+.stat span.warn{color:var(--amber)}
+.controls{display:flex;gap:6px;flex:none}
+
+@media (max-width:980px){
+  .main{grid-template-columns:1fr;grid-template-rows:auto minmax(0,1fr)}
+  .app.nopanel .main{grid-template-rows:0 minmax(0,1fr)}
+  .side{max-height:44vh;border-right:0;border-bottom:1px solid var(--line)}
+  .brand small{display:none}
+  .stats{display:none}
+  .relay .pop{width:min(340px,calc(100vw - 32px))}
+}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <header class="top">
+    <h1 class="brand">NVR<small>The Watcher</small></h1>
+    <button class="btn ghost small" id="btnPanel" type="button" title="Show or hide the side panel (h)">Panel</button>
+    <details class="relay" id="relayBox">
+      <summary><span class="dot" id="relayDot"></span><span id="relayText">Looking for relay</span></summary>
+      <div class="pop">
+        <div class="field">
+          <label for="relayInput">Relay address</label>
+          <input id="relayInput" placeholder="http://127.0.0.1:8080" spellcheck="false">
+        </div>
+        <div class="row" style="align-items:center;gap:10px">
+          <button class="btn small" id="btnRelayCheck" type="button">Check</button>
+          <span id="relayDetail" style="font-size:12.5px;color:var(--ink-2)"></span>
+        </div>
+        <p class="hint">The relay is the optional <code>server.js</code>. It turns RTSP into something the browser can play (needs ffmpeg), signs in to cameras that ask for a password, and gets around CORS.</p>
+      </div>
+    </details>
+  </header>
+
+  <div class="main">
+    <aside class="side">
+      <section>
+        <h2>Open a camera</h2>
+        <div class="field">
+          <label for="url">Stream address</label>
+          <input id="url" placeholder="rtsp://user:pass@192.168.1.64/… or https://…/stream.m3u8" spellcheck="false" autocomplete="off">
+        </div>
+        <div class="row">
+          <div class="field">
+            <label for="type">Kind</label>
+            <select id="type">
+              <option value="auto">Auto-detect</option>
+              <option value="rtsp">RTSP (through relay)</option>
+              <option value="hls">HLS (.m3u8)</option>
+              <option value="mjpeg">MJPEG stream</option>
+              <option value="whep">WebRTC (WHEP)</option>
+              <option value="video">MP4 / WebM</option>
+              <option value="snapshot">JPEG snapshot, refreshed</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="name">Name</label>
+            <input id="name" placeholder="Front door" autocomplete="off">
+          </div>
+        </div>
+        <details class="adv">
+          <summary>Options</summary>
+          <div class="grid2">
+            <div class="field"><label for="optFps">Relay frame rate</label><input id="optFps" type="number" min="1" max="30" value="15"></div>
+            <div class="field"><label for="optWidth">Relay max width</label><input id="optWidth" type="number" min="160" max="3840" step="10" value="1280"></div>
+            <div class="field"><label for="optQ">Relay JPEG quality (2 best, 31 worst)</label><input id="optQ" type="number" min="2" max="31" value="6"></div>
+            <div class="field"><label for="optInterval">Snapshot refresh (ms)</label><input id="optInterval" type="number" min="200" step="100" value="1000"></div>
+            <div class="field"><label for="optRoute">Fetch through relay</label>
+              <select id="optRoute"><option value="auto">Only when needed</option><option value="always">Always</option><option value="never">Never</option></select></div>
+            <div class="field"><label for="optTransport">RTSP transport</label>
+              <select id="optTransport"><option value="tcp">TCP</option><option value="udp">UDP</option></select></div>
+          </div>
+        </details>
+        <div class="row">
+          <button class="btn primary" id="btnPlay" type="button">Watch</button>
+          <button class="btn" id="btnSave" type="button">Save</button>
+          <button class="btn ghost" id="btnClear" type="button" title="Reset every field to its default">Clear all</button>
+        </div>
+        <div class="field" style="margin-top:12px">
+          <label for="presets">Fill in a common address</label>
+          <select id="presets">
+            <option value="">Choose a camera type…</option>
+            <optgroup label="Local cameras (RTSP, needs relay)">
+              <option value="rtsp://user:pass@192.168.1.64:554/Streaming/Channels/101|rtsp|Hikvision">Hikvision main stream</option>
+              <option value="rtsp://user:pass@192.168.1.108:554/cam/realmonitor?channel=1&subtype=0|rtsp|Dahua / Amcrest">Dahua / Amcrest</option>
+              <option value="rtsp://user:pass@192.168.1.100:554/h264Preview_01_main|rtsp|Reolink">Reolink</option>
+              <option value="rtsp://user:pass@192.168.1.90/axis-media/media.amp|rtsp|Axis">Axis</option>
+              <option value="rtsp://user:pass@192.168.1.10:554/live|rtsp|Generic RTSP">Generic RTSP</option>
+            </optgroup>
+            <optgroup label="Local cameras (HTTP)">
+              <option value="http://192.168.1.90/axis-cgi/mjpg/video.cgi|mjpeg|Axis MJPEG">Axis MJPEG</option>
+              <option value="http://192.168.1.80:81/stream|mjpeg|ESP32-CAM">ESP32-CAM stream</option>
+              <option value="http://192.168.1.50:88/cgi-bin/CGIStream.cgi?cmd=GetMJStream&usr=user&pwd=pass|mjpeg|Foscam">Foscam MJPEG</option>
+              <option value="http://192.168.1.90/axis-cgi/jpg/image.cgi|snapshot|Axis snapshot">Axis JPEG snapshot</option>
+            </optgroup>
+            <optgroup label="Gateways">
+              <option value="http://127.0.0.1:1984/api/webrtc?src=camera1|whep|go2rtc camera1">go2rtc (WebRTC)</option>
+              <option value="http://127.0.0.1:8889/mystream/whep|whep|MediaMTX mystream">MediaMTX (WebRTC)</option>
+              <option value="http://127.0.0.1:8888/mystream/index.m3u8|hls|MediaMTX HLS">MediaMTX (HLS)</option>
+            </optgroup>
+            <optgroup label="Test streams (not cameras)">
+              <option value="https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8|hls|Mux test stream">HLS test stream</option>
+              <option value="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4|video|Big Buck Bunny">MP4 test file</option>
+            </optgroup>
+          </select>
+        </div>
+      </section>
+
+      <section>
+        <h2>Saved cameras</h2>
+        <ul class="list" id="camList"></ul>
+      </section>
+    </aside>
+
+    <main class="view">
+      <div class="stage" id="stage">
+        <video id="video" autoplay muted playsinline></video>
+        <img id="img" alt="" draggable="false">
+        <div class="hud">
+          <span class="c c1"></span><span class="c c2"></span><span class="c c3"></span><span class="c c4"></span>
+          <div class="pill nm" id="hudName"></div>
+          <div class="pill live" id="hudLive"><i></i><span>Idle</span></div>
+          <div class="pill ro" id="hudRo"></div>
+        </div>
+        <div class="notice" id="notice"><div class="box"></div></div>
+      </div>
+
+      <div class="bar">
+        <div class="now" id="now">Nothing playing</div>
+        <div class="stats" id="stats"></div>
+        <div class="controls">
+          <button class="btn pink" id="btnSaveNow" type="button" hidden>Save camera</button>
+          <button class="btn" id="btnMute" type="button" hidden>Unmute</button>
+          <button class="btn" id="btnShot" type="button" disabled>Snapshot</button>
+          <button class="btn" id="btnFull" type="button" disabled>Fullscreen</button>
+          <button class="btn" id="btnStop" type="button" disabled>Stop</button>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script>
+(() => {
+'use strict';
+const $ = s => document.querySelector(s);
+const HLS_SRCS = [
+  'https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.7.3/hls.min.js',
+  'https://cdn.jsdelivr.net/npm/hls.js@1/dist/hls.min.js',
+  'https://unpkg.com/hls.js@1/dist/hls.min.js'
+];
+
+// ---------- persistence (falls back to memory where storage is unavailable) ----------
+const mem = {};
+const store = {
+  get(k, d) { try { const v = localStorage.getItem('watcher:' + k); return v === null ? d : JSON.parse(v); } catch { return k in mem ? mem[k] : d; } },
+  set(k, v) { try { localStorage.setItem('watcher:' + k, JSON.stringify(v)); } catch { mem[k] = v; } }
+};
+// carry over cameras saved by the previous version of this app
+try {
+  if (localStorage.getItem('watcher:cameras') === null && localStorage.getItem('periscope:cameras') !== null) {
+    const old = JSON.parse(localStorage.getItem('periscope:cameras')) || [];
+    store.set('cameras', old.filter(c => c && c.url));
+  }
+} catch { /* storage unavailable */ }
+const settings = Object.assign({ relayUrl: '', panel: true }, store.get('settings', {}));
+let cameras = store.get('cameras', []);
+
+// ---------- small helpers ----------
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+function fmtBytes(n) { if (n == null) return null; const u = ['B', 'KB', 'MB', 'GB']; let i = 0; while (n >= 1024 && i < u.length - 1) { n /= 1024; i++; } return (i === 0 ? n : n.toFixed(n < 10 ? 2 : 1)) + ' ' + u[i]; }
+function fmtKbps(k) { if (k == null) return null; return k >= 1000 ? (k / 1000).toFixed(2) + ' Mb/s' : Math.round(k) + ' kb/s'; }
+function fmtDur(s) { s = Math.max(0, Math.floor(s)); const h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60), x = s % 60; return (h ? h + ':' : '') + String(m).padStart(h ? 2 : 1, '0') + ':' + String(x).padStart(2, '0'); }
+function maskUrl(u) { try { const x = new URL(u); if (x.username || x.password) { x.password = x.password ? 'xxxx' : ''; } return x.href; } catch { return u; } }
+function hasCreds(u) { try { const x = new URL(u); return !!(x.username || x.password); } catch { return false; } }
+function bust(u) { return u + (u.includes('?') ? '&' : '?') + '_=' + Date.now(); }
+function loadScript(urls) {
+  if (window.Hls) return Promise.resolve(true);
+  return urls.reduce((p, u) => p.then(ok => ok || new Promise(res => {
+    const s = document.createElement('script'); s.src = u;
+    s.onload = () => res(!!window.Hls); s.onerror = () => res(false);
+    document.head.appendChild(s);
+  })), Promise.resolve(false));
+}
+function newStats(protocol) {
+  return { protocol, state: 'connecting', frames: 0, bytes: 0, dropped: 0, width: 0, height: 0, errors: 0, reconnects: 0, lastError: '', note: '', codec: null, buffer: null, latency: null, fps: undefined, bytesKnown: true, fpsKnown: true, extra: {} };
+}
+
+// ---------- stream kind detection ----------
+function detectType(url) {
+  const l = url.trim().toLowerCase();
+  if (/^rtsps?:\/\//.test(l)) return 'rtsp';
+  if (!/^https?:\/\//.test(l)) return 'invalid';
+  if (/\.m3u8(\?|#|$)/.test(l)) return 'hls';
+  if (/\/whep(\?|\/|$)|api\/webrtc|\/whep\b/.test(l)) return 'whep';
+  if (/\.(mp4|m4v|webm|ogv|ogg|mov)(\?|#|$)/.test(l)) return 'video';
+  if (/mjpe?g|mjpg|x-mixed|videostream\.cgi|video\.cgi|action=stream|nphmotionjpeg|\/stream(\?|$)|faststream|getmjstream/.test(l)) return 'mjpeg';
+  if (/\.(jpe?g|png|gif|webp)(\?|#|$)|snapshot|snap\.cgi|image\.cgi|action=snapshot|\/jpg\/|\/capture(\?|$)|preview\.webp|preview\.jpg|\/frame(\?|$)/.test(l)) return 'snapshot';
+  return 'guess';
+}
+async function probeType(url) {
+  const ac = new AbortController(); const t = setTimeout(() => ac.abort(), 5000);
+  try {
+    const res = await fetch(url, { signal: ac.signal, cache: 'no-store' });
+    const ct = (res.headers.get('content-type') || '').toLowerCase();
+    ac.abort();
+    if (ct.includes('multipart/x-mixed-replace')) return 'mjpeg';
+    if (ct.includes('mpegurl')) return 'hls';
+    if (ct.startsWith('image/')) return 'snapshot';
+    if (ct.startsWith('video/') || ct.includes('mp4') || ct.includes('webm')) return 'video';
+    if (ct.includes('text/html')) return 'html';
+    return null;
+  } catch { return null; } finally { clearTimeout(t); }
+}
+
+// ---------- relay discovery ----------
+const relay = { base: null, ok: false, ffmpeg: false, info: null };
+async function checkRelay(base) {
+  const ac = new AbortController(); const t = setTimeout(() => ac.abort(), 2000);
+  try {
+    const r = await fetch(base.replace(/\/$/, '') + '/api/health', { signal: ac.signal, cache: 'no-store' });
+    const j = await r.json();
+    return j && j.ok ? j : null;
+  } catch { return null; } finally { clearTimeout(t); }
+}
+async function detectRelay() {
+  const cands = [];
+  if (settings.relayUrl) cands.push(settings.relayUrl);
+  if (/^https?:$/.test(location.protocol)) cands.push(location.origin);
+  cands.push('http://127.0.0.1:8080', 'http://localhost:8080');
+  for (const c of [...new Set(cands)]) {
+    const info = await checkRelay(c);
+    if (info) { relay.base = c.replace(/\/$/, ''); relay.ok = true; relay.ffmpeg = !!info.ffmpeg; relay.info = info; renderRelay(); return; }
+  }
+  relay.base = null; relay.ok = false; relay.ffmpeg = false; relay.info = null; renderRelay();
+}
+function renderRelay() {
+  const dot = $('#relayDot'), txt = $('#relayText'), det = $('#relayDetail');
+  if (relay.ok) {
+    dot.className = 'dot ' + (relay.ffmpeg ? 'ok' : 'bad');
+    txt.textContent = relay.ffmpeg ? 'Relay online, RTSP ready' : 'Relay online, no ffmpeg';
+    det.textContent = relay.base + (relay.info.ffmpegVersion ? ' (' + relay.info.ffmpegVersion.replace(/ copyright.*$/i, '') + ')' : ' (install ffmpeg to enable RTSP)');
+  } else {
+    dot.className = 'dot'; txt.textContent = 'No relay, RTSP off';
+    det.textContent = 'Run "node server.js" and check again.';
+  }
+}
+const relayUrl = p => relay.base + p;
+const proxied = u => relayUrl('/api/proxy?url=' + encodeURIComponent(u));
+
+// ---------- JPEG frame scanner (works for multipart MJPEG and raw concatenated JPEGs) ----------
+function findSOI(b, from) {
+  for (let i = from; i + 2 < b.length; i++) if (b[i] === 0xff && b[i + 1] === 0xd8 && b[i + 2] === 0xff) return i;
+  return -1;
+}
+// returns index past EOI, -1 if the frame is incomplete, -2 if the data is corrupt
+function jpegEnd(b, start) {
+  const n = b.length; let i = start + 2;
+  while (i + 1 < n) {
+    if (b[i] !== 0xff) { i++; continue; }
+    const m = b[i + 1];
+    if (m === 0xff) { i++; continue; }
+    if (m === 0xd9) return i + 2;
+    if (m === 0xd8 || m === 0x01 || (m >= 0xd0 && m <= 0xd7)) { i += 2; continue; }
+    if (i + 3 >= n) return -1;
+    const len = (b[i + 2] << 8) | b[i + 3];
+    if (len < 2) return -2;
+    i += 2 + len;
+    if (m === 0xda) {
+      while (i + 1 < n) {
+        if (b[i] === 0xff) {
+          const x = b[i + 1];
+          if (x === 0x00 || (x >= 0xd0 && x <= 0xd7)) { i += 2; continue; }
+          if (x === 0xff) { i++; continue; }
+          break;
+        }
+        i++;
+      }
+    }
+  }
+  return -1;
+}
+function concatBytes(a, b) { if (!a.length) return b; const c = new Uint8Array(a.length + b.length); c.set(a); c.set(b, a.length); return c; }
+// Reads a stream and calls onFrame(bytes) for every JPEG. Resolves 'single' if the URL was a plain JPEG, 'ended' when the stream closes.
+async function readMjpeg(url, signal, onFrame, onOpen) {
+  const res = await fetch(url, { signal, cache: 'no-store' });
+  if (!res.ok) throw new Error('HTTP ' + res.status + (res.statusText ? ' ' + res.statusText : ''));
+  const ct = (res.headers.get('content-type') || '').toLowerCase();
+  onOpen && onOpen(ct);
+  if (ct.startsWith('text/html')) throw new Error('The address returned a web page instead of a stream');
+  if (ct.includes('mpegurl')) throw Object.assign(new Error('This is an HLS playlist'), { suggest: 'hls' });
+  if (ct.startsWith('video/')) throw Object.assign(new Error('This is a video file'), { suggest: 'video' });
+  if (ct.startsWith('image/') && !ct.includes('multipart')) {
+    const buf = new Uint8Array(await res.arrayBuffer()); onFrame(buf); return 'single';
+  }
+  if (!res.body) throw new Error('Streaming responses are not supported in this browser');
+  const reader = res.body.getReader();
+  let buf = new Uint8Array(0);
+  for (;;) {
+    const { value, done } = await reader.read();
+    if (done) return 'ended';
+    buf = concatBytes(buf, value);
+    let pos = 0;
+    for (;;) {
+      const soi = findSOI(buf, pos);
+      if (soi < 0) { pos = Math.max(pos, buf.length - 2); break; }
+      const end = jpegEnd(buf, soi);
+      if (end === -1) { pos = soi; break; }
+      if (end === -2) { pos = soi + 2; continue; }
+      onFrame(buf.subarray(soi, end)); pos = end;
+    }
+    if (pos > 0) buf = buf.slice(pos);
+    if (buf.length > 32 * 1024 * 1024) buf = new Uint8Array(0);
+  }
+}
+
+// ---------- stage elements ----------
+const stage = $('#stage'), video = $('#video'), img = $('#img');
+function showVideo() { stage.classList.add('mode-video'); stage.classList.remove('mode-img'); }
+function showImg() { stage.classList.add('mode-img'); stage.classList.remove('mode-video'); }
+function resetVideo() { try { video.pause(); } catch {} video.removeAttribute('src'); video.srcObject = null; try { video.load(); } catch {} }
+const vfc = { frames: 0, supported: 'requestVideoFrameCallback' in HTMLVideoElement.prototype, handle: 0, active: false };
+function startVfc() {
+  vfc.frames = 0; vfc.active = true;
+  if (!vfc.supported) return;
+  const cb = () => { if (!vfc.active) return; vfc.frames++; vfc.handle = video.requestVideoFrameCallback(cb); };
+  vfc.handle = video.requestVideoFrameCallback(cb);
+}
+function stopVfc() { vfc.active = false; if (vfc.supported && vfc.handle) { try { video.cancelVideoFrameCallback(vfc.handle); } catch {} } }
+function videoStats(st) {
+  st.width = video.videoWidth; st.height = video.videoHeight;
+  const q = video.getVideoPlaybackQuality ? video.getVideoPlaybackQuality() : null;
+  st.frames = vfc.supported ? vfc.frames : (q ? q.totalVideoFrames : 0);
+  if (q) st.dropped = q.droppedVideoFrames;
+  try { const b = video.buffered; st.buffer = b.length ? Math.max(0, b.end(b.length - 1) - video.currentTime) : null; } catch { st.buffer = null; }
+  if (st.state !== 'error' && st.state !== 'connecting' && st.state !== 'loading player') {
+    st.state = (video.readyState >= 3 && !video.paused) ? (st.isVod ? 'playing' : 'live') : 'buffering';
+  }
+}
+function routeThroughRelay(url, route) {
+  if (!relay.ok || route === 'never') return false;
+  if (route === 'always') return true;
+  return hasCreds(url);
+}
+
+// ---------- players ----------
+function startMjpeg(source, { viaRelay = false, label = 'MJPEG' } = {}) {
+  const st = newStats(label);
+  const ac = new AbortController();
+  let stopped = false, pending = false, lastUrl = null;
+  showImg();
+  const paint = bytes => {
+    st.bytes += bytes.length;
+    if (pending) { st.dropped++; return; }
+    pending = true;
+    const u = URL.createObjectURL(new Blob([bytes], { type: 'image/jpeg' }));
+    img.onload = () => { pending = false; if (lastUrl) URL.revokeObjectURL(lastUrl); lastUrl = u; st.frames++; st.width = img.naturalWidth; st.height = img.naturalHeight; st.state = 'live'; if (st.frames === 1) st.lastError = ''; };
+    img.onerror = () => { pending = false; URL.revokeObjectURL(u); st.errors++; st.lastError = 'A frame failed to decode'; };
+    img.src = u;
+  };
+  (async () => {
+    let backoff = 1000;
+    const url = source.url;
+    let useProxy = !viaRelay && routeThroughRelay(url, source.opts?.route);
+    if (!viaRelay && hasCreds(url) && !relay.ok) st.note = 'Browsers refuse addresses with a password in them. Start the relay so it can sign in for you.';
+    while (!stopped) {
+      const target = viaRelay ? url : (useProxy ? proxied(url) : url);
+      st.protocol = viaRelay ? label : (useProxy ? label + ' through relay' : label);
+      if (!st.frames) st.state = 'connecting';
+      try {
+        const r = await readMjpeg(target, ac.signal, paint, ct => { st.extra['Content type'] = ct.split(';')[0].trim(); });
+        if (stopped) break;
+        if (r === 'single') { st.protocol = 'JPEG snapshot (polled)'; await sleep(source.opts?.intervalMs || 1000); backoff = 1000; continue; }
+        st.lastError = 'The source closed the stream';
+      } catch (e) {
+        if (stopped || e.name === 'AbortError') break;
+        st.errors++; st.lastError = e.message;
+        if (e.suggest) { st.state = 'error'; st.suggest = e.suggest; return; }
+        if (st.frames === 0 && !viaRelay && e instanceof TypeError) {
+          if (!useProxy && relay.ok && source.opts?.route !== 'never') { useProxy = true; st.note = 'Direct fetch was blocked (usually CORS); retrying through the relay.'; continue; }
+          // Last resort: let the browser render it directly. No byte counter in this mode.
+          st.protocol = label + ' (direct, limited stats)'; st.bytesKnown = false; st.fpsKnown = false;
+          st.note = 'The browser would not let the page read this stream (CORS), so it is shown directly. Start the relay for full stats.';
+          img.onload = () => { st.frames++; st.width = img.naturalWidth; st.height = img.naturalHeight; st.state = 'live'; };
+          img.onerror = () => { st.errors++; st.lastError = 'The browser could not load the stream'; st.state = 'error'; };
+          img.src = url; return;
+        }
+      }
+      st.reconnects++; st.state = 'reconnecting';
+      await sleep(backoff); backoff = Math.min(backoff * 2, 15000);
+    }
+  })();
+  return {
+    kind: 'mjpeg', stats: () => st,
+    stop() { stopped = true; ac.abort(); img.onload = img.onerror = null; img.removeAttribute('src'); if (lastUrl) URL.revokeObjectURL(lastUrl); }
+  };
+}
+
+function startSnapshot(source, { intervalMs = 1000, label = 'JPEG snapshot', cacheBust = true, onHeaders = null, refreshUrl = null } = {}) {
+  const st = newStats(label);
+  const ac = new AbortController();
+  let stopped = false, lastUrl = null, direct = false, url = source.url;
+  st.extra['Refresh every'] = (intervalMs / 1000).toFixed(intervalMs % 1000 ? 1 : 0) + ' s';
+  showImg();
+  const showBlob = blob => new Promise((resolve, reject) => {
+    const u = URL.createObjectURL(blob);
+    img.onload = () => { if (lastUrl) URL.revokeObjectURL(lastUrl); lastUrl = u; resolve(); };
+    img.onerror = () => { URL.revokeObjectURL(u); reject(new Error('Image failed to decode')); };
+    img.src = u;
+  });
+  const showDirect = u => new Promise((resolve, reject) => { img.onload = resolve; img.onerror = () => reject(new Error('The browser could not load the image')); img.src = u; });
+  (async () => {
+    let useProxy = routeThroughRelay(url, source.opts?.route);
+    if (hasCreds(url) && !relay.ok) st.note = 'Browsers refuse addresses with a password in them. Start the relay so it can sign in for you.';
+    while (!stopped) {
+      const t0 = performance.now();
+      const target = useProxy ? proxied(url) : url;
+      const fetchUrl = cacheBust ? bust(target) : target;
+      st.protocol = direct ? label + ' (direct, limited stats)' : (useProxy ? label + ' through relay' : label);
+      try {
+        if (direct) {
+          await showDirect(fetchUrl);
+          st.frames++; st.width = img.naturalWidth; st.height = img.naturalHeight; st.state = 'live';
+        } else {
+          const res = await fetch(fetchUrl, { signal: ac.signal, cache: 'no-store' });
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          onHeaders && onHeaders(res.headers, st);
+          const blob = await res.blob();
+          st.bytes += blob.size;
+          await showBlob(blob);
+          st.frames++; st.width = img.naturalWidth; st.height = img.naturalHeight; st.state = 'live'; if (st.frames === 1) st.lastError = '';
+          st.extra['Last fetch'] = Math.round(performance.now() - t0) + ' ms';
+        }
+      } catch (e) {
+        if (stopped || e.name === 'AbortError') break;
+        st.errors++; st.lastError = e.message;
+        if (!direct && st.frames === 0 && e instanceof TypeError) {
+          if (!useProxy && relay.ok && source.opts?.route !== 'never') { useProxy = true; st.note = 'Direct fetch was blocked (usually CORS); retrying through the relay.'; continue; }
+          direct = true; st.bytesKnown = false; st.note = 'The browser would not let the page read this image (CORS), so it is shown directly. Start the relay for full stats.'; continue;
+        }
+        if (refreshUrl && /^HTTP (4|5)/.test(e.message)) { const nu = await refreshUrl().catch(() => null); if (nu) url = nu; }
+        st.state = st.frames ? 'stale' : 'error';
+      }
+      await sleep(Math.max(intervalMs, 200));
+    }
+  })();
+  return {
+    kind: 'snapshot', stats: () => st,
+    setUrl(u) { url = u; },
+    stop() { stopped = true; ac.abort(); img.onload = img.onerror = null; img.removeAttribute('src'); if (lastUrl) URL.revokeObjectURL(lastUrl); }
+  };
+}
+
+async function startHls(source) {
+  const st = newStats('HLS'); st.state = 'loading player';
+  let hls = null, stopped = false;
+  showVideo(); startVfc();
+  const handle = {
+    kind: 'hls',
+    stats() {
+      videoStats(st);
+      if (hls) {
+        if (hls.bandwidthEstimate > 0) st.extra['Bandwidth estimate'] = fmtKbps(hls.bandwidthEstimate / 1000);
+        if (typeof hls.latency === 'number' && hls.latency > 0 && !st.isVod) st.latency = hls.latency;
+      }
+      return st;
+    },
+    stop() { stopped = true; stopVfc(); if (hls) { try { hls.destroy(); } catch {} hls = null; } resetVideo(); }
+  };
+  (async () => {
+    const ok = await loadScript(HLS_SRCS);
+    if (stopped) return;
+    if (ok && window.Hls && Hls.isSupported()) {
+      hls = new Hls({ lowLatencyMode: true, enableWorker: true, backBufferLength: 30 });
+      hls.on(Hls.Events.FRAG_LOADED, (_, d) => { const s = d.frag && d.frag.stats; if (s) st.bytes += s.total || s.loaded || 0; st.extra['Segments'] = (st.extra['Segments'] || 0) + 1; });
+      hls.on(Hls.Events.MANIFEST_PARSED, (_, d) => { st.extra['Variants'] = d.levels.length; st.state = 'buffering'; });
+      hls.on(Hls.Events.LEVEL_LOADED, (_, d) => { const live = !!(d.details && d.details.live); st.isVod = !live; st.extra['Playlist'] = live ? 'live' : 'on demand'; if (d.details && d.details.targetduration) st.extra['Segment length'] = d.details.targetduration + ' s'; });
+      hls.on(Hls.Events.LEVEL_SWITCHED, (_, d) => { const l = hls.levels[d.level]; if (l) { st.extra['Variant'] = (l.width && l.height ? l.width + '×' + l.height + ', ' : '') + fmtKbps(l.bitrate / 1000); st.codec = [l.videoCodec, l.audioCodec].filter(Boolean).join(' + ') || null; } });
+      hls.on(Hls.Events.ERROR, (_, d) => {
+        if (!d.fatal) return;
+        st.errors++; st.lastError = d.details || d.type;
+        if (d.type === Hls.ErrorTypes.NETWORK_ERROR) { st.reconnects++; st.state = 'reconnecting'; setTimeout(() => { if (hls) hls.startLoad(); }, 1500); }
+        else if (d.type === Hls.ErrorTypes.MEDIA_ERROR) { st.reconnects++; hls.recoverMediaError(); }
+        else st.state = 'error';
+      });
+      hls.loadSource(source.url); hls.attachMedia(video);
+      st.protocol = 'HLS (hls.js)';
+    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+      st.protocol = 'HLS (native)'; st.bytesKnown = false; video.src = source.url; st.state = 'buffering';
+    } else {
+      st.state = 'error'; st.errors++; st.lastError = 'The HLS player script could not load and this browser cannot play HLS natively'; return;
+    }
+    video.onerror = () => { st.errors++; st.lastError = (video.error && video.error.message) || 'Playback error'; st.state = 'error'; };
+    video.play().catch(() => {});
+  })();
+  return handle;
+}
+
+async function startWhep(source, { headers = {}, label = 'WebRTC (WHEP)' } = {}) {
+  const st = newStats(label);
+  let pc = null, resource = null, stopped = false;
+  showVideo(); startVfc();
+  const waitIce = (pc, ms) => new Promise(res => { if (pc.iceGatheringState === 'complete') return res(); const t = setTimeout(res, ms); pc.addEventListener('icegatheringstatechange', () => { if (pc.iceGatheringState === 'complete') { clearTimeout(t); res(); } }); });
+  (async () => {
+    try {
+      pc = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] });
+      pc.addTransceiver('video', { direction: 'recvonly' });
+      pc.addTransceiver('audio', { direction: 'recvonly' });
+      pc.ontrack = e => { if (e.streams[0] && video.srcObject !== e.streams[0]) { video.srcObject = e.streams[0]; video.play().catch(() => {}); } };
+      pc.onconnectionstatechange = () => {
+        st.extra['Peer connection'] = pc.connectionState;
+        if (pc.connectionState === 'failed' || pc.connectionState === 'disconnected') { st.errors++; st.lastError = 'Peer connection ' + pc.connectionState; st.state = 'error'; }
+      };
+      const offer = await pc.createOffer();
+      await pc.setLocalDescription(offer);
+      await waitIce(pc, 1500);
+      if (stopped) return;
+      const res = await fetch(source.url, { method: 'POST', headers: Object.assign({ 'Content-Type': 'application/sdp' }, headers), body: pc.localDescription.sdp });
+      if (!res.ok) throw new Error('The WHEP endpoint rejected the offer (HTTP ' + res.status + ')');
+      resource = res.headers.get('Location');
+      if (resource && !/^https?:/i.test(resource)) resource = new URL(resource, source.url).href;
+      const sdp = await res.text();
+      await pc.setRemoteDescription({ type: 'answer', sdp });
+      st.state = 'buffering';
+      $('#btnMute').hidden = false;
+    } catch (e) {
+      if (stopped) return;
+      st.errors++; st.lastError = e.message; st.state = 'error';
+    }
+  })();
+  return {
+    kind: 'whep',
+    async stats() {
+      videoStats(st);
+      if (pc && pc.connectionState === 'connected') {
+        const r = await pc.getStats();
+        const codecs = {}; let vbytes = 0, abytes = 0;
+        r.forEach(s => { if (s.type === 'codec') codecs[s.id] = s.mimeType; });
+        r.forEach(s => {
+          if (s.type === 'inbound-rtp' && s.kind === 'video') {
+            vbytes = s.bytesReceived || 0;
+            if (typeof s.framesPerSecond === 'number') st.fps = s.framesPerSecond;
+            if (s.frameWidth) { st.width = s.frameWidth; st.height = s.frameHeight; }
+            if (typeof s.framesDecoded === 'number') st.frames = s.framesDecoded;
+            if (typeof s.framesDropped === 'number') st.dropped = s.framesDropped;
+            if (typeof s.packetsLost === 'number') st.extra['Packets lost'] = s.packetsLost;
+            if (typeof s.jitter === 'number') st.extra['Jitter'] = (s.jitter * 1000).toFixed(1) + ' ms';
+            if (s.codecId && codecs[s.codecId]) st.codec = codecs[s.codecId].replace(/^video\//, '');
+          }
+          if (s.type === 'inbound-rtp' && s.kind === 'audio') abytes = s.bytesReceived || 0;
+          if (s.type === 'candidate-pair' && s.state === 'succeeded' && typeof s.currentRoundTripTime === 'number') st.latency = s.currentRoundTripTime;
+        });
+        st.bytes = vbytes + abytes;
+      }
+      return st;
+    },
+    stop() {
+      stopped = true; stopVfc();
+      if (resource) fetch(resource, { method: 'DELETE' }).catch(() => {});
+      if (pc) { try { pc.close(); } catch {} pc = null; }
+      resetVideo(); $('#btnMute').hidden = true;
+    }
+  };
+}
+
+function startVideoFile(source) {
+  const st = newStats('Direct video'); st.isVod = true; st.bytesKnown = false;
+  showVideo(); startVfc();
+  video.src = source.url; st.state = 'buffering';
+  video.onerror = () => { st.errors++; st.lastError = (video.error && video.error.message) || 'The browser could not play this file'; st.state = 'error'; };
+  video.play().catch(() => {});
+  $('#btnMute').hidden = false;
+  return {
+    kind: 'video',
+    stats() {
+      videoStats(st);
+      if (typeof video.webkitVideoDecodedByteCount === 'number') { st.bytes = video.webkitVideoDecodedByteCount + (video.webkitAudioDecodedByteCount || 0); st.bytesKnown = true; }
+      if (video.duration && isFinite(video.duration)) st.extra['Position'] = fmtDur(video.currentTime) + ' / ' + fmtDur(video.duration);
+      return st;
+    },
+    stop() { stopVfc(); video.onerror = null; resetVideo(); $('#btnMute').hidden = true; }
+  };
+}
+
+function startRtsp(source) {
+  if (!relay.ok || !relay.ffmpeg) {
+    const st = newStats('RTSP'); st.state = 'error'; st.bytesKnown = false; st.fpsKnown = false;
+    st.lastError = relay.ok ? 'The relay is running but ffmpeg is not installed on it' : 'No relay is running';
+    st.note = 'Browsers cannot play RTSP directly. Start the relay (node server.js, needs ffmpeg) and press Watch again, or point The Watcher at a WebRTC or HLS gateway such as go2rtc or MediaMTX.';
+    showImg();
+    return { kind: 'rtsp', stats: () => st, stop() {} };
+  }
+  const o = source.opts || {};
+  const q = new URLSearchParams({ url: source.url, fps: o.fps || 15, width: o.width || 1280, quality: o.quality || 6, transport: o.transport || 'tcp' });
+  const inner = startMjpeg({ url: relayUrl('/api/rtsp?' + q), opts: {} }, { viaRelay: true, label: 'RTSP via relay (MJPEG)' });
+  let server = null;
+  const poll = setInterval(async () => {
+    try { server = await (await fetch(relayUrl('/api/rtsp/stats?' + q), { cache: 'no-store' })).json(); } catch { server = null; }
+  }, 2000);
+  return {
+    kind: 'rtsp',
+    stats() {
+      const st = inner.stats();
+      if (server && server.state) {
+        st.extra['Relay encoder'] = server.state + (server.fps != null ? ', ' + server.fps.toFixed(1) + ' fps out' : '');
+        if (server.width) st.extra['Relay output'] = server.width + '×' + server.height;
+        if (server.clients != null) st.extra['Relay viewers'] = server.clients;
+        if (server.restarts) st.extra['Relay restarts'] = server.restarts;
+        if (server.lastError) st.extra['ffmpeg says'] = server.lastError;
+        if (server.state === 'error' && st.state !== 'live') { st.state = 'error'; st.lastError = server.lastError || st.lastError; }
+      }
+      return st;
+    },
+    stop() { clearInterval(poll); inner.stop(); }
+  };
+}
+
+// ---------- controller ----------
+let current = null, playToken = 0, ticker = null;
+const EYE = '<svg class="eye" viewBox="0 0 96 56" fill="none" stroke="#3ce0ff" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 28C18 8 34 2 48 2s30 6 44 26C78 48 62 54 48 54S18 48 4 28Z"/><circle cx="48" cy="28" r="12"/><circle cx="48" cy="28" r="4" fill="#ff3fd0" stroke="none"/><path d="M12 28h6M78 28h6" opacity=".6"/></svg>';
+const IDLE = EYE + '<p>Paste a camera address in the panel or pick a saved camera.</p>';
+function notice(html) { const n = $('#notice'); n.classList.remove('hide'); n.innerHTML = '<div class="box">' + html + '</div>'; }
+function hideNotice() { $('#notice').classList.add('hide'); }
+function setControls(on) { $('#btnStop').disabled = !on; $('#btnFull').disabled = !on; $('#btnShot').disabled = !on; }
+
+async function play(source) {
+  stop();
+  const token = ++playToken;
+  const src = Object.assign({}, source);
+  src.opts = Object.assign({}, src.opts || {});
+  $('#btnSaveNow').hidden = !!cameras.find(c => sameCamera(c, src));
+  renderNow(src); markActive(src);
+  notice('<p>Connecting to ' + esc(src.name || maskUrl(src.url)) + '.</p>');
+  setControls(true); stage.classList.add('armed'); $('#hudName').textContent = src.name || '';
+  let type = src.type && src.type !== 'auto' ? src.type : detectType(src.url || '');
+  if (type === 'invalid') { notice('<p>That does not look like a camera address. It should start with rtsp://, http:// or https://.</p>'); setControls(false); return; }
+  if (type === 'guess') {
+    notice('<p>Checking what kind of stream this is.</p>');
+    type = await probeType(src.url);
+    if (token !== playToken) return;
+    if (!type && relay.ok && src.opts.route !== 'never') { type = await probeType(proxied(src.url)); if (token !== playToken) return; }
+    if (type === 'html') { notice('<p>That address returns a web page, not a video stream.</p><p>Open the page and look for the camera\u2019s direct stream link, usually ending in .m3u8, .mjpg, or a .cgi path. Then paste that instead.</p>'); setControls(false); return; }
+    type = type || 'mjpeg';
+  }
+  if (location.protocol === 'https:' && /^http:/i.test(src.url || '')) src.mixed = true;
+  src.resolvedType = type;
+  let player;
+  try {
+    switch (type) {
+      case 'rtsp': player = startRtsp(src); break;
+      case 'hls': player = await startHls(src); break;
+      case 'whep': player = await startWhep(src); break;
+      case 'video': player = startVideoFile(src); break;
+      case 'snapshot': player = startSnapshot(src, { intervalMs: src.opts.intervalMs || 1000 }); break;
+      default: player = startMjpeg(src);
+    }
+  } catch (e) {
+    if (token !== playToken) return;
+    notice('<p>Could not start: ' + esc(e.message) + '</p>'); setControls(false); return;
+  }
+  if (token !== playToken) { player.stop(); return; }
+  current = { player, source: src, startedAt: Date.now(), prev: null, token };
+  renderNow(src);
+  startTicker();
+}
+function stop() {
+  playToken++;
+  if (current) { try { current.player.stop(); } catch {} current = null; }
+  stopTicker();
+  stage.classList.remove('armed', 'mode-img', 'mode-video');
+  $('#hudLive').className = 'pill live'; $('#hudLive').querySelector('span').textContent = 'Idle'; $('#hudRo').textContent = '';
+  $('#btnMute').hidden = true; $('#btnSaveNow').hidden = true;
+  setControls(false);
+  $('#now').textContent = 'Nothing playing';
+  markActive(null);
+  notice(IDLE);
+  renderStats(null);
+}
+
+function startTicker() { stopTicker(); ticker = setInterval(tick, 1000); tick(); }
+function stopTicker() { if (ticker) clearInterval(ticker); ticker = null; }
+async function tick() {
+  const cur = current; if (!cur) return;
+  let st;
+  try { st = await cur.player.stats(); } catch (e) { return; }
+  if (current !== cur) return;
+  const now = performance.now();
+  let kbps = null, fps = null;
+  if (cur.prev) {
+    const dt = (now - cur.prev.t) / 1000;
+    if (dt > 0) { kbps = (st.bytes - cur.prev.bytes) * 8 / 1000 / dt; fps = (st.frames - cur.prev.frames) / dt; }
+  }
+  cur.prev = { t: now, bytes: st.bytes, frames: st.frames };
+  if (typeof st.fps === 'number') fps = st.fps;
+  if (st.fpsKnown === false) fps = null;
+  if (st.bytesKnown === false) kbps = null;
+  if (cur.source.resolvedType === 'snapshot' || st.protocol.startsWith('JPEG snapshot')) fps = null; // polled images have a refresh interval, not a frame rate
+  if (st.suggest && cur.source.type === 'auto' && !cur.retried) {
+    cur.retried = true; const s = Object.assign({}, cur.source, { type: st.suggest }); play(s); return;
+  }
+  const d = { kbps, fps, uptime: (Date.now() - cur.startedAt) / 1000 };
+  renderStats(st, d);
+  renderHud(st, d);
+  if (st.state === 'error' && !st.frames) {
+    notice('<p>' + esc(st.lastError || 'Something went wrong') + '</p>' + (st.note ? '<p>' + linkify(esc(st.note)) + '</p>' : '') + (cur.source.mixed ? '<p>This page is on https, so the browser blocks plain http streams. Open The Watcher over http (the relay serves it that way) or use an https stream.</p>' : ''));
+  } else if (st.frames > 0 || st.state === 'live' || st.state === 'playing') hideNotice();
+}
+function linkify(s) { return s.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>'); }
+
+// ---------- rendering ----------
+const stateLabel = { connecting: 'Connecting', live: 'Live', playing: 'Playing', buffering: 'Buffering', reconnecting: 'Reconnecting', error: 'Error', stale: 'Stale', 'loading player': 'Loading' };
+function renderStats(st, d) {
+  const el = $('#stats');
+  const chip = (k, v, cls) => '<div class="stat"><b>' + k + '</b><span class="' + (v == null ? 'dim' : (cls || '')) + '">' + (v == null ? '--' : esc(v)) + '</span></div>';
+  if (!st) { el.innerHTML = chip('State', 'Idle', 'dim') + chip('Resolution') + chip('FPS') + chip('Bitrate') + chip('Uptime'); return; }
+  const stateCls = st.state === 'error' ? 'err' : (st.state === 'live' || st.state === 'playing') ? 'ok' : 'warn';
+  el.innerHTML =
+    chip('State', stateLabel[st.state] || st.state, stateCls) +
+    chip('Resolution', st.width ? st.width + '\u00d7' + st.height : null) +
+    chip('FPS', d.fps == null ? null : d.fps.toFixed(1)) +
+    chip('Bitrate', d.kbps == null ? null : fmtKbps(d.kbps)) +
+    chip('Uptime', fmtDur(d.uptime));
+}
+function renderHud(st, d) {
+  const live = $('#hudLive');
+  const on = st.state === 'live' || st.state === 'playing';
+  live.className = 'pill live' + (on ? ' on' : '');
+  live.querySelector('span').textContent = on ? (st.state === 'playing' ? 'Playing' : 'Live') : (stateLabel[st.state] || st.state);
+  const bits = [];
+  if (d.fps != null) bits.push(d.fps.toFixed(1) + ' fps');
+  if (st.width) bits.push(st.width + '\u00d7' + st.height);
+  if (d.kbps != null) bits.push(fmtKbps(d.kbps));
+  $('#hudRo').textContent = bits.join('   ');
+}
+function renderNow(src) {
+  const n = $('#now');
+  const kind = ({ rtsp: 'RTSP', hls: 'HLS', mjpeg: 'MJPEG', whep: 'WebRTC', video: 'Video file', snapshot: 'Snapshot' })[src.resolvedType || src.type] || 'Detecting';
+  n.innerHTML = '<b>' + esc(src.name || 'Untitled camera') + '</b> <span class="tag">' + esc(kind) + '</span> ' + esc(maskUrl(src.url));
+}
+
+// ---------- saved cameras ----------
+function sameCamera(a, b) { return a.url === b.url; }
+function renderList() {
+  const ul = $('#camList');
+  if (!cameras.length) { ul.innerHTML = '<li class="empty">Nothing saved yet. Add a camera above.</li>'; return; }
+  ul.innerHTML = cameras.map((c, i) => '<li data-i="' + i + '" tabindex="0" role="button"><div class="meta"><b>' + esc(c.name || 'Untitled camera') + '</b><span>' + esc(maskUrl(c.url)) + '</span></div><button class="x" title="Remove" data-x="' + i + '" type="button">\u00d7</button></li>').join('');
+  markActive(current ? current.source : null);
+}
+function markActive(src) {
+  document.querySelectorAll('#camList li').forEach(li => {
+    const c = cameras[+li.dataset.i];
+    li.classList.toggle('active', !!(src && c && sameCamera(c, src)));
+  });
+}
+function saveCamera(c) {
+  const idx = cameras.findIndex(x => sameCamera(x, c));
+  const rec = { type: c.type, name: c.name, url: c.url, opts: c.opts || {} };
+  if (idx >= 0) cameras[idx] = rec; else cameras.push(rec);
+  store.set('cameras', cameras); renderList();
+}
+$('#camList').addEventListener('click', e => {
+  const x = e.target.closest('[data-x]');
+  if (x) { cameras.splice(+x.dataset.x, 1); store.set('cameras', cameras); renderList(); return; }
+  const li = e.target.closest('li[data-i]'); if (li) play(Object.assign({}, cameras[+li.dataset.i]));
+});
+$('#camList').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { const li = e.target.closest('li[data-i]'); if (li) { e.preventDefault(); play(Object.assign({}, cameras[+li.dataset.i])); } } });
+
+// ---------- form ----------
+function formSource() {
+  const url = $('#url').value.trim();
+  return {
+    type: $('#type').value, url, name: $('#name').value.trim() || guessName(url),
+    opts: { fps: +$('#optFps').value || 15, width: +$('#optWidth').value || 1280, quality: +$('#optQ').value || 6, intervalMs: +$('#optInterval').value || 1000, route: $('#optRoute').value, transport: $('#optTransport').value }
+  };
+}
+function guessName(url) { try { const u = new URL(url); return u.hostname + (u.pathname.length > 1 ? u.pathname.replace(/\/$/, '') : ''); } catch { return url; } }
+$('#btnPlay').addEventListener('click', () => { const s = formSource(); if (!s.url) { $('#url').focus(); return; } play(s); });
+$('#url').addEventListener('keydown', e => { if (e.key === 'Enter') $('#btnPlay').click(); });
+$('#name').addEventListener('keydown', e => { if (e.key === 'Enter') $('#btnPlay').click(); });
+$('#btnSave').addEventListener('click', () => { const s = formSource(); if (!s.url) { $('#url').focus(); return; } saveCamera(s); });
+function clearForm() {
+  $('#url').value = ''; $('#type').value = 'auto'; $('#name').value = ''; $('#presets').value = '';
+  $('#optFps').value = 15; $('#optWidth').value = 1280; $('#optQ').value = 6; $('#optInterval').value = 1000;
+  $('#optRoute').value = 'auto'; $('#optTransport').value = 'tcp';
+  $('#url').focus();
+}
+$('#btnClear').addEventListener('click', clearForm);
+$('#btnSaveNow').addEventListener('click', () => { if (current) { saveCamera(current.source); $('#btnSaveNow').hidden = true; } });
+$('#presets').addEventListener('change', e => {
+  const v = e.target.value; if (!v) return;
+  const [url, type, name] = v.split('|');
+  $('#url').value = url; $('#type').value = type; $('#name').value = name; e.target.value = '';
+  $('#url').focus();
+});
+$('#btnStop').addEventListener('click', stop);
+$('#btnFull').addEventListener('click', () => { if (document.fullscreenElement) document.exitFullscreen(); else stage.requestFullscreen && stage.requestFullscreen().catch(() => {}); });
+$('#btnMute').addEventListener('click', () => { video.muted = !video.muted; $('#btnMute').textContent = video.muted ? 'Unmute' : 'Mute'; });
+$('#btnShot').addEventListener('click', () => {
+  if (!current) return;
+  const useVideo = stage.classList.contains('mode-video');
+  const w = useVideo ? video.videoWidth : img.naturalWidth, h = useVideo ? video.videoHeight : img.naturalHeight;
+  if (!w || !h) return;
+  const c = document.createElement('canvas'); c.width = w; c.height = h;
+  try {
+    c.getContext('2d').drawImage(useVideo ? video : img, 0, 0);
+    c.toBlob(b => {
+      if (!b) return;
+      const a = document.createElement('a'); a.href = URL.createObjectURL(b);
+      a.download = ((current.source.name || 'camera').replace(/[^\w.-]+/g, '_')) + '_' + new Date().toISOString().replace(/[:.]/g, '-') + '.png';
+      a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+    }, 'image/png');
+  } catch (e) {
+    notice('<p>The browser will not let the page copy frames from this cross-origin stream. Route it through the relay to save frames.</p>');
+    setTimeout(hideNotice, 4000);
+  }
+});
+function setPanel(on) { settings.panel = !!on; store.set('settings', settings); $('#app').classList.toggle('nopanel', !on); $('#btnPanel').setAttribute('aria-pressed', on ? 'true' : 'false'); }
+$('#btnPanel').addEventListener('click', () => setPanel(!settings.panel));
+document.addEventListener('keydown', e => {
+  if (e.target.matches('input,select,textarea')) return;
+  if (e.key === 'f') $('#btnFull').click();
+  if (e.key === 'h') setPanel(!settings.panel);
+  if (e.key === 'Escape' && !document.fullscreenElement) stop();
+});
+$('#relayInput').value = settings.relayUrl;
+$('#btnRelayCheck').addEventListener('click', async () => { settings.relayUrl = $('#relayInput').value.trim(); store.set('settings', settings); $('#relayText').textContent = 'Checking'; await detectRelay(); });
+window.addEventListener('beforeunload', () => { if (current) current.player.stop(); });
+
+setPanel(settings.panel !== false);
+renderList(); renderStats(null); notice(IDLE);
+detectRelay();
+})();
+</script>
+</body>
+</html>
