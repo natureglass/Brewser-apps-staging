@@ -1,0 +1,10 @@
+{
+  "id": "com.natureglass.freetv",
+  "sizeBytes": 85914,
+  "files": [
+    "README.md",
+    "assets/appbanner.jpg",
+    "index.html",
+    "manifest.json"
+  ]
+}
