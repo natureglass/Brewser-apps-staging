@@ -42,12 +42,12 @@
   {
     "id": "com.natureglass.freetv",
     "name": "Free TV",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
-    "updated_at": "2026-09-14T20:44:49Z",
+    "updated_at": "2026-09-14T20:59:07Z",
     "entry": "index.html",
     "logo": "assets/appbanner.jpg",
-    "description": "<p>Free TV - Streaming</p>"
+    "description": "<p>Free TV plays the live channels that broadcasters and free ad-supported streaming services publish openly. Pick a source, pick a country, pick a channel. Nothing to sign up for, no account, no key.</p>\r\n<p>Sources</p>\r\n<ul>\r\n<li><b>Broadcasters</b> - channels the broadcasters stream themselves, from over 200 countries and territories.</li>\r\n<li><b>Pluto</b>, <b>Samsung TV Plus</b>, <b>Rakuten TV</b>, <b>Plex</b> - the free ad-supported line-ups, per country.</li>\r\n<li><b>Favorites</b> -…"
   },
   {
     "id": "com.natureglass.gravityballs",
