@@ -1,0 +1,37 @@
+{
+    "id": "com.natureglass.freetv",
+    "name": "Free TV",
+    "version": "1.0.0",
+    "description": "<p>Free TV - Streaming</p>",
+    "logo": "assets/appbanner.jpg",
+    "entry": "index.html",
+    "categories": [
+        "Apps"
+    ],
+    "permissions": [
+        "network"
+    ],
+    "compatibility": [
+        "mobile",
+        "switch",
+        "web"
+    ],
+    "allowed_origins": [],
+    "developer": "Alex Daskalakis",
+    "license": "MIT",
+    "exitGame": "PLUS",
+    "fullscreen": true,
+    "hideMouseDocked": false,
+    "hideMouseUndocked": false,
+    "freshProcessOnExit": false,
+    "minBrewserVersion": "0.1.127",
+    "publishedAt": "2026-09-14T20:44:18Z",
+    "updatedAt": "2026-09-14T20:44:18Z",
+    "summary": "Free TV - Streaming",
+    "features": [
+        "Gamepad"
+    ],
+    "tags": [
+        "Streaming"
+    ]
+}
