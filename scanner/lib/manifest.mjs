@@ -56,6 +56,10 @@ export function loadManifestContext(manifestText, packageId) {
     parseError,
     allowlist: buildAllowlist(allowedOrigins),
     permissions,
+    // Manifest `"user_origins": true` — the app's destinations are chosen
+    // by the user at runtime and the runtime gates them with a per-origin
+    // approval prompt instead of the allowlist.
+    userOrigins: manifest.user_origins === true,
     declaredPeripheralFamilies,
     grantedPeripheralFamilies,
     selfNamespace,
@@ -87,12 +91,26 @@ export function manifestNotes(ctx, peripheralsUsedGlobal) {
   // `local_network` is deliberately NOT flagged: an app pointed at a
   // user-supplied LAN server (a Jellyfin client, a NAS browser) genuinely
   // cannot enumerate its destinations, and it is confined to the LAN anyway.
-  if (ctx.permissions.includes('network') && ctx.allowlist.size === 0) {
+  //
+  // "I stream from CDNs I can't name" stopped being a reason to leave the
+  // list empty: the runtime exempts media and image ELEMENT loads from
+  // `allowed_origins` outright, so a streaming app declares the API hosts it
+  // does know and plays from wherever those point. An empty list on a
+  // `network` app now means its FETCHES are unbounded, which is a narrower
+  // and more answerable question than it used to be.
+  // `"user_origins": true` is the sanctioned answer to "my destinations are
+  // typed by the user": the runtime replaces the blanket pass with a per-origin
+  // approval prompt, so an empty list is no longer unbounded — it is bounded by
+  // the person holding the console. Flagging it would punish the app for
+  // choosing the tighter option.
+  if (!ctx.userOrigins && ctx.permissions.includes('network') && ctx.allowlist.size === 0) {
     findings.push(makeFinding({ rule_id: 'unbounded-egress-declaration', severity: SUSPICIOUS,
       file: 'manifest.json', line: 0,
       detail: 'The manifest declares the full `network` permission but lists no allowed_origins, ' +
-        'so the runtime applies no per-origin restriction and the app may reach any host. ' +
-        'Confirm the destinations cannot be enumerated; if they can, declare them.',
+        'so the runtime applies no per-origin restriction to its fetch/XHR/WebSocket traffic. ' +
+        'Note media and image element loads are exempt from the allowlist anyway, so streaming ' +
+        'from un-enumerable CDN hosts is not a reason to leave it empty. ' +
+        'Confirm the fetch destinations cannot be enumerated; if they can, declare them.',
       evidence: 'network + allowed_origins: []' }));
   }
   for (const fam of ctx.declaredPeripheralFamilies) {

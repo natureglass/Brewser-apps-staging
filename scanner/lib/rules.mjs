@@ -25,6 +25,11 @@ export const RULES = {
 
   // --- Exfiltration surface (§1.3) --------------------------------------
   'external-egress':        { base: SUSPICIOUS, title: 'Network request to an off-package external origin' },
+  // Media/image element load from a host outside allowed_origins. NOT a
+  // violation — the runtime exempts these element loads from the allowlist
+  // (see html-analyze.mjs) — but recorded so a reviewer can see where the
+  // app reaches for its bytes.
+  'external-media-load':    { base: INFO, title: 'Media element loads from an undeclared origin (permitted)' },
   'external-egress-assembled': { base: SUSPICIOUS, title: 'Network request to a runtime-assembled URL' },
 
   // --- Auth-token theft (§1.3, highest severity) ------------------------

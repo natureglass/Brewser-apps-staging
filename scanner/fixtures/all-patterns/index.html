@@ -16,6 +16,14 @@
   <!-- clickjacking-overlay: a positioned, fully transparent iframe -->
   <iframe src="about:blank" style="position:fixed;top:0;left:0;width:100%;height:100%;opacity:0;"></iframe>
 
+  <!-- external-media-load: media/image elements pointing at hosts outside
+       allowed_origins. INFO, not a violation — the runtime exempts media
+       element loads from the allowlist. Recorded so a reviewer sees them. -->
+  <img src="https://cdn.example/logo.png" alt="">
+  <video src="https://stream.example/live.m3u8"></video>
+  <audio src="https://radio.example/stream.mp3"></audio>
+  <video><source src="https://cdn.example/clip.mp4" type="video/mp4"></video>
+
   <!-- All the JS category files. Each maps to a group of rules; see EXPECTATIONS.md -->
   <script src="01-dynamic-code.js"></script>
   <script src="02-decode-exec.js"></script>

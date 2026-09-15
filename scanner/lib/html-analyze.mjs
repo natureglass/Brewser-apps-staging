@@ -83,12 +83,35 @@ export function analyzeHtml(text, file, ctx, isSvg = false) {
           add({ rule_id: 'html-injection-sink', severity: INFO, file, line,
             detail: 'javascript: URL in ' + lname + ' attribute.', evidence: val });
         }
-        // Remote src/data on iframe/object/embed/img.
+        // Remote src/data on iframe/object/embed/img/media.
+        //
+        // The runtime exempts media and image ELEMENT loads from
+        // `allowed_origins` (they need the network permission, but not a
+        // declared host) — a streaming app cannot enumerate CDN edges or
+        // broadcaster hosts at publish time. So an undeclared host on one of
+        // those tags is not a policy violation and must not read as one:
+        // reporting it would flag every media app for something the runtime
+        // deliberately permits, and findings that always fire stop being
+        // read. It is still worth RECORDING at INFO so a reviewer can see
+        // where an app reaches, hence the separate rule id.
+        //
+        // iframe/object/embed stay at SUSPICIOUS: those are document and
+        // plugin loads, the runtime does NOT exempt them, and an undeclared
+        // host there is exactly the reviewed-then-swapped-payload shape the
+        // allowlist exists to catch.
         if ((lname === 'src' || lname === 'data') && val && isExternalUrl(val, ctx.allowlist)) {
           const tag = (el.tagName || '').toLowerCase();
-          if (['iframe', 'object', 'embed', 'img', 'source', 'video', 'audio'].includes(tag)) {
-            add({ rule_id: 'external-egress', severity: tag === 'iframe' || tag === 'object' || tag === 'embed' ? SUSPICIOUS : INFO,
+          const MEDIA_TAGS = ['img', 'source', 'video', 'audio'];
+          const DOC_TAGS = ['iframe', 'object', 'embed'];
+          if (DOC_TAGS.includes(tag)) {
+            add({ rule_id: 'external-egress', severity: SUSPICIOUS,
               file, line, detail: '<' + tag + '> loads from external origin ' + val + '.', evidence: val });
+          } else if (MEDIA_TAGS.includes(tag)) {
+            add({ rule_id: 'external-media-load', severity: INFO,
+              file, line,
+              detail: '<' + tag + '> loads from external origin ' + val
+                + ' (media element loads are exempt from allowed_origins).',
+              evidence: val });
           }
         }
       }

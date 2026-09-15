@@ -16,7 +16,7 @@
         "switch",
         "web"
     ],
-    "allowed_origins": [],
+    "allowed_origins": ["https://raw.githubusercontent.com"],
     "developer": "Alex Daskalakis",
     "license": "MIT",
     "exitGame": "PLUS",
