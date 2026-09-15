@@ -1,0 +1,15 @@
+{
+    "id": "com.natureglass.streamcast",
+    "name": "Stream Cast",
+    "version": "1.0.1",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "zip_sha256": "4b67b0969d69b00795c3f8765c6457edf00a9dc11e22b478bc566771ac1ced05",
+    "attestation": {
+        "ts": "2026-09-15T08:58:38+00:00",
+        "platforms": [
+            "switch"
+        ],
+        "zip_sha256": "4b67b0969d69b00795c3f8765c6457edf00a9dc11e22b478bc566771ac1ced05"
+    },
+    "submitted_at": "2026-09-15T08:58:38+00:00"
+}
