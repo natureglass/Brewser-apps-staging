@@ -120,7 +120,6 @@
     padding: 12px 14px; border-radius: var(--radius);
     background: var(--panel); border: 1px solid var(--border-soft);
   }
-  .country .flag { font-size: 26px; line-height: 1; width: 34px; text-align: center; }
   .country .cname { font-size: 15px; font-weight: 500; }
   .country .ccode { color: var(--faint); font-size: 12px; margin-left: auto; }
 
@@ -147,7 +146,6 @@
     width: 100%; display: flex; align-items: center; gap: 10px; text-align: left;
     padding: 9px 14px; border-bottom: 1px solid var(--border-soft);
   }
-  .ch .flag { font-size: 20px; width: 26px; text-align: center; flex: 0 0 26px; }
   .ch .cn { flex: 1; min-width: 0; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .ch .badges { display: flex; gap: 4px; flex: 0 0 auto; }
   .badge {
@@ -170,7 +168,6 @@
     background: var(--panel); border-bottom: 1px solid var(--border-soft);
   }
   .stage-head .now { flex: 1; min-width: 0; display: flex; align-items: center; gap: 10px; }
-  .stage-head .now .flag { font-size: 24px; }
   .stage-head .now .t { font-size: 17px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .stage-head .now .s { color: var(--muted); font-size: 13px; }
   .stage-head .logo { height: 28px; max-width: 90px; object-fit: contain; background: #fff; border-radius: 4px; padding: 2px; }
@@ -184,7 +181,6 @@
     display: flex; align-items: center; gap: 10px; pointer-events: none;
   }
   .osd.show { opacity: 1; }
-  .osd .flag { font-size: 22px; }
   .status {
     position: absolute; inset: 0; display: none; align-items: center; justify-content: center;
     flex-direction: column; gap: 14px; color: var(--muted); text-align: center; padding: 30px;
@@ -300,7 +296,7 @@ const HLS_CDN = 'https://cdn.jsdelivr.net/npm/hls.js@1/dist/hls.min.js';
 
 // Gamepad button indexes (Standard mapping, Switch layout: bottom=B, right=A, left=Y, top=X).
 // Adjust here if the runtime maps them differently.
-const PAD = { A: 1, B: 0, Y: 2, X: 3, MINUS: 8, PLUS: 9, UP: 12, DOWN: 13, LEFT: 14, RIGHT: 15 };
+const PAD = { A: 0, B: 1, X: 2, Y: 3, MINUS: 8, PLUS: 9, UP: 12, DOWN: 13, LEFT: 14, RIGHT: 15 };
 
 const SOURCES = [
   { id: 'open',    title: 'Broadcasters', mark: 'TV',  cls: 'open', desc: 'Channels streamed by broadcasters themselves', countries: SOURCES_DATA.broadcasters, file: cc => cc + '.m3u' },
@@ -330,12 +326,6 @@ const S = {
 function $(id) { return document.getElementById(id); }
 function loadJSON(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } }
 function saveJSON(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
-function flag(cc) {
-  if (!cc) return '';
-  const iso = cc === 'uk' ? 'gb' : cc.toLowerCase();
-  if (iso.length !== 2) return '';
-  return String.fromCodePoint(...[...iso].map(c => 0x1F1E6 + c.charCodeAt(0) - 97));
-}
 function countryName(cc) { return COUNTRY_NAMES[cc] || cc.toUpperCase(); }
 function esc(s) { return String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
 function ago(t) {
@@ -417,7 +407,7 @@ function show(screen) {
   $('btnRefresh').textContent = screen === 'watch' ? 'Refresh list' : 'Refresh';
   const crumbs = [];
   if (S.source) crumbs.push(S.source.title);
-  if (screen === 'watch' && S.cc) crumbs.push(flag(S.cc) + ' ' + countryName(S.cc));
+  if (screen === 'watch' && S.cc) crumbs.push(countryName(S.cc));
   $('crumbs').innerHTML = crumbs.map(c => '<span>' + esc(c) + '</span>').join('<i style="color:var(--faint)">/</i>');
   $('hint').innerHTML = screen === 'home'
     ? '<kbd>A</kbd> open'
@@ -468,7 +458,7 @@ function renderCountries(q) {
     .filter(c => !ql || c.name.toLowerCase().includes(ql) || c.cc.includes(ql))
     .sort((a, b) => a.name.localeCompare(b.name));
   $('countries').innerHTML = list.map(c =>
-    '<button class="country" data-cc="' + c.cc + '"><span class="flag">' + flag(c.cc) + '</span>' +
+    '<button class="country" data-cc="' + c.cc + '">' +
     '<span class="cname">' + esc(c.name) + '</span><span class="ccode">' + c.cc.toUpperCase() + '</span></button>').join('')
     || '<div class="empty">No country matches that.</div>';
   $('countries').querySelectorAll('.country').forEach(b => b.addEventListener('click', () => openCountry(b.dataset.cc)));
@@ -522,7 +512,7 @@ function renderWatch(keepFocus) {
   const keys = Object.keys(origins).sort((a, b) => origins[b] - origins[a]);
   $('chips').innerHTML = keys.length > 1
     ? '<button class="chip" data-chip="" aria-pressed="' + (!S.filters.chip) + '">All</button>' +
-      keys.map(k => '<button class="chip" data-chip="' + k + '" aria-pressed="' + (S.filters.chip === k) + '">' + flag(k) + ' ' + esc(countryName(k)) + ' <span style="color:var(--faint)">' + origins[k] + '</span></button>').join('')
+      keys.map(k => '<button class="chip" data-chip="' + k + '" aria-pressed="' + (S.filters.chip === k) + '">' + esc(countryName(k)) + ' <span style="color:var(--faint)">' + origins[k] + '</span></button>').join('')
     : '';
   $('chips').querySelectorAll('.chip').forEach(b => b.addEventListener('click', () => { S.filters.chip = b.dataset.chip || null; renderWatch(); }));
 
@@ -535,7 +525,7 @@ function renderWatch(keepFocus) {
     if (ch.headers) b.push('<span class="badge off">needs headers</span>');
     if (S.broken[ch.key]) b.push('<span class="badge off">unavailable</span>');
     const cls = ['ch', isFav(ch) ? 'isfav' : '', S.current && S.current.key === ch.key ? 'playing' : '', S.broken[ch.key] ? 'broken' : ''].join(' ');
-    return '<button class="' + cls + '" data-key="' + esc(ch.key) + '"><span class="flag">' + flag(ch.origin) + '</span>' +
+    return '<button class="' + cls + '" data-key="' + esc(ch.key) + '">' +
       '<span class="cn">' + esc(ch.name) + '</span><span class="badges">' + b.join('') + '</span><span class="star">\u2605</span></button>';
   }).join('') : '<div class="empty">' + emptyText() + '</div>';
   $('list').querySelectorAll('.ch').forEach(b => b.addEventListener('click', () => play(findKey(b.dataset.key))));
@@ -610,7 +600,7 @@ function stop() {
 }
 function showOsd(ch) {
   const o = $('osd');
-  o.innerHTML = '<span class="flag">' + flag(ch.origin) + '</span><span>' + esc(ch.name) + '</span>' + (ch.res ? '<span class="badge res">' + ch.res + 'p</span>' : '');
+  o.innerHTML = '<span>' + esc(ch.name) + '</span>' + (ch.res ? '<span class="badge res">' + ch.res + 'p</span>' : '');
   o.classList.add('show');
   clearTimeout(showOsd.t); showOsd.t = setTimeout(() => o.classList.remove('show'), 2500);
 }
@@ -618,7 +608,7 @@ async function play(ch) {
   if (!ch) return;
   stop();
   S.current = ch;
-  $('now').innerHTML = '<span class="flag">' + flag(ch.origin) + '</span>' +
+  $('now').innerHTML =
     (ch.logo ? '<img class="logo" src="' + esc(ch.logo) + '" alt="" onerror="this.remove()">' : '') +
     '<div style="min-width:0"><div class="t">' + esc(ch.name) + '</div><div class="s">' + esc(countryName(ch.origin)) + (ch.res ? ' \u00b7 ' + ch.res + 'p' : '') + (ch.geo ? ' \u00b7 may be geo-blocked' : '') + '</div></div>';
   renderWatch(true);

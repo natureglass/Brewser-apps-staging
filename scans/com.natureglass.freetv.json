@@ -1,9 +1,9 @@
 {
   "verdict": "SUSPICIOUS",
   "score": 20,
-  "scanned_at": "2026-09-16T09:54:08Z",
+  "scanned_at": "2026-09-16T12:20:47Z",
   "scanner_version": "1.3.2",
-  "package_hash": "5431e1ea2c5dba022eb18fdc2f49c6b9c96b77883b24a9088de84de89c74a291",
+  "package_hash": "db6a3977dc0ff93beb8e50ca00f6613c5b9eb890ae4085f07f352bda82faa5d1",
   "counts": {
     "info": 10,
     "suspicious": 1,
@@ -18,7 +18,7 @@
       "title": "Network request to an off-package external origin",
       "detail": "an image/script src assignment targets https://cdn.jsdelivr.net/npm/hls.js@1/dist/hls.min.js, an origin not in the manifest allowed_origins.",
       "file": "index.html <inline script>",
-      "line": 306,
+      "line": 300,
       "evidence": "s.src = HLS_CDN"
     },
     {
@@ -27,7 +27,7 @@
       "title": "DOM HTML sink assigned a non-literal value",
       "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
       "file": "index.html <inline script>",
-      "line": 133,
+      "line": 127,
       "evidence": "$('crumbs').innerHTML = crumbs.map(c => '<span>' + esc(c) + '</span>').join('<i style=\"color:var(--faint)\">/</i>')"
     },
     {
@@ -36,7 +36,7 @@
       "title": "DOM HTML sink assigned a non-literal value",
       "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
       "file": "index.html <inline script>",
-      "line": 134,
+      "line": 128,
       "evidence": "$('hint').innerHTML = screen === 'home' ? '<kbd>A</kbd> open' : screen === 'pick' ? '<kbd>A</kbd> open <kbd>B</kbd> bac…"
     },
     {
@@ -45,7 +45,7 @@
       "title": "DOM HTML sink assigned a non-literal value",
       "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
       "file": "index.html <inline script>",
-      "line": 148,
+      "line": 142,
       "evidence": "$('tiles').innerHTML = SOURCES.map(s => { const meta = s.id === 'fav' ? (S.favs.length + (S.favs.length === 1 ? ' chann…"
     },
     {
@@ -54,8 +54,8 @@
       "title": "DOM HTML sink assigned a non-literal value",
       "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
       "file": "index.html <inline script>",
-      "line": 182,
-      "evidence": "$('countries').innerHTML = list.map(c => '<button class=\"country\" data-cc=\"' + c.cc + '\"><span class=\"flag\">' + flag(c.…"
+      "line": 176,
+      "evidence": "$('countries').innerHTML = list.map(c => '<button class=\"country\" data-cc=\"' + c.cc + '\">' + '<span class=\"cname\">' + e…"
     },
     {
       "rule_id": "html-injection-sink",
@@ -63,7 +63,7 @@
       "title": "DOM HTML sink assigned a non-literal value",
       "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
       "file": "index.html <inline script>",
-      "line": 204,
+      "line": 198,
       "evidence": "$('now').innerHTML = '<span class=\"s\">' + S.channels.length + ' channels. Pick one to start.</span>'"
     },
     {
@@ -72,7 +72,7 @@
       "title": "DOM HTML sink assigned a non-literal value",
       "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
       "file": "index.html <inline script>",
-      "line": 235,
+      "line": 229,
       "evidence": "$('chips').innerHTML = keys.length > 1 ? '<button class=\"chip\" data-chip=\"\" aria-pressed=\"' + (!S.filters.chip) + '\">Al…"
     },
     {
@@ -81,7 +81,7 @@
       "title": "DOM HTML sink assigned a non-literal value",
       "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
       "file": "index.html <inline script>",
-      "line": 242,
+      "line": 236,
       "evidence": "$('list').innerHTML = vis.length ? vis.map(ch => { const b = []; if (ch.res) b.push('<span class=\"badge res\">' + ch.res…"
     },
     {
@@ -90,7 +90,7 @@
       "title": "DOM HTML sink assigned a non-literal value",
       "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
       "file": "index.html <inline script>",
-      "line": 314,
+      "line": 308,
       "evidence": "st.innerHTML = (kind === 'spin' ? '<div class=\"dot\"></div>' : '') + '<div class=\"big\">' + esc(big) + '</div>' + (why ? …"
     },
     {
@@ -99,8 +99,8 @@
       "title": "DOM HTML sink assigned a non-literal value",
       "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
       "file": "index.html <inline script>",
-      "line": 325,
-      "evidence": "o.innerHTML = '<span class=\"flag\">' + flag(ch.origin) + '</span><span>' + esc(ch.name) + '</span>' + (ch.res ? '<span c…"
+      "line": 319,
+      "evidence": "o.innerHTML = '<span>' + esc(ch.name) + '</span>' + (ch.res ? '<span class=\"badge res\">' + ch.res + 'p</span>' : '')"
     },
     {
       "rule_id": "html-injection-sink",
@@ -108,8 +108,8 @@
       "title": "DOM HTML sink assigned a non-literal value",
       "detail": "Assigns a non-literal value to .innerHTML — a DOM-based injection sink.",
       "file": "index.html <inline script>",
-      "line": 333,
-      "evidence": "$('now').innerHTML = '<span class=\"flag\">' + flag(ch.origin) + '</span>' + (ch.logo ? '<img class=\"logo\" src=\"' + esc(c…"
+      "line": 327,
+      "evidence": "$('now').innerHTML = (ch.logo ? '<img class=\"logo\" src=\"' + esc(ch.logo) + '\" alt=\"\" onerror=\"this.remove()\">' : '') + …"
     }
   ],
   "capabilities": [],
