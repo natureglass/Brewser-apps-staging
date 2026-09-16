@@ -1,15 +1,15 @@
 {
   "verdict": "SUSPICIOUS",
-  "score": 30,
-  "scanned_at": "2026-09-14T20:59:07Z",
+  "score": 20,
+  "scanned_at": "2026-09-16T09:54:08Z",
   "scanner_version": "1.3.2",
-  "package_hash": "4c3b7e910bd3d3b2e544d0f7ad554663ae5cac39459020dd553c18725f634711",
+  "package_hash": "5431e1ea2c5dba022eb18fdc2f49c6b9c96b77883b24a9088de84de89c74a291",
   "counts": {
     "info": 10,
-    "suspicious": 2,
+    "suspicious": 1,
     "dangerous": 0
   },
-  "rationale": "Suspicious: 2 signal(s) needing review; e.g. network request to an off-package external origin.",
+  "rationale": "Suspicious: 1 signal(s) needing review; e.g. network request to an off-package external origin.",
   "truncated": false,
   "findings": [
     {
@@ -20,15 +20,6 @@
       "file": "index.html <inline script>",
       "line": 306,
       "evidence": "s.src = HLS_CDN"
-    },
-    {
-      "rule_id": "unbounded-egress-declaration",
-      "severity": "SUSPICIOUS",
-      "title": "Declares `network` with an empty allowed_origins allowlist",
-      "detail": "The manifest declares the full `network` permission but lists no allowed_origins, so the runtime applies no per-origin restriction and the app may reach any host. Confirm the destinations cannot be enumerated; if they can, declare them.",
-      "file": "manifest.json",
-      "line": 0,
-      "evidence": "network + allowed_origins: []"
     },
     {
       "rule_id": "html-injection-sink",
