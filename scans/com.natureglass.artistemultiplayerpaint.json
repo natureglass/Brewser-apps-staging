@@ -1,9 +1,9 @@
 {
   "verdict": "SUSPICIOUS",
   "score": 30,
-  "scanned_at": "2026-09-13T08:56:49Z",
+  "scanned_at": "2026-09-16T08:26:49Z",
   "scanner_version": "1.3.2",
-  "package_hash": "03eb96bb480ec42156b7a37763421490ad4a99fa5b058c56008141ae95b46182",
+  "package_hash": "f90df545c9f3e70cb762fcbc21430ed3b0ddb02ad1b74f200f163c1ed1040c40",
   "counts": {
     "info": 0,
     "suspicious": 3,
@@ -18,14 +18,14 @@
       "title": "Network request to a runtime-assembled URL",
       "detail": "new WebSocket() targets a runtime-assembled URL containing the external fragment wss://ws.brewser.io/?app=.",
       "file": "index.html <inline script>",
-      "line": 507,
+      "line": 529,
       "evidence": "new WebSocket(WS_URL)"
     },
     {
       "rule_id": "unbounded-egress-declaration",
       "severity": "SUSPICIOUS",
       "title": "Declares `network` with an empty allowed_origins allowlist",
-      "detail": "The manifest declares the full `network` permission but lists no allowed_origins, so the runtime applies no per-origin restriction and the app may reach any host. Confirm the destinations cannot be enumerated; if they can, declare them.",
+      "detail": "The manifest declares the full `network` permission but lists no allowed_origins, so the runtime applies no per-origin restriction to its fetch/XHR/WebSocket traffic. Note media and image element loads are exempt from the allowlist anyway, so streaming from un-enumerable CDN hosts is not a reason to leave it empty. Confirm the fetch destinations cannot be enumerated; if they can, declare them.",
       "file": "manifest.json",
       "line": 0,
       "evidence": "network + allowed_origins: []"
@@ -36,7 +36,7 @@
       "title": "Realtime-relay app id is assembled at runtime",
       "detail": "Builds a Brewser realtime-relay URL at runtime without pinning the app id to \"com.natureglass.artistemultiplayerpaint\". Confirm it cannot resolve to another package's namespace.",
       "file": "index.html <inline script>",
-      "line": 507,
+      "line": 529,
       "evidence": "new WebSocket(WS_URL)"
     }
   ],
