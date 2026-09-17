@@ -1,0 +1,16 @@
+{
+    "id": "com.natureglass.artistemultiplayerpaint",
+    "name": "ARTISTE - Multiplayer Paint",
+    "version": "1.0.8",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "zip_sha256": "329d80263ceaa8880f7b9c9fe7969bfd8ca3f346579bc5a553ba22bd4557e927",
+    "attestation": {
+        "ts": "2026-09-17T12:12:18+00:00",
+        "platforms": [
+            "switch",
+            "web"
+        ],
+        "zip_sha256": "329d80263ceaa8880f7b9c9fe7969bfd8ca3f346579bc5a553ba22bd4557e927"
+    },
+    "submitted_at": "2026-09-17T12:12:18+00:00"
+}
