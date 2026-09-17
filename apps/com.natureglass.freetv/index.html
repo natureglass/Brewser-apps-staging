@@ -36,7 +36,7 @@
   button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
   input { font: inherit; }
   button:focus, input:focus, [tabindex]:focus { outline: none; }
-  .focus-ring { outline: 3px solid var(--amber) !important; outline-offset: -1px; }
+  .focus-ring { outline: 2px solid var(--amber) !important; }
 
   /* ---------- shell ---------- */
   #app { height: 100%; display: flex; flex-direction: column; }
@@ -132,7 +132,7 @@
   .side-top { padding: 12px 14px 8px; display: flex; flex-direction: column; gap: 10px; border-bottom: 1px solid var(--border-soft); }
   .side-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
   .side-row .search { flex: 1; width: auto; min-width: 120px; }
-  .chips { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; }
+  .chips { display: flex; gap: 6px; overflow-x: auto; padding: 4px; }
   .chip {
     flex: 0 0 auto; display: inline-flex; align-items: center; gap: 6px;
     padding: 5px 10px; border-radius: 999px; font-size: 13px;
@@ -140,7 +140,7 @@
   }
   .chip[aria-pressed="true"] { background: var(--amber); border-color: var(--amber); color: var(--amber-ink); font-weight: 600; }
   .chip[aria-pressed="true"] span { color: var(--amber-ink) !important; }
-  .list { flex: 1; min-height: 0; overflow: auto; }
+  .list { flex: 1; min-height: 0; overflow: auto; padding: 4px; }
   .list .empty { padding: 30px 20px; color: var(--muted); font-size: 14px; }
   .ch {
     width: 100%; display: flex; align-items: center; gap: 10px; text-align: left;
@@ -197,8 +197,19 @@
   @keyframes spin { to { transform: rotate(360deg); } }
   @media (prefers-reduced-motion: reduce) { .dot { animation: none; border-top-color: var(--amber); } }
 
+  /* ---------- drawer (landscape phone only) ---------- */
+  .menu-btn {
+    display: none; flex-direction: column; align-items: center; justify-content: center;
+    gap: 4px; width: 38px; height: 32px; padding: 0; flex: 0 0 auto;
+    background: var(--panel-2); border: 1px solid var(--border); border-radius: 8px;
+  }
+  .menu-btn i { display: block; width: 18px; height: 2px; background: var(--text); border-radius: 2px; }
+  .menu-btn[aria-expanded="true"] { background: var(--amber); border-color: var(--amber); }
+  .menu-btn[aria-expanded="true"] i { background: var(--amber-ink); }
+  .side-scrim { display: none; }
+
   /* ---------- fullscreen ---------- */
-  body.fs header, body.fs aside, body.fs .stage-head { display: none; }
+  body.fs header, body.fs aside, body.fs .stage-head, body.fs .side-scrim { display: none; }
   body.fs main { position: fixed; inset: 0; }
   body.fs .stage { border: 0; }
 
@@ -215,11 +226,92 @@
     aside { width: 320px; flex-basis: 320px; }
     .hint { display: none; }
   }
+
+  /* ---------- landscape phone ---------- */
+  @media (orientation: landscape) and (max-height: 500px) {
+
+    /* one app-sized surface: nothing but the inner panes may scroll */
+    html, body { height: 100%; height: 100dvh; overflow: hidden; overscroll-behavior: none; }
+    #app { height: 100%; height: 100dvh; }
+
+    /* --- header --- */
+    header { height: 44px; padding: 0 10px; gap: 8px; }
+    .brand { gap: 6px; }
+    .brand .name { font-size: 16px; }
+    .brand .sub { display: none; }
+    .crumbs { font-size: 12px; gap: 6px; }
+    .hint { display: none; }
+    .btn.small { padding: 4px 9px; font-size: 12px; }
+    body.on-watch .menu-btn { display: inline-flex; }
+
+    /* --- home --- */
+    #home { padding: 14px 16px; gap: 12px; }
+    #home .lead { font-size: 13px; max-width: none; }
+    .tiles { grid-template-columns: repeat(3, 1fr); gap: 10px; max-width: none; }
+    .tile { height: auto; min-height: 92px; padding: 10px 12px; border-radius: 10px; }
+    .tile .mark { font-size: 20px; }
+    .tile .title { font-size: 15px; }
+    .tile .meta { font-size: 11px; }
+    .cache-note { font-size: 11px; }
+
+    /* --- country picker --- */
+    #pick { padding: 12px 16px; gap: 10px; }
+    #pick h2 { font-size: 17px; }
+    #pick .toolbar { gap: 8px; }
+    .search { width: 190px; padding: 6px 10px; font-size: 13px; }
+    .countries { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; padding-bottom: 12px; }
+    .country { padding: 8px 10px; gap: 8px; }
+    .country .cname { font-size: 13px; }
+
+    /* --- watch: the aside becomes a slide-over drawer above the video --- */
+    aside {
+      position: absolute; left: 0; top: 0; bottom: 0; z-index: 12;
+      width: 78%; max-width: 340px; flex: 0 0 auto;
+      border-right: 1px solid var(--border);
+      box-shadow: 0 0 24px rgba(0, 0, 0, .55);
+      transform: translateX(-102%);
+      transition: transform .22s ease;
+    }
+    body.nav-open aside { transform: translateX(0); }
+    .side-scrim {
+      display: block; position: absolute; inset: 0; z-index: 11;
+      background: rgba(6, 4, 14, .55);
+      opacity: 0; pointer-events: none; transition: opacity .22s ease;
+    }
+    body.nav-open .side-scrim { opacity: 1; pointer-events: auto; }
+
+    .side-top { padding: 8px 10px 6px; gap: 6px; }
+    .side-row { gap: 6px; }
+    .side-row .search { width: auto; min-width: 0; }
+    .chip { padding: 4px 9px; font-size: 12px; }
+    .ch { padding: 7px 10px; gap: 8px; }
+    .ch .cn { font-size: 13px; }
+    .ch .star { width: 18px; font-size: 14px; }
+    .badge { font-size: 10px; padding: 1px 5px; }
+    .side-foot { padding: 5px 10px; font-size: 11px; }
+
+    .stage-head { padding: 6px 10px; gap: 8px; }
+    .stage-head .now .t { font-size: 14px; }
+    .stage-head .now .s { font-size: 11px; }
+    .stage-head .logo { height: 22px; max-width: 64px; }
+    .osd { left: 10px; top: 10px; padding: 4px 9px; font-size: 14px; }
+    .status { gap: 10px; padding: 16px; }
+    .status .big { font-size: 16px; }
+    .status .why { font-size: 12px; }
+    .dot { width: 30px; height: 30px; border-width: 2px; }
+    .toast { bottom: 12px; padding: 6px 12px; font-size: 13px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    aside, .side-scrim { transition: none; }
+  }
+
 </style>
 </head>
 <body>
 <div id="app">
   <header>
+    <button class="menu-btn" id="btnMenu" aria-label="Channel list" aria-expanded="false"><i></i><i></i><i></i></button>
     <div class="brand"><div class="name">Free <b>TV</b></div><div class="sub">public live channels</div></div>
     <div class="crumbs" id="crumbs"></div>
     <div class="spacer"></div>
@@ -256,8 +348,8 @@
             <input class="search" id="chSearch" placeholder="Filter channels" autocomplete="off">
           </div>
           <div class="side-row">
-            <button class="btn small" id="fFav" aria-pressed="false">Favorites only</button>
-            <button class="btn small" id="fHide" aria-pressed="true">Hide unavailable</button>
+            <button class="btn small" id="fFav" aria-pressed="false">Only Favorites</button>
+            <button class="btn small" id="fHide" aria-pressed="true">Hide Unavailable</button>
             <button class="btn small" id="f720" aria-pressed="false">720p or lower</button>
           </div>
           <div class="chips" id="chips"></div>
@@ -265,6 +357,7 @@
         <div class="list" id="list"></div>
         <div class="side-foot"><span id="count"></span><span id="updated"></span></div>
       </aside>
+      <div class="side-scrim" id="sideScrim"></div>
       <div class="stage">
         <div class="stage-head">
           <div class="now" id="now"><span class="s">Pick a channel to start</span></div>
@@ -399,9 +492,33 @@ async function loadFile(file, force) {
   return entry;
 }
 
+/* ===================== DRAWER (landscape phone) ===================== */
+// The aside is a slide-over panel only under the landscape-phone media query.
+// On the Switch (720p tall) it stays a permanent column and none of this applies.
+const DRAWER_MQ = '(orientation: landscape) and (max-height: 500px)';
+function isDrawer() {
+  try { if (window.matchMedia) return window.matchMedia(DRAWER_MQ).matches; } catch (e) {}
+  return window.innerHeight <= 500 && window.innerWidth > window.innerHeight;
+}
+function inAside(el) {
+  for (let n = el; n; n = n.parentNode) { if (n.tagName === 'ASIDE') return true; if (n === document.body) break; }
+  return false;
+}
+function setNav(open) {
+  document.body.classList.toggle('nav-open', !!open);
+  $('btnMenu').setAttribute('aria-expanded', open ? 'true' : 'false');
+  if (S.screen === 'watch') setTimeout(() => focusFirst('watch'), 0);
+}
+function toggleNav() { setNav(!document.body.classList.contains('nav-open')); }
+$('btnMenu').addEventListener('click', toggleNav);
+$('sideScrim').addEventListener('click', () => setNav(false));
+
 /* ===================== NAVIGATION ===================== */
 function show(screen) {
   S.screen = screen;
+  document.body.classList.toggle('on-watch', screen === 'watch');
+  if (screen !== 'watch') setNav(false);
+  else if (isDrawer() && !S.current) setNav(true);  // arriving with nothing playing: show the list first
   document.querySelectorAll('.screen').forEach(el => el.classList.toggle('active', el.id === screen));
   $('btnHome').style.display = screen === 'home' ? 'none' : '';
   $('btnRefresh').textContent = screen === 'watch' ? 'Refresh list' : 'Refresh';
@@ -417,6 +534,14 @@ function show(screen) {
 }
 function focusFirst(screen) {
   const root = $(screen);
+  if (screen === 'watch' && isDrawer()) {
+    const open = document.body.classList.contains('nav-open');
+    const pref = open
+      ? (root.querySelector('aside .ch.playing') || root.querySelector('aside .ch') || root.querySelector('aside .btn'))
+      : (root.querySelector('.stage-head .btn') || $('btnMenu'));
+    if (pref) setFocus(pref);
+    return;
+  }
   const pref = root.querySelector('.ch.playing') || (S.cc && root.querySelector('.country[data-cc="' + S.cc + '"]')) || root.querySelector('.tile, .country, .ch, .btn');
   if (pref) setFocus(pref);
 }
@@ -528,7 +653,7 @@ function renderWatch(keepFocus) {
     return '<button class="' + cls + '" data-key="' + esc(ch.key) + '">' +
       '<span class="cn">' + esc(ch.name) + '</span><span class="badges">' + b.join('') + '</span><span class="star">\u2605</span></button>';
   }).join('') : '<div class="empty">' + emptyText() + '</div>';
-  $('list').querySelectorAll('.ch').forEach(b => b.addEventListener('click', () => play(findKey(b.dataset.key))));
+  $('list').querySelectorAll('.ch').forEach(b => b.addEventListener('click', () => { play(findKey(b.dataset.key)); if (isDrawer()) setNav(false); }));
 
   $('fFav').setAttribute('aria-pressed', S.filters.fav);
   $('fHide').setAttribute('aria-pressed', S.filters.hide);
@@ -659,6 +784,7 @@ function step(dir) {
 
 /* ===================== FULLSCREEN ===================== */
 function setFullscreen(on) {
+  if (on) document.body.classList.remove('nav-open'), $('btnMenu').setAttribute('aria-expanded', 'false');
   document.body.classList.toggle('fs', on);
   $('btnFs').textContent = on ? 'Exit fullscreen' : 'Fullscreen';
   try {
@@ -684,8 +810,14 @@ document.addEventListener('focusin', e => { const el = e.target; if (el && el !=
 function focusables() {
   const root = document.body.classList.contains('fs') ? null : $(S.screen);
   if (!root) return [];
-  const nodes = [...document.querySelectorAll('header button, header input')].filter(n => n.offsetParent !== null);
-  root.querySelectorAll('button, input').forEach(n => { if (n.offsetParent !== null) nodes.push(n); });
+  const drawer = isDrawer() && S.screen === 'watch';
+  const open = document.body.classList.contains('nav-open');
+  const nodes = (drawer && open) ? [] : [...document.querySelectorAll('header button, header input')].filter(n => n.offsetParent !== null);
+  root.querySelectorAll('button, input').forEach(n => {
+    if (n.offsetParent === null) return;
+    if (drawer && inAside(n) !== open) return;  // a translated-off drawer still reports a layout box
+    nodes.push(n);
+  });
   return nodes;
 }
 function moveFocus(dir) {
@@ -713,6 +845,7 @@ function action(name) {
   const fs = document.body.classList.contains('fs');
   if (name === 'back') {
     if (fs) return setFullscreen(false);
+    if (isDrawer() && document.body.classList.contains('nav-open')) return setNav(false);
     if (S.screen === 'watch') return S.source && S.source.id === 'fav' ? goHome() : (S.cc ? ($('btnPickBack').style.display = '', renderCountries(''), show('pick')) : goHome());
     if (S.screen === 'pick') return S.cc && S.channels.length ? show('watch') : goHome();
     return;
