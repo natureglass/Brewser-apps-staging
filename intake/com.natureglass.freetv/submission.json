@@ -1,0 +1,17 @@
+{
+    "id": "com.natureglass.freetv",
+    "name": "Free TV",
+    "version": "1.0.2",
+    "owner": "2831787727e16c44ca5e1bde939e90081f277f1626cb4e229319fa61d872e989",
+    "zip_sha256": "5c93bd15604ecdc8fc47c81ff98558f470eabdc5e5044dc80d2854641aa917ca",
+    "attestation": {
+        "ts": "2026-09-18T06:43:48+00:00",
+        "platforms": [
+            "mobile",
+            "switch",
+            "web"
+        ],
+        "zip_sha256": "5c93bd15604ecdc8fc47c81ff98558f470eabdc5e5044dc80d2854641aa917ca"
+    },
+    "submitted_at": "2026-09-18T06:43:48+00:00"
+}
