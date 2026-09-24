@@ -2,15 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Test D3</title>
+  <title>PokemonShowdownBrewser</title>
+  <base href="./">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    body { margin: 8px; background: #000000; color: #ffffff; font-family: sans-serif; font-size: 14px; }
-    h1 { font-size: 18px; margin: 0 0 8px 0; }
-    .sw { background: #cc0000; color: #ffffff; padding: 2px 6px; margin: 2px 0; }
-    .swl { color: #ffffff; padding: 2px 6px; margin: 2px 0; border: 1px solid #666666; }
-    .note { color: #bbbbbb; margin: 4px 0 8px 0; }
-  </style>
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="stylesheet" href="styles.css">
 
 <!-- brewser-pwa:start -->
 <link rel="manifest" href="pwa/app.webmanifest">
@@ -22,86 +18,7 @@
 <!-- brewser-pwa:end -->
 </head>
 <body>
-<h1>TEST D3: recalculo del layout</h1>
-<p class="note">A los 2 segundos, cada caso anade 3 lineas de texto. Si el layout se recalcula, la linea "---- marca Rn ----" baja y no queda tapada. Dime en que casos el texto se superpone.</p>
-<p id="d3-status" class="note">Script: no ejecutado</p>
-<div id="wrap1" style="background:#223344;margin:6px 0;padding:4px;">
-  <p style="margin:0;">R1: texto anadido a un &lt;p&gt; existente</p>
-  <div id="target1"><p id="p1" style="margin:0;">linea inicial</p></div>
-</div>
-<p style="margin:0;color:#ffcc00;">---- marca R1 ----</p>
-<div id="wrap2" style="background:#223344;margin:6px 0;padding:4px;">
-  <p style="margin:0;">R2: nuevo &lt;p&gt; anadido a un &lt;div&gt;</p>
-  <div id="target2"><p id="p2" style="margin:0;">linea inicial</p></div>
-</div>
-<p style="margin:0;color:#ffcc00;">---- marca R2 ----</p>
-<div id="wrap3" style="background:#223344;margin:6px 0;padding:4px;">
-  <p style="margin:0;">R3: innerHTML reemplazado</p>
-  <div id="target3"><p id="p3" style="margin:0;">linea inicial</p></div>
-</div>
-<p style="margin:0;color:#ffcc00;">---- marca R3 ----</p>
-<div id="wrap4" style="background:#223344;margin:6px 0;padding:4px;">
-  <p style="margin:0;">R4: como R1 + forzar reflow (display none/block en body)</p>
-  <div id="target4"><p id="p4" style="margin:0;">linea inicial</p></div>
-</div>
-<p style="margin:0;color:#ffcc00;">---- marca R4 ----</p>
-<div id="wrap5" style="background:#223344;margin:6px 0;padding:4px;">
-  <p style="margin:0;">R5: como R1 + evento resize</p>
-  <div id="target5"><p id="p5" style="margin:0;">linea inicial</p></div>
-</div>
-<p style="margin:0;color:#ffcc00;">---- marca R5 ----</p>
-<div id="wrap6" style="background:#223344;margin:6px 0;padding:4px;">
-  <p style="margin:0;">R6: como R1 + reinsertar el contenedor en el DOM</p>
-  <div id="target6"><p id="p6" style="margin:0;">linea inicial</p></div>
-</div>
-<p style="margin:0;color:#ffcc00;">---- marca R6 ----</p>
-<script>
-  (function () {
-    var cases = ["appendText","appendElement","innerHTML","appendText+toggleBody","appendText+resize","appendText+reinsert"];
-    document.getElementById('d3-status').textContent = 'Script: ejecutado, esperando 2 s...';
-    function lines() { return 'nueva linea 1\nnueva linea 2\nnueva linea 3'; }
-    window.setTimeout(function () {
-      for (var i = 0; i < cases.length; i++) {
-        var n = i + 1;
-        var mode = cases[i];
-        var p = document.getElementById('p' + n);
-        var target = document.getElementById('target' + n);
-        try {
-          if (mode.indexOf('appendText') === 0) {
-            p.style.whiteSpace = 'pre-line';
-            p.appendChild(document.createTextNode('\n' + lines()));
-          } else if (mode === 'appendElement') {
-            var np = document.createElement('p');
-            np.style.margin = '0';
-            np.style.whiteSpace = 'pre-line';
-            np.appendChild(document.createTextNode(lines()));
-            target.appendChild(np);
-          } else if (mode === 'innerHTML') {
-            target.innerHTML = '<p style="margin:0;">linea inicial<br>nueva linea 1<br>nueva linea 2<br>nueva linea 3</p>';
-          }
-          if (mode.indexOf('toggleBody') > -1) {
-            document.body.style.display = 'none';
-            void document.body.offsetHeight;
-            document.body.style.display = '';
-          }
-          if (mode.indexOf('resize') > -1) {
-            window.dispatchEvent(new Event('resize'));
-          }
-          if (mode.indexOf('reinsert') > -1) {
-            var wrap = document.getElementById('wrap' + n);
-            var parent = wrap.parentNode;
-            var next = wrap.nextSibling;
-            parent.removeChild(wrap);
-            parent.insertBefore(wrap, next);
-          }
-        } catch (e) {
-          p.appendChild(document.createTextNode(' ERROR: ' + (e && e.message ? e.message : e)));
-        }
-      }
-      document.getElementById('d3-status').textContent = 'Script: cambios aplicados';
-    }, 2000);
-  })();
-</script>
-
+  <app-root></app-root>
+  <script src="app.js"></script>
 </body>
 </html>
