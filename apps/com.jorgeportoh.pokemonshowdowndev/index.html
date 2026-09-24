@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Test A9</title>
+  <title>Test C1</title>
   <base href="./">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  
 
 <!-- brewser-pwa:start -->
 <link rel="manifest" href="pwa/app.webmanifest">
@@ -17,79 +17,50 @@
 <!-- brewser-pwa:end -->
 </head>
 <body>
-  <p>TEST A9</p>
-  <p>HTML sin estilos + scripts de diagnostico.</p>
-  <p id="diag-js">Script clasico: NO SE EJECUTO</p>
-  <p id="diag-module">Script module: NO SE EJECUTO</p>
-  <p id="diag-nomodule"></p>
+  <div style="color:#ffffff;background:#000000;">
+  <p>TEST C1: Angular como un unico app.js, SIN CSS</p>
+  <p id="diag-appjs">app.js: NO SE EJECUTO</p>
+  <p id="diag-app">Angular: esperando...</p>
   <pre id="diag-log"></pre>
+  </div>
   <script>
     (function () {
-      function setLine(id, text) {
-        var el = document.getElementById(id);
-        if (!el) return;
-        while (el.firstChild) el.removeChild(el.firstChild);
-        el.appendChild(document.createTextNode(text));
-      }
       function log(message) {
         var el = document.getElementById('diag-log');
         if (el) el.appendChild(document.createTextNode(message + '\n'));
       }
-      function safe(label, fn) {
-        try {
-          log(label + ': ' + fn());
-        } catch (e) {
-          log(label + ': ERROR ' + (e && e.message ? e.message : e));
-        }
+      function describe(value) {
+        if (value && value.stack) return String(value.stack);
+        if (value && value.message) return String(value.message);
+        return String(value);
       }
-      function supports(code) {
-        try {
-          new Function(code);
-          return 'si';
-        } catch (e) {
-          return 'NO';
-        }
-      }
-
-      setLine('diag-js', 'Script clasico: se ejecuto');
-      window.onerror = function (message, source, line, column) {
-        log('[error] ' + message + ' @ ' + source + ':' + line + ':' + column);
+      window.onerror = function (message, source, line, column, error) {
+        log('[error] ' + message + ' @ ' + source + ':' + line + ':' + column + (error ? '\n' + describe(error) : ''));
       };
-
-      safe('User agent', function () { return navigator.userAgent; });
-      safe('Viewport', function () { return window.innerWidth + 'x' + window.innerHeight; });
-      safe('window.CSS existe', function () { return typeof window.CSS; });
-      safe('CSS.supports existe', function () { return window.CSS ? typeof window.CSS.supports : 'no (no hay CSS)'; });
-      safe('noModule en <script>', function () { return 'noModule' in document.createElement('script') ? 'si' : 'NO'; });
-      safe('Custom elements', function () { return typeof window.customElements; });
-      safe('Promise / fetch / Proxy', function () {
-        return typeof window.Promise + ' / ' + typeof window.fetch + ' / ' + typeof window.Proxy;
-      });
-      safe('eval dinamico permitido', function () { return supports('return 1'); });
-      var checks = [
-        ['let/const + arrow functions', 'let a = () => 1; const b = a();'],
-        ['template literals', 'var a = `x${1}`;'],
-        ['classes', 'class A {}'],
-        ['async/await', 'async function f() { await 0; }'],
-        ['object spread', 'var a = { ...{} };'],
-        ['optional chaining', 'var a = null; a?.b;'],
-        ['nullish coalescing', 'var a = null ?? 1;'],
-        ['class fields (incl. #private)', 'class A { x = 1; #y = 2; }'],
-        ['class static blocks', 'class A { static {} }']
-      ];
-      for (var i = 0; i < checks.length; i++) {
-        log('  ' + checks[i][0] + ': ' + supports(checks[i][1]));
+      if (window.addEventListener) {
+        window.addEventListener('unhandledrejection', function (event) {
+          log('[promesa rechazada] ' + describe(event.reason));
+        });
       }
+      if (window.console && console.error) {
+        var originalError = console.error;
+        console.error = function () {
+          var parts = [];
+          for (var i = 0; i < arguments.length; i++) parts.push(describe(arguments[i]));
+          log('[console.error] ' + parts.join(' '));
+          return originalError.apply(console, arguments);
+        };
+      }
+      window.setTimeout(function () {
+        var root = document.getElementsByTagName('app-root')[0];
+        var count = root && root.children ? root.children.length : 'sin app-root';
+        var el = document.getElementById('diag-app');
+        if (el) el.textContent = 'Angular: app-root tiene ' + count + ' hijos tras 8 s (0 = no renderizo)';
+        log('URL: ' + window.location.href);
+      }, 8000);
     })();
   </script>
-  <script type="module">
-    document.getElementById('diag-module').textContent = 'Script module: se ejecuto';
-  </script>
-  <script nomodule>
-    document.getElementById('diag-nomodule').appendChild(
-      document.createTextNode('El navegador NO soporta ES modules (se ejecuto el script nomodule)')
-    );
-  </script>
   <app-root></app-root>
+  <script src="app.js"></script>
 </body>
 </html>
