@@ -1,17 +1,10 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" style="height:auto;overflow:auto;">
 <head>
   <meta charset="utf-8">
-  <title>Test D4</title>
+  <title>Test D5</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    body { margin: 8px; background: #000000; color: #ffffff; font-family: sans-serif; font-size: 14px; }
-    h1 { font-size: 18px; margin: 0 0 6px 0; }
-    .note { color: #bbbbbb; margin: 6px 0; }
-    .g { color: #ffffff; padding: 6px; margin: 2px 0; width: 420px; background-color: #cc0000; }
-    .lbl { margin: 6px 0 2px 0; }
-    .box { width: 300px; border: 2px solid #ffcc00; padding: 2px; }
-  </style>
+  <link rel="stylesheet" href="styles.css">
 
 <!-- brewser-pwa:start -->
 <link rel="manifest" href="pwa/app.webmanifest">
@@ -22,37 +15,109 @@
 <script src="pwa/brewser-pwa.js" defer></script>
 <!-- brewser-pwa:end -->
 </head>
-<body>
-<h1>TEST D4: degradados y selects</h1>
-<p class="note">Degradados: todos deberian ir de GRIS CLARO arriba a GRIS OSCURO abajo (como G1). Dime cuales se ven distintos y de que color.</p>
-<div class="g" style="background-image:linear-gradient(to bottom, #6a7282, #364153);">G1 literal (control)</div>
-<div class="g" style="background-image:linear-gradient(#6a7282, #364153);">G2 sin direccion</div>
-<div class="g" style="background-image:linear-gradient(to bottom, #6a7282 0%, #364153 100%);">G3 con posiciones 0% / 100%</div>
-<div class="g" style="--a:#6a7282;--b:#364153;background-image:linear-gradient(to bottom, var(--a), var(--b));">G4 colores en var()</div>
-<div class="g" style="--p:to bottom;background-image:linear-gradient(var(--p), #6a7282, #364153);">G5 direccion en var()</div>
-<div class="g" style="--s:to bottom, #6a7282, #364153;background-image:linear-gradient(var(--s));">G6 todo en una var() con comas</div>
-<div class="g" style="--a:#6a7282;--b:#364153;background-image:linear-gradient(to bottom, var(--a, red), var(--b, red));">G7 var() con fallback</div>
-<div class="g" style="--v:initial;background-image:linear-gradient(var(--v, to bottom, #6a7282, #364153));">G8 var() cuyo valor es "initial" con fallback</div>
-<div class="g" style="--tw-gradient-via-stops:initial;--tw-gradient-from-position:0%;--tw-gradient-to-position:100%;--tw-gradient-position:to bottom;--tw-gradient-from:#6a7282;--tw-gradient-to:#364153;--tw-gradient-stops:var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));background-image:linear-gradient(var(--tw-gradient-stops));">G9 cadena exacta de Tailwind</div>
-<p class="note">Selects: cada uno esta dentro de una caja de 300px con borde amarillo. Dime cuales se salen de la caja o tienen un tamano raro.</p>
-<p class="lbl">S1 sin estilos</p>
-<div class="box"><select style=""><option>Random Battle</option><option>Gen 9 OU</option></select></div>
-<p class="lbl">S2 solo width:100%</p>
-<div class="box"><select style="width:100%;"><option>Random Battle</option><option>Gen 9 OU</option></select></div>
-<p class="lbl">S3 solo appearance:none</p>
-<div class="box"><select style="appearance:none;-webkit-appearance:none;"><option>Random Battle</option><option>Gen 9 OU</option></select></div>
-<p class="lbl">S4 solo padding 8px</p>
-<div class="box"><select style="padding:8px;"><option>Random Battle</option><option>Gen 9 OU</option></select></div>
-<p class="lbl">S5 solo font-size 18px</p>
-<div class="box"><select style="font-size:18px;"><option>Random Battle</option><option>Gen 9 OU</option></select></div>
-<p class="lbl">S6 solo background-color</p>
-<div class="box"><select style="background-color:#4a5565;color:#ffffff;"><option>Random Battle</option><option>Gen 9 OU</option></select></div>
-<p class="lbl">S7 solo border + border-radius</p>
-<div class="box"><select style="border:1px solid #99a1af;border-radius:6px;"><option>Random Battle</option><option>Gen 9 OU</option></select></div>
-<p class="lbl">S8 solo height 40px</p>
-<div class="box"><select style="height:40px;"><option>Random Battle</option><option>Gen 9 OU</option></select></div>
-<p class="lbl">S9 todo junto (como el Format de la app)</p>
-<div class="box"><select style="width:100%;appearance:none;-webkit-appearance:none;padding:8px 36px 8px 8px;font-size:18px;border:1px solid #99a1af;border-radius:6px;background-image:linear-gradient(to bottom, #6a7282, #364153);color:#ffffff;"><option>Random Battle</option><option>Gen 9 OU</option></select></div>
-<p>Fin del test D4</p>
+<body style="height:auto;overflow:auto;padding:8px;">
+  <p style="color:#ffffff;margin:0 0 6px 0;">TEST D5: el select de Format con el CSS real del build. Las clases se anaden de forma acumulativa. Dime en que tarjeta el select empieza a salirse o a tener un tamano raro.</p>
+  <div style="display:flex;flex-wrap:wrap;">
+<div class="flex w-full max-w-sm flex-col gap-4 rounded-3xl bw-ca p-7 text-white" style="margin:4px;">
+  <div class="flex flex-col gap-1">
+    <p class="font-bold">V1 sin clases</p>
+    <div class="relative">
+      <select class=""><option class="bg-gray-700">Random Battle</option><option class="bg-gray-700">Gen 9 OU</option></select>
+      
+    </div>
+  </div>
+</div>
+<div class="flex w-full max-w-sm flex-col gap-4 rounded-3xl bw-ca p-7 text-white" style="margin:4px;">
+  <div class="flex flex-col gap-1">
+    <p class="font-bold">V2 + w-full</p>
+    <div class="relative">
+      <select class="w-full"><option class="bg-gray-700">Random Battle</option><option class="bg-gray-700">Gen 9 OU</option></select>
+      
+    </div>
+  </div>
+</div>
+<div class="flex w-full max-w-sm flex-col gap-4 rounded-3xl bw-ca p-7 text-white" style="margin:4px;">
+  <div class="flex flex-col gap-1">
+    <p class="font-bold">V3 + appearance-none</p>
+    <div class="relative">
+      <select class="w-full appearance-none"><option class="bg-gray-700">Random Battle</option><option class="bg-gray-700">Gen 9 OU</option></select>
+      
+    </div>
+  </div>
+</div>
+<div class="flex w-full max-w-sm flex-col gap-4 rounded-3xl bw-ca p-7 text-white" style="margin:4px;">
+  <div class="flex flex-col gap-1">
+    <p class="font-bold">V4 + py-2 pr-9 pl-2</p>
+    <div class="relative">
+      <select class="w-full appearance-none py-2 pr-9 pl-2"><option class="bg-gray-700">Random Battle</option><option class="bg-gray-700">Gen 9 OU</option></select>
+      
+    </div>
+  </div>
+</div>
+<div class="flex w-full max-w-sm flex-col gap-4 rounded-3xl bw-ca p-7 text-white" style="margin:4px;">
+  <div class="flex flex-col gap-1">
+    <p class="font-bold">V5 + text-lg</p>
+    <div class="relative">
+      <select class="w-full appearance-none py-2 pr-9 pl-2 text-lg"><option class="bg-gray-700">Random Battle</option><option class="bg-gray-700">Gen 9 OU</option></select>
+      
+    </div>
+  </div>
+</div>
+<div class="flex w-full max-w-sm flex-col gap-4 rounded-3xl bw-ca p-7 text-white" style="margin:4px;">
+  <div class="flex flex-col gap-1">
+    <p class="font-bold">V6 + rounded-md border border-gray-400</p>
+    <div class="relative">
+      <select class="w-full appearance-none py-2 pr-9 pl-2 text-lg rounded-md border border-gray-400"><option class="bg-gray-700">Random Battle</option><option class="bg-gray-700">Gen 9 OU</option></select>
+      
+    </div>
+  </div>
+</div>
+<div class="flex w-full max-w-sm flex-col gap-4 rounded-3xl bw-ca p-7 text-white" style="margin:4px;">
+  <div class="flex flex-col gap-1">
+    <p class="font-bold">V7 + bg-linear-to-b from-gray-500 to-gray-700</p>
+    <div class="relative">
+      <select class="w-full appearance-none py-2 pr-9 pl-2 text-lg rounded-md border border-gray-400 bg-linear-to-b from-gray-500 to-gray-700"><option class="bg-gray-700">Random Battle</option><option class="bg-gray-700">Gen 9 OU</option></select>
+      
+    </div>
+  </div>
+</div>
+<div class="flex w-full max-w-sm flex-col gap-4 rounded-3xl bw-ca p-7 text-white" style="margin:4px;">
+  <div class="flex flex-col gap-1">
+    <p class="font-bold">V8 + shadow-inner</p>
+    <div class="relative">
+      <select class="w-full appearance-none py-2 pr-9 pl-2 text-lg rounded-md border border-gray-400 bg-linear-to-b from-gray-500 to-gray-700 shadow-inner"><option class="bg-gray-700">Random Battle</option><option class="bg-gray-700">Gen 9 OU</option></select>
+      
+    </div>
+  </div>
+</div>
+<div class="flex w-full max-w-sm flex-col gap-4 rounded-3xl bw-ca p-7 text-white" style="margin:4px;">
+  <div class="flex flex-col gap-1">
+    <p class="font-bold">V9 + cursor-pointer, hover y focus (clases completas de la app)</p>
+    <div class="relative">
+      <select class="w-full appearance-none py-2 pr-9 pl-2 text-lg rounded-md border border-gray-400 bg-linear-to-b from-gray-500 to-gray-700 shadow-inner cursor-pointer bw-ce bw-ch bw-cj bw-ck"><option class="bg-gray-700">Random Battle</option><option class="bg-gray-700">Gen 9 OU</option></select>
+      
+    </div>
+  </div>
+</div>
+<div class="flex w-full max-w-sm flex-col gap-4 rounded-3xl bw-ca p-7 text-white" style="margin:4px;">
+  <div class="flex flex-col gap-1">
+    <p class="font-bold">V10 = V9 + el icono de flecha (igual que la app)</p>
+    <div class="relative">
+      <select class="w-full appearance-none py-2 pr-9 pl-2 text-lg rounded-md border border-gray-400 bg-linear-to-b from-gray-500 to-gray-700 shadow-inner cursor-pointer bw-ce bw-ch bw-cj bw-ck"><option class="bg-gray-700">Random Battle</option><option class="bg-gray-700">Gen 9 OU</option></select>
+      <svg aria-hidden="true" viewBox="0 0 10 6" class="pointer-events-none absolute bw-c0 right-3 bw-c2 bw-c6 fill-gray-200"><path d="M0 0h10L5 6z" /></svg>
+    </div>
+  </div>
+</div>
+<div class="flex w-full max-w-sm flex-col gap-4 rounded-3xl bw-ca p-7 text-white" style="margin:4px;">
+  <div class="flex flex-col gap-1">
+    <p class="font-bold">V11 = V9 sin la clase bg-gray-700 en los option</p>
+    <div class="relative">
+      <select class="w-full appearance-none py-2 pr-9 pl-2 text-lg rounded-md border border-gray-400 bg-linear-to-b from-gray-500 to-gray-700 shadow-inner cursor-pointer bw-ce bw-ch bw-cj bw-ck"><option>Random Battle</option><option>Gen 9 OU</option></select>
+      
+    </div>
+  </div>
+</div>
+  </div>
+  <p style="color:#ffffff;">Fin del test D5</p>
 </body>
 </html>
