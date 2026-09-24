@@ -17,24 +17,29 @@
 </head>
   <body>
     <main id="app">
-      <h1>Pokémon Showdown — Fase 1</h1>
-      <p id="status">Diagnóstico de APIs</p>
+      <h1>Pokémon Showdown</h1>
+      <p id="status">Desconectado</p>
 
       <div class="panel">
-        <button id="testFetch">Probar Fetch</button>
-        <button id="testWs">Probar WebSocket</button>
-        <button id="testStorage">Probar Storage</button>
-        <button id="testImage">Probar Imagen remota</button>
+        <button id="connectBtn">Conectar como invitado</button>
+        <button id="disconnectBtn">Desconectar</button>
       </div>
 
+      <section id="lobby" hidden>
+        <h2>Lobby</h2>
+        <div id="userInfo"></div>
+        <div id="chatLog"></div>
+        <div class="chatInput">
+          <input
+            id="chatText"
+            type="text"
+            placeholder="Escribe un mensaje..."
+          />
+          <button id="sendChat">Enviar</button>
+        </div>
+      </section>
+
       <pre id="log"></pre>
-      <img
-        id="testImg"
-        alt="Prueba de imagen remota"
-        style="max-width: 200px; display: none"
-      />
-      <button id="testSpriteSheet">Probar Sprite Sheet animado</button>
-      <canvas id="spriteCanvas" style="border: 1px solid #4f8cff"></canvas>
     </main>
 
     <script src="./app.js"></script>
