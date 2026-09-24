@@ -516,10 +516,6 @@ button {
   }
 }
 
-.bw-c1 {
-  margin-right: .375rem;
-}
-
 .mb-4 {
   margin-bottom: 1rem;
 }
@@ -549,7 +545,7 @@ button {
   height: .75rem;
 }
 
-.bw-c2 {
+.bw-c1 {
   width: .875rem;
   height: .875rem;
 }
@@ -585,31 +581,31 @@ button {
   height: 4.75rem;
 }
 
-.bw-c3 {
+.bw-c2 {
   height: 52px;
 }
 
-.bw-c4 {
+.bw-c3 {
   height: 88px;
 }
 
-.bw-c5 {
+.bw-c4 {
   height: 104px;
 }
 
-.bw-c6 {
+.bw-c5 {
   height: 600px;
 }
 
-.bw-c7 {
+.bw-c6 {
   height: 616px;
 }
 
-.bw-c8 {
+.bw-c7 {
   height: 644px;
 }
 
-.bw-c9 {
+.bw-c8 {
   height: 720px;
 }
 
@@ -621,31 +617,31 @@ button {
   width: 14rem;
 }
 
-.bw-ca {
+.bw-c9 {
   width: 112px;
 }
 
-.bw-cb {
+.bw-ca {
   width: 146px;
 }
 
-.bw-cc {
+.bw-cb {
   width: 415px;
 }
 
-.bw-cd {
+.bw-cc {
   width: 496px;
 }
 
-.bw-ce {
+.bw-cd {
   width: 560px;
 }
 
-.bw-cf {
+.bw-ce {
   width: 640px;
 }
 
-.bw-cg {
+.bw-cf {
   width: 1280px;
 }
 
@@ -657,7 +653,7 @@ button {
   flex-shrink: 0;
 }
 
-.bw-ch {
+.bw-cg {
   --tw-translate-y: -50%;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y));
 }
@@ -770,11 +766,11 @@ button {
   border-color: #4a5565;
 }
 
-.bw-ci {
+.bw-ch {
   background-color: #0b0e14;
 }
 
-.bw-cj {
+.bw-ci {
   background-color: #0f141c;
 }
 
@@ -848,7 +844,7 @@ button {
   padding-right: .25rem;
 }
 
-.bw-ck {
+.bw-cj {
   padding-left: .375rem;
   padding-right: .375rem;
 }
@@ -1032,63 +1028,63 @@ button {
 }
 
 @media (hover: hover) {
-  .bw-cl:hover {
+  .bw-ck:hover {
     background-color: #193cb8;
   }
 
-  .bw-cm:hover {
+  .bw-cl:hover {
     background-color: #6a7282;
   }
 
-  .bw-cn:hover {
+  .bw-cm:hover {
     background-color: #4a5565;
   }
 
-  .bw-co:hover {
+  .bw-cn:hover {
     background-color: #3b5176;
   }
 }
 
-.bw-cp:focus-visible {
+.bw-co:focus-visible {
   outline-style: var(--tw-outline-style);
   outline-width: 2px;
 }
 
-.bw-cq:focus-visible {
+.bw-cp:focus-visible {
   outline-offset: -2px;
 }
 
-.bw-cr:focus-visible {
+.bw-cq:focus-visible {
   outline-offset: 2px;
 }
 
-.bw-cs:focus-visible {
+.bw-cr:focus-visible {
   outline-color: #fff;
 }
 
 @media (hover: hover) {
-  .bw-ct:enabled:hover {
+  .bw-cs:enabled:hover {
     background-color: #6a7282;
   }
 }
 
-.bw-cu:disabled {
+.bw-ct:disabled {
   cursor: not-allowed;
 }
 
-.bw-cv:disabled {
+.bw-cu:disabled {
   border-color: #6a7282;
 }
 
-.bw-cw:disabled {
+.bw-cv:disabled {
   background-color: #364153;
 }
 
-.bw-cx[aria-current="page"] {
+.bw-cw[aria-current="page"] {
   background-color: #34496b;
 }
 
-.bw-cy[aria-current="page"] {
+.bw-cx[aria-current="page"] {
   color: #fff;
 }
 
