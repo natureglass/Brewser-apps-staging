@@ -1,27 +1,17 @@
 {
-  "verdict": "SUSPICIOUS",
-  "score": 10,
-  "scanned_at": "2026-09-24T21:44:49Z",
+  "verdict": "GOOD",
+  "score": 0,
+  "scanned_at": "2026-09-24T21:54:50Z",
   "scanner_version": "1.3.2",
-  "package_hash": "d803793f16080f2028a484e0ce719ca74dd1a869002a510f88e81efa892b94ff",
+  "package_hash": "fe281a952095000014aee3fb9d64eadc3047d60325d9030089ffe86b6f96112b",
   "counts": {
     "info": 0,
-    "suspicious": 1,
+    "suspicious": 0,
     "dangerous": 0
   },
-  "rationale": "Suspicious: 1 signal(s) needing review; e.g. reads or writes document.cookie.",
+  "rationale": "No known-bad pattern matched. Not proof of safety — human review still required.",
   "truncated": false,
-  "findings": [
-    {
-      "rule_id": "cookie-access",
-      "severity": "SUSPICIOUS",
-      "title": "Reads or writes document.cookie",
-      "detail": "Accesses document.cookie.",
-      "file": "app.js",
-      "line": 38,
-      "evidence": "document.cookie"
-    }
-  ],
+  "findings": [],
   "capabilities": [],
   "limitations": "Static heuristic scan. A GOOD verdict means no known-bad pattern matched, NOT proof of safety. Human review is still required for every submission."
 }
