@@ -70,8 +70,8 @@ button:hover {
   font-size: 0.9rem;
 }
 
-/* #spriteCanvas {
-  width: 60px;
-  height: 60px;
+#spriteCanvas {
+  width: var(--sprite-width, 64px);
+  height: var(--sprite-height, 64px);
   image-rendering: pixelated;
-} */
+}

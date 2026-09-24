@@ -95,8 +95,14 @@ function playSpriteSheet(
     canvas.width = frameWidth;
     canvas.height = frameHeight;
     // Sincroniza el tamaño de visualización con el tamaño real del buffer
-    // canvas.style.width = `${frameWidth * SCALE_FACTOR}px`;
-    // canvas.style.height = `${frameHeight * SCALE_FACTOR}px`;
+    canvas.style.setProperty(
+      "--sprite-width",
+      `${frameWidth * SCALE_FACTOR}px`,
+    );
+    canvas.style.setProperty(
+      "--sprite-height",
+      `${frameHeight * SCALE_FACTOR}px`,
+    );
     print("sprite", `Sprite sheet cargado: ${img.width}x${img.height}`);
 
     let currentFrame = 0;
