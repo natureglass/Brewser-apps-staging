@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Pokémon Showdown</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <link
+      rel="icon"
+      href="/assets/favicon.ico"
+      sizes="32x32"
+      type="image/x-icon"
+    />
+  
+<!-- brewser-pwa:start -->
+<link rel="manifest" href="pwa/app.webmanifest">
+<meta name="theme-color" content="#5184ac">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="apple-touch-icon" href="pwa/apple-touch-icon.png">
+<script src="pwa/brewser-pwa.js" defer></script>
+<!-- brewser-pwa:end -->
+</head>
+  <body>
+    <main id="app">
+      <h1>Pokémon Showdown</h1>
+      <p id="status">Brewser iniciado correctamente.</p>
+
+      <div class="panel">
+        <p>Fase 0 — aplicación mínima</p>
+        <p id="counter">Contador: 0</p>
+        <button id="testButton">Probar interacción</button>
+        <button id="resetButton">Reiniciar</button>
+      </div>
+
+      <p id="result" aria-live="polite"></p>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
