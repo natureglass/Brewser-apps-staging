@@ -76,3 +76,13 @@ document.querySelector("#testImage").addEventListener("click", () => {
 print("info", `WebSocket disponible: ${typeof WebSocket}`);
 print("info", `fetch disponible: ${typeof fetch}`);
 print("info", `localStorage disponible: ${typeof localStorage}`);
+
+document.querySelector("#testWebp").addEventListener("click", () => {
+  print("webp", "Cargando WebP animado de prueba...");
+  const testWebpImg = document.querySelector("#testWebpImg");
+  testWebpImg.style.display = "block";
+  testWebpImg.onload = () => print("webp", "WebP cargado.");
+  testWebpImg.onerror = () => print("webp", "ERROR al cargar WebP.");
+  testWebpImg.src =
+    "https://mathiasbynens.be/demo/animated-webp-supported.webp";
+});
