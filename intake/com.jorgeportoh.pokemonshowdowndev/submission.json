@@ -1,0 +1,16 @@
+{
+    "id": "com.jorgeportoh.pokemonshowdowndev",
+    "name": "pokemon-showdown-dev",
+    "version": "0.1.22",
+    "owner": "9c62ed3db670bc404293f4cc080f4e4873999e1e597735adf6c583db95b2e2fa",
+    "zip_sha256": "9cd39ed48f655a1dd5962093011929f51433d8d4f7e5b059efb458ae4248f04f",
+    "attestation": {
+        "ts": "2026-09-24T15:04:49+00:00",
+        "platforms": [
+            "switch",
+            "web"
+        ],
+        "zip_sha256": "9cd39ed48f655a1dd5962093011929f51433d8d4f7e5b059efb458ae4248f04f"
+    },
+    "submitted_at": "2026-09-24T15:04:49+00:00"
+}
