@@ -1,15 +1,15 @@
 {
   "verdict": "SUSPICIOUS",
-  "score": 10,
-  "scanned_at": "2026-09-24T14:00:48Z",
+  "score": 20,
+  "scanned_at": "2026-09-24T14:10:09Z",
   "scanner_version": "1.3.2",
-  "package_hash": "331151233e1e25a2f59d0a97dc203645e02a042d1766c4eca0ab06c18d45e5ea",
+  "package_hash": "9bfe7dac054c94121e976323c433b49eadc8824fc2b0746b75a1028c7cea7bcb",
   "counts": {
     "info": 0,
-    "suspicious": 1,
+    "suspicious": 2,
     "dangerous": 0
   },
-  "rationale": "Suspicious: 1 signal(s) needing review; e.g. reads or writes document.cookie.",
+  "rationale": "Suspicious: 2 signal(s) needing review; e.g. reads or writes document.cookie.",
   "truncated": false,
   "findings": [
     {
@@ -20,6 +20,15 @@
       "file": "main-LT6KUAN7.js",
       "line": 4,
       "evidence": "document.cookie"
+    },
+    {
+      "rule_id": "function-constructor",
+      "severity": "SUSPICIOUS",
+      "title": "Function() code construction from a non-literal",
+      "detail": "Function() constructs code from a non-literal — a runtime-decided code path.",
+      "file": "index.html <inline script>",
+      "line": 65,
+      "evidence": "new Function(code)"
     }
   ],
   "capabilities": [],
