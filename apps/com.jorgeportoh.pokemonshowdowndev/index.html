@@ -1,11 +1,12 @@
 <!doctype html>
-<html lang="es">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Pokémon Showdown</title>
-    <link rel="stylesheet" href="./styles.css" />
-  
+<html lang="en" data-beasties-container>
+<head>
+  <meta charset="utf-8">
+  <title>PokemonShowdownBrewser</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="stylesheet" href="styles-5INURTSO.css">
 <!-- brewser-pwa:start -->
 <link rel="manifest" href="pwa/app.webmanifest">
 <meta name="theme-color" content="#5184ac">
@@ -15,33 +16,7 @@
 <script src="pwa/brewser-pwa.js" defer></script>
 <!-- brewser-pwa:end -->
 </head>
-  <body>
-    <main id="app">
-      <h1>Pokémon Showdown</h1>
-      <p id="status">Desconectado</p>
-
-      <div class="panel">
-        <button id="connectBtn">Conectar como invitado</button>
-        <button id="disconnectBtn">Desconectar</button>
-      </div>
-
-      <section id="lobby" hidden>
-        <h2>Lobby</h2>
-        <div id="userInfo"></div>
-        <div id="chatLog"></div>
-        <div class="chatInput">
-          <input
-            id="chatText"
-            type="text"
-            placeholder="Escribe un mensaje..."
-          />
-          <button id="sendChat">Enviar</button>
-        </div>
-      </section>
-
-      <pre id="log"></pre>
-    </main>
-
-    <script src="./app.js"></script>
-  </body>
+<body>
+  <app-root></app-root>
+<script src="main-S4YDUPDQ.js" type="module"></script></body>
 </html>
