@@ -26,7 +26,11 @@
     "hideMouseUndocked": false,
     "freshProcessOnExit": true,
     "minBrewserVersion": "0.1.131",
-    "publishedAt": "2026-09-24T02:30:28Z",
+    "publishedAt": "2026-09-24T02:36:19Z",
     "updatedAt": "2026-09-24T02:30:28Z",
-    "summary": "Test app"
+    "summary": "Test app",
+    "buttonMapping": {
+        "enter": "A",
+        "escape": "B"
+    }
 }
