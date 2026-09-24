@@ -8,7 +8,7 @@
  */
 'use strict';
 
-var CACHE    = 'brewser-app-com-jorgeportoh-pokemonshowdowndev-9ee770861728';
+var CACHE    = 'brewser-app-com-jorgeportoh-pokemonshowdowndev-94b4a33a889a';
 var PRECACHE = [".\/","pwa\/app.webmanifest","pwa\/brewser-pwa.js","pwa\/icon-192.png","pwa\/icon-512.png","pwa\/icon-maskable.png","pwa\/apple-touch-icon.png","chunk-BcKvhKaq.js","chunk-BxsDWStw.js","chunk-DcgYzHgC.js","favicon.ico","index.html","main-LT6KUAN7.js","styles-ZSJT3FPV.css"];   // JSON array of app-relative URLs
 var START    = 'index.html';    // navigation fallback (the app entry)
 

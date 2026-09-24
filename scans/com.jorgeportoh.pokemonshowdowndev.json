@@ -1,9 +1,9 @@
 {
   "verdict": "SUSPICIOUS",
   "score": 20,
-  "scanned_at": "2026-09-24T14:10:09Z",
+  "scanned_at": "2026-09-24T14:20:02Z",
   "scanner_version": "1.3.2",
-  "package_hash": "9bfe7dac054c94121e976323c433b49eadc8824fc2b0746b75a1028c7cea7bcb",
+  "package_hash": "49e5ae6d5715fcf925352bc831674edd627bcfaf5238b1016163c20ad68ca390",
   "counts": {
     "info": 0,
     "suspicious": 2,
@@ -27,7 +27,7 @@
       "title": "Function() code construction from a non-literal",
       "detail": "Function() constructs code from a non-literal — a runtime-decided code path.",
       "file": "index.html <inline script>",
-      "line": 65,
+      "line": 23,
       "evidence": "new Function(code)"
     }
   ],
