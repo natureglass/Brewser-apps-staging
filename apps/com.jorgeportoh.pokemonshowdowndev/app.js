@@ -77,12 +77,65 @@ print("info", `WebSocket disponible: ${typeof WebSocket}`);
 print("info", `fetch disponible: ${typeof fetch}`);
 print("info", `localStorage disponible: ${typeof localStorage}`);
 
-document.querySelector("#testWebp").addEventListener("click", () => {
-  print("webp", "Cargando WebP animado de prueba...");
-  const testWebpImg = document.querySelector("#testWebpImg");
-  testWebpImg.style.display = "block";
-  testWebpImg.onload = () => print("webp", "WebP cargado.");
-  testWebpImg.onerror = () => print("webp", "ERROR al cargar WebP.");
-  testWebpImg.src =
-    "https://mathiasbynens.be/demo/animated-webp-supported.webp";
+function playSpriteSheet(
+  canvas,
+  spriteSheetSrc,
+  frameWidth,
+  frameHeight,
+  frameCount,
+  columns,
+  fps = 12,
+) {
+  const ctx = canvas.getContext("2d");
+  const img = new Image();
+
+  img.onload = () => {
+    canvas.width = frameWidth;
+    canvas.height = frameHeight;
+    print("sprite", `Sprite sheet cargado: ${img.width}x${img.height}`);
+
+    let currentFrame = 0;
+
+    setInterval(() => {
+      const col = currentFrame % columns;
+      const row = Math.floor(currentFrame / columns);
+
+      ctx.clearRect(0, 0, frameWidth, frameHeight);
+      ctx.drawImage(
+        img,
+        col * frameWidth,
+        row * frameHeight,
+        frameWidth,
+        frameHeight,
+        0,
+        0,
+        frameWidth,
+        frameHeight,
+      );
+
+      currentFrame = (currentFrame + 1) % frameCount;
+    }, 1000 / fps);
+  };
+
+  img.onerror = () => {
+    print("sprite", "ERROR al cargar el sprite sheet.");
+  };
+
+  img.src = spriteSheetSrc;
+}
+
+document.querySelector("#testSpriteSheet").addEventListener("click", () => {
+  print("sprite", "Iniciando prueba de sprite sheet...");
+  const canvas = document.querySelector("#spriteCanvas");
+
+  // Sustituye estos valores por los datos reales de tu sprite sheet
+  playSpriteSheet(
+    canvas,
+    "https://i.imgur.com/mYaXw75.png",
+    60, // frameWidth
+    60, // frameHeight
+    25, // frameCount (el número real de frames extraídos)
+    6, // columns (columnas reales del grid generado)
+    25, // fps deseado
+  );
 });
