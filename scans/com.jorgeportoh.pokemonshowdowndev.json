@@ -1,9 +1,9 @@
 {
   "verdict": "SUSPICIOUS",
   "score": 10,
-  "scanned_at": "2026-09-24T16:30:25Z",
+  "scanned_at": "2026-09-24T16:46:40Z",
   "scanner_version": "1.3.2",
-  "package_hash": "d6863ef7aff607826b1dcca8d1edb610f9daf0a80dfdfbb256b63343b3c08d9b",
+  "package_hash": "1043c25a3fd66416f37d76fc29cfd1926e952b4ff62a9f8c4b8466881b0c34ed",
   "counts": {
     "info": 0,
     "suspicious": 1,
@@ -18,7 +18,7 @@
       "title": "Reads or writes document.cookie",
       "detail": "Accesses document.cookie.",
       "file": "app.js",
-      "line": 14,
+      "line": 38,
       "evidence": "document.cookie"
     }
   ],

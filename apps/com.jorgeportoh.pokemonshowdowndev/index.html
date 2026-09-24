@@ -19,23 +19,44 @@
 </head>
 <body>
   <div style="color:#ffffff;background:#000000;padding:4px;">
-    <p id="bw-diag-appjs">app.js: DID NOT RUN</p>
-    <p id="bw-diag-app">Angular: waiting...</p>
-    <pre id="bw-diag-log">Log:</pre>
+    <p id="bw-diag-appjs" style="margin:0;">app.js: DID NOT RUN</p>
+    <p id="bw-diag-app" style="margin:0;">Angular: waiting...</p>
+    <div id="bw-diag-log" style="height:140px;overflow-y:auto;background:#222222;font-family:monospace;font-size:13px;">
+      <p style="margin:0;">Log (newest first)</p>
+    </div>
   </div>
   <script>
     (function () {
+      var seen = {};
       function log(message) {
-        var el = document.getElementById('bw-diag-log');
-        if (el) el.appendChild(document.createTextNode('\n' + message));
+        var box = document.getElementById('bw-diag-log');
+        if (!box) return;
+        var key = message.slice(0, 300);
+        var entry = seen[key];
+        if (entry) {
+          entry.count++;
+          entry.node.textContent = '(x' + entry.count + ') ' + message;
+          return;
+        }
+        var node = document.createElement('p');
+        node.style.margin = '0';
+        node.style.whiteSpace = 'pre-wrap';
+        node.textContent = message;
+        box.insertBefore(node, box.firstChild);
+        seen[key] = { count: 1, node: node };
       }
       function describe(value) {
-        if (value && value.stack) return String(value.stack);
-        if (value && value.message) return String(value.message);
-        return String(value);
+        if (!value || typeof value !== 'object') return String(value);
+        var message = value.message ? String(value.name || 'Error') + ': ' + value.message : String(value);
+        var frames = value.stack ? String(value.stack).split('\n') : [];
+        var kept = [];
+        for (var i = 0; i < frames.length && kept.length < 3; i++) {
+          if (frames[i] && frames[i].indexOf(value.message) === -1) kept.push(frames[i].replace(/^\s+/, '  '));
+        }
+        return message + (kept.length ? '\n' + kept.join('\n') : '');
       }
       window.onerror = function (message, source, line, column, error) {
-        log('[error] ' + message + ' @ ' + source + ':' + line + ':' + column + (error ? '\n' + describe(error) : ''));
+        log('[error] ' + (error ? describe(error) : message) + '\n  @ ' + source + ':' + line + ':' + column);
       };
       if (window.addEventListener) {
         window.addEventListener('unhandledrejection', function (event) {
@@ -52,16 +73,20 @@
         };
       }
       log('User agent: ' + navigator.userAgent);
+      log('style polyfill: ' + (window.__bwStylePolyfill || 'app.js not run yet'));
 
       // Navigation debugging: what receives each click, whether Angular's RouterLink handled it
-      // (defaultPrevented after bubbling), and whether the hash actually changes.
+      // (defaultPrevented after bubbling), and whether the URL changes.
       function describeNode(node) {
         var parts = [];
-        for (var i = 0; node && node.tagName && i < 3; i++, node = node.parentNode) {
+        for (var i = 0; node && i < 4; i++, node = node.parentNode) {
+          if (node.nodeType === 3) { parts.push('#text'); continue; }
+          if (!node.tagName) { parts.push(node.nodeName || String(node)); break; }
           var cls = typeof node.className === 'string' ? node.className.split(' ').slice(0, 2).join('.') : '';
-          parts.push(node.tagName.toLowerCase() + (cls ? '.' + cls : '') + (node.getAttribute && node.getAttribute('href') ? '[href=' + node.getAttribute('href') + ']' : ''));
+          var href = node.getAttribute && node.getAttribute('href');
+          parts.push(node.tagName.toLowerCase() + (cls ? '.' + cls : '') + (href ? '[href=' + href + ']' : ''));
         }
-        return parts.join(' < ');
+        return parts.join(' < ') || String(node);
       }
       if (document.addEventListener) {
         document.addEventListener('click', function (event) {
@@ -70,7 +95,7 @@
             (atPoint && atPoint !== event.target ? '\n  elementFromPoint: ' + describeNode(atPoint) : ''));
         }, true);
         window.addEventListener('click', function (event) {
-          log('[click] after handlers, defaultPrevented=' + event.defaultPrevented);
+          log('[click] after handlers, defaultPrevented=' + event.defaultPrevented + ', url=' + window.location.hash);
         });
         window.addEventListener('hashchange', function () {
           log('[hashchange] ' + window.location.hash);
@@ -83,7 +108,7 @@
         var root = document.getElementsByTagName('app-root')[0];
         var count = root && root.children ? root.children.length : 'no app-root';
         var el = document.getElementById('bw-diag-app');
-        if (el) el.textContent = 'Angular: app-root has ' + count + ' children after 8 s (0 = did not render)';
+        if (el) el.textContent = 'Angular: app-root has ' + count + ' children after 8 s (0 = did not render) | style polyfill: ' + (window.__bwStylePolyfill || 'unknown');
       }, 8000);
     })();
   </script>
