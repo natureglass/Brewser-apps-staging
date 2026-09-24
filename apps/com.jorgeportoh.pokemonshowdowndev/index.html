@@ -2,7 +2,7 @@
 <html lang="en" style="height:auto;overflow:auto;">
 <head>
   <meta charset="utf-8">
-  <title>Test D5</title>
+  <title>Test D6</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="styles.css">
 
@@ -16,108 +16,101 @@
 <!-- brewser-pwa:end -->
 </head>
 <body style="height:auto;overflow:auto;padding:8px;">
-  <p style="color:#ffffff;margin:0 0 6px 0;">TEST D5: el select de Format con el CSS real del build. Las clases se anaden de forma acumulativa. Dime en que tarjeta el select empieza a salirse o a tener un tamano raro.</p>
+  <p style="color:#ffffff;margin:0 0 6px 0;">TEST D6: selects cuyos options se anaden despues de crearlos (como hace Angular). Dime que tarjetas tienen el select con un tamano raro, tambien pasados 2 segundos.</p>
+  <p id="d6-status" style="color:#ffffff;margin:0 0 6px 0;">Script: no ejecutado</p>
   <div style="display:flex;flex-wrap:wrap;">
 <div class="flex w-full max-w-sm flex-col gap-4 rounded-3xl bw-ca p-7 text-white" style="margin:4px;">
   <div class="flex flex-col gap-1">
-    <p class="font-bold">V1 sin clases</p>
-    <div class="relative">
-      <select class=""><option class="bg-gray-700">Random Battle</option><option class="bg-gray-700">Gen 9 OU</option></select>
-      
+    <p class="font-bold">O1 options escritos en el HTML (control, como D5)</p>
+    <div class="relative" id="wrap-static">
+      <select id="sel-static" class="w-full cursor-pointer appearance-none rounded-md border border-gray-400 bg-linear-to-b from-gray-500 to-gray-700 py-2 pr-9 pl-2 text-lg shadow-inner bw-ce bw-ch bw-cj bw-ck"><option>Random Battle</option><option>Gen 9 OU</option></select>
     </div>
   </div>
 </div>
 <div class="flex w-full max-w-sm flex-col gap-4 rounded-3xl bw-ca p-7 text-white" style="margin:4px;">
   <div class="flex flex-col gap-1">
-    <p class="font-bold">V2 + w-full</p>
-    <div class="relative">
-      <select class="w-full"><option class="bg-gray-700">Random Battle</option><option class="bg-gray-700">Gen 9 OU</option></select>
-      
+    <p class="font-bold">O2 select vacio + options anadidos por JS al cargar</p>
+    <div class="relative" id="wrap-append-now">
+      <select id="sel-append-now" class="w-full cursor-pointer appearance-none rounded-md border border-gray-400 bg-linear-to-b from-gray-500 to-gray-700 py-2 pr-9 pl-2 text-lg shadow-inner bw-ce bw-ch bw-cj bw-ck"></select>
     </div>
   </div>
 </div>
 <div class="flex w-full max-w-sm flex-col gap-4 rounded-3xl bw-ca p-7 text-white" style="margin:4px;">
   <div class="flex flex-col gap-1">
-    <p class="font-bold">V3 + appearance-none</p>
-    <div class="relative">
-      <select class="w-full appearance-none"><option class="bg-gray-700">Random Battle</option><option class="bg-gray-700">Gen 9 OU</option></select>
-      
+    <p class="font-bold">O3 select vacio + options anadidos por JS a los 1.5 s</p>
+    <div class="relative" id="wrap-append-later">
+      <select id="sel-append-later" class="w-full cursor-pointer appearance-none rounded-md border border-gray-400 bg-linear-to-b from-gray-500 to-gray-700 py-2 pr-9 pl-2 text-lg shadow-inner bw-ce bw-ch bw-cj bw-ck"></select>
     </div>
   </div>
 </div>
 <div class="flex w-full max-w-sm flex-col gap-4 rounded-3xl bw-ca p-7 text-white" style="margin:4px;">
   <div class="flex flex-col gap-1">
-    <p class="font-bold">V4 + py-2 pr-9 pl-2</p>
-    <div class="relative">
-      <select class="w-full appearance-none py-2 pr-9 pl-2"><option class="bg-gray-700">Random Battle</option><option class="bg-gray-700">Gen 9 OU</option></select>
-      
+    <p class="font-bold">O4 como O2 + reinsertar el select en el DOM (posible arreglo)</p>
+    <div class="relative" id="wrap-append-reinsert">
+      <select id="sel-append-reinsert" class="w-full cursor-pointer appearance-none rounded-md border border-gray-400 bg-linear-to-b from-gray-500 to-gray-700 py-2 pr-9 pl-2 text-lg shadow-inner bw-ce bw-ch bw-cj bw-ck"></select>
     </div>
   </div>
 </div>
 <div class="flex w-full max-w-sm flex-col gap-4 rounded-3xl bw-ca p-7 text-white" style="margin:4px;">
   <div class="flex flex-col gap-1">
-    <p class="font-bold">V5 + text-lg</p>
-    <div class="relative">
-      <select class="w-full appearance-none py-2 pr-9 pl-2 text-lg"><option class="bg-gray-700">Random Battle</option><option class="bg-gray-700">Gen 9 OU</option></select>
-      
+    <p class="font-bold">O5 como O2 + display none/block en el select (posible arreglo)</p>
+    <div class="relative" id="wrap-append-toggle">
+      <select id="sel-append-toggle" class="w-full cursor-pointer appearance-none rounded-md border border-gray-400 bg-linear-to-b from-gray-500 to-gray-700 py-2 pr-9 pl-2 text-lg shadow-inner bw-ce bw-ch bw-cj bw-ck"></select>
     </div>
   </div>
 </div>
 <div class="flex w-full max-w-sm flex-col gap-4 rounded-3xl bw-ca p-7 text-white" style="margin:4px;">
   <div class="flex flex-col gap-1">
-    <p class="font-bold">V6 + rounded-md border border-gray-400</p>
-    <div class="relative">
-      <select class="w-full appearance-none py-2 pr-9 pl-2 text-lg rounded-md border border-gray-400"><option class="bg-gray-700">Random Battle</option><option class="bg-gray-700">Gen 9 OU</option></select>
-      
-    </div>
-  </div>
-</div>
-<div class="flex w-full max-w-sm flex-col gap-4 rounded-3xl bw-ca p-7 text-white" style="margin:4px;">
-  <div class="flex flex-col gap-1">
-    <p class="font-bold">V7 + bg-linear-to-b from-gray-500 to-gray-700</p>
-    <div class="relative">
-      <select class="w-full appearance-none py-2 pr-9 pl-2 text-lg rounded-md border border-gray-400 bg-linear-to-b from-gray-500 to-gray-700"><option class="bg-gray-700">Random Battle</option><option class="bg-gray-700">Gen 9 OU</option></select>
-      
-    </div>
-  </div>
-</div>
-<div class="flex w-full max-w-sm flex-col gap-4 rounded-3xl bw-ca p-7 text-white" style="margin:4px;">
-  <div class="flex flex-col gap-1">
-    <p class="font-bold">V8 + shadow-inner</p>
-    <div class="relative">
-      <select class="w-full appearance-none py-2 pr-9 pl-2 text-lg rounded-md border border-gray-400 bg-linear-to-b from-gray-500 to-gray-700 shadow-inner"><option class="bg-gray-700">Random Battle</option><option class="bg-gray-700">Gen 9 OU</option></select>
-      
-    </div>
-  </div>
-</div>
-<div class="flex w-full max-w-sm flex-col gap-4 rounded-3xl bw-ca p-7 text-white" style="margin:4px;">
-  <div class="flex flex-col gap-1">
-    <p class="font-bold">V9 + cursor-pointer, hover y focus (clases completas de la app)</p>
-    <div class="relative">
-      <select class="w-full appearance-none py-2 pr-9 pl-2 text-lg rounded-md border border-gray-400 bg-linear-to-b from-gray-500 to-gray-700 shadow-inner cursor-pointer bw-ce bw-ch bw-cj bw-ck"><option class="bg-gray-700">Random Battle</option><option class="bg-gray-700">Gen 9 OU</option></select>
-      
-    </div>
-  </div>
-</div>
-<div class="flex w-full max-w-sm flex-col gap-4 rounded-3xl bw-ca p-7 text-white" style="margin:4px;">
-  <div class="flex flex-col gap-1">
-    <p class="font-bold">V10 = V9 + el icono de flecha (igual que la app)</p>
-    <div class="relative">
-      <select class="w-full appearance-none py-2 pr-9 pl-2 text-lg rounded-md border border-gray-400 bg-linear-to-b from-gray-500 to-gray-700 shadow-inner cursor-pointer bw-ce bw-ch bw-cj bw-ck"><option class="bg-gray-700">Random Battle</option><option class="bg-gray-700">Gen 9 OU</option></select>
-      <svg aria-hidden="true" viewBox="0 0 10 6" class="pointer-events-none absolute bw-c0 right-3 bw-c2 bw-c6 fill-gray-200"><path d="M0 0h10L5 6z" /></svg>
-    </div>
-  </div>
-</div>
-<div class="flex w-full max-w-sm flex-col gap-4 rounded-3xl bw-ca p-7 text-white" style="margin:4px;">
-  <div class="flex flex-col gap-1">
-    <p class="font-bold">V11 = V9 sin la clase bg-gray-700 en los option</p>
-    <div class="relative">
-      <select class="w-full appearance-none py-2 pr-9 pl-2 text-lg rounded-md border border-gray-400 bg-linear-to-b from-gray-500 to-gray-700 shadow-inner cursor-pointer bw-ce bw-ch bw-cj bw-ck"><option>Random Battle</option><option>Gen 9 OU</option></select>
-      
+    <p class="font-bold">O6 select creado por JS, options anadidos y luego insertado (como Angular)</p>
+    <div class="relative" id="wrap-create-js">
+      <p>(pendiente)</p>
     </div>
   </div>
 </div>
   </div>
-  <p style="color:#ffffff;">Fin del test D5</p>
+  <script>
+    (function () {
+      var labels = ['Random Battle', 'Gen 9 OU', 'Gen 9 UU'];
+      function fill(select) {
+        for (var i = 0; i < labels.length; i++) {
+          var option = document.createElement('option');
+          option.appendChild(document.createTextNode(labels[i]));
+          select.appendChild(option);
+        }
+      }
+      function byId(id) { return document.getElementById(id); }
+      try {
+        fill(byId('sel-append-now'));
+
+        fill(byId('sel-append-reinsert'));
+        var reinsert = byId('sel-append-reinsert');
+        var parent = reinsert.parentNode;
+        parent.removeChild(reinsert);
+        parent.appendChild(reinsert);
+
+        var toggle = byId('sel-append-toggle');
+        fill(toggle);
+        toggle.style.display = 'none';
+        void toggle.offsetHeight;
+        toggle.style.display = '';
+
+        var created = document.createElement('select');
+        created.className = "w-full cursor-pointer appearance-none rounded-md border border-gray-400 bg-linear-to-b from-gray-500 to-gray-700 py-2 pr-9 pl-2 text-lg shadow-inner bw-ce bw-ch bw-cj bw-ck";
+        fill(created);
+        var wrap = byId('wrap-create-js');
+        while (wrap.firstChild) wrap.removeChild(wrap.firstChild);
+        wrap.appendChild(created);
+
+        window.setTimeout(function () {
+          fill(byId('sel-append-later'));
+          byId('d6-status').textContent = 'Script: todo aplicado (incluido O3 a los 1.5 s)';
+        }, 1500);
+        byId('d6-status').textContent = 'Script: aplicado, esperando O3...';
+      } catch (e) {
+        byId('d6-status').textContent = 'Script ERROR: ' + (e && e.message ? e.message : e);
+      }
+    })();
+  </script>
+  <p style="color:#ffffff;">Fin del test D6</p>
 </body>
 </html>
