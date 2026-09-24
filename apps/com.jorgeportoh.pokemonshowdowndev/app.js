@@ -26,18 +26,29 @@ window.addEventListener("error", (event) => {
   status.textContent = `Error JavaScript: ${event.message}`;
 });
 
+document.addEventListener("keydown", (event) => {
+  switch (event.code) {
+    case "Enter":
+      testButton.click();
+      break;
+    case "Escape":
+      resetButton.click();
+      break;
+  }
+});
+
 render();
 
-const diagnostics = document.createElement("pre");
-diagnostics.textContent = [
-  `User agent: ${navigator.userAgent}`,
-  `Viewport: ${window.innerWidth}x${window.innerHeight}`,
-  `WebSocket: ${typeof WebSocket}`,
-  `Fetch: ${typeof fetch}`,
-  `localStorage: ${typeof localStorage}`,
-].join("\n");
+// const diagnostics = document.createElement("pre");
+// diagnostics.textContent = [
+//   `User agent: ${navigator.userAgent}`,
+//   `Viewport: ${window.innerWidth}x${window.innerHeight}`,
+//   `WebSocket: ${typeof WebSocket}`,
+//   `Fetch: ${typeof fetch}`,
+//   `localStorage: ${typeof localStorage}`,
+// ].join("\n");
 
-document.querySelector("#app").append(diagnostics);
+// document.querySelector("#app").append(diagnostics);
 
 const cssInfo = document.createElement("pre");
 cssInfo.textContent = [
