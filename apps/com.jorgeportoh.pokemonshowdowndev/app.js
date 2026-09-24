@@ -86,7 +86,7 @@ function playSpriteSheet(
   frameHeight,
   frameCount,
   columns,
-  fps = 12,
+  fps,
 ) {
   const ctx = canvas.getContext("2d");
   const img = new Image();
@@ -95,8 +95,8 @@ function playSpriteSheet(
     canvas.width = frameWidth;
     canvas.height = frameHeight;
     // Sincroniza el tamaño de visualización con el tamaño real del buffer
-    canvas.style.width = `${frameWidth * SCALE_FACTOR}px`;
-    canvas.style.height = `${frameHeight * SCALE_FACTOR}px`;
+    // canvas.style.width = `${frameWidth * SCALE_FACTOR}px`;
+    // canvas.style.height = `${frameHeight * SCALE_FACTOR}px`;
     print("sprite", `Sprite sheet cargado: ${img.width}x${img.height}`);
 
     let currentFrame = 0;
