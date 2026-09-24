@@ -1,66 +1,78 @@
-let count = 0;
+const log = document.querySelector("#log");
+const testImg = document.querySelector("#testImg");
 
-const status = document.querySelector("#status");
-const counter = document.querySelector("#counter");
-const result = document.querySelector("#result");
-const testButton = document.querySelector("#testButton");
-const resetButton = document.querySelector("#resetButton");
-
-function render() {
-  counter.textContent = `Contador: ${count}`;
+function print(label, message) {
+  const line = document.createElement("div");
+  line.textContent = `[${label}] ${message}`;
+  log.prepend(line);
 }
 
-testButton.addEventListener("click", () => {
-  count += 1;
-  result.textContent = "La interacción funciona correctamente.";
-  render();
-});
-
-resetButton.addEventListener("click", () => {
-  count = 0;
-  result.textContent = "Estado reiniciado.";
-  render();
-});
-
-window.addEventListener("error", (event) => {
-  status.textContent = `Error JavaScript: ${event.message}`;
-});
-
-document.addEventListener("keydown", (event) => {
-  switch (event.code) {
-    case "Enter":
-      testButton.click();
-      break;
-    case "Escape":
-      resetButton.click();
-      break;
+document.querySelector("#testFetch").addEventListener("click", async () => {
+  print("fetch", "Iniciando petición...");
+  try {
+    const response = await fetch(
+      "https://play.pokemonshowdown.com/data/pokedex.json",
+    );
+    print("fetch", `Estado HTTP: ${response.status}`);
+    const data = await response.json();
+    const keys = Object.keys(data);
+    print(
+      "fetch",
+      `OK. Recibidas ${keys.length} entradas. Ejemplo: ${keys[0]}`,
+    );
+  } catch (error) {
+    print("fetch", `ERROR: ${error.message}`);
   }
 });
 
-render();
+document.querySelector("#testWs").addEventListener("click", () => {
+  print("websocket", "Conectando a sim3.psim.us...");
+  try {
+    const socket = new WebSocket("wss://sim3.psim.us/showdown/websocket");
 
-// const diagnostics = document.createElement("pre");
-// diagnostics.textContent = [
-//   `User agent: ${navigator.userAgent}`,
-//   `Viewport: ${window.innerWidth}x${window.innerHeight}`,
-//   `WebSocket: ${typeof WebSocket}`,
-//   `Fetch: ${typeof fetch}`,
-//   `localStorage: ${typeof localStorage}`,
-// ].join("\n");
+    socket.onopen = () => {
+      print("websocket", "Conexión abierta correctamente.");
+    };
 
-// document.querySelector("#app").append(diagnostics);
+    socket.onmessage = (event) => {
+      const preview = String(event.data).slice(0, 120);
+      print("websocket", `Mensaje recibido: ${preview}`);
+    };
 
-const cssInfo = document.createElement("pre");
-cssInfo.textContent = [
-  `devicePixelRatio: ${window.devicePixelRatio}`,
-  `innerWidth: ${window.innerWidth}`,
-  `innerHeight: ${window.innerHeight}`,
-  `outerWidth: ${window.outerWidth}`,
-  `outerHeight: ${window.outerHeight}`,
-  `Flexbox soportado: ${CSS.supports("display", "flex")}`,
-  `Grid soportado: ${CSS.supports("display", "grid")}`,
-  `Gap soportado: ${CSS.supports("gap", "16px")}`,
-  `Border-radius soportado: ${CSS.supports("border-radius", "10px")}`,
-].join("\n");
+    socket.onerror = () => {
+      print("websocket", "ERROR en la conexión.");
+    };
 
-document.querySelector("#app").append(cssInfo);
+    socket.onclose = (event) => {
+      print("websocket", `Conexión cerrada. Código: ${event.code}`);
+    };
+
+    window.__psSocket = socket;
+  } catch (error) {
+    print("websocket", `ERROR al crear WebSocket: ${error.message}`);
+  }
+});
+
+document.querySelector("#testStorage").addEventListener("click", () => {
+  try {
+    const key = "ps_brewser_test";
+    const value = `guardado-${Date.now()}`;
+    localStorage.setItem(key, value);
+    const readBack = localStorage.getItem(key);
+    print("storage", `Escrito: ${value} | Leído: ${readBack}`);
+  } catch (error) {
+    print("storage", `ERROR: ${error.message}`);
+  }
+});
+
+document.querySelector("#testImage").addEventListener("click", () => {
+  print("image", "Cargando sprite remoto...");
+  testImg.style.display = "block";
+  testImg.onload = () => print("image", "Imagen cargada correctamente.");
+  testImg.onerror = () => print("image", "ERROR al cargar la imagen.");
+  testImg.src = "https://play.pokemonshowdown.com/sprites/ani/pikachu.gif";
+});
+
+print("info", `WebSocket disponible: ${typeof WebSocket}`);
+print("info", `fetch disponible: ${typeof fetch}`);
+print("info", `localStorage disponible: ${typeof localStorage}`);

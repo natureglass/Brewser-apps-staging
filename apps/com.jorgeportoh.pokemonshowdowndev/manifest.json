@@ -1,7 +1,7 @@
 {
     "id": "com.jorgeportoh.pokemonshowdowndev",
     "name": "pokemon-showdown-dev",
-    "version": "0.1.2",
+    "version": "0.1.3",
     "description": "<p>This is a development test application for a pokemon showdown app on the future.</p>",
     "logo": "assets/appbanner.jpg",
     "entry": "index.html",
@@ -9,14 +9,17 @@
         "Demos"
     ],
     "permissions": [
-        "network"
+        "device_info",
+        "network",
+        "storage"
     ],
     "compatibility": [
         "switch",
         "web"
     ],
     "allowed_origins": [
-        "https://sim3.psim.us"
+        "https://sim3.psim.us",
+        "https://play.pokemonshowdown.com"
     ],
     "developer": "Jorge Porto",
     "license": "MIT",
@@ -26,11 +29,15 @@
     "hideMouseUndocked": true,
     "freshProcessOnExit": true,
     "minBrewserVersion": "0.1.131",
-    "publishedAt": "2026-09-24T02:54:33Z",
-    "updatedAt": "2026-09-24T02:51:18Z",
+    "publishedAt": "2026-09-24T03:08:13Z",
+    "updatedAt": "2026-09-24T03:08:13Z",
     "summary": "Test app",
     "buttonMapping": {
         "enter": "A",
-        "escape": "B"
+        "escape": "B",
+        "up": "UP",
+        "down": "DOWN",
+        "left": "LEFT",
+        "right": "RIGHT"
     }
 }

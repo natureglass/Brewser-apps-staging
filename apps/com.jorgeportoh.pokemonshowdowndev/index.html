@@ -5,12 +5,6 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Pokémon Showdown</title>
     <link rel="stylesheet" href="./styles.css" />
-    <link
-      rel="icon"
-      href="/assets/favicon.ico"
-      sizes="32x32"
-      type="image/x-icon"
-    />
   
 <!-- brewser-pwa:start -->
 <link rel="manifest" href="pwa/app.webmanifest">
@@ -23,17 +17,22 @@
 </head>
   <body>
     <main id="app">
-      <h1>Pokémon Showdown</h1>
-      <p id="status">Brewser iniciado correctamente.</p>
+      <h1>Pokémon Showdown — Fase 1</h1>
+      <p id="status">Diagnóstico de APIs</p>
 
       <div class="panel">
-        <p>Fase 0 — aplicación mínima</p>
-        <p id="counter">Contador: 0</p>
-        <button id="testButton">Probar interacción</button>
-        <button id="resetButton">Reiniciar</button>
+        <button id="testFetch">Probar Fetch</button>
+        <button id="testWs">Probar WebSocket</button>
+        <button id="testStorage">Probar Storage</button>
+        <button id="testImage">Probar Imagen remota</button>
       </div>
 
-      <p id="result" aria-live="polite"></p>
+      <pre id="log"></pre>
+      <img
+        id="testImg"
+        alt="Prueba de imagen remota"
+        style="max-width: 200px; display: none"
+      />
     </main>
 
     <script src="./app.js"></script>

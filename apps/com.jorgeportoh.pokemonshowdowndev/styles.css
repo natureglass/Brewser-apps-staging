@@ -58,3 +58,14 @@ button:focus,
 button:hover {
   background: #78a6ff;
 }
+
+#log {
+  margin-top: 20px;
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 12px;
+  background: black;
+  color: #7cfc00;
+  font-family: monospace;
+  font-size: 0.9rem;
+}
