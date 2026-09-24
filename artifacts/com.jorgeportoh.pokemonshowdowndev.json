@@ -1,13 +1,16 @@
 {
   "id": "com.jorgeportoh.pokemonshowdowndev",
-  "sizeBytes": 459852,
+  "sizeBytes": 585256,
   "files": [
     "README.md",
     "assets/appbanner.jpg",
     "brewser-sw.js",
+    "chunk-CF1-sjXY.js",
+    "chunk-CIOYIj3-.js",
+    "chunk-DusE4r3_.js",
     "favicon.ico",
     "index.html",
-    "main-S4YDUPDQ.js",
+    "main-INE6T3H2.js",
     "manifest.json",
     "pwa/app.webmanifest",
     "pwa/apple-touch-icon.png",
@@ -15,6 +18,6 @@
     "pwa/icon-192.png",
     "pwa/icon-512.png",
     "pwa/icon-maskable.png",
-    "styles-5INURTSO.css"
+    "styles-ZSJT3FPV.css"
   ]
 }

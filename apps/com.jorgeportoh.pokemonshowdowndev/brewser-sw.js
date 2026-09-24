@@ -8,8 +8,8 @@
  */
 'use strict';
 
-var CACHE    = 'brewser-app-com-jorgeportoh-pokemonshowdowndev-386c27e224a7';
-var PRECACHE = [".\/","pwa\/app.webmanifest","pwa\/brewser-pwa.js","pwa\/icon-192.png","pwa\/icon-512.png","pwa\/icon-maskable.png","pwa\/apple-touch-icon.png","index.html","main-S4YDUPDQ.js","styles-5INURTSO.css","favicon.ico"];   // JSON array of app-relative URLs
+var CACHE    = 'brewser-app-com-jorgeportoh-pokemonshowdowndev-c36f46d9b1c8';
+var PRECACHE = [".\/","pwa\/app.webmanifest","pwa\/brewser-pwa.js","pwa\/icon-192.png","pwa\/icon-512.png","pwa\/icon-maskable.png","pwa\/apple-touch-icon.png","styles-ZSJT3FPV.css","chunk-CF1-sjXY.js","chunk-CIOYIj3-.js","chunk-DusE4r3_.js","favicon.ico","index.html","main-INE6T3H2.js"];   // JSON array of app-relative URLs
 var START    = 'index.html';    // navigation fallback (the app entry)
 
 self.addEventListener('install', function (event) {
