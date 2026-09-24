@@ -1,9 +1,8 @@
 {
   "id": "com.jorgeportoh.pokemonshowdowndev",
-  "sizeBytes": 565815,
+  "sizeBytes": 229162,
   "files": [
     "README.md",
-    "app.js",
     "assets/appbanner.jpg",
     "brewser-sw.js",
     "index.html",
@@ -13,7 +12,6 @@
     "pwa/brewser-pwa.js",
     "pwa/icon-192.png",
     "pwa/icon-512.png",
-    "pwa/icon-maskable.png",
-    "styles.css"
+    "pwa/icon-maskable.png"
   ]
 }
