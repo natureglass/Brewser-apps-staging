@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Test D1</title>
+  <title>Test D2</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     body { margin: 8px; background: #000000; color: #ffffff; font-family: sans-serif; font-size: 14px; }
@@ -22,63 +22,33 @@
 <!-- brewser-pwa:end -->
 </head>
 <body>
-<h1>TEST D1: colores, selectores y at-rules</h1>
-<p class="note">Cada franja empieza en ROJO y se pone VERDE si Brewser soporta esa funcionalidad. Dime cuales se quedan en rojo.</p>
-<style>.s1{background:#008800}</style>
-<div class="sw s1">1. hex (control, debe ser verde)</div>
-<style>.s2{background:rgb(0,136,0)}</style>
-<div class="sw s2">2. rgb(0,136,0)</div>
-<style>.s3{background:rgb(0 136 0)}</style>
-<div class="sw s3">3. rgb(0 136 0) sintaxis moderna</div>
-<style>.s4{background:oklch(52% .15 145)}</style>
-<div class="sw s4">4. oklch()</div>
-<style>.s5{background:color-mix(in srgb,#008800 50%,#008800)}</style>
-<div class="sw s5">5. color-mix()</div>
-<style>:root{--g:#008800}.s6{background:var(--g)}</style>
-<div class="sw s6">6. var() definida en :root</div>
-<style>.s7{--g2:#008800;background:var(--g2)}</style>
-<div class="sw s7">7. var() definida en el propio elemento</div>
-<style>.s8{background:var(--nope,#008800)}</style>
-<div class="sw s8">8. var() con fallback</div>
-<style>@layer base0{.s9{background:#cc0000}}@layer a{.s9{background:#008800}}</style>
-<div class="swl s9">9. @layer con bloque (verde = soportado; negro o rojo = no)</div>
-<style>@layer x,y;@layer x{.s10{background:#cc0000}}@layer y{.s10{background:#008800}}</style>
-<div class="swl s10">10. @layer declaracion + bloque (verde = soportado; negro o rojo = no)</div>
-<style>@layer z;.s11{background:#008800}</style>
-<div class="sw s11">11. regla DESPUES de un @layer vacio</div>
-<style>@property --p{syntax:"*";inherits:false;initial-value:0}.s12{background:#008800}</style>
-<div class="sw s12">12. regla DESPUES de @property</div>
-<style>@media (min-width:1px){.s13{background:#008800}}</style>
-<div class="sw s13">13. @media (min-width:1px)</div>
-<style>@supports (display:flex){.s14{background:#008800}}</style>
-<div class="sw s14">14. @supports (display:flex)</div>
-<style>.s15[data-x="y"]{background:#008800}</style>
-<div class="sw s15" data-x="y">15. selector de atributo [data-x="y"]</div>
-<style>.s16[aria-current=page]{background:#008800}</style>
-<div class="sw s16" aria-current="page">16. selector [aria-current=page]</div>
-<style>.a\:b{background:#008800}</style>
-<div class="sw a:b">17. clase escapada estilo Tailwind (a:b)</div>
-<style>.bg-\[\#080\]{background:#008800}</style>
-<div class="sw bg-[#080]">18. clase arbitraria estilo Tailwind (bg-[#080])</div>
-<style>.s19:not(.nope){background:#008800}</style>
-<div class="sw s19">19. :not()</div>
-<style>:is(.s20){background:#008800}</style>
-<div class="sw s20">20. :is()</div>
-<style>:where(.s21).s21{background:#008800}</style>
-<div class="sw s21">21. :where()</div>
-<style>.s22{&{background:#008800}}</style>
-<div class="sw s22">22. CSS anidado (&)</div>
-<style>.s23{background-image:linear-gradient(#008800,#008800)}</style>
-<div class="sw s23">23. linear-gradient()</div>
-<style>.s24{background:#008800 !important}</style>
-<div class="sw s24">24. !important</div>
-<p id="gcs" class="note">getComputedStyle: script no ejecutado</p>
-<script>
-  (function () {
-    var el = document.getElementById('gcs');
-    el.textContent = 'getComputedStyle: ' + typeof window.getComputedStyle;
-  })();
-</script>
+<h1>TEST D2: layout</h1>
+<p class="note">Compara cada bloque con lo que dice su titulo.</p>
+
+<p>1. Flex en fila: 3 cajas EN HORIZONTAL</p>
+<div style="display:flex;flex-direction:row;"><div style="background:#335599;padding:4px;">A</div><div style="background:#335599;padding:4px;">B</div><div style="background:#335599;padding:4px;">C</div></div>
+
+<p>2. Flex con gap: 3 cajas en horizontal SEPARADAS 16px</p>
+<div style="display:flex;gap:16px;"><div style="background:#335599;padding:4px;">A</div><div style="background:#335599;padding:4px;">B</div><div style="background:#335599;padding:4px;">C</div></div>
+
+<p>3. Grid de 3 columnas: A B C en una fila, D debajo de A</p>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;"><div style="background:#335599;padding:4px;">A</div><div style="background:#335599;padding:4px;">B</div><div style="background:#335599;padding:4px;">C</div><div style="background:#335599;padding:4px;">D</div></div>
+
+<p>4. border-radius: caja con esquinas REDONDEADAS</p>
+<div style="background:#335599;padding:4px;border-radius:12px;width:200px;">esquinas redondeadas</div>
+
+<p>5. position:absolute: la etiqueta X arriba a la DERECHA de la caja gris</p>
+<div style="position:relative;height:40px;width:300px;background:#555555;">
+  <span style="position:absolute;top:0;right:0;background:#aa3300;">X</span>
+</div>
+
+<p>6. calc(): barra de ANCHO la mitad de la pantalla</p>
+<div style="background:#335599;padding:4px;width:calc(50% - 0px);">calc(50% - 0px)</div>
+
+<p>7. overflow-y:auto con altura fija 60px: solo se ven ~3 lineas (con scroll o recortado)</p>
+<div style="height:60px;overflow-y:auto;background:#333333;">linea 1<br>linea 2<br>linea 3<br>linea 4<br>linea 5<br>linea 6<br>linea 7</div>
+
+<p>8. Fin del test D2 (si ves esto, nada de lo anterior rompio la pagina)</p>
 
 </body>
 </html>
