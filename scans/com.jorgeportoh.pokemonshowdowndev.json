@@ -1,26 +1,17 @@
 {
   "verdict": "SUSPICIOUS",
-  "score": 20,
-  "scanned_at": "2026-09-24T14:20:02Z",
+  "score": 10,
+  "scanned_at": "2026-09-24T14:31:19Z",
   "scanner_version": "1.3.2",
-  "package_hash": "49e5ae6d5715fcf925352bc831674edd627bcfaf5238b1016163c20ad68ca390",
+  "package_hash": "56260b53609f1cdce1e7fe403557d5be6bb937a5a160479eb245576f2c5a25e5",
   "counts": {
     "info": 0,
-    "suspicious": 2,
+    "suspicious": 1,
     "dangerous": 0
   },
-  "rationale": "Suspicious: 2 signal(s) needing review; e.g. reads or writes document.cookie.",
+  "rationale": "Suspicious: 1 signal(s) needing review; e.g. function() code construction from a non-literal.",
   "truncated": false,
   "findings": [
-    {
-      "rule_id": "cookie-access",
-      "severity": "SUSPICIOUS",
-      "title": "Reads or writes document.cookie",
-      "detail": "Accesses document.cookie.",
-      "file": "main-LT6KUAN7.js",
-      "line": 4,
-      "evidence": "document.cookie"
-    },
     {
       "rule_id": "function-constructor",
       "severity": "SUSPICIOUS",
