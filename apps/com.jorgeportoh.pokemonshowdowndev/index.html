@@ -1,11 +1,8 @@
 <!doctype html>
-<html lang="en">
+<html>
 <head>
   <meta charset="utf-8">
-  <title>PokemonShowdownBrewser</title>
-  <base href="./">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <title>Test A1</title>
 
 <!-- brewser-pwa:start -->
 <link rel="manifest" href="pwa/app.webmanifest">
@@ -17,128 +14,7 @@
 <!-- brewser-pwa:end -->
 </head>
 <body>
-  <!--
-    TEMPORARY boot diagnostics for devices without DevTools (e.g. the Brewser console).
-    The panel is plain HTML with inline styles, so it shows even if no JavaScript or CSS file runs.
-    Each script below only updates its own line, so a line that keeps its default text means that
-    kind of script never executed. The panel hides itself once the Angular app has rendered.
-  -->
-  <div id="diag" role="log" style="position:relative;z-index:2147483647;margin:0;padding:12px;background:#ffffff;color:#000000;font-family:monospace;font-size:16px;line-height:1.4;border-bottom:4px solid #cc0000;max-height:60%;overflow:auto;">
-    <p style="margin:0 0 6px 0;font-weight:bold;">Boot diagnostics - TEST A: plain HTML only, no Angular files</p>
-    <p style="margin:0;">HTML: loaded (if you can read this, the new index.html arrived)</p>
-    <p id="diag-js" style="margin:0;">Classic inline script: DID NOT RUN</p>
-    <p id="diag-module" style="margin:0;">Module inline script: DID NOT RUN</p>
-    <p id="diag-nomodule" style="margin:0;"></p>
-    <noscript><p style="margin:0;">JavaScript is DISABLED in this browser.</p></noscript>
-    <p id="diag-app" style="margin:0;">Angular app: not started yet</p>
-    <pre id="diag-log" style="margin:6px 0 0 0;white-space:pre-wrap;word-wrap:break-word;font-size:14px;"></pre>
-  </div>
-
-  <script>
-    (function () {
-      function setLine(id, text) {
-        var el = document.getElementById(id);
-        if (!el) return;
-        while (el.firstChild) el.removeChild(el.firstChild);
-        el.appendChild(document.createTextNode(text));
-      }
-
-      function log(message) {
-        var el = document.getElementById('diag-log');
-        if (el) el.appendChild(document.createTextNode(message + '\n'));
-      }
-
-      function describe(value) {
-        if (value && value.stack) return String(value.stack);
-        if (value && value.message) return String(value.message);
-        return String(value);
-      }
-
-      function supports(code) {
-        try {
-          new Function(code);
-          return 'yes';
-        } catch (e) {
-          return 'NO';
-        }
-      }
-
-      setLine('diag-js', 'Classic inline script: ran');
-
-      window.onerror = function (message, source, line, column, error) {
-        log('[error] ' + message + '\n  at ' + source + ':' + line + ':' + column +
-          (error ? '\n' + describe(error) : ''));
-      };
-
-      if (window.addEventListener) {
-        window.addEventListener('unhandledrejection', function (event) {
-          log('[unhandled promise] ' + describe(event.reason));
-        });
-        // Failed <script>/<link> loads (404s, blocked files) don't reach window.onerror.
-        window.addEventListener('error', function (event) {
-          var target = event.target;
-          if (target && target !== window && (target.src || target.href)) {
-            log('[failed to load] ' + (target.src || target.href));
-          }
-        }, true);
-      }
-
-      // Angular reports bootstrap and runtime errors through console.error.
-      if (window.console && console.error) {
-        var originalError = console.error;
-        console.error = function () {
-          var parts = [];
-          for (var i = 0; i < arguments.length; i++) parts.push(describe(arguments[i]));
-          log('[console.error] ' + parts.join(' '));
-          return originalError.apply(console, arguments);
-        };
-      }
-
-      log('User agent: ' + navigator.userAgent);
-      log('Location: ' + window.location.href);
-      var evalAllowed = supports('return 1') === 'yes';
-      log('Dynamic eval allowed (needed for the checks below): ' + (evalAllowed ? 'yes' : 'NO'));
-      if (evalAllowed) {
-        var checks = [
-          ['let/const + arrow functions', 'let a = () => 1; const b = a();'],
-          ['classes', 'class A {}'],
-          ['async/await', 'async function f() { await 0; }'],
-          ['object spread', 'var a = { ...{} };'],
-          ['optional chaining', 'var a = null; a?.b;'],
-          ['nullish coalescing', 'var a = null ?? 1;'],
-          ['class fields', 'class A { x = 1; #y = 2; }'],
-          ['class static blocks', 'class A { static {} }'],
-          ['async iteration (for await)', 'async function f() { for await (var x of []) {} }']
-        ];
-        for (var i = 0; i < checks.length; i++) {
-          log('  ' + checks[i][0] + ': ' + supports(checks[i][1]));
-        }
-      }
-      log('Promise: ' + typeof window.Promise +
-        ' | fetch: ' + typeof window.fetch +
-        ' | Proxy: ' + typeof window.Proxy +
-        ' | WeakRef: ' + typeof window.WeakRef +
-        ' | queueMicrotask: ' + typeof window.queueMicrotask);
-
-      window.setTimeout(function () {
-        var root = document.getElementsByTagName('app-root')[0];
-        if (root && root.children.length > 0) {
-          document.getElementById('diag').style.display = 'none';
-          return;
-        }
-        setLine('diag-app', 'Angular app: DID NOT START after 8 seconds');
-      }, 8000);
-    })();
-  </script>
-  <script type="module">
-    document.getElementById('diag-module').textContent = 'Module inline script: ran';
-  </script>
-  <script nomodule="">
-    document.getElementById('diag-nomodule').appendChild(
-      document.createTextNode('This browser does NOT support ES modules (nomodule script ran)')
-    );
-  </script>
-
-  <app-root></app-root>
+  <h1>TEST A1</h1>
+  <p>Solo HTML: sin estilos, sin scripts, sin base href.</p>
 </body>
 </html>

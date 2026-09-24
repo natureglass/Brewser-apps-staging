@@ -1,10 +1,11 @@
 {
   "id": "com.jorgeportoh.pokemonshowdowndev",
-  "sizeBytes": 231064,
+  "sizeBytes": 240713,
   "files": [
     "README.md",
     "assets/appbanner.jpg",
     "brewser-sw.js",
+    "favicon.ico",
     "index.html",
     "manifest.json",
     "pwa/app.webmanifest",

@@ -1,27 +1,17 @@
 {
-  "verdict": "SUSPICIOUS",
-  "score": 10,
-  "scanned_at": "2026-09-24T14:31:19Z",
+  "verdict": "GOOD",
+  "score": 0,
+  "scanned_at": "2026-09-24T14:47:25Z",
   "scanner_version": "1.3.2",
-  "package_hash": "56260b53609f1cdce1e7fe403557d5be6bb937a5a160479eb245576f2c5a25e5",
+  "package_hash": "6223882afdccbd7176e15d5b95f943707ed796bf0f736e9749d31a19e74ae354",
   "counts": {
     "info": 0,
-    "suspicious": 1,
+    "suspicious": 0,
     "dangerous": 0
   },
-  "rationale": "Suspicious: 1 signal(s) needing review; e.g. function() code construction from a non-literal.",
+  "rationale": "No known-bad pattern matched. Not proof of safety — human review still required.",
   "truncated": false,
-  "findings": [
-    {
-      "rule_id": "function-constructor",
-      "severity": "SUSPICIOUS",
-      "title": "Function() code construction from a non-literal",
-      "detail": "Function() constructs code from a non-literal — a runtime-decided code path.",
-      "file": "index.html <inline script>",
-      "line": 23,
-      "evidence": "new Function(code)"
-    }
-  ],
+  "findings": [],
   "capabilities": [],
   "limitations": "Static heuristic scan. A GOOD verdict means no known-bad pattern matched, NOT proof of safety. Human review is still required for every submission."
 }
