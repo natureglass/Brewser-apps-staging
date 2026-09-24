@@ -18,6 +18,75 @@
 <!-- brewser-pwa:end -->
 </head>
 <body>
+  <div style="color:#ffffff;background:#000000;padding:4px;">
+    <p id="bw-diag-appjs">app.js: DID NOT RUN</p>
+    <p id="bw-diag-app">Angular: waiting...</p>
+    <pre id="bw-diag-log">Log:</pre>
+  </div>
+  <script>
+    (function () {
+      function log(message) {
+        var el = document.getElementById('bw-diag-log');
+        if (el) el.appendChild(document.createTextNode('\n' + message));
+      }
+      function describe(value) {
+        if (value && value.stack) return String(value.stack);
+        if (value && value.message) return String(value.message);
+        return String(value);
+      }
+      window.onerror = function (message, source, line, column, error) {
+        log('[error] ' + message + ' @ ' + source + ':' + line + ':' + column + (error ? '\n' + describe(error) : ''));
+      };
+      if (window.addEventListener) {
+        window.addEventListener('unhandledrejection', function (event) {
+          log('[unhandled rejection] ' + describe(event.reason));
+        });
+      }
+      if (window.console && console.error) {
+        var originalError = console.error;
+        console.error = function () {
+          var parts = [];
+          for (var i = 0; i < arguments.length; i++) parts.push(describe(arguments[i]));
+          log('[console.error] ' + parts.join(' '));
+          return originalError.apply(console, arguments);
+        };
+      }
+      log('User agent: ' + navigator.userAgent);
+
+      // Navigation debugging: what receives each click, whether Angular's RouterLink handled it
+      // (defaultPrevented after bubbling), and whether the hash actually changes.
+      function describeNode(node) {
+        var parts = [];
+        for (var i = 0; node && node.tagName && i < 3; i++, node = node.parentNode) {
+          var cls = typeof node.className === 'string' ? node.className.split(' ').slice(0, 2).join('.') : '';
+          parts.push(node.tagName.toLowerCase() + (cls ? '.' + cls : '') + (node.getAttribute && node.getAttribute('href') ? '[href=' + node.getAttribute('href') + ']' : ''));
+        }
+        return parts.join(' < ');
+      }
+      if (document.addEventListener) {
+        document.addEventListener('click', function (event) {
+          var atPoint = document.elementFromPoint ? document.elementFromPoint(event.clientX, event.clientY) : null;
+          log('[click] target: ' + describeNode(event.target) + ' @ ' + event.clientX + ',' + event.clientY +
+            (atPoint && atPoint !== event.target ? '\n  elementFromPoint: ' + describeNode(atPoint) : ''));
+        }, true);
+        window.addEventListener('click', function (event) {
+          log('[click] after handlers, defaultPrevented=' + event.defaultPrevented);
+        });
+        window.addEventListener('hashchange', function () {
+          log('[hashchange] ' + window.location.hash);
+        });
+        window.addEventListener('popstate', function () {
+          log('[popstate] ' + window.location.hash);
+        });
+      }
+      window.setTimeout(function () {
+        var root = document.getElementsByTagName('app-root')[0];
+        var count = root && root.children ? root.children.length : 'no app-root';
+        var el = document.getElementById('bw-diag-app');
+        if (el) el.textContent = 'Angular: app-root has ' + count + ' children after 8 s (0 = did not render)';
+      }, 8000);
+    })();
+  </script>
   <app-root></app-root>
   <script src="app.js"></script>
 </body>
