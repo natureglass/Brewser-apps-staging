@@ -446,18 +446,6 @@ button {
   pointer-events: none;
 }
 
-.sr-only {
-  clip-path: inset(50%);
-  white-space: nowrap;
-  border-width: 0;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  padding: 0;
-  position: absolute;
-  overflow: hidden;
-}
-
 .absolute {
   position: absolute;
 }
@@ -474,12 +462,44 @@ button {
   position: static;
 }
 
+.top-0 {
+  top: 0;
+}
+
 .bw-c0 {
   top: 50%;
 }
 
+.top-3 {
+  top: .75rem;
+}
+
+.bw-c1 {
+  top: 5px;
+}
+
 .right-4 {
   right: 1rem;
+}
+
+.left-0 {
+  left: 0;
+}
+
+.left-2 {
+  left: .5rem;
+}
+
+.left-56 {
+  left: 14rem;
+}
+
+.bw-c2 {
+  left: 116px;
+}
+
+.bw-c3 {
+  left: 268px;
 }
 
 .container {
@@ -520,10 +540,6 @@ button {
   margin-bottom: 1rem;
 }
 
-.ml-1 {
-  margin-left: .25rem;
-}
-
 .block {
   display: block;
 }
@@ -545,11 +561,6 @@ button {
   height: .75rem;
 }
 
-.bw-c1 {
-  width: .875rem;
-  height: .875rem;
-}
-
 .size-5 {
   width: 1.25rem;
   height: 1.25rem;
@@ -569,6 +580,10 @@ button {
   height: 1.75rem;
 }
 
+.h-8 {
+  height: 2rem;
+}
+
 .h-11 {
   height: 2.75rem;
 }
@@ -581,71 +596,83 @@ button {
   height: 4.75rem;
 }
 
-.bw-c2 {
+.bw-c4 {
   height: 52px;
 }
 
-.bw-c3 {
+.bw-c5 {
   height: 88px;
 }
 
-.bw-c4 {
+.bw-c6 {
   height: 104px;
 }
 
-.bw-c5 {
+.bw-c7 {
   height: 600px;
 }
 
-.bw-c6 {
+.bw-c8 {
   height: 616px;
 }
 
-.bw-c7 {
+.bw-c9 {
   height: 644px;
 }
 
-.bw-c8 {
+.bw-ca {
   height: 720px;
-}
-
-.w-4 {
-  width: 1rem;
 }
 
 .w-56 {
   width: 14rem;
 }
 
-.bw-c9 {
-  width: 112px;
-}
-
-.bw-ca {
-  width: 146px;
-}
-
 .bw-cb {
-  width: 415px;
+  width: 100px;
 }
 
 .bw-cc {
-  width: 496px;
+  width: 112px;
 }
 
 .bw-cd {
-  width: 560px;
+  width: 136px;
 }
 
 .bw-ce {
-  width: 639px;
+  width: 139px;
 }
 
 .bw-cf {
-  width: 640px;
+  width: 146px;
 }
 
 .bw-cg {
+  width: 363px;
+}
+
+.bw-ch {
+  width: 415px;
+}
+
+.bw-ci {
+  width: 496px;
+}
+
+.bw-cj {
+  width: 560px;
+}
+
+.bw-ck {
+  width: 639px;
+}
+
+.bw-cl {
+  width: 640px;
+}
+
+.bw-cm {
   width: 1280px;
 }
 
@@ -657,7 +684,7 @@ button {
   flex-shrink: 0;
 }
 
-.bw-ch {
+.bw-cn {
   --tw-translate-y: -50%;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y));
 }
@@ -770,11 +797,11 @@ button {
   border-color: #4a5565;
 }
 
-.bw-ci {
+.bw-co {
   background-color: #0b0e14;
 }
 
-.bw-cj {
+.bw-cp {
   background-color: #0f141c;
 }
 
@@ -848,9 +875,9 @@ button {
   padding-right: .25rem;
 }
 
-.bw-ck {
-  padding-left: .375rem;
-  padding-right: .375rem;
+.px-2 {
+  padding-left: .5rem;
+  padding-right: .5rem;
 }
 
 .px-3 {
@@ -870,10 +897,6 @@ button {
 
 .pr-10 {
   padding-right: 2.5rem;
-}
-
-.pb-2 {
-  padding-bottom: .5rem;
 }
 
 .pl-3 {
@@ -907,6 +930,11 @@ button {
 .text-xl {
   font-size: 1.25rem;
   line-height: var(--tw-leading, calc(1.75 / 1.25));
+}
+
+.leading-5 {
+  --tw-leading: calc(.25rem * 5);
+  line-height: 1.25rem;
 }
 
 .leading-relaxed {
@@ -1032,63 +1060,63 @@ button {
 }
 
 @media (hover: hover) {
-  .bw-cl:hover {
+  .bw-cq:hover {
     background-color: #193cb8;
   }
 
-  .bw-cm:hover {
+  .bw-cr:hover {
     background-color: #6a7282;
   }
 
-  .bw-cn:hover {
+  .bw-cs:hover {
     background-color: #4a5565;
   }
 
-  .bw-co:hover {
+  .bw-ct:hover {
     background-color: #3b5176;
   }
 }
 
-.bw-cp:focus-visible {
+.bw-cu:focus-visible {
   outline-style: var(--tw-outline-style);
   outline-width: 2px;
 }
 
-.bw-cq:focus-visible {
+.bw-cv:focus-visible {
   outline-offset: -2px;
 }
 
-.bw-cr:focus-visible {
+.bw-cw:focus-visible {
   outline-offset: 2px;
 }
 
-.bw-cs:focus-visible {
+.bw-cx:focus-visible {
   outline-color: #fff;
 }
 
 @media (hover: hover) {
-  .bw-ct:enabled:hover {
+  .bw-cy:enabled:hover {
     background-color: #6a7282;
   }
 }
 
-.bw-cu:disabled {
+.bw-cz:disabled {
   cursor: not-allowed;
 }
 
-.bw-cv:disabled {
+.bw-c10:disabled {
   border-color: #6a7282;
 }
 
-.bw-cw:disabled {
+.bw-c11:disabled {
   background-color: #364153;
 }
 
-.bw-cx[aria-current="page"] {
+.bw-c12[aria-current="page"] {
   background-color: #34496b;
 }
 
-.bw-cy[aria-current="page"] {
+.bw-c13[aria-current="page"] {
   color: #fff;
 }
 
