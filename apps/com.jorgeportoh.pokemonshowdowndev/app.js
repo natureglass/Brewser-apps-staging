@@ -1,6 +1,8 @@
 const log = document.querySelector("#log");
 const testImg = document.querySelector("#testImg");
 
+const SCALE_FACTOR = 2;
+
 function print(label, message) {
   const line = document.createElement("div");
   line.textContent = `[${label}] ${message}`;
@@ -92,6 +94,9 @@ function playSpriteSheet(
   img.onload = () => {
     canvas.width = frameWidth;
     canvas.height = frameHeight;
+    // Sincroniza el tamaño de visualización con el tamaño real del buffer
+    canvas.style.width = `${frameWidth * SCALE_FACTOR}px`;
+    canvas.style.height = `${frameHeight * SCALE_FACTOR}px`;
     print("sprite", `Sprite sheet cargado: ${img.width}x${img.height}`);
 
     let currentFrame = 0;
@@ -134,7 +139,7 @@ document.querySelector("#testSpriteSheet").addEventListener("click", () => {
     "https://i.imgur.com/mYaXw75.png",
     60, // frameWidth
     60, // frameHeight
-    25, // frameCount (el número real de frames extraídos)
+    33, // frameCount (el número real de frames extraídos)
     6, // columns (columnas reales del grid generado)
     25, // fps deseado
   );
