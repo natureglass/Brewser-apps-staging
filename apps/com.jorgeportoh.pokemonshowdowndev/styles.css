@@ -638,10 +638,14 @@ button {
 }
 
 .bw-ce {
-  width: 640px;
+  width: 639px;
 }
 
 .bw-cf {
+  width: 640px;
+}
+
+.bw-cg {
   width: 1280px;
 }
 
@@ -653,7 +657,7 @@ button {
   flex-shrink: 0;
 }
 
-.bw-cg {
+.bw-ch {
   --tw-translate-y: -50%;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y));
 }
@@ -766,11 +770,11 @@ button {
   border-color: #4a5565;
 }
 
-.bw-ch {
+.bw-ci {
   background-color: #0b0e14;
 }
 
-.bw-ci {
+.bw-cj {
   background-color: #0f141c;
 }
 
@@ -844,7 +848,7 @@ button {
   padding-right: .25rem;
 }
 
-.bw-cj {
+.bw-ck {
   padding-left: .375rem;
   padding-right: .375rem;
 }
@@ -1028,63 +1032,63 @@ button {
 }
 
 @media (hover: hover) {
-  .bw-ck:hover {
+  .bw-cl:hover {
     background-color: #193cb8;
   }
 
-  .bw-cl:hover {
+  .bw-cm:hover {
     background-color: #6a7282;
   }
 
-  .bw-cm:hover {
+  .bw-cn:hover {
     background-color: #4a5565;
   }
 
-  .bw-cn:hover {
+  .bw-co:hover {
     background-color: #3b5176;
   }
 }
 
-.bw-co:focus-visible {
+.bw-cp:focus-visible {
   outline-style: var(--tw-outline-style);
   outline-width: 2px;
 }
 
-.bw-cp:focus-visible {
+.bw-cq:focus-visible {
   outline-offset: -2px;
 }
 
-.bw-cq:focus-visible {
+.bw-cr:focus-visible {
   outline-offset: 2px;
 }
 
-.bw-cr:focus-visible {
+.bw-cs:focus-visible {
   outline-color: #fff;
 }
 
 @media (hover: hover) {
-  .bw-cs:enabled:hover {
+  .bw-ct:enabled:hover {
     background-color: #6a7282;
   }
 }
 
-.bw-ct:disabled {
+.bw-cu:disabled {
   cursor: not-allowed;
 }
 
-.bw-cu:disabled {
+.bw-cv:disabled {
   border-color: #6a7282;
 }
 
-.bw-cv:disabled {
+.bw-cw:disabled {
   background-color: #364153;
 }
 
-.bw-cw[aria-current="page"] {
+.bw-cx[aria-current="page"] {
   background-color: #34496b;
 }
 
-.bw-cx[aria-current="page"] {
+.bw-cy[aria-current="page"] {
   color: #fff;
 }
 
