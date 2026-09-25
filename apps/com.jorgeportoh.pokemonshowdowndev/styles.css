@@ -138,22 +138,22 @@
   --color-gray-600: #4a5565;
   --color-gray-700: #364153;
   --color-white: #fff;
-  --spacing: .25rem;
-  --text-sm: .875rem;
+  --spacing: 4px;
+  --text-sm: 14px;
   --text-sm--line-height: calc(1.25 / .875);
-  --text-base: 1rem;
+  --text-base: 16px;
   --text-base--line-height: 1.5;
-  --text-lg: 1.125rem;
+  --text-lg: 18px;
   --text-lg--line-height: calc(1.75 / 1.125);
-  --text-xl: 1.25rem;
+  --text-xl: 20px;
   --text-xl--line-height: calc(1.75 / 1.25);
-  --text-5xl: 3rem;
+  --text-5xl: 48px;
   --text-5xl--line-height: 1;
   --font-weight-bold: 700;
   --leading-relaxed: 1.625;
-  --radius-md: .375rem;
-  --radius-lg: .5rem;
-  --radius-3xl: 1.5rem;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-3xl: 24px;
   --default-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --default-mono-font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   --color-stage: #34496b;
@@ -471,7 +471,7 @@ button {
 }
 
 .top-3 {
-  top: .75rem;
+  top: 12px;
 }
 
 .bw-c1 {
@@ -479,11 +479,11 @@ button {
 }
 
 .right-4 {
-  right: 1rem;
+  right: 16px;
 }
 
 .left-2 {
-  left: .5rem;
+  left: 8px;
 }
 
 .bw-c2 {
@@ -498,38 +498,38 @@ button {
   width: 100%;
 }
 
-@media (min-width: 40rem) {
+@media (min-width: 640px) {
   .container {
-    max-width: 40rem;
+    max-width: 640px;
   }
 }
 
-@media (min-width: 48rem) {
+@media (min-width: 768px) {
   .container {
-    max-width: 48rem;
+    max-width: 768px;
   }
 }
 
-@media (min-width: 64rem) {
+@media (min-width: 1024px) {
   .container {
-    max-width: 64rem;
+    max-width: 1024px;
   }
 }
 
-@media (min-width: 80rem) {
+@media (min-width: 1280px) {
   .container {
-    max-width: 80rem;
+    max-width: 1280px;
   }
 }
 
-@media (min-width: 96rem) {
+@media (min-width: 1536px) {
   .container {
-    max-width: 96rem;
+    max-width: 1536px;
   }
 }
 
 .mb-4 {
-  margin-bottom: 1rem;
+  margin-bottom: 16px;
 }
 
 .block {
@@ -549,43 +549,43 @@ button {
 }
 
 .size-3 {
-  width: .75rem;
-  height: .75rem;
+  width: 12px;
+  height: 12px;
 }
 
 .size-5 {
-  width: 1.25rem;
-  height: 1.25rem;
+  width: 20px;
+  height: 20px;
 }
 
 .size-6 {
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 24px;
+  height: 24px;
 }
 
 .size-9 {
-  width: 2.25rem;
-  height: 2.25rem;
+  width: 36px;
+  height: 36px;
 }
 
 .h-7 {
-  height: 1.75rem;
+  height: 28px;
 }
 
 .h-8 {
-  height: 2rem;
+  height: 32px;
 }
 
 .h-11 {
-  height: 2.75rem;
+  height: 44px;
 }
 
 .h-14 {
-  height: 3.5rem;
+  height: 56px;
 }
 
 .h-19 {
-  height: 4.75rem;
+  height: 76px;
 }
 
 .bw-c4 {
@@ -707,23 +707,23 @@ button {
 }
 
 .gap-1 {
-  gap: .25rem;
+  gap: 4px;
 }
 
 .gap-2 {
-  gap: .5rem;
+  gap: 8px;
 }
 
 .gap-3 {
-  gap: .75rem;
+  gap: 12px;
 }
 
 .gap-5 {
-  gap: 1.25rem;
+  gap: 20px;
 }
 
 .gap-6 {
-  gap: 1.5rem;
+  gap: 24px;
 }
 
 .overflow-y-auto {
@@ -731,16 +731,16 @@ button {
 }
 
 .rounded-3xl {
-  border-radius: 1.5rem;
+  border-radius: 24px;
 }
 
 .rounded-md {
-  border-radius: .375rem;
+  border-radius: 6px;
 }
 
 .rounded-t-lg {
-  border-top-left-radius: .5rem;
-  border-top-right-radius: .5rem;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
 }
 
 .border {
@@ -836,11 +836,11 @@ button {
 }
 
 .p-6 {
-  padding: 1.5rem;
+  padding: 24px;
 }
 
 .p-8 {
-  padding: 2rem;
+  padding: 32px;
 }
 
 .bw-cp {
@@ -876,33 +876,33 @@ button {
 }
 
 .text-5xl {
-  font-size: 3rem;
+  font-size: 48px;
   line-height: var(--tw-leading, 1);
 }
 
 .text-base {
-  font-size: 1rem;
+  font-size: 16px;
   line-height: var(--tw-leading, 1.5);
 }
 
 .text-lg {
-  font-size: 1.125rem;
+  font-size: 18px;
   line-height: var(--tw-leading, calc(1.75 / 1.125));
 }
 
 .text-sm {
-  font-size: .875rem;
+  font-size: 14px;
   line-height: var(--tw-leading, calc(1.25 / .875));
 }
 
 .text-xl {
-  font-size: 1.25rem;
+  font-size: 20px;
   line-height: var(--tw-leading, calc(1.75 / 1.25));
 }
 
 .leading-5 {
-  --tw-leading: calc(.25rem * 5);
-  line-height: 1.25rem;
+  --tw-leading: calc(4px * 5);
+  line-height: 20px;
 }
 
 .leading-relaxed {
