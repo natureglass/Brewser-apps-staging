@@ -817,38 +817,34 @@ button {
 }
 
 .bw-c1k {
-  height: 476px;
-}
-
-.bw-c1l {
   height: 488px;
 }
 
-.bw-c1m {
+.bw-c1l {
   height: 536px;
 }
 
-.bw-c1n {
+.bw-c1m {
   height: 540px;
 }
 
-.bw-c1o {
+.bw-c1n {
   height: 564px;
 }
 
-.bw-c1p {
+.bw-c1o {
   height: 580px;
 }
 
-.bw-c1q {
+.bw-c1p {
   height: 600px;
 }
 
-.bw-c1r {
+.bw-c1q {
   height: 644px;
 }
 
-.bw-c1s {
+.bw-c1r {
   height: 720px;
 }
 
@@ -868,131 +864,131 @@ button {
   width: 96px;
 }
 
-.bw-c1t {
+.bw-c1s {
   width: 80px;
 }
 
-.bw-c1u {
+.bw-c1t {
   width: 88px;
 }
 
-.bw-c1v {
+.bw-c1u {
   width: 100px;
 }
 
-.bw-c1w {
+.bw-c1v {
   width: 112px;
 }
 
-.bw-c1x {
+.bw-c1w {
   width: 120px;
 }
 
-.bw-c1y {
+.bw-c1x {
   width: 128px;
 }
 
-.bw-c1z {
+.bw-c1y {
   width: 132px;
 }
 
-.bw-c20 {
+.bw-c1z {
   width: 136px;
 }
 
-.bw-c21 {
+.bw-c20 {
   width: 146px;
 }
 
-.bw-c22 {
+.bw-c21 {
   width: 154px;
 }
 
-.bw-c23 {
+.bw-c22 {
   width: 304px;
 }
 
-.bw-c24 {
+.bw-c23 {
   width: 324px;
 }
 
-.bw-c25 {
+.bw-c24 {
   width: 336px;
 }
 
-.bw-c26 {
+.bw-c25 {
   width: 340px;
 }
 
-.bw-c27 {
+.bw-c26 {
   width: 359px;
 }
 
-.bw-c28 {
+.bw-c27 {
   width: 360px;
 }
 
-.bw-c29 {
+.bw-c28 {
   width: 378px;
 }
 
-.bw-c2a {
+.bw-c29 {
   width: 400px;
 }
 
-.bw-c2b {
+.bw-c2a {
   width: 406px;
 }
 
-.bw-c2c {
+.bw-c2b {
   width: 408px;
 }
 
-.bw-c2d {
+.bw-c2c {
   width: 410px;
 }
 
-.bw-c2e {
+.bw-c2d {
   width: 424px;
 }
 
-.bw-c2f {
+.bw-c2e {
   width: 426px;
 }
 
-.bw-c2g {
+.bw-c2f {
   width: 427px;
 }
 
-.bw-c2h {
+.bw-c2g {
   width: 440px;
 }
 
-.bw-c2i {
+.bw-c2h {
   width: 480px;
 }
 
-.bw-c2j {
+.bw-c2i {
   width: 496px;
 }
 
-.bw-c2k {
+.bw-c2j {
   width: 560px;
 }
 
-.bw-c2l {
+.bw-c2k {
   width: 853px;
 }
 
-.bw-c2m {
+.bw-c2l {
   width: 872px;
 }
 
-.bw-c2n {
+.bw-c2m {
   width: 920px;
 }
 
-.bw-c2o {
+.bw-c2n {
   width: 1280px;
 }
 
@@ -1004,7 +1000,7 @@ button {
   flex-shrink: 0;
 }
 
-.bw-c2p {
+.bw-c2o {
   --tw-translate-y: -50%;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y));
 }
@@ -1066,6 +1062,10 @@ button {
   overflow-y: auto;
 }
 
+.rounded {
+  border-radius: 4px;
+}
+
 .rounded-3xl {
   border-radius: 24px;
 }
@@ -1124,11 +1124,11 @@ button {
   border-color: #364153;
 }
 
-.bw-c2q {
+.bw-c2p {
   background-color: #0b0e14;
 }
 
-.bw-c2r {
+.bw-c2q {
   background-color: #0f141c;
 }
 
@@ -1208,43 +1208,43 @@ button {
   padding: 32px;
 }
 
-.bw-c2s {
+.bw-c2r {
   padding: 0 4px;
 }
 
-.bw-c2t {
+.bw-c2s {
   padding: 0 8px;
 }
 
-.bw-c2u {
+.bw-c2t {
   padding: 0 12px;
 }
 
-.bw-c2v {
+.bw-c2u {
   padding: 0 40px 0 12px;
 }
 
-.bw-c2w {
+.bw-c2v {
   padding: 4px 0;
 }
 
-.bw-c2x {
+.bw-c2w {
   padding: 4px 12px;
 }
 
-.bw-c2y {
+.bw-c2x {
   padding: 6px 12px;
 }
 
-.bw-c2z {
+.bw-c2y {
   padding: 8px 12px;
 }
 
-.bw-c30 {
+.bw-c2z {
   padding: 8px 40px 8px 12px;
 }
 
-.bw-c31 {
+.bw-c30 {
   padding: 10px 16px;
 }
 
@@ -1437,75 +1437,75 @@ button {
 }
 
 @media (hover: hover) {
-  .bw-c32:hover {
+  .bw-c31:hover {
     background-color: #193cb8;
   }
 
-  .bw-c33:hover {
+  .bw-c32:hover {
     background-color: #6a7282;
   }
 
-  .bw-c34:hover {
+  .bw-c33:hover {
     background-color: #4a5565;
   }
 
-  .bw-c35:hover {
+  .bw-c34:hover {
     background-color: #3b5176;
   }
 }
 
-.bw-c36:focus-visible {
+.bw-c35:focus-visible {
   outline-style: var(--tw-outline-style);
   outline-width: 2px;
 }
 
-.bw-c37:focus-visible {
+.bw-c36:focus-visible {
   outline-offset: -2px;
 }
 
-.bw-c38:focus-visible {
+.bw-c37:focus-visible {
   outline-offset: 2px;
 }
 
-.bw-c39:focus-visible {
+.bw-c38:focus-visible {
   outline-color: #fff;
 }
 
 @media (hover: hover) {
-  .bw-c3a:enabled:hover {
+  .bw-c39:enabled:hover {
     background-color: #6a7282;
   }
 }
 
-.bw-c3b:disabled {
+.bw-c3a:disabled {
   cursor: not-allowed;
 }
 
-.bw-c3c:disabled {
+.bw-c3b:disabled {
   cursor: wait;
 }
 
-.bw-c3d:disabled {
+.bw-c3c:disabled {
   border-color: #6a7282;
 }
 
-.bw-c3e:disabled {
+.bw-c3d:disabled {
   background-color: #364153;
 }
 
-.bw-c3f:disabled {
+.bw-c3e:disabled {
   background-color: #1e2939;
 }
 
-.bw-c3g:disabled {
+.bw-c3f:disabled {
   color: #99a1af;
 }
 
-.bw-c3h[aria-current="page"] {
+.bw-c3g[aria-current="page"] {
   background-color: #34496b;
 }
 
-.bw-c3i[aria-current="page"] {
+.bw-c3h[aria-current="page"] {
   color: #fff;
 }
 
