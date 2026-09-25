@@ -2,18 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Test K1</title>
+  <title>PokemonShowdownBrewser</title>
+  <base href="./">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    .box { display:inline-block;width:180px;height:44px;margin:4px;background:#334155;color:#ffffff;border:3px solid #334155;font-size:15px; }
-    #f1[data-kb-focus] { outline: 3px solid #facc15; outline-offset: -3px; }
-    #f2:focus { outline: 3px solid #facc15; outline-offset: -3px; }
-    #f3:focus-visible { outline: 3px solid #facc15; outline-offset: -3px; }
-    #f4[data-kb-focus] { border-color: #facc15; }
-    #f5[data-kb-focus] { background: #a16207; }
-    #f6.kbf { background: #a16207; border-color: #facc15; }
-    #f7:focus { background: #a16207; border-color: #facc15; }
-  </style>
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="stylesheet" href="styles.css">
 
 <!-- brewser-pwa:start -->
 <link rel="manifest" href="pwa/app.webmanifest">
@@ -24,144 +17,8 @@
 <script src="pwa/brewser-pwa.js" defer></script>
 <!-- brewser-pwa:end -->
 </head>
-<body style="width:1280px;height:720px;margin:0;overflow:hidden;background:#000000;color:#ffffff;font-family:sans-serif;font-size:15px;">
-  <p style="margin:4px;">TEST K1. Pulsa UNO A UNO los botones mapeados (cruceta arriba/abajo/izq/dcha, A, B, L, R, ZL, ZR) y haz foto del registro. Tambien prueba el stick izquierdo.</p>
-  <p id="k1-status" style="margin:4px;color:#ffcc00;">Script: no ejecutado</p>
-  <p id="k1-focus" style="margin:4px;">Foco: ?</p>
-  <p id="k1-pads" style="margin:4px;">Gamepad API: ?</p>
-  <p style="margin:4px;color:#ffcc00;">F: marcadores de foco. F1, F4, F5 llevan el atributo siempre; F6 la clase siempre. F2/F3/F7 solo con foco real: el foco va rotando entre ellos cada 2 s. Cuales se ven amarillos?</p>
-  <div style="margin:4px;">
-    <button id="f1" data-kb-focus class="box">F1 outline atributo</button>
-    <button id="f2" class="box">F2 outline :focus</button>
-    <button id="f3" class="box">F3 :focus-visible</button>
-    <button id="f4" data-kb-focus class="box">F4 borde atributo</button>
-    <button id="f5" data-kb-focus class="box">F5 fondo atributo</button>
-    <button id="f6" class="box kbf">F6 fondo clase</button>
-    <button id="f7" class="box">F7 fondo :focus</button>
-  </div>
-  <p style="margin:4px;color:#ffcc00;">E: registro de eventos (lo mas nuevo arriba). Cada linea: tipo, key/code/keyCode/which, y que escuchadores lo recibieron.</p>
-  <div id="k1-log" style="height:330px;overflow-y:auto;background:#222222;font-family:monospace;font-size:14px;margin:4px;">
-    <p style="margin:0;">Registro</p>
-  </div>
-  <script>
-    (function () {
-      var status = document.getElementById('k1-status');
-      status.textContent = 'Script: ejecutandose';
-      var box = document.getElementById('k1-log');
-      function log(message) {
-        var node = document.createElement('p');
-        node.style.margin = '0';
-        node.textContent = message;
-        box.insertBefore(node, box.firstChild);
-        while (box.childNodes.length > 60) box.removeChild(box.lastChild);
-      }
-      function describe(node) {
-        if (!node) return 'null';
-        if (node === window) return 'window';
-        if (node === document) return 'document';
-        if (node.nodeType === 3) return '#text';
-        return String(node.tagName || node.nodeName).toLowerCase() + (node.id ? '#' + node.id : '');
-      }
-
-      // Groups the listeners one event reached into a single line, flushed shortly after.
-      var pending = {};
-      function record(tag, event) {
-        var id = event.type + '|' + event.key + '|' + event.keyCode + '|' + event.code;
-        var entry = pending[id];
-        if (!entry) {
-          entry = pending[id] = { tags: [], event: event };
-          setTimeout(function () {
-            delete pending[id];
-            var e = entry.event;
-            log('[' + e.type + '] key=' + JSON.stringify(e.key) + ' code=' + JSON.stringify(e.code) + ' keyCode=' + e.keyCode +
-              ' which=' + e.which + ' charCode=' + e.charCode + ' shift=' + e.shiftKey + ' repeat=' + e.repeat +
-              ' trusted=' + e.isTrusted + ' target=' + describe(e.target) + ' | ' + entry.tags.join(', '));
-          }, 80);
-        }
-        entry.tags.push(tag);
-      }
-      var types = ['keydown', 'keyup', 'keypress'];
-      var failures = [];
-      types.forEach(function (type) {
-        var short = type.replace('key', 'k');
-        function add(target, name, capture) {
-          try {
-            target.addEventListener(type, function (event) { record(name, event); }, capture);
-          } catch (error) {
-            failures.push(name + ' ' + type + ': ' + error);
-          }
-        }
-        add(window, 'win-cap', true);
-        add(window, 'win', false);
-        add(document, 'doc-cap', true);
-        add(document, 'doc', false);
-        add(document.body, 'body', false);
-        try {
-          window['on' + type] = function (event) { record('window.on' + short, event || window.event); };
-          document['on' + type] = function (event) { record('document.on' + short, event || window.event); };
-        } catch (error) {
-          failures.push('on' + type + ': ' + error);
-        }
-      });
-      ['input', 'beforeinput', 'textInput'].forEach(function (type) {
-        document.addEventListener(type, function (event) {
-          log('[' + type + '] data=' + JSON.stringify(event.data) + ' target=' + describe(event.target));
-        }, true);
-      });
-      document.addEventListener('focusin', function (event) { log('[focusin] ' + describe(event.target)); }, true);
-
-      // G: Gamepad API, polled (also reports connect events).
-      var padLine = document.getElementById('k1-pads');
-      var lastPressed = '';
-      function pollPads() {
-        if (!navigator.getGamepads) {
-          padLine.textContent = 'Gamepad API: navigator.getGamepads NO existe';
-          return;
-        }
-        var pads;
-        try { pads = navigator.getGamepads(); } catch (error) { padLine.textContent = 'Gamepad API: error ' + error; return; }
-        var parts = [];
-        var pressed = [];
-        for (var i = 0; pads && i < pads.length; i++) {
-          var pad = pads[i];
-          if (!pad) continue;
-          parts.push('#' + i + ' ' + pad.id + ' (mapping=' + pad.mapping + ', ' + pad.buttons.length + ' botones, ' + pad.axes.length + ' ejes)');
-          for (var b = 0; b < pad.buttons.length; b++) {
-            var button = pad.buttons[b];
-            if (button && (button.pressed || button.value > 0.5)) pressed.push('pad' + i + ' boton ' + b);
-          }
-          for (var a = 0; a < pad.axes.length; a++) {
-            if (Math.abs(pad.axes[a]) > 0.5) pressed.push('pad' + i + ' eje ' + a + '=' + pad.axes[a].toFixed(2));
-          }
-        }
-        padLine.textContent = 'Gamepad API: ' + (parts.length ? parts.join(' | ') : 'ningun mando conectado (pulsa un boton)') +
-          (pressed.length ? ' | PULSADO: ' + pressed.join(', ') : '');
-        var now = pressed.join(', ');
-        if (now && now !== lastPressed) log('[gamepad] ' + now);
-        lastPressed = now;
-      }
-      window.addEventListener('gamepadconnected', function (event) { log('[gamepadconnected] ' + (event.gamepad && event.gamepad.id)); });
-      window.addEventListener('gamepaddisconnected', function () { log('[gamepaddisconnected]'); });
-      setInterval(pollPads, 100);
-
-      // F: rotates real focus through F2, F3 and F7, and reports what document.activeElement says.
-      var focusLine = document.getElementById('k1-focus');
-      var cycle = ['f2', 'f3', 'f7'];
-      var turn = 0;
-      function rotateFocus() {
-        var target = document.getElementById(cycle[turn % cycle.length]);
-        turn++;
-        var error = '';
-        try { target.focus(); } catch (e) { error = ' (error: ' + e + ')'; }
-        var hasFocus = document.hasFocus ? document.hasFocus() : 'n/a';
-        focusLine.textContent = 'Foco: pedido ' + target.id + error + ' -> activeElement=' + describe(document.activeElement) + ' | document.hasFocus()=' + hasFocus;
-      }
-      setInterval(rotateFocus, 2000);
-      rotateFocus();
-
-      status.textContent = 'Script: OK. ' + (failures.length ? 'Fallos: ' + failures.join('; ') : 'Todos los escuchadores registrados') +
-        ' | UA: ' + navigator.userAgent;
-    })();
-  </script>
+<body>
+  <app-root></app-root>
+  <script src="app.js"></script>
 </body>
 </html>
