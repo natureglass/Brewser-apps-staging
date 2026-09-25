@@ -1,9 +1,9 @@
 {
   "verdict": "SUSPICIOUS",
   "score": 10,
-  "scanned_at": "2026-09-25T10:49:48Z",
+  "scanned_at": "2026-09-25T11:04:29Z",
   "scanner_version": "1.3.2",
-  "package_hash": "a69b93a411aab05265696c83143dcb1656b897232d58d3900466c2ed65dcf7a7",
+  "package_hash": "1de29fd1daf5370d806ab57b8bed26347e62f38689ef0f7632e2fd1eb643487e",
   "counts": {
     "info": 0,
     "suspicious": 1,
