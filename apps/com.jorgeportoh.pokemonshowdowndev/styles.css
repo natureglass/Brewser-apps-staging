@@ -2,6 +2,11 @@
   --tw-translate-x: 0;
   --tw-translate-y: 0;
   --tw-translate-z: 0;
+  --tw-rotate-x: initial;
+  --tw-rotate-y: initial;
+  --tw-rotate-z: initial;
+  --tw-skew-x: initial;
+  --tw-skew-y: initial;
   --tw-border-style: solid;
   --tw-leading: initial;
   --tw-font-weight: initial;
@@ -25,6 +30,11 @@
   --tw-translate-x: 0;
   --tw-translate-y: 0;
   --tw-translate-z: 0;
+  --tw-rotate-x: initial;
+  --tw-rotate-y: initial;
+  --tw-rotate-z: initial;
+  --tw-skew-x: initial;
+  --tw-skew-y: initial;
   --tw-border-style: solid;
   --tw-leading: initial;
   --tw-font-weight: initial;
@@ -48,6 +58,11 @@
   --tw-translate-x: 0;
   --tw-translate-y: 0;
   --tw-translate-z: 0;
+  --tw-rotate-x: initial;
+  --tw-rotate-y: initial;
+  --tw-rotate-z: initial;
+  --tw-skew-x: initial;
+  --tw-skew-y: initial;
   --tw-border-style: solid;
   --tw-leading: initial;
   --tw-font-weight: initial;
@@ -447,6 +462,10 @@ button {
   top: 12px;
 }
 
+.top-16 {
+  top: 64px;
+}
+
 .bw-c1 {
   top: 5px;
 }
@@ -460,38 +479,46 @@ button {
 }
 
 .bw-c4 {
-  top: 14px;
+  top: 13px;
 }
 
 .bw-c5 {
-  top: 18px;
+  top: 14px;
 }
 
 .bw-c6 {
-  top: 40px;
+  top: 18px;
 }
 
 .bw-c7 {
-  top: 54px;
+  top: 44px;
 }
 
 .bw-c8 {
-  top: 74px;
+  top: 52px;
 }
 
 .bw-c9 {
-  top: 84px;
+  top: 54px;
 }
 
 .bw-ca {
-  top: 88px;
+  top: 74px;
 }
 
 .bw-cb {
-  top: 272px;
+  top: 84px;
 }
 
 .bw-cc {
+  top: 88px;
+}
+
+.bw-cd {
+  top: 272px;
+}
+
+.bw-ce {
   top: 456px;
 }
 
@@ -523,52 +550,128 @@ button {
   left: 64px;
 }
 
-.bw-cd {
-  left: 116px;
-}
-
-.bw-ce {
-  left: 132px;
-}
-
 .bw-cf {
-  left: 227px;
+  left: 72px;
 }
 
 .bw-cg {
-  left: 264px;
+  left: 84px;
 }
 
 .bw-ch {
-  left: 338px;
+  left: 104px;
 }
 
 .bw-ci {
-  left: 360px;
+  left: 116px;
 }
 
 .bw-cj {
-  left: 436px;
+  left: 132px;
 }
 
 .bw-ck {
-  left: 472px;
+  left: 146px;
 }
 
 .bw-cl {
-  left: 520px;
+  left: 163px;
 }
 
 .bw-cm {
-  left: 536px;
+  left: 172px;
 }
 
 .bw-cn {
-  left: 644px;
+  left: 210px;
 }
 
 .bw-co {
+  left: 220px;
+}
+
+.bw-cp {
+  left: 259px;
+}
+
+.bw-cq {
+  left: 264px;
+}
+
+.bw-cr {
+  left: 274px;
+}
+
+.bw-cs {
+  left: 326px;
+}
+
+.bw-ct {
+  left: 338px;
+}
+
+.bw-cu {
+  left: 360px;
+}
+
+.bw-cv {
+  left: 390px;
+}
+
+.bw-cw {
+  left: 432px;
+}
+
+.bw-cx {
+  left: 436px;
+}
+
+.bw-cy {
+  left: 442px;
+}
+
+.bw-cz {
+  left: 472px;
+}
+
+.bw-c10 {
+  left: 488px;
+}
+
+.bw-c11 {
+  left: 506px;
+}
+
+.bw-c12 {
+  left: 520px;
+}
+
+.bw-c13 {
+  left: 536px;
+}
+
+.bw-c14 {
+  left: 560px;
+}
+
+.bw-c15 {
+  left: 640px;
+}
+
+.bw-c16 {
+  left: 644px;
+}
+
+.bw-c17 {
+  left: 664px;
+}
+
+.bw-c18 {
   left: 768px;
+}
+
+.bw-c19 {
+  left: 776px;
 }
 
 .container {
@@ -625,6 +728,10 @@ button {
   display: inline;
 }
 
+.table {
+  display: table;
+}
+
 .size-3 {
   width: 12px;
   height: 12px;
@@ -677,183 +784,227 @@ button {
   height: 76px;
 }
 
-.bw-cp {
+.bw-c1a {
   height: 30px;
 }
 
-.bw-cq {
+.bw-c1b {
   height: 52px;
 }
 
-.bw-cr {
+.bw-c1c {
   height: 68px;
 }
 
-.bw-cs {
+.bw-c1d {
   height: 72px;
 }
 
-.bw-ct {
+.bw-c1e {
   height: 84px;
 }
 
-.bw-cu {
+.bw-c1f {
   height: 88px;
 }
 
-.bw-cv {
+.bw-c1g {
   height: 104px;
 }
 
-.bw-cw {
+.bw-c1h {
   height: 172px;
 }
 
-.bw-cx {
+.bw-c1i {
   height: 348px;
 }
 
-.bw-cy {
+.bw-c1j {
   height: 380px;
 }
 
-.bw-cz {
+.bw-c1k {
   height: 472px;
 }
 
-.bw-c10 {
-  height: 488px;
-}
-
-.bw-c11 {
-  height: 536px;
-}
-
-.bw-c12 {
-  height: 540px;
-}
-
-.bw-c13 {
-  height: 564px;
-}
-
-.bw-c14 {
-  height: 600px;
-}
-
-.bw-c15 {
-  height: 644px;
-}
-
-.bw-c16 {
-  height: 720px;
-}
-
-.bw-c17 {
-  width: 40px;
-}
-
-.bw-c18 {
-  width: 80px;
-}
-
-.bw-c19 {
-  width: 88px;
-}
-
-.bw-c1a {
-  width: 100px;
-}
-
-.bw-c1b {
-  width: 112px;
-}
-
-.bw-c1c {
-  width: 116px;
-}
-
-.bw-c1d {
-  width: 120px;
-}
-
-.bw-c1e {
-  width: 128px;
-}
-
-.bw-c1f {
-  width: 136px;
-}
-
-.bw-c1g {
-  width: 146px;
-}
-
-.bw-c1h {
-  width: 154px;
-}
-
-.bw-c1i {
-  width: 344px;
-}
-
-.bw-c1j {
-  width: 359px;
-}
-
-.bw-c1k {
-  width: 360px;
-}
-
 .bw-c1l {
-  width: 378px;
+  height: 476px;
 }
 
 .bw-c1m {
-  width: 400px;
+  height: 488px;
 }
 
 .bw-c1n {
-  width: 410px;
+  height: 536px;
 }
 
 .bw-c1o {
-  width: 424px;
+  height: 540px;
 }
 
 .bw-c1p {
-  width: 426px;
+  height: 564px;
 }
 
 .bw-c1q {
-  width: 427px;
+  height: 600px;
 }
 
 .bw-c1r {
-  width: 480px;
+  height: 644px;
 }
 
 .bw-c1s {
-  width: 496px;
+  height: 720px;
+}
+
+.w-11 {
+  width: 44px;
+}
+
+.w-14 {
+  width: 56px;
+}
+
+.w-16 {
+  width: 64px;
+}
+
+.w-24 {
+  width: 96px;
 }
 
 .bw-c1t {
-  width: 560px;
+  width: 40px;
 }
 
 .bw-c1u {
-  width: 853px;
+  width: 80px;
 }
 
 .bw-c1v {
-  width: 872px;
+  width: 88px;
 }
 
 .bw-c1w {
-  width: 920px;
+  width: 100px;
 }
 
 .bw-c1x {
+  width: 112px;
+}
+
+.bw-c1y {
+  width: 120px;
+}
+
+.bw-c1z {
+  width: 128px;
+}
+
+.bw-c20 {
+  width: 132px;
+}
+
+.bw-c21 {
+  width: 136px;
+}
+
+.bw-c22 {
+  width: 146px;
+}
+
+.bw-c23 {
+  width: 154px;
+}
+
+.bw-c24 {
+  width: 330px;
+}
+
+.bw-c25 {
+  width: 336px;
+}
+
+.bw-c26 {
+  width: 340px;
+}
+
+.bw-c27 {
+  width: 344px;
+}
+
+.bw-c28 {
+  width: 359px;
+}
+
+.bw-c29 {
+  width: 360px;
+}
+
+.bw-c2a {
+  width: 378px;
+}
+
+.bw-c2b {
+  width: 400px;
+}
+
+.bw-c2c {
+  width: 406px;
+}
+
+.bw-c2d {
+  width: 408px;
+}
+
+.bw-c2e {
+  width: 410px;
+}
+
+.bw-c2f {
+  width: 424px;
+}
+
+.bw-c2g {
+  width: 426px;
+}
+
+.bw-c2h {
+  width: 427px;
+}
+
+.bw-c2i {
+  width: 440px;
+}
+
+.bw-c2j {
+  width: 480px;
+}
+
+.bw-c2k {
+  width: 496px;
+}
+
+.bw-c2l {
+  width: 560px;
+}
+
+.bw-c2m {
+  width: 853px;
+}
+
+.bw-c2n {
+  width: 872px;
+}
+
+.bw-c2o {
+  width: 920px;
+}
+
+.bw-c2p {
   width: 1280px;
 }
 
@@ -865,9 +1016,13 @@ button {
   flex-shrink: 0;
 }
 
-.bw-c1y {
+.bw-c2q {
   --tw-translate-y: -50%;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y));
+}
+
+.transform {
+  transform: var(--tw-rotate-x, ) var(--tw-rotate-y, ) var(--tw-rotate-z, ) var(--tw-skew-x, ) var(--tw-skew-y, );
 }
 
 .cursor-pointer {
@@ -981,11 +1136,11 @@ button {
   border-color: #364153;
 }
 
-.bw-c1z {
+.bw-c2r {
   background-color: #0b0e14;
 }
 
-.bw-c20 {
+.bw-c2s {
   background-color: #0f141c;
 }
 
@@ -1025,7 +1180,7 @@ button {
   background-color: #3b5176;
 }
 
-.bw-c21 {
+.bw-c2t {
   background-image: url("https://play.pokemonshowdown.com/sprites/pokemonicons-sheet.png");
 }
 
@@ -1073,35 +1228,43 @@ button {
   padding: 32px;
 }
 
-.bw-c22 {
+.bw-c2u {
   padding: 0 4px;
 }
 
-.bw-c23 {
+.bw-c2v {
+  padding: 0 8px;
+}
+
+.bw-c2w {
   padding: 0 12px;
 }
 
-.bw-c24 {
+.bw-c2x {
   padding: 0 40px 0 12px;
 }
 
-.bw-c25 {
+.bw-c2y {
   padding: 4px 0;
 }
 
-.bw-c26 {
+.bw-c2z {
   padding: 4px 12px;
 }
 
-.bw-c27 {
+.bw-c30 {
+  padding: 6px 12px;
+}
+
+.bw-c31 {
   padding: 8px 12px;
 }
 
-.bw-c28 {
+.bw-c32 {
   padding: 8px 40px 8px 12px;
 }
 
-.bw-c29 {
+.bw-c33 {
   padding: 10px 16px;
 }
 
@@ -1152,9 +1315,19 @@ button {
   line-height: 24px;
 }
 
+.leading-7 {
+  --tw-leading: calc(4px * 7);
+  line-height: 28px;
+}
+
 .leading-8 {
   --tw-leading: calc(4px * 8);
   line-height: 32px;
+}
+
+.leading-10 {
+  --tw-leading: calc(4px * 10);
+  line-height: 40px;
 }
 
 .leading-relaxed {
@@ -1284,71 +1457,75 @@ button {
 }
 
 @media (hover: hover) {
-  .bw-c2a:hover {
+  .bw-c34:hover {
     background-color: #193cb8;
   }
 
-  .bw-c2b:hover {
+  .bw-c35:hover {
     background-color: #6a7282;
   }
 
-  .bw-c2c:hover {
+  .bw-c36:hover {
     background-color: #4a5565;
   }
 
-  .bw-c2d:hover {
+  .bw-c37:hover {
     background-color: #3b5176;
   }
 }
 
-.bw-c2e:focus-visible {
+.bw-c38:focus-visible {
   outline-style: var(--tw-outline-style);
   outline-width: 2px;
 }
 
-.bw-c2f:focus-visible {
+.bw-c39:focus-visible {
   outline-offset: -2px;
 }
 
-.bw-c2g:focus-visible {
+.bw-c3a:focus-visible {
   outline-offset: 2px;
 }
 
-.bw-c2h:focus-visible {
+.bw-c3b:focus-visible {
   outline-color: #fff;
 }
 
 @media (hover: hover) {
-  .bw-c2i:enabled:hover {
+  .bw-c3c:enabled:hover {
     background-color: #6a7282;
   }
 }
 
-.bw-c2j:disabled {
+.bw-c3d:disabled {
   cursor: not-allowed;
 }
 
-.bw-c2k:disabled {
+.bw-c3e:disabled {
   cursor: wait;
 }
 
-.bw-c2l:disabled {
+.bw-c3f:disabled {
   border-color: #6a7282;
 }
 
-.bw-c2m:disabled {
+.bw-c3g:disabled {
   background-color: #364153;
 }
 
-.bw-c2n:disabled {
+.bw-c3h:disabled {
   background-color: #1e2939;
 }
 
-.bw-c2o[aria-current="page"] {
+.bw-c3i:disabled {
+  color: #99a1af;
+}
+
+.bw-c3j[aria-current="page"] {
   background-color: #34496b;
 }
 
-.bw-c2p[aria-current="page"] {
+.bw-c3k[aria-current="page"] {
   color: #fff;
 }
 
