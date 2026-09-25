@@ -2,21 +2,7 @@
   --tw-translate-x: 0;
   --tw-translate-y: 0;
   --tw-translate-z: 0;
-  --tw-rotate-x: initial;
-  --tw-rotate-y: initial;
-  --tw-rotate-z: initial;
-  --tw-skew-x: initial;
-  --tw-skew-y: initial;
   --tw-border-style: solid;
-  --tw-gradient-position: initial;
-  --tw-gradient-from: rgba(0, 0, 0, 0);
-  --tw-gradient-via: rgba(0, 0, 0, 0);
-  --tw-gradient-to: rgba(0, 0, 0, 0);
-  --tw-gradient-stops: initial;
-  --tw-gradient-via-stops: initial;
-  --tw-gradient-from-position: 0%;
-  --tw-gradient-via-position: 50%;
-  --tw-gradient-to-position: 100%;
   --tw-leading: initial;
   --tw-font-weight: initial;
   --tw-blur: initial;
@@ -39,21 +25,7 @@
   --tw-translate-x: 0;
   --tw-translate-y: 0;
   --tw-translate-z: 0;
-  --tw-rotate-x: initial;
-  --tw-rotate-y: initial;
-  --tw-rotate-z: initial;
-  --tw-skew-x: initial;
-  --tw-skew-y: initial;
   --tw-border-style: solid;
-  --tw-gradient-position: initial;
-  --tw-gradient-from: rgba(0, 0, 0, 0);
-  --tw-gradient-via: rgba(0, 0, 0, 0);
-  --tw-gradient-to: rgba(0, 0, 0, 0);
-  --tw-gradient-stops: initial;
-  --tw-gradient-via-stops: initial;
-  --tw-gradient-from-position: 0%;
-  --tw-gradient-via-position: 50%;
-  --tw-gradient-to-position: 100%;
   --tw-leading: initial;
   --tw-font-weight: initial;
   --tw-blur: initial;
@@ -76,21 +48,7 @@
   --tw-translate-x: 0;
   --tw-translate-y: 0;
   --tw-translate-z: 0;
-  --tw-rotate-x: initial;
-  --tw-rotate-y: initial;
-  --tw-rotate-z: initial;
-  --tw-skew-x: initial;
-  --tw-skew-y: initial;
   --tw-border-style: solid;
-  --tw-gradient-position: initial;
-  --tw-gradient-from: rgba(0, 0, 0, 0);
-  --tw-gradient-via: rgba(0, 0, 0, 0);
-  --tw-gradient-to: rgba(0, 0, 0, 0);
-  --tw-gradient-stops: initial;
-  --tw-gradient-via-stops: initial;
-  --tw-gradient-from-position: 0%;
-  --tw-gradient-via-position: 50%;
-  --tw-gradient-to-position: 100%;
   --tw-leading: initial;
   --tw-font-weight: initial;
   --tw-blur: initial;
@@ -112,6 +70,8 @@
 :root {
   --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --color-red-300: #ffa3a3;
+  --color-red-800: #9f0712;
   --color-orange-400: #ff8b1a;
   --color-amber-400: #fcbb00;
   --color-lime-400: #9de500;
@@ -467,12 +427,20 @@ button {
   position: static;
 }
 
+.top-0 {
+  top: 0;
+}
+
 .top-1 {
   top: 4px;
 }
 
 .bw-c0 {
   top: 50%;
+}
+
+.top-2 {
+  top: 8px;
 }
 
 .top-3 {
@@ -487,8 +455,52 @@ button {
   top: 7px;
 }
 
+.bw-c3 {
+  top: 10px;
+}
+
+.bw-c4 {
+  top: 14px;
+}
+
+.bw-c5 {
+  top: 18px;
+}
+
+.bw-c6 {
+  top: 40px;
+}
+
+.bw-c7 {
+  top: 54px;
+}
+
+.bw-c8 {
+  top: 74px;
+}
+
+.bw-c9 {
+  top: 84px;
+}
+
+.bw-ca {
+  top: 88px;
+}
+
+.bw-cb {
+  top: 272px;
+}
+
+.bw-cc {
+  top: 456px;
+}
+
 .right-4 {
   right: 16px;
+}
+
+.left-0 {
+  left: 0;
 }
 
 .left-2 {
@@ -499,16 +511,64 @@ button {
   left: 12px;
 }
 
-.bw-c3 {
+.left-4 {
+  left: 16px;
+}
+
+.left-6 {
+  left: 24px;
+}
+
+.left-16 {
+  left: 64px;
+}
+
+.bw-cd {
   left: 116px;
 }
 
-.bw-c4 {
+.bw-ce {
+  left: 132px;
+}
+
+.bw-cf {
+  left: 227px;
+}
+
+.bw-cg {
   left: 264px;
 }
 
-.bw-c5 {
+.bw-ch {
   left: 338px;
+}
+
+.bw-ci {
+  left: 360px;
+}
+
+.bw-cj {
+  left: 436px;
+}
+
+.bw-ck {
+  left: 472px;
+}
+
+.bw-cl {
+  left: 520px;
+}
+
+.bw-cm {
+  left: 536px;
+}
+
+.bw-cn {
+  left: 644px;
+}
+
+.bw-co {
+  left: 768px;
 }
 
 .container {
@@ -597,6 +657,10 @@ button {
   height: 36px;
 }
 
+.h-10 {
+  height: 40px;
+}
+
 .h-11 {
   height: 44px;
 }
@@ -605,103 +669,191 @@ button {
   height: 56px;
 }
 
+.h-16 {
+  height: 64px;
+}
+
 .h-19 {
   height: 76px;
 }
 
-.bw-c6 {
-  height: 52px;
-}
-
-.bw-c7 {
-  height: 72px;
-}
-
-.bw-c8 {
-  height: 84px;
-}
-
-.bw-c9 {
-  height: 88px;
-}
-
-.bw-ca {
-  height: 104px;
-}
-
-.bw-cb {
-  height: 536px;
-}
-
-.bw-cc {
-  height: 564px;
-}
-
-.bw-cd {
-  height: 600px;
-}
-
-.bw-ce {
-  height: 644px;
-}
-
-.bw-cf {
-  height: 720px;
-}
-
-.bw-cg {
-  width: 80px;
-}
-
-.bw-ch {
-  width: 100px;
-}
-
-.bw-ci {
-  width: 112px;
-}
-
-.bw-cj {
-  width: 136px;
-}
-
-.bw-ck {
-  width: 146px;
-}
-
-.bw-cl {
-  width: 154px;
-}
-
-.bw-cm {
-  width: 378px;
-}
-
-.bw-cn {
-  width: 410px;
-}
-
-.bw-co {
-  width: 426px;
-}
-
 .bw-cp {
-  width: 427px;
+  height: 30px;
 }
 
 .bw-cq {
-  width: 496px;
+  height: 52px;
 }
 
 .bw-cr {
-  width: 560px;
+  height: 68px;
 }
 
 .bw-cs {
-  width: 853px;
+  height: 72px;
 }
 
 .bw-ct {
+  height: 84px;
+}
+
+.bw-cu {
+  height: 88px;
+}
+
+.bw-cv {
+  height: 104px;
+}
+
+.bw-cw {
+  height: 172px;
+}
+
+.bw-cx {
+  height: 348px;
+}
+
+.bw-cy {
+  height: 380px;
+}
+
+.bw-cz {
+  height: 472px;
+}
+
+.bw-c10 {
+  height: 488px;
+}
+
+.bw-c11 {
+  height: 536px;
+}
+
+.bw-c12 {
+  height: 540px;
+}
+
+.bw-c13 {
+  height: 564px;
+}
+
+.bw-c14 {
+  height: 600px;
+}
+
+.bw-c15 {
+  height: 644px;
+}
+
+.bw-c16 {
+  height: 720px;
+}
+
+.bw-c17 {
+  width: 40px;
+}
+
+.bw-c18 {
+  width: 80px;
+}
+
+.bw-c19 {
+  width: 88px;
+}
+
+.bw-c1a {
+  width: 100px;
+}
+
+.bw-c1b {
+  width: 112px;
+}
+
+.bw-c1c {
+  width: 116px;
+}
+
+.bw-c1d {
+  width: 120px;
+}
+
+.bw-c1e {
+  width: 128px;
+}
+
+.bw-c1f {
+  width: 136px;
+}
+
+.bw-c1g {
+  width: 146px;
+}
+
+.bw-c1h {
+  width: 154px;
+}
+
+.bw-c1i {
+  width: 344px;
+}
+
+.bw-c1j {
+  width: 359px;
+}
+
+.bw-c1k {
+  width: 360px;
+}
+
+.bw-c1l {
+  width: 378px;
+}
+
+.bw-c1m {
+  width: 400px;
+}
+
+.bw-c1n {
+  width: 410px;
+}
+
+.bw-c1o {
+  width: 424px;
+}
+
+.bw-c1p {
+  width: 426px;
+}
+
+.bw-c1q {
+  width: 427px;
+}
+
+.bw-c1r {
+  width: 480px;
+}
+
+.bw-c1s {
+  width: 496px;
+}
+
+.bw-c1t {
+  width: 560px;
+}
+
+.bw-c1u {
+  width: 853px;
+}
+
+.bw-c1v {
+  width: 872px;
+}
+
+.bw-c1w {
+  width: 920px;
+}
+
+.bw-c1x {
   width: 1280px;
 }
 
@@ -713,13 +865,9 @@ button {
   flex-shrink: 0;
 }
 
-.bw-cu {
+.bw-c1y {
   --tw-translate-y: -50%;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y));
-}
-
-.transform {
-  transform: var(--tw-rotate-x, ) var(--tw-rotate-y, ) var(--tw-rotate-z, ) var(--tw-skew-x, ) var(--tw-skew-y, );
 }
 
 .cursor-pointer {
@@ -779,6 +927,10 @@ button {
   border-radius: 24px;
 }
 
+.rounded-lg {
+  border-radius: 8px;
+}
+
 .rounded-md {
   border-radius: 6px;
 }
@@ -796,6 +948,11 @@ button {
 .border-t {
   border-top-style: var(--tw-border-style);
   border-top-width: 1px;
+}
+
+.border-r {
+  border-right-style: var(--tw-border-style);
+  border-right-width: 1px;
 }
 
 .border-b {
@@ -820,11 +977,15 @@ button {
   border-color: #4a5565;
 }
 
-.bw-cv {
+.border-gray-700 {
+  border-color: #364153;
+}
+
+.bw-c1z {
   background-color: #0b0e14;
 }
 
-.bw-cw {
+.bw-c20 {
   background-color: #0f141c;
 }
 
@@ -844,17 +1005,32 @@ button {
   background-color: #364153;
 }
 
+.bg-gray-800 {
+  background-color: #1e2939;
+}
+
 .bg-header {
   background-color: #1f2d45;
+}
+
+.bg-red-800 {
+  background-color: #9f0712;
 }
 
 .bg-tab {
   background-color: #2a3b58;
 }
 
-.to-gray-700 {
-  --tw-gradient-to: #364153;
-  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
+.bg-tab-hover {
+  background-color: #3b5176;
+}
+
+.bw-c21 {
+  background-image: url("https://play.pokemonshowdown.com/sprites/pokemonicons-sheet.png");
+}
+
+.bg-no-repeat {
+  background-repeat: no-repeat;
 }
 
 .fill-gray-100 {
@@ -885,6 +1061,10 @@ button {
   stroke: #fff;
 }
 
+.p-4 {
+  padding: 16px;
+}
+
 .p-6 {
   padding: 24px;
 }
@@ -893,35 +1073,35 @@ button {
   padding: 32px;
 }
 
-.bw-cx {
+.bw-c22 {
   padding: 0 4px;
 }
 
-.bw-cy {
+.bw-c23 {
   padding: 0 12px;
 }
 
-.bw-cz {
+.bw-c24 {
   padding: 0 40px 0 12px;
 }
 
-.bw-c10 {
+.bw-c25 {
   padding: 4px 0;
 }
 
-.bw-c11 {
+.bw-c26 {
   padding: 4px 12px;
 }
 
-.bw-c12 {
+.bw-c27 {
   padding: 8px 12px;
 }
 
-.bw-c13 {
+.bw-c28 {
   padding: 8px 40px 8px 12px;
 }
 
-.bw-c14 {
+.bw-c29 {
   padding: 10px 16px;
 }
 
@@ -931,6 +1111,10 @@ button {
 
 .text-left {
   text-align: left;
+}
+
+.font-mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
 }
 
 .text-5xl {
@@ -961,6 +1145,16 @@ button {
 .leading-5 {
   --tw-leading: calc(4px * 5);
   line-height: 20px;
+}
+
+.leading-6 {
+  --tw-leading: calc(4px * 6);
+  line-height: 24px;
+}
+
+.leading-8 {
+  --tw-leading: calc(4px * 8);
+  line-height: 32px;
 }
 
 .leading-relaxed {
@@ -1037,6 +1231,10 @@ button {
   color: #c07eff;
 }
 
+.text-red-300 {
+  color: #ffa3a3;
+}
+
 .text-rose-400 {
   color: #ff667f;
 }
@@ -1086,71 +1284,71 @@ button {
 }
 
 @media (hover: hover) {
-  .bw-c15:hover {
+  .bw-c2a:hover {
     background-color: #193cb8;
   }
 
-  .bw-c16:hover {
+  .bw-c2b:hover {
     background-color: #6a7282;
   }
 
-  .bw-c17:hover {
+  .bw-c2c:hover {
     background-color: #4a5565;
   }
 
-  .bw-c18:hover {
+  .bw-c2d:hover {
     background-color: #3b5176;
   }
 }
 
-.bw-c19:focus-visible {
+.bw-c2e:focus-visible {
   outline-style: var(--tw-outline-style);
   outline-width: 2px;
 }
 
-.bw-c1a:focus-visible {
+.bw-c2f:focus-visible {
   outline-offset: -2px;
 }
 
-.bw-c1b:focus-visible {
+.bw-c2g:focus-visible {
   outline-offset: 2px;
 }
 
-.bw-c1c:focus-visible {
+.bw-c2h:focus-visible {
   outline-color: #fff;
 }
 
 @media (hover: hover) {
-  .bw-c1d:enabled:hover {
+  .bw-c2i:enabled:hover {
     background-color: #6a7282;
   }
 }
 
-.bw-c1e:disabled {
+.bw-c2j:disabled {
   cursor: not-allowed;
 }
 
-.bw-c1f:disabled {
+.bw-c2k:disabled {
   cursor: wait;
 }
 
-.bw-c1g:disabled {
+.bw-c2l:disabled {
   border-color: #6a7282;
 }
 
-.bw-c1h:disabled {
+.bw-c2m:disabled {
   background-color: #364153;
 }
 
-.bw-c1i:disabled {
+.bw-c2n:disabled {
   background-color: #1e2939;
 }
 
-.bw-c1j[aria-current="page"] {
+.bw-c2o[aria-current="page"] {
   background-color: #34496b;
 }
 
-.bw-c1k[aria-current="page"] {
+.bw-c2p[aria-current="page"] {
   color: #fff;
 }
 
