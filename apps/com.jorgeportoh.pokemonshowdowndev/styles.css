@@ -491,7 +491,7 @@ button {
 }
 
 .bw-c3 {
-  left: 268px;
+  left: 264px;
 }
 
 .container {
@@ -633,26 +633,30 @@ button {
 }
 
 .bw-cf {
-  width: 363px;
+  width: 154px;
 }
 
 .bw-cg {
-  width: 496px;
+  width: 426px;
 }
 
 .bw-ch {
-  width: 560px;
+  width: 427px;
 }
 
 .bw-ci {
-  width: 639px;
+  width: 496px;
 }
 
 .bw-cj {
-  width: 640px;
+  width: 560px;
 }
 
 .bw-ck {
+  width: 853px;
+}
+
+.bw-cl {
   width: 1280px;
 }
 
@@ -664,7 +668,7 @@ button {
   flex-shrink: 0;
 }
 
-.bw-cl {
+.bw-cm {
   --tw-translate-y: -50%;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y));
 }
@@ -766,11 +770,11 @@ button {
   border-color: #4a5565;
 }
 
-.bw-cm {
+.bw-cn {
   background-color: #0b0e14;
 }
 
-.bw-cn {
+.bw-co {
   background-color: #0f141c;
 }
 
@@ -839,31 +843,31 @@ button {
   padding: 2rem;
 }
 
-.bw-co {
+.bw-cp {
   padding: 0 4px;
 }
 
-.bw-cp {
+.bw-cq {
   padding: 0 12px;
 }
 
-.bw-cq {
+.bw-cr {
   padding: 0 40px 0 12px;
 }
 
-.bw-cr {
+.bw-cs {
   padding: 4px 0;
 }
 
-.bw-cs {
+.bw-ct {
   padding: 4px 12px;
 }
 
-.bw-ct {
+.bw-cu {
   padding: 8px 12px;
 }
 
-.bw-cu {
+.bw-cv {
   padding: 8px 40px 8px 12px;
 }
 
@@ -1024,63 +1028,63 @@ button {
 }
 
 @media (hover: hover) {
-  .bw-cv:hover {
+  .bw-cw:hover {
     background-color: #193cb8;
   }
 
-  .bw-cw:hover {
+  .bw-cx:hover {
     background-color: #6a7282;
   }
 
-  .bw-cx:hover {
+  .bw-cy:hover {
     background-color: #4a5565;
   }
 
-  .bw-cy:hover {
+  .bw-cz:hover {
     background-color: #3b5176;
   }
 }
 
-.bw-cz:focus-visible {
+.bw-c10:focus-visible {
   outline-style: var(--tw-outline-style);
   outline-width: 2px;
 }
 
-.bw-c10:focus-visible {
+.bw-c11:focus-visible {
   outline-offset: -2px;
 }
 
-.bw-c11:focus-visible {
+.bw-c12:focus-visible {
   outline-offset: 2px;
 }
 
-.bw-c12:focus-visible {
+.bw-c13:focus-visible {
   outline-color: #fff;
 }
 
 @media (hover: hover) {
-  .bw-c13:enabled:hover {
+  .bw-c14:enabled:hover {
     background-color: #6a7282;
   }
 }
 
-.bw-c14:disabled {
+.bw-c15:disabled {
   cursor: not-allowed;
 }
 
-.bw-c15:disabled {
+.bw-c16:disabled {
   border-color: #6a7282;
 }
 
-.bw-c16:disabled {
+.bw-c17:disabled {
   background-color: #364153;
 }
 
-.bw-c17[aria-current="page"] {
+.bw-c18[aria-current="page"] {
   background-color: #34496b;
 }
 
-.bw-c18[aria-current="page"] {
+.bw-c19[aria-current="page"] {
   color: #fff;
 }
 
