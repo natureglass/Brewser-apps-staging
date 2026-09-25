@@ -462,10 +462,6 @@ button {
   top: 12px;
 }
 
-.top-16 {
-  top: 64px;
-}
-
 .bw-c1 {
   top: 5px;
 }
@@ -479,46 +475,42 @@ button {
 }
 
 .bw-c4 {
-  top: 13px;
-}
-
-.bw-c5 {
   top: 14px;
 }
 
-.bw-c6 {
+.bw-c5 {
   top: 18px;
 }
 
-.bw-c7 {
+.bw-c6 {
   top: 44px;
 }
 
-.bw-c8 {
+.bw-c7 {
   top: 52px;
 }
 
-.bw-c9 {
+.bw-c8 {
   top: 54px;
 }
 
-.bw-ca {
+.bw-c9 {
   top: 74px;
 }
 
-.bw-cb {
+.bw-ca {
   top: 84px;
 }
 
-.bw-cc {
+.bw-cb {
   top: 88px;
 }
 
-.bw-cd {
+.bw-cc {
   top: 272px;
 }
 
-.bw-ce {
+.bw-cd {
   top: 456px;
 }
 
@@ -546,20 +538,20 @@ button {
   left: 24px;
 }
 
-.left-16 {
-  left: 64px;
-}
-
-.bw-cf {
+.bw-ce {
   left: 72px;
 }
 
-.bw-cg {
+.bw-cf {
   left: 84px;
 }
 
-.bw-ch {
+.bw-cg {
   left: 104px;
+}
+
+.bw-ch {
+  left: 108px;
 }
 
 .bw-ci {
@@ -579,7 +571,7 @@ button {
 }
 
 .bw-cm {
-  left: 172px;
+  left: 168px;
 }
 
 .bw-cn {
@@ -587,7 +579,7 @@ button {
 }
 
 .bw-co {
-  left: 220px;
+  left: 226px;
 }
 
 .bw-cp {
@@ -785,67 +777,67 @@ button {
 }
 
 .bw-c1a {
-  height: 30px;
-}
-
-.bw-c1b {
   height: 52px;
 }
 
-.bw-c1c {
+.bw-c1b {
   height: 68px;
 }
 
-.bw-c1d {
+.bw-c1c {
   height: 72px;
 }
 
-.bw-c1e {
+.bw-c1d {
   height: 84px;
 }
 
-.bw-c1f {
+.bw-c1e {
   height: 88px;
 }
 
-.bw-c1g {
+.bw-c1f {
   height: 104px;
 }
 
-.bw-c1h {
+.bw-c1g {
   height: 172px;
 }
 
-.bw-c1i {
+.bw-c1h {
   height: 348px;
 }
 
-.bw-c1j {
+.bw-c1i {
   height: 380px;
 }
 
-.bw-c1k {
+.bw-c1j {
   height: 472px;
 }
 
-.bw-c1l {
+.bw-c1k {
   height: 476px;
 }
 
-.bw-c1m {
+.bw-c1l {
   height: 488px;
 }
 
-.bw-c1n {
+.bw-c1m {
   height: 536px;
 }
 
-.bw-c1o {
+.bw-c1n {
   height: 540px;
 }
 
-.bw-c1p {
+.bw-c1o {
   height: 564px;
+}
+
+.bw-c1p {
+  height: 580px;
 }
 
 .bw-c1q {
@@ -877,51 +869,51 @@ button {
 }
 
 .bw-c1t {
-  width: 40px;
-}
-
-.bw-c1u {
   width: 80px;
 }
 
-.bw-c1v {
+.bw-c1u {
   width: 88px;
 }
 
-.bw-c1w {
+.bw-c1v {
   width: 100px;
 }
 
-.bw-c1x {
+.bw-c1w {
   width: 112px;
 }
 
-.bw-c1y {
+.bw-c1x {
   width: 120px;
 }
 
-.bw-c1z {
+.bw-c1y {
   width: 128px;
 }
 
-.bw-c20 {
+.bw-c1z {
   width: 132px;
 }
 
-.bw-c21 {
+.bw-c20 {
   width: 136px;
 }
 
-.bw-c22 {
+.bw-c21 {
   width: 146px;
 }
 
-.bw-c23 {
+.bw-c22 {
   width: 154px;
 }
 
+.bw-c23 {
+  width: 304px;
+}
+
 .bw-c24 {
-  width: 330px;
+  width: 324px;
 }
 
 .bw-c25 {
@@ -933,78 +925,74 @@ button {
 }
 
 .bw-c27 {
-  width: 344px;
-}
-
-.bw-c28 {
   width: 359px;
 }
 
-.bw-c29 {
+.bw-c28 {
   width: 360px;
 }
 
-.bw-c2a {
+.bw-c29 {
   width: 378px;
 }
 
-.bw-c2b {
+.bw-c2a {
   width: 400px;
 }
 
-.bw-c2c {
+.bw-c2b {
   width: 406px;
 }
 
-.bw-c2d {
+.bw-c2c {
   width: 408px;
 }
 
-.bw-c2e {
+.bw-c2d {
   width: 410px;
 }
 
-.bw-c2f {
+.bw-c2e {
   width: 424px;
 }
 
-.bw-c2g {
+.bw-c2f {
   width: 426px;
 }
 
-.bw-c2h {
+.bw-c2g {
   width: 427px;
 }
 
-.bw-c2i {
+.bw-c2h {
   width: 440px;
 }
 
-.bw-c2j {
+.bw-c2i {
   width: 480px;
 }
 
-.bw-c2k {
+.bw-c2j {
   width: 496px;
 }
 
-.bw-c2l {
+.bw-c2k {
   width: 560px;
 }
 
-.bw-c2m {
+.bw-c2l {
   width: 853px;
 }
 
-.bw-c2n {
+.bw-c2m {
   width: 872px;
 }
 
-.bw-c2o {
+.bw-c2n {
   width: 920px;
 }
 
-.bw-c2p {
+.bw-c2o {
   width: 1280px;
 }
 
@@ -1016,7 +1004,7 @@ button {
   flex-shrink: 0;
 }
 
-.bw-c2q {
+.bw-c2p {
   --tw-translate-y: -50%;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y));
 }
@@ -1136,11 +1124,11 @@ button {
   border-color: #364153;
 }
 
-.bw-c2r {
+.bw-c2q {
   background-color: #0b0e14;
 }
 
-.bw-c2s {
+.bw-c2r {
   background-color: #0f141c;
 }
 
@@ -1178,14 +1166,6 @@ button {
 
 .bg-tab-hover {
   background-color: #3b5176;
-}
-
-.bw-c2t {
-  background-image: url("https://play.pokemonshowdown.com/sprites/pokemonicons-sheet.png");
-}
-
-.bg-no-repeat {
-  background-repeat: no-repeat;
 }
 
 .fill-gray-100 {
@@ -1228,43 +1208,43 @@ button {
   padding: 32px;
 }
 
-.bw-c2u {
+.bw-c2s {
   padding: 0 4px;
 }
 
-.bw-c2v {
+.bw-c2t {
   padding: 0 8px;
 }
 
-.bw-c2w {
+.bw-c2u {
   padding: 0 12px;
 }
 
-.bw-c2x {
+.bw-c2v {
   padding: 0 40px 0 12px;
 }
 
-.bw-c2y {
+.bw-c2w {
   padding: 4px 0;
 }
 
-.bw-c2z {
+.bw-c2x {
   padding: 4px 12px;
 }
 
-.bw-c30 {
+.bw-c2y {
   padding: 6px 12px;
 }
 
-.bw-c31 {
+.bw-c2z {
   padding: 8px 12px;
 }
 
-.bw-c32 {
+.bw-c30 {
   padding: 8px 40px 8px 12px;
 }
 
-.bw-c33 {
+.bw-c31 {
   padding: 10px 16px;
 }
 
@@ -1457,75 +1437,75 @@ button {
 }
 
 @media (hover: hover) {
-  .bw-c34:hover {
+  .bw-c32:hover {
     background-color: #193cb8;
   }
 
-  .bw-c35:hover {
+  .bw-c33:hover {
     background-color: #6a7282;
   }
 
-  .bw-c36:hover {
+  .bw-c34:hover {
     background-color: #4a5565;
   }
 
-  .bw-c37:hover {
+  .bw-c35:hover {
     background-color: #3b5176;
   }
 }
 
-.bw-c38:focus-visible {
+.bw-c36:focus-visible {
   outline-style: var(--tw-outline-style);
   outline-width: 2px;
 }
 
-.bw-c39:focus-visible {
+.bw-c37:focus-visible {
   outline-offset: -2px;
 }
 
-.bw-c3a:focus-visible {
+.bw-c38:focus-visible {
   outline-offset: 2px;
 }
 
-.bw-c3b:focus-visible {
+.bw-c39:focus-visible {
   outline-color: #fff;
 }
 
 @media (hover: hover) {
-  .bw-c3c:enabled:hover {
+  .bw-c3a:enabled:hover {
     background-color: #6a7282;
   }
 }
 
-.bw-c3d:disabled {
+.bw-c3b:disabled {
   cursor: not-allowed;
 }
 
-.bw-c3e:disabled {
+.bw-c3c:disabled {
   cursor: wait;
 }
 
-.bw-c3f:disabled {
+.bw-c3d:disabled {
   border-color: #6a7282;
 }
 
-.bw-c3g:disabled {
+.bw-c3e:disabled {
   background-color: #364153;
 }
 
-.bw-c3h:disabled {
+.bw-c3f:disabled {
   background-color: #1e2939;
 }
 
-.bw-c3i:disabled {
+.bw-c3g:disabled {
   color: #99a1af;
 }
 
-.bw-c3j[aria-current="page"] {
+.bw-c3h[aria-current="page"] {
   background-color: #34496b;
 }
 
-.bw-c3k[aria-current="page"] {
+.bw-c3i[aria-current="page"] {
   color: #fff;
 }
 
