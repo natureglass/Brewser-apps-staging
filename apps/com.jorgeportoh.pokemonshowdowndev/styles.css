@@ -1563,10 +1563,6 @@ button {
   flex-shrink: 0;
 }
 
-.grow {
-  flex-grow: 1;
-}
-
 .bw-c5w {
   --tw-translate-y: -50%;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y));
