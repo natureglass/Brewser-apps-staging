@@ -141,6 +141,7 @@
   --color-green-800: #016630;
   --color-emerald-400: #00d294;
   --color-teal-400: #00d3bd;
+  --color-cyan-200: #a2f4fd;
   --color-cyan-400: #00d2ef;
   --color-sky-300: #77d4ff;
   --color-sky-400: #00bcfe;
@@ -1762,6 +1763,10 @@ button {
 
 .border-blue-300 {
   border-color: #90c5ff;
+}
+
+.border-cyan-200 {
+  border-color: #a2f4fd;
 }
 
 .border-fuchsia-300 {
