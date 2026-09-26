@@ -1,12 +1,13 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="utf-8">
-  <title>PokemonShowdownBrewser</title>
-  <base href="./">
+  <title>Test P1</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <link rel="stylesheet" href="styles.css">
+  <style>
+    .row { position:absolute; left:8px; width:1264px; height:22px; line-height:22px; font-size:15px; overflow:hidden; white-space:nowrap; }
+    .log { position:absolute; left:8px; width:1264px; height:20px; line-height:20px; font-size:13px; color:#a8b8d0; overflow:hidden; white-space:nowrap; }
+  </style>
 
 <!-- brewser-pwa:start -->
 <link rel="manifest" href="pwa/app.webmanifest">
@@ -17,8 +18,215 @@
 <script src="pwa/brewser-pwa.js" defer></script>
 <!-- brewser-pwa:end -->
 </head>
-<body>
-  <app-root></app-root>
-  <script src="app.js"></script>
+<body style="width:1280px;height:720px;margin:0;overflow:hidden;background:#000000;color:#ffffff;font-family:sans-serif;font-size:14px;position:relative;">
+  <p style="position:absolute;left:8px;top:0;margin:0;width:1264px;height:40px;line-height:20px;color:#facc15;">
+    TEST P1 (login en Showdown). Todo va solo, no hay que pulsar nada. Haz una foto cuando termine (unos 20 s). Si llega a "Conectado como", reta a ese nombre desde ffenrix: acepta solo y juega con "default".
+  </p>
+  <div id="s0" class="row" style="top:44px;color:#f87171;">S0 script: no ejecutado</div>
+  <div id="s1" class="row" style="top:68px;">S1 WebSocket + challstr: pendiente</div>
+  <div id="s2" class="row" style="top:92px;">S2 fetch POST /api/getassertion: pendiente</div>
+  <div id="s3" class="row" style="top:116px;">S3 fetch GET /api/getassertion?...: pendiente</div>
+  <div id="s4" class="row" style="top:140px;">S4 XMLHttpRequest POST /api/getassertion: pendiente</div>
+  <div id="s5" class="row" style="top:164px;">S5 /trn (ponerse el nombre): pendiente</div>
+  <div id="s6" class="row" style="top:188px;">S6 /challenge ffenrix gen9randombattle: pendiente</div>
+  <div id="s7" class="row" style="top:212px;">S7 reto entrante / combate: esperando</div>
+  <div class="row" style="top:244px;color:#facc15;">Ultimos mensajes del servidor:</div>
+  <div id="logbox"></div>
+
+  <script>
+    var LOG_ROWS = 18;
+    var logLines = [];
+    var logBox = document.getElementById('logbox');
+    for (var i = 0; i < LOG_ROWS; i++) {
+      var row = document.createElement('div');
+      row.className = 'log';
+      row.style.top = (268 + i * 22) + 'px';
+      row.textContent = '-';
+      logBox.appendChild(row);
+    }
+    var t0 = Date.now();
+    function secs() { return ((Date.now() - t0) / 1000).toFixed(1) + 's'; }
+    function set(id, text, color) {
+      var el = document.getElementById(id);
+      el.textContent = text;
+      el.style.color = color || '#ffffff';
+    }
+    function ok(id, text) { set(id, text, '#4ade80'); }
+    function fail(id, text) { set(id, text, '#f87171'); }
+    function log(text) {
+      logLines.push('[' + secs() + '] ' + text);
+      if (logLines.length > LOG_ROWS) logLines.shift();
+      var rows = logBox.children;
+      for (var i = 0; i < LOG_ROWS; i++) rows[i].textContent = logLines[i] || '-';
+    }
+    function describe(error) {
+      return error ? (error.name || 'Error') + ': ' + (error.message || String(error)) : 'sin detalle';
+    }
+    function short(text) { return text.length > 50 ? text.slice(0, 50) + '... (' + text.length + ' chars)' : text; }
+    // A real assertion is "challstr,userid,..." ; ";" = registered name; ";;msg" = error.
+    function isAssertion(text) { return text.length > 100 && text.charAt(0) !== ';'; }
+
+    ok('s0', 'S0 script: ejecutado. UA: ' + navigator.userAgent);
+
+    var API = 'https://play.pokemonshowdown.com/api/getassertion';
+    var name = 'Brewser' + (1000 + Math.floor(Math.random() * 9000));
+    var userid = name.toLowerCase();
+    var challstr = null;
+    var assertion = null;
+    var named = false;
+    var ws;
+
+    try {
+      ws = new WebSocket('wss://sim3.psim.us/showdown/websocket');
+    } catch (error) {
+      fail('s1', 'S1 WebSocket: excepcion ' + describe(error));
+    }
+    if (ws) {
+      ws.onopen = function () { set('s1', 'S1 WebSocket: abierto (' + secs() + '), esperando challstr'); };
+      ws.onerror = function () { fail('s1', 'S1 WebSocket: error (' + secs() + ')'); };
+      ws.onclose = function () { log('WebSocket cerrado'); };
+      ws.onmessage = function (event) { onFrame(String(event.data)); };
+    }
+
+    function send(text) {
+      log('>> ' + text.slice(0, 120));
+      ws.send(text);
+    }
+
+    function onFrame(data) {
+      var lines = data.split('\n');
+      var room = lines[0].charAt(0) === '>' ? lines.shift().slice(1) : '';
+      for (var i = 0; i < lines.length; i++) {
+        var line = lines[i];
+        if (!line || line.indexOf('|formats|') === 0 || line.indexOf('|queryresponse|') === 0) continue;
+        if (line.indexOf('|challstr|') === 0) {
+          challstr = line.slice('|challstr|'.length);
+          ok('s1', 'S1 WebSocket + challstr: OK (' + secs() + ')');
+          log('<< |challstr| (' + challstr.length + ' chars)');
+          runLogin();
+          continue;
+        }
+        if (line.indexOf('|request|') === 0) {
+          onRequest(room, line.slice('|request|'.length));
+          continue;
+        }
+        log((room ? room.slice(-12) + ' ' : '') + '<< ' + line.slice(0, 140));
+        if (line.indexOf('|updateuser|') === 0) onUpdateUser(line);
+        if (line.indexOf('|pm|') === 0) onPm(line);
+        if (line.indexOf('|popup|') === 0 && !named) fail('s5', 'S5 /trn: popup ' + line.slice(7, 150));
+        if (line.indexOf('|init|battle') === 0) ok('s7', 'S7 combate: dentro de ' + room);
+        if (line.indexOf('|win|') === 0) ok('s7', 'S7 combate: terminado, gana ' + line.slice(5));
+      }
+    }
+
+    function onUpdateUser(line) {
+      var parts = line.split('|');
+      var shownName = (parts[2] || '').trim();
+      if (parts[3] === '1' && !named) {
+        named = true;
+        ok('s5', 'S5 /trn: OK. Conectado como "' + shownName + '" (' + secs() + ')');
+        setTimeout(tryChallenge, 1500);
+      }
+    }
+
+    function onPm(line) {
+      var parts = line.split('|');
+      var from = (parts[2] || '').replace(/^[^a-zA-Z0-9]/, '');
+      var message = parts.slice(4).join('|');
+      if (message.indexOf('/challenge ') === 0 && from.toLowerCase().replace(/[^a-z0-9]/g, '') !== userid) {
+        set('s7', 'S7 reto entrante de ' + from + ': aceptando', '#facc15');
+        setTimeout(function () { send('|/utm null'); send('|/accept ' + from); }, 800);
+      }
+      // Server errors come as a PM from us to "~": |pm|!Brewser1234|~|/error ...
+      if (message.indexOf('/error ') === 0) {
+        fail('s6', 'S6 /challenge: ' + message.slice(7, 170));
+      }
+    }
+
+    function tryChallenge() {
+      set('s6', 'S6 /challenge ffenrix: enviado, esperando respuesta', '#facc15');
+      send('|/utm null');
+      send('|/challenge ffenrix, gen9randombattle');
+      // Cancel so ffenrix isn't left with a pending challenge; a real error arrives before this.
+      setTimeout(function () {
+        if (document.getElementById('s6').textContent.indexOf('enviado') >= 0) {
+          ok('s6', 'S6 /challenge: sin error en 10 s, el reto llego a ffenrix (cancelado)');
+        }
+        send('|/cancelchallenge ffenrix');
+      }, 10000);
+    }
+
+    function onRequest(room, json) {
+      if (!json) return;
+      var request;
+      try { request = JSON.parse(json); } catch (error) { log('request no es JSON: ' + describe(error)); return; }
+      log(room.slice(-12) + ' REQUEST rqid=' + request.rqid + (request.wait ? ' wait' : '') + (request.forceSwitch ? ' forceSwitch' : ''));
+      if (!request.wait) setTimeout(function () { send(room + '|/choose default|' + request.rqid); }, 800);
+    }
+
+    // S2 → S3 → S4: the first one that returns an assertion logs in with /trn.
+    function runLogin() {
+      var body = 'userid=' + encodeURIComponent(userid) + '&challstr=' + encodeURIComponent(challstr);
+      set('s2', 'S2 fetch POST: enviando como ' + userid, '#facc15');
+      fetchStep('s2', 'S2 fetch POST', API, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body })
+        .then(function () {
+          set('s3', 'S3 fetch GET: enviando', '#facc15');
+          return fetchStep('s3', 'S3 fetch GET', API + '?' + body, { method: 'GET' });
+        })
+        .then(function () {
+          set('s4', 'S4 XHR POST: enviando', '#facc15');
+          return xhrStep(body);
+        })
+        .then(function () {
+          if (!assertion) {
+            fail('s5', 'S5 /trn: no se hace, ninguna via devolvio assertion');
+            return;
+          }
+          set('s5', 'S5 /trn ' + name + ': enviado', '#facc15');
+          send('|/trn ' + name + ',0,' + assertion);
+        });
+    }
+
+    function fetchStep(id, label, url, options) {
+      if (typeof fetch !== 'function') { fail(id, label + ': fetch no existe'); return Promise.resolve(); }
+      var start = Date.now();
+      return fetch(url, options).then(function (response) {
+        return response.text().then(function (text) {
+          var info = label + ': HTTP ' + response.status + ' type=' + response.type + ' ' + (Date.now() - start) + 'ms -> ' + short(text);
+          if (isAssertion(text)) { ok(id, info + ' ASSERTION OK'); if (!assertion) assertion = text; }
+          else fail(id, info);
+        });
+      }).catch(function (error) {
+        fail(id, label + ': FALLA ' + describe(error) + ' (' + (Date.now() - start) + 'ms)');
+      });
+    }
+
+    function xhrStep(body) {
+      return new Promise(function (resolve) {
+        var start = Date.now();
+        var xhr;
+        try {
+          xhr = new XMLHttpRequest();
+          xhr.open('POST', API);
+          xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        } catch (error) {
+          fail('s4', 'S4 XHR: excepcion ' + describe(error));
+          resolve();
+          return;
+        }
+        xhr.onload = function () {
+          var text = String(xhr.responseText || '');
+          var info = 'S4 XHR POST: status ' + xhr.status + ' ' + (Date.now() - start) + 'ms -> ' + short(text);
+          if (isAssertion(text)) { ok('s4', info + ' ASSERTION OK'); if (!assertion) assertion = text; }
+          else fail('s4', info);
+          resolve();
+        };
+        xhr.onerror = function () { fail('s4', 'S4 XHR POST: onerror, status ' + xhr.status + ' (' + (Date.now() - start) + 'ms)'); resolve(); };
+        xhr.ontimeout = function () { fail('s4', 'S4 XHR POST: timeout'); resolve(); };
+        xhr.timeout = 15000;
+        xhr.send(body);
+      });
+    }
+  </script>
 </body>
 </html>
