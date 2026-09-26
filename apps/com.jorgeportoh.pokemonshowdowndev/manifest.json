@@ -1,7 +1,7 @@
 {
     "id": "com.jorgeportoh.pokemonshowdowndev",
     "name": "pokemon-showdown-dev",
-    "version": "0.1.87",
+    "version": "0.1.88",
     "description": "<p>This is a development test application for a pokemon showdown app on the future.</p>",
     "logo": "assets/appbanner.jpg",
     "entry": "index.html",
@@ -20,7 +20,8 @@
     ],
     "allowed_origins": [
         "https://sim3.psim.us",
-        "https://play.pokemonshowdown.com"
+        "https://play.pokemonshowdown.com",
+        "https://replay.pokemonshowdown.com"
     ],
     "developer": "Jorge Porto",
     "license": "MIT",
@@ -30,8 +31,8 @@
     "hideMouseUndocked": true,
     "freshProcessOnExit": true,
     "minBrewserVersion": "0.1.131",
-    "publishedAt": "2026-09-26T02:10:26Z",
-    "updatedAt": "2026-09-26T02:10:26Z",
+    "publishedAt": "2026-09-26T02:36:47Z",
+    "updatedAt": "2026-09-26T02:36:47Z",
     "summary": "Test app",
     "features": [
         "Gamepad"
