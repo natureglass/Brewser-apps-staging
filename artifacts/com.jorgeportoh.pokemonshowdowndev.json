@@ -1,6 +1,6 @@
 {
   "id": "com.jorgeportoh.pokemonshowdowndev",
-  "sizeBytes": 1046663,
+  "sizeBytes": 1045126,
   "files": [
     "README.md",
     "app.js",
@@ -181,7 +181,6 @@
     "pwa/icon-192.png",
     "pwa/icon-512.png",
     "pwa/icon-maskable.png",
-    "sprites/placeholder.png",
     "styles.css"
   ]
 }
