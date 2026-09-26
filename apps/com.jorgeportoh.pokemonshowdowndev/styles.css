@@ -989,11 +989,6 @@ button {
   height: 20px;
 }
 
-.size-6 {
-  width: 24px;
-  height: 24px;
-}
-
 .size-9 {
   width: 36px;
   height: 36px;
@@ -1588,14 +1583,18 @@ button {
 }
 
 .bw-c55 {
-  border-color: #67e8f9;
+  border-color: #9ca3af;
 }
 
 .bw-c56 {
-  border-color: #a855f7;
+  border-color: #67e8f9;
 }
 
 .bw-c57 {
+  border-color: #a855f7;
+}
+
+.bw-c58 {
   border-color: #facc15;
 }
 
@@ -1635,39 +1634,39 @@ button {
   border-color: #fff;
 }
 
-.bw-c58 {
+.bw-c59 {
   background-color: #0b0e14;
 }
 
-.bw-c59 {
+.bw-c5a {
   background-color: #0f141c;
 }
 
-.bw-c5a {
+.bw-c5b {
   background-color: #1f2937;
 }
 
-.bw-c5b {
+.bw-c5c {
   background-color: #6b2a73;
 }
 
-.bw-c5c {
+.bw-c5d {
   background-color: #283040;
 }
 
-.bw-c5d {
+.bw-c5e {
   background-color: #506858;
 }
 
-.bw-c5e {
+.bw-c5f {
   background-color: #a5f3fc;
 }
 
-.bw-c5f {
+.bw-c5g {
   background-color: #e8a020;
 }
 
-.bw-c5g {
+.bw-c5h {
   background-color: #f8f8d8;
 }
 
@@ -1765,10 +1764,6 @@ button {
 
 .p-8 {
   padding: 32px;
-}
-
-.bw-c5h {
-  padding: 0 4px;
 }
 
 .bw-c5i {
@@ -2078,22 +2073,6 @@ button {
 
 .italic {
   font-style: italic;
-}
-
-.underline {
-  text-decoration-line: underline;
-}
-
-.decoration-dotted {
-  text-decoration-style: dotted;
-}
-
-.underline-offset-4 {
-  text-underline-offset: 4px;
-}
-
-.accent-gray-600 {
-  accent-color: #4a5565;
 }
 
 .ring {
