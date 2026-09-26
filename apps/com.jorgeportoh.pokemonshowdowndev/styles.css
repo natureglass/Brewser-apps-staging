@@ -1907,6 +1907,10 @@ button {
   padding: 10px 24px;
 }
 
+.bw-c6g {
+  padding: 12px;
+}
+
 .text-center {
   text-align: center;
 }
@@ -1954,7 +1958,7 @@ button {
   line-height: var(--tw-leading, calc(1 / .75));
 }
 
-.bw-c6g {
+.bw-c6h {
   font-size: 11px;
 }
 
@@ -1993,27 +1997,27 @@ button {
   line-height: 40px;
 }
 
-.bw-c6h {
+.bw-c6i {
   --tw-leading: 18px;
   line-height: 18px;
 }
 
-.bw-c6i {
+.bw-c6j {
   --tw-leading: 19px;
   line-height: 19px;
 }
 
-.bw-c6j {
+.bw-c6k {
   --tw-leading: 26px;
   line-height: 26px;
 }
 
-.bw-c6k {
+.bw-c6l {
   --tw-leading: 34px;
   line-height: 34px;
 }
 
-.bw-c6l {
+.bw-c6m {
   --tw-leading: 64px;
   line-height: 64px;
 }
@@ -2036,15 +2040,15 @@ button {
   white-space: nowrap;
 }
 
-.bw-c6m {
+.bw-c6n {
   color: #99f6e4;
 }
 
-.bw-c6n {
+.bw-c6o {
   color: #303030;
 }
 
-.bw-c6o {
+.bw-c6p {
   color: #fde68a;
 }
 
@@ -2161,96 +2165,96 @@ button {
   filter: var(--tw-blur, ) var(--tw-brightness, ) var(--tw-contrast, ) var(--tw-grayscale, ) var(--tw-hue-rotate, ) var(--tw-invert, ) var(--tw-saturate, ) var(--tw-sepia, ) var(--tw-drop-shadow, );
 }
 
-.bw-c6p {
+.bw-c6q {
   image-rendering: pixelated;
 }
 
 @media (hover: hover) {
-  .bw-c6q:hover {
+  .bw-c6r:hover {
     background-color: #193cb8;
   }
 
-  .bw-c6r:hover {
+  .bw-c6s:hover {
     background-color: #6a7282;
   }
 
-  .bw-c6s:hover {
+  .bw-c6t:hover {
     background-color: #4a5565;
   }
 
-  .bw-c6t:hover {
+  .bw-c6u:hover {
     background-color: #bf000f;
   }
 
-  .bw-c6u:hover {
+  .bw-c6v:hover {
     background-color: #3b5176;
   }
 }
 
-.bw-c6v:focus-visible {
+.bw-c6w:focus-visible {
   outline-style: var(--tw-outline-style);
   outline-width: 2px;
 }
 
-.bw-c6w:focus-visible {
+.bw-c6x:focus-visible {
   outline-offset: -2px;
 }
 
-.bw-c6x:focus-visible {
+.bw-c6y:focus-visible {
   outline-offset: 2px;
 }
 
-.bw-c6y:focus-visible {
+.bw-c6z:focus-visible {
   outline-color: #fff;
 }
 
 @media (hover: hover) {
-  .bw-c6z:enabled:hover {
+  .bw-c70:enabled:hover {
     background-color: #193cb8;
   }
 
-  .bw-c70:enabled:hover {
+  .bw-c71:enabled:hover {
     background-color: #6a7282;
   }
 
-  .bw-c71:enabled:hover {
+  .bw-c72:enabled:hover {
     background-color: #9f0712;
   }
 }
 
-.bw-c72:disabled {
+.bw-c73:disabled {
   cursor: not-allowed;
 }
 
-.bw-c73:disabled {
+.bw-c74:disabled {
   cursor: wait;
 }
 
-.bw-c74:disabled {
+.bw-c75:disabled {
   border-color: #6a7282;
 }
 
-.bw-c75:disabled {
+.bw-c76:disabled {
   border-color: #4a5565;
 }
 
-.bw-c76:disabled {
+.bw-c77:disabled {
   background-color: #364153;
 }
 
-.bw-c77:disabled {
+.bw-c78:disabled {
   background-color: #1e2939;
 }
 
-.bw-c78:disabled {
+.bw-c79:disabled {
   color: #99a1af;
 }
 
-.bw-c79[aria-current="page"] {
+.bw-c7a[aria-current="page"] {
   background-color: #34496b;
 }
 
-.bw-c7a[aria-current="page"] {
+.bw-c7b[aria-current="page"] {
   color: #fff;
 }
 
