@@ -1,12 +1,20 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="utf-8">
-  <title>PokemonShowdownBrewser</title>
-  <base href="./">
+  <title>Test N1</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <link rel="stylesheet" href="styles.css">
+  <style>
+    .row { position:absolute; left:0; width:1280px; height:64px; }
+    .lab { position:absolute; left:8px; top:0; width:330px; height:64px; font-size:14px; line-height:18px; color:#ffffff; }
+    .box { position:absolute; top:8px; left:360px; width:48px; height:48px; background:#38c060; }
+    .t3 { transition: left 400ms linear; }
+    @keyframes lunge { 0% { left:360px; } 50% { left:420px; } 100% { left:360px; } }
+    .t5 { animation: lunge 800ms linear infinite; }
+    .bar { position:absolute; top:24px; left:360px; height:12px; background:#38c060; }
+    .track { position:absolute; top:22px; left:358px; width:272px; height:16px; background:#506858; }
+    .fps { position:absolute; left:1000px; top:0; width:270px; height:64px; font-size:14px; line-height:18px; color:#facc15; }
+  </style>
 
 <!-- brewser-pwa:start -->
 <link rel="manifest" href="pwa/app.webmanifest">
@@ -17,8 +25,97 @@
 <script src="pwa/brewser-pwa.js" defer></script>
 <!-- brewser-pwa:end -->
 </head>
-<body>
-  <app-root></app-root>
-  <script src="app.js"></script>
+<body style="width:1280px;height:720px;margin:0;overflow:hidden;background:#000000;color:#ffffff;font-family:sans-serif;font-size:14px;position:relative;">
+  <p style="position:absolute;left:8px;top:0;margin:0;width:1260px;height:40px;line-height:20px;color:#facc15;">
+    TEST N1 (animaciones). Todo se repite solo. Haz un video corto o apunta por cada fila (T1..T10): se mueve suave / a saltos / no se mueve / no se ve. La columna amarilla de la derecha cuenta llamadas por segundo.
+  </p>
+  <p id="status" style="position:absolute;left:8px;top:40px;margin:0;height:20px;color:#f87171;">Script: no ejecutado</p>
+
+  <div class="row" style="top:64px;"><span class="lab">T1: JS setTimeout cada 33 ms, cambia left (embiste 60px y vuelve)</span><div id="b1" class="box"></div><span id="f1" class="fps"></span></div>
+  <div class="row" style="top:128px;"><span class="lab">T2: JS requestAnimationFrame, cambia left</span><div id="b2" class="box"></div><span id="f2" class="fps"></span></div>
+  <div class="row" style="top:192px;"><span class="lab">T3: CSS transition de left (cambia cada 800 ms)</span><div id="b3" class="box t3"></div></div>
+  <div class="row" style="top:256px;"><span class="lab">T4: JS setTimeout, cambia transform translateX</span><div id="b4" class="box"></div></div>
+  <div class="row" style="top:320px;"><span class="lab">T5: CSS @keyframes (animation) sobre left</span><div id="b5" class="box t5"></div></div>
+  <div class="row" style="top:384px;"><span class="lab">T6: parpadeo con visibility (JS, 6 veces cada 100 ms, luego pausa)</span><img id="b6" alt="" src="https://play.pokemonshowdown.com/sprites/gen5/garchomp.png" width="48" height="48" style="position:absolute;top:8px;left:360px;"></div>
+  <div class="row" style="top:448px;"><span class="lab">T7: parpadeo con opacity 1 / 0.2 (JS)</span><img id="b7" alt="" src="https://play.pokemonshowdown.com/sprites/gen5/garchomp.png" width="48" height="48" style="position:absolute;top:8px;left:360px;"></div>
+  <div class="row" style="top:512px;"><span class="lab">T8: barra de PS por pasos JS (width cada 33 ms, 268 a 60 px y vuelve)</span><div class="track"></div><div id="b8" class="bar" style="width:268px;"></div></div>
+  <div class="row" style="top:576px;"><span class="lab">T9: rotulo que aparece y desaparece (display) cada 800 ms</span><div id="b9" style="position:absolute;top:12px;left:360px;width:220px;height:36px;line-height:36px;text-align:center;background:#b45309;color:#ffffff;font-weight:bold;">Heat Wave</div></div>
+  <div class="row" style="top:640px;"><span class="lab">T10: estaticos: sprite espejo (scaleX -1) / brillo (filter brightness 3) / normal</span>
+    <img alt="" src="https://play.pokemonshowdown.com/sprites/gen5/garchomp.png" width="48" height="48" style="position:absolute;top:8px;left:360px;transform:scaleX(-1);">
+    <img alt="" src="https://play.pokemonshowdown.com/sprites/gen5/garchomp.png" width="48" height="48" style="position:absolute;top:8px;left:430px;filter:brightness(3);">
+    <img alt="" src="https://play.pokemonshowdown.com/sprites/gen5/garchomp.png" width="48" height="48" style="position:absolute;top:8px;left:500px;">
+  </div>
+
+  <script>
+    (function () {
+      var status = document.getElementById('status');
+      status.textContent = 'Script: en marcha';
+      status.style.color = '#4ade80';
+      function el(id) { return document.getElementById(id); }
+      // Posición de un embiste de 800 ms: 0 → 60 px → 0.
+      function lungeAt(t) { var p = (t % 800) / 800; return p < 0.5 ? p * 2 * 60 : (1 - p) * 2 * 60; }
+      var start = Date.now();
+
+      // T1: setTimeout encadenado cada 33 ms.
+      var calls1 = 0;
+      function tick1() { calls1++; el('b1').style.left = (360 + lungeAt(Date.now() - start)) + 'px'; setTimeout(tick1, 33); }
+      tick1();
+
+      // T2: requestAnimationFrame (si existe).
+      var calls2 = 0;
+      if (window.requestAnimationFrame) {
+        var tick2 = function () { calls2++; el('b2').style.left = (360 + lungeAt(Date.now() - start)) + 'px'; window.requestAnimationFrame(tick2); };
+        window.requestAnimationFrame(tick2);
+      } else {
+        el('f2').textContent = 'sin requestAnimationFrame';
+      }
+
+      // T3: transición CSS alternando left.
+      var far3 = false;
+      setInterval(function () { far3 = !far3; el('b3').style.left = (far3 ? 420 : 360) + 'px'; }, 800);
+
+      // T4: transform translateX por pasos.
+      function tick4() { el('b4').style.transform = 'translateX(' + lungeAt(Date.now() - start) + 'px)'; setTimeout(tick4, 33); }
+      tick4();
+
+      // T6: visibility, 6 cambios cada 100 ms y 1 s de pausa.
+      function blink(id, on, off) {
+        var n = 0;
+        function step() {
+          n++;
+          if (n <= 6) { el(id).style[on[0]] = n % 2 ? off : on[1]; setTimeout(step, 100); }
+          else { el(id).style[on[0]] = on[1]; n = 0; setTimeout(step, 1000); }
+        }
+        step();
+      }
+      blink('b6', ['visibility', 'visible'], 'hidden');
+      blink('b7', ['opacity', '1'], '0.2');
+
+      // T8: barra de PS por pasos: baja en 500 ms, espera, sube.
+      var w = 268, dir = -1, wait = 0;
+      function tick8() {
+        if (wait > 0) { wait--; }
+        else {
+          w += dir * 14;
+          if (w <= 60) { w = 60; dir = 1; wait = 15; }
+          if (w >= 268) { w = 268; dir = -1; wait = 15; }
+          el('b8').style.width = w + 'px';
+        }
+        setTimeout(tick8, 33);
+      }
+      tick8();
+
+      // T9: rótulo con display.
+      var shown9 = true;
+      setInterval(function () { shown9 = !shown9; el('b9').style.display = shown9 ? 'block' : 'none'; }, 800);
+
+      // Llamadas por segundo de T1 y T2.
+      setInterval(function () {
+        el('f1').textContent = 'setTimeout: ' + calls1 + ' /s';
+        if (window.requestAnimationFrame) el('f2').textContent = 'rAF: ' + calls2 + ' /s';
+        calls1 = 0; calls2 = 0;
+      }, 1000);
+    })();
+  </script>
 </body>
 </html>
