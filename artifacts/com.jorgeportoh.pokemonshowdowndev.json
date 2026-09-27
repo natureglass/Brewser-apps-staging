@@ -1,11 +1,14 @@
 {
   "id": "com.jorgeportoh.pokemonshowdowndev",
-  "sizeBytes": 1215693,
+  "sizeBytes": 1216704,
   "files": [
     "README.md",
     "app.js",
     "assets/appbanner.jpg",
     "brewser-sw.js",
+    "categories/physical.png",
+    "categories/special.png",
+    "categories/status.png",
     "favicon.ico",
     "index.html",
     "items/abilityshield.png",
