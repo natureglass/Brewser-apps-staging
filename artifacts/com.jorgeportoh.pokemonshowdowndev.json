@@ -1,6 +1,6 @@
 {
   "id": "com.jorgeportoh.pokemonshowdowndev",
-  "sizeBytes": 1234149,
+  "sizeBytes": 1277670,
   "files": [
     "README.md",
     "app.js",
@@ -343,6 +343,10 @@
     "items/zapplate.png",
     "items/zoomlens.png",
     "manifest.json",
+    "media/pixelify-sans-400-5B4KSHQT.woff2",
+    "media/pixelify-sans-400-JPGIHBOG.woff",
+    "media/pixelify-sans-700-33UZIDD2.woff",
+    "media/pixelify-sans-700-DQAYWACS.woff2",
     "pwa/app.webmanifest",
     "pwa/apple-touch-icon.png",
     "pwa/brewser-pwa.js",
