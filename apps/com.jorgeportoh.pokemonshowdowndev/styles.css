@@ -2619,14 +2619,10 @@ button {
 }
 
 .bw-cc3 {
-  border-color: #67e8f9;
-}
-
-.bw-cc4 {
   border-color: #a855f7;
 }
 
-.bw-cc5 {
+.bw-cc4 {
   border-color: #facc15;
 }
 
@@ -2706,63 +2702,59 @@ button {
   border-color: #ffe02a;
 }
 
-.bw-cc6 {
+.bw-cc5 {
   background-color: #0b0e14;
 }
 
-.bw-cc7 {
+.bw-cc6 {
   background-color: #0f141c;
 }
 
-.bw-cc8 {
+.bw-cc7 {
   background-color: #1a2436;
 }
 
-.bw-cc9 {
+.bw-cc8 {
   background-color: #1e293b;
 }
 
-.bw-cca {
+.bw-cc9 {
   background-color: #1f2937;
 }
 
-.bw-ccb {
+.bw-cca {
   background-color: #2c4a78;
 }
 
-.bw-ccc {
+.bw-ccb {
   background-color: #3a4a68;
 }
 
-.bw-ccd {
+.bw-ccc {
   background-color: #6b2a73;
 }
 
-.bw-cce {
+.bw-ccd {
   background-color: #111827;
 }
 
-.bw-ccf {
+.bw-cce {
   background-color: #172238;
 }
 
-.bw-ccg {
+.bw-ccf {
   background-color: #283040;
 }
 
-.bw-cch {
+.bw-ccg {
   background-color: #506858;
 }
 
-.bw-cci {
-  background-color: #a5f3fc;
-}
-
-.bw-ccj {
+.bw-cch {
   background-color: #e8a020;
 }
 
-.bw-cck {
+.bw-cci {
   background-color: #f8f8d8;
 }
 
@@ -2906,67 +2898,67 @@ button {
   padding: 32px;
 }
 
-.bw-ccl {
+.bw-ccj {
   padding: 0 8px;
 }
 
-.bw-ccm {
+.bw-cck {
   padding: 0 10px;
 }
 
-.bw-ccn {
+.bw-ccl {
   padding: 0 12px;
 }
 
-.bw-cco {
+.bw-ccm {
   padding: 0 12px 0 44px;
 }
 
-.bw-ccp {
+.bw-ccn {
   padding: 2px;
 }
 
-.bw-ccq {
+.bw-cco {
   padding: 2px 6px;
 }
 
-.bw-ccr {
+.bw-ccp {
   padding: 2px 8px;
 }
 
-.bw-ccs {
+.bw-ccq {
   padding: 3px;
 }
 
-.bw-cct {
+.bw-ccr {
   padding: 4px 0;
 }
 
-.bw-ccu {
+.bw-ccs {
   padding: 4px 12px;
 }
 
-.bw-ccv {
+.bw-cct {
   padding: 6px 12px;
 }
 
-.bw-ccw {
+.bw-ccu {
   padding: 6px 12px 6px 64px;
 }
 
-.bw-ccx {
+.bw-ccv {
   padding: 8px 12px;
 }
 
-.bw-ccy {
+.bw-ccw {
   padding: 8px 12px 12px;
 }
 
-.bw-ccz {
+.bw-ccx {
   padding: 10px 16px;
 }
 
-.bw-cd0 {
+.bw-ccy {
   padding: 10px 24px;
 }
 
@@ -3036,19 +3028,19 @@ button {
   line-height: var(--tw-leading, calc(1 / .75));
 }
 
-.bw-cd1 {
+.bw-ccz {
   font-size: 11px;
 }
 
-.bw-cd2 {
+.bw-cd0 {
   font-size: 40px;
 }
 
-.bw-cd3 {
+.bw-cd1 {
   font-size: 44px;
 }
 
-.bw-cd4 {
+.bw-cd2 {
   font-size: 80px;
 }
 
@@ -3087,82 +3079,82 @@ button {
   line-height: 40px;
 }
 
-.bw-cd5 {
+.bw-cd3 {
   --tw-leading: 13px;
   line-height: 13px;
 }
 
-.bw-cd6 {
+.bw-cd4 {
   --tw-leading: 14px;
   line-height: 14px;
 }
 
-.bw-cd7 {
+.bw-cd5 {
   --tw-leading: 18px;
   line-height: 18px;
 }
 
-.bw-cd8 {
+.bw-cd6 {
   --tw-leading: 19px;
   line-height: 19px;
 }
 
-.bw-cd9 {
+.bw-cd7 {
   --tw-leading: 22px;
   line-height: 22px;
 }
 
-.bw-cda {
+.bw-cd8 {
   --tw-leading: 23px;
   line-height: 23px;
 }
 
-.bw-cdb {
+.bw-cd9 {
   --tw-leading: 26px;
   line-height: 26px;
 }
 
-.bw-cdc {
+.bw-cda {
   --tw-leading: 30px;
   line-height: 30px;
 }
 
-.bw-cdd {
+.bw-cdb {
   --tw-leading: 34px;
   line-height: 34px;
 }
 
-.bw-cde {
+.bw-cdc {
   --tw-leading: 44px;
   line-height: 44px;
 }
 
-.bw-cdf {
+.bw-cdd {
   --tw-leading: 46px;
   line-height: 46px;
 }
 
-.bw-cdg {
+.bw-cde {
   --tw-leading: 48px;
   line-height: 48px;
 }
 
-.bw-cdh {
+.bw-cdf {
   --tw-leading: 52px;
   line-height: 52px;
 }
 
-.bw-cdi {
+.bw-cdg {
   --tw-leading: 56px;
   line-height: 56px;
 }
 
-.bw-cdj {
+.bw-cdh {
   --tw-leading: 76px;
   line-height: 76px;
 }
 
-.bw-cdk {
+.bw-cdi {
   --tw-leading: 96px;
   line-height: 96px;
 }
@@ -3182,7 +3174,7 @@ button {
   font-weight: 400;
 }
 
-.bw-cdl {
+.bw-cdj {
   --tw-tracking: 4px;
   letter-spacing: 4px;
 }
@@ -3195,19 +3187,19 @@ button {
   white-space: nowrap;
 }
 
-.bw-cdm {
+.bw-cdk {
   color: #99f6e4;
 }
 
-.bw-cdn {
+.bw-cdl {
   color: #303030;
 }
 
-.bw-cdo {
+.bw-cdm {
   color: #a5f3fc;
 }
 
-.bw-cdp {
+.bw-cdn {
   color: #fde68a;
 }
 
@@ -3369,121 +3361,121 @@ button {
   filter: var(--tw-blur, ) var(--tw-brightness, ) var(--tw-contrast, ) var(--tw-grayscale, ) var(--tw-hue-rotate, ) var(--tw-invert, ) var(--tw-saturate, ) var(--tw-sepia, ) var(--tw-drop-shadow, );
 }
 
-.bw-cdq {
+.bw-cdo {
   image-rendering: pixelated;
 }
 
-.bw-cdr::placeholder {
+.bw-cdp::placeholder {
   color: #99a1af;
 }
 
 @media (hover: hover) {
-  .bw-cds:hover {
+  .bw-cdq:hover {
     background-color: #465a7e;
   }
 
-  .bw-cdt:hover {
+  .bw-cdr:hover {
     background-color: #35598f;
   }
 
-  .bw-cdu:hover {
+  .bw-cds:hover {
     background-color: #193cb8;
   }
 
-  .bw-cdv:hover {
+  .bw-cdt:hover {
     background-color: #6a7282;
   }
 
-  .bw-cdw:hover {
+  .bw-cdu:hover {
     background-color: #4a5565;
   }
 
-  .bw-cdx:hover {
+  .bw-cdv:hover {
     background-color: #bf000f;
   }
 
-  .bw-cdy:hover {
+  .bw-cdw:hover {
     background-color: #a83e2c;
   }
 
-  .bw-cdz:hover {
+  .bw-cdx:hover {
     background-color: #2c4157;
   }
 
-  .bw-ce0:hover {
+  .bw-cdy:hover {
     background-color: #3b5176;
   }
 }
 
-.bw-ce1:focus-visible {
+.bw-cdz:focus-visible {
   border-color: #ff9a85;
 }
 
-.bw-ce2:focus-visible {
+.bw-ce0:focus-visible {
   background-color: #2c4157;
 }
 
-.bw-ce3:focus-visible {
+.bw-ce1:focus-visible {
   outline-style: var(--tw-outline-style);
   outline-width: 2px;
 }
 
-.bw-ce4:focus-visible {
+.bw-ce2:focus-visible {
   outline-offset: -2px;
 }
 
-.bw-ce5:focus-visible {
+.bw-ce3:focus-visible {
   outline-offset: 2px;
 }
 
-.bw-ce6:focus-visible {
+.bw-ce4:focus-visible {
   outline-color: #fff;
 }
 
-.bw-ce7:focus-visible {
+.bw-ce5:focus-visible {
   --tw-outline-style: none;
   outline-style: none;
 }
 
 @media (hover: hover) {
-  .bw-ce8:enabled:hover {
+  .bw-ce6:enabled:hover {
     background-color: #193cb8;
   }
 
-  .bw-ce9:enabled:hover {
+  .bw-ce7:enabled:hover {
     background-color: #6a7282;
   }
 
-  .bw-cea:enabled:hover {
+  .bw-ce8:enabled:hover {
     background-color: #9f0712;
   }
 
-  .bw-ceb:enabled:hover {
+  .bw-ce9:enabled:hover {
     background-color: #a83e2c;
   }
 
-  .bw-cec:enabled:hover {
+  .bw-cea:enabled:hover {
     background-color: #2c4157;
   }
 }
 
-.bw-ced:disabled {
+.bw-ceb:disabled {
   cursor: not-allowed;
 }
 
-.bw-cee:disabled {
+.bw-cec:disabled {
   border-color: #4a5565;
 }
 
-.bw-cef:disabled {
+.bw-ced:disabled {
   background-color: #364153;
 }
 
-.bw-ceg:disabled {
+.bw-cee:disabled {
   background-color: #1e2939;
 }
 
-.bw-ceh:disabled {
+.bw-cef:disabled {
   color: #99a1af;
 }
 
