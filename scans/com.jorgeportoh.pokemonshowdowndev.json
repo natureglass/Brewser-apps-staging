@@ -1,29 +1,27 @@
 {
   "verdict": "SUSPICIOUS",
   "score": 10,
-  "scanned_at": "2026-09-29T10:55:13Z",
+  "scanned_at": "2026-09-29T12:58:14Z",
   "scanner_version": "1.3.2",
-  "package_hash": "5db2de1a0708e2a31e91baaed707a9afa3eef9d3ae4c1ab7bf91c20c63e03f36",
+  "package_hash": "370353483fab885aae611512d05e3ee2449d2e353941ba0d06e3d0a1c291aca8",
   "counts": {
     "info": 0,
     "suspicious": 1,
     "dangerous": 0
   },
-  "rationale": "Suspicious: 1 signal(s) needing review; e.g. reads or writes document.cookie.",
+  "rationale": "Suspicious: 1 signal(s) needing review; e.g. full-viewport transparent / pointer-event overlay.",
   "truncated": false,
   "findings": [
     {
-      "rule_id": "cookie-access",
+      "rule_id": "clickjacking-overlay",
       "severity": "SUSPICIOUS",
-      "title": "Reads or writes document.cookie",
-      "detail": "Accesses document.cookie.",
-      "file": "app.js",
-      "line": 42,
-      "evidence": "document.cookie"
+      "title": "Full-viewport transparent / pointer-event overlay",
+      "detail": "A positioned, fully-transparent <div> — a clickjacking/overlay shell pattern.",
+      "file": "index.html",
+      "line": 62,
+      "evidence": "position:absolute;left:0px;top:0px;width:312px;height:176px;background:#ffffff;opacity:0;"
     }
   ],
-  "capabilities": [
-    "webrtc"
-  ],
+  "capabilities": [],
   "limitations": "Static heuristic scan. A GOOD verdict means no known-bad pattern matched, NOT proof of safety. Human review is still required for every submission."
 }

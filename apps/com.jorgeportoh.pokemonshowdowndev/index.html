@@ -1,12 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="utf-8">
-  <title>PokemonShowdownBrewser</title>
-  <base href="./">
+  <title>Test N2</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <link rel="stylesheet" href="styles.css">
 
 <!-- brewser-pwa:start -->
 <link rel="manifest" href="pwa/app.webmanifest">
@@ -17,8 +14,172 @@
 <script src="pwa/brewser-pwa.js" defer></script>
 <!-- brewser-pwa:end -->
 </head>
-<body>
-  <app-root></app-root>
-  <script src="app.js"></script>
+<body style="width:1280px;height:720px;margin:0;overflow:hidden;background:#000000;color:#ffffff;font-family:sans-serif;font-size:14px;position:relative;">
+  <p style="position:absolute;left:8px;top:0px;margin:0;width:1260px;height:40px;line-height:20px;color:#facc15;">TEST N2 (efectos de movimientos). Todo se repite solo. Graba un video corto y dime por cada celda E1..E12: suave / a saltos / no se mueve / no se ve / deja rastro. Apunta los fps de aquí y los de E7 con cada N.</p>
+  <p id="status" style="position:absolute;left:8px;top:40px;margin:0;width:1260px;height:20px;line-height:20px;color:#f87171;">Script: no ejecutado</p>
+  <div style="position:absolute;left:0px;top:60px;width:320px;height:216px;">
+    <p id="l1" style="position:absolute;left:8px;top:0px;margin:0;width:304px;height:36px;font-size:13px;line-height:18px;color:#ffffff;">E1: PNG con transparencia pasando por encima del sprite (¿se ve el sprite a través? ¿deja rastro?)</p>
+    <div id="st1" style="position:absolute;left:4px;top:36px;width:312px;height:176px;background:#305838;"><img id="s1" alt="" src="https://play.pokemonshowdown.com/sprites/gen5/garchomp.png" width="96" height="96" style="position:absolute;left:108px;top:40px;z-index:1;"><img id="o1" alt="" src="assets/fx/orb.png" width="48" height="48" style="position:absolute;left:0px;top:64px;z-index:2;"></div>
+  </div>
+  <div style="position:absolute;left:320px;top:60px;width:320px;height:216px;">
+    <p id="l2" style="position:absolute;left:8px;top:0px;margin:0;width:304px;height:36px;font-size:13px;line-height:18px;color:#ffffff;">E2: proyectil en arco de un sprite a otro + chispas al llegar</p>
+    <div id="st2" style="position:absolute;left:4px;top:36px;width:312px;height:176px;background:#305838;"><img id="s2a" alt="" src="https://play.pokemonshowdown.com/sprites/gen5-back/garchomp.png" width="96" height="96" style="position:absolute;left:20px;top:70px;"><img id="s2b" alt="" src="https://play.pokemonshowdown.com/sprites/gen5/garchomp.png" width="96" height="96" style="position:absolute;left:190px;top:20px;"><img id="o2" alt="" src="assets/fx/orb.png" width="48" height="48" style="position:absolute;left:0px;top:0px;opacity:0;z-index:3;"><img id="k2_0" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:0px;top:0px;opacity:0;z-index:3;"><img id="k2_1" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:0px;top:0px;opacity:0;z-index:3;"><img id="k2_2" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:0px;top:0px;opacity:0;z-index:3;"><img id="k2_3" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:0px;top:0px;opacity:0;z-index:3;"><img id="k2_4" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:0px;top:0px;opacity:0;z-index:3;"><img id="k2_5" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:0px;top:0px;opacity:0;z-index:3;"></div>
+  </div>
+  <div style="position:absolute;left:640px;top:60px;width:320px;height:216px;">
+    <p id="l3" style="position:absolute;left:8px;top:0px;margin:0;width:304px;height:36px;font-size:13px;line-height:18px;color:#ffffff;">E3: transform scale() animado (¿crece desde el centro?)</p>
+    <div id="st3" style="position:absolute;left:4px;top:36px;width:312px;height:176px;background:#305838;"><img id="o3" alt="" src="assets/fx/orb.png" width="48" height="48" style="position:absolute;left:132px;top:64px;"></div>
+  </div>
+  <div style="position:absolute;left:960px;top:60px;width:320px;height:216px;">
+    <p id="l4" style="position:absolute;left:8px;top:0px;margin:0;width:304px;height:36px;font-size:13px;line-height:18px;color:#ffffff;">E4: escalar cambiando width/height (alternativa a E3)</p>
+    <div id="st4" style="position:absolute;left:4px;top:36px;width:312px;height:176px;background:#305838;"><img id="o4" alt="" src="assets/fx/orb.png" width="48" height="48" style="position:absolute;left:132px;top:64px;"></div>
+  </div>
+  <div style="position:absolute;left:0px;top:276px;width:320px;height:216px;">
+    <p id="l5" style="position:absolute;left:8px;top:0px;margin:0;width:304px;height:36px;font-size:13px;line-height:18px;color:#ffffff;">E5: transform rotate() animado (punta roja arriba al empezar)</p>
+    <div id="st5" style="position:absolute;left:4px;top:36px;width:312px;height:176px;background:#305838;"><img id="o5" alt="" src="assets/fx/star.png" width="48" height="48" style="position:absolute;left:132px;top:64px;"></div>
+  </div>
+  <div style="position:absolute;left:320px;top:276px;width:320px;height:216px;">
+    <p id="l6" style="position:absolute;left:8px;top:0px;margin:0;width:304px;height:36px;font-size:13px;line-height:18px;color:#ffffff;">E6: translate + scale + rotate en un solo transform (gira en círculo)</p>
+    <div id="st6" style="position:absolute;left:4px;top:36px;width:312px;height:176px;background:#305838;"><img id="o6" alt="" src="assets/fx/star.png" width="48" height="48" style="position:absolute;left:132px;top:64px;"></div>
+  </div>
+  <div style="position:absolute;left:640px;top:276px;width:320px;height:216px;">
+    <p id="l7" style="position:absolute;left:8px;top:0px;margin:0;width:304px;height:36px;font-size:13px;line-height:18px;color:#ffffff;">E7: muchas partículas</p>
+    <div id="st7" style="position:absolute;left:4px;top:36px;width:312px;height:176px;background:#305838;"><img id="k7_0" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_1" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_2" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_3" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_4" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_5" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_6" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_7" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_8" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_9" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_10" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_11" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_12" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_13" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_14" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_15" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_16" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_17" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_18" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_19" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_20" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_21" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_22" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_23" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_24" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_25" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_26" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_27" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_28" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_29" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_30" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_31" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_32" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_33" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_34" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_35" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_36" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_37" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_38" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_39" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_40" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_41" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_42" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_43" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_44" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_45" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_46" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_47" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_48" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_49" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_50" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_51" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_52" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_53" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_54" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_55" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_56" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_57" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_58" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_59" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_60" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_61" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_62" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"><img id="k7_63" alt="" src="assets/fx/spark.png" width="16" height="16" style="position:absolute;left:148px;top:80px;display:none;"></div>
+  </div>
+  <div style="position:absolute;left:960px;top:276px;width:320px;height:216px;">
+    <p id="l8" style="position:absolute;left:8px;top:0px;margin:0;width:304px;height:36px;font-size:13px;line-height:18px;color:#ffffff;">E8: opacity parcial de un PNG encima del sprite (aparece y se desvanece)</p>
+    <div id="st8" style="position:absolute;left:4px;top:36px;width:312px;height:176px;background:#305838;"><img id="s8" alt="" src="https://play.pokemonshowdown.com/sprites/gen5/garchomp.png" width="96" height="96" style="position:absolute;left:108px;top:40px;z-index:1;"><img id="o8" alt="" src="assets/fx/orb.png" width="48" height="48" style="position:absolute;left:132px;top:64px;z-index:2;opacity:0;"></div>
+  </div>
+  <div style="position:absolute;left:0px;top:492px;width:320px;height:216px;">
+    <p id="l9" style="position:absolute;left:8px;top:0px;margin:0;width:304px;height:36px;font-size:13px;line-height:18px;color:#ffffff;">E9: izq. círculo con border-radius (crece) · der. radial-gradient (parpadea)</p>
+    <div id="st9" style="position:absolute;left:4px;top:36px;width:312px;height:176px;background:#305838;"><div id="c9" style="position:absolute;left:50px;top:78px;width:20px;height:20px;border-radius:50%;background:#f06030;"></div><div id="g9" style="position:absolute;left:196px;top:48px;width:80px;height:80px;background:radial-gradient(circle, #ffffff 0%, #60a0ff 40%, rgba(96,160,255,0) 70%);"></div></div>
+  </div>
+  <div style="position:absolute;left:320px;top:492px;width:320px;height:216px;">
+    <p id="l10" style="position:absolute;left:8px;top:0px;margin:0;width:304px;height:36px;font-size:13px;line-height:18px;color:#ffffff;">E10: imagen remota de Showdown (fx/electroball.png)</p>
+    <div id="st10" style="position:absolute;left:4px;top:36px;width:312px;height:176px;background:#305838;"><img id="o10" alt="" src="https://play.pokemonshowdown.com/fx/electroball.png" width="64" height="64" style="position:absolute;left:0px;top:40px;"><p id="t10" style="position:absolute;left:8px;top:140px;margin:0;width:296px;height:20px;line-height:20px;color:#facc15;">carga: pendiente</p></div>
+  </div>
+  <div style="position:absolute;left:640px;top:492px;width:320px;height:216px;">
+    <p id="l11" style="position:absolute;left:8px;top:0px;margin:0;width:304px;height:36px;font-size:13px;line-height:18px;color:#ffffff;">E11: golpe: destello blanco + temblor + brillo del sprite (filter animado)</p>
+    <div id="st11" style="position:absolute;left:4px;top:36px;width:312px;height:176px;background:#305838;"><div id="w11" style="position:absolute;left:0px;top:0px;width:312px;height:176px;"><img id="s11" alt="" src="https://play.pokemonshowdown.com/sprites/gen5/garchomp.png" width="96" height="96" style="position:absolute;left:108px;top:40px;"></div><div id="f11" style="position:absolute;left:0px;top:0px;width:312px;height:176px;background:#ffffff;opacity:0;"></div></div>
+  </div>
+  <div style="position:absolute;left:960px;top:492px;width:320px;height:216px;">
+    <p id="l12" style="position:absolute;left:8px;top:0px;margin:0;width:304px;height:36px;font-size:13px;line-height:18px;color:#ffffff;">E12: z-index: la bola orbita pasando por detrás y por delante del sprite</p>
+    <div id="st12" style="position:absolute;left:4px;top:36px;width:312px;height:176px;background:#305838;"><img id="s12" alt="" src="https://play.pokemonshowdown.com/sprites/gen5/garchomp.png" width="96" height="96" style="position:absolute;left:108px;top:40px;z-index:2;"><img id="o12" alt="" src="assets/fx/orb.png" width="48" height="48" style="position:absolute;left:132px;top:64px;z-index:3;"></div>
+  </div>
+  <script>
+    (function () {
+      var status = document.getElementById('status');
+      status.textContent = 'Script: en marcha';
+      status.style.color = '#4ade80';
+      function el(id) { return document.getElementById(id); }
+      function oab(p) { return p < 0.5 ? p * 2 : (1 - p) * 2; }
+      function place(node, x, y) { node.style.left = Math.round(x) + 'px'; node.style.top = Math.round(y) + 'px'; }
+      var start = Date.now();
+      var frames = 0, fps = 0;
+
+      // E10: estado de carga de la imagen remota (evento load del img del DOM).
+      var o10 = el('o10');
+      o10.addEventListener('load', function () { el('t10').textContent = 'carga: OK ' + o10.naturalWidth + 'x' + o10.naturalHeight; });
+      o10.addEventListener('error', function () { el('t10').textContent = 'carga: ERROR (dominio bloqueado o no existe)'; });
+
+      var counts = [8, 16, 32, 64];
+      var shownN = 0;
+
+      function frame() {
+        frames++;
+        var t = Date.now() - start;
+
+        // E1: la bola cruza por encima del sprite, 2 s ida.
+        place(el('o1'), ((t % 2000) / 2000) * 264, 64);
+
+        // E2: arco 700 ms, chispas 400 ms, pausa hasta 2400 ms.
+        var c2 = t % 2400, o2 = el('o2');
+        if (c2 < 700) {
+          var p = c2 / 700;
+          var x = 68 + (238 - 68) * p, y = 118 + (68 - 118) * p - 4 * 60 * p * (1 - p);
+          place(o2, x - 24, y - 24); o2.style.opacity = '1';
+        } else {
+          o2.style.opacity = '0';
+        }
+        for (var k = 0; k < 6; k++) {
+          var sp = el('k2_' + k);
+          if (c2 >= 700 && c2 < 1100) {
+            var q = (c2 - 700) / 400, a = (k * Math.PI) / 3;
+            place(sp, 238 + Math.cos(a) * 44 * q - 8, 68 + Math.sin(a) * 44 * q - 8);
+            sp.style.opacity = String(1 - q);
+          } else {
+            sp.style.opacity = '0';
+          }
+        }
+
+        // E3: scale 0.3 → 2 → 0.3 en 1,6 s.
+        el('o3').style.transform = 'scale(' + (0.3 + 1.7 * oab((t % 1600) / 1600)).toFixed(3) + ')';
+
+        // E4: lo mismo con width/height, recentrado.
+        var w = Math.round(16 + 80 * oab((t % 1600) / 1600)), o4 = el('o4');
+        o4.style.width = w + 'px'; o4.style.height = w + 'px';
+        place(o4, 156 - w / 2, 88 - w / 2);
+
+        // E5: una vuelta por segundo.
+        el('o5').style.transform = 'rotate(' + ((t * 0.36) % 360).toFixed(1) + 'deg)';
+
+        // E6: elipse de 100x50 + escala + giro.
+        var a6 = t / 500;
+        el('o6').style.transform = 'translate(' + (Math.cos(a6) * 100).toFixed(1) + 'px, ' + (Math.sin(a6) * 50).toFixed(1) + 'px) scale(' +
+          (1 + 0.5 * Math.sin(t / 300)).toFixed(3) + ') rotate(' + ((t * 0.5) % 360).toFixed(1) + 'deg)';
+
+        // E7: N partículas saliendo del centro; N cambia cada 4 s.
+        var n = counts[Math.floor(t / 4000) % counts.length];
+        for (var i = 0; i < 64; i++) {
+          var s7 = el('k7_' + i);
+          if (i < n) {
+            if (shownN !== n) s7.style.display = 'block';
+            var r = 8 + 64 * ((t / 1200 + i / n) % 1), a7 = (i * 2.399) + t / 2000;
+            place(s7, 156 + Math.cos(a7) * r * 1.6 - 8, 88 + Math.sin(a7) * r - 8);
+          } else if (shownN !== n) {
+            s7.style.display = 'none';
+          }
+        }
+        shownN = n;
+
+        // E8: la bola aparece y se desvanece sobre el sprite.
+        el('o8').style.opacity = oab((t % 1600) / 1600).toFixed(3);
+
+        // E9: círculo que crece, degradado que parpadea.
+        var d9 = Math.round(20 + 60 * oab((t % 1600) / 1600)), c9 = el('c9');
+        c9.style.width = d9 + 'px'; c9.style.height = d9 + 'px';
+        place(c9, 60 - d9 / 2, 88 - d9 / 2);
+        el('g9').style.opacity = (0.2 + 0.8 * oab((t % 1200) / 1200)).toFixed(3);
+
+        // E10: la imagen remota va y viene.
+        place(o10, oab((t % 3000) / 3000) * 248, 40);
+
+        // E11: cada 2 s, destello 250 ms, temblor 400 ms, brillo 300 ms.
+        var c11 = t % 2000;
+        el('f11').style.opacity = c11 < 250 ? (0.8 * (1 - c11 / 250)).toFixed(3) : '0';
+        el('w11').style.left = c11 < 400 ? Math.round(Math.sin(c11 / 25) * 8 * (1 - c11 / 400)) + 'px' : '0px';
+        el('s11').style.filter = c11 < 300 ? 'brightness(' + (1 + 2 * (1 - c11 / 300)).toFixed(2) + ')' : 'none';
+
+        // E12: órbita elíptica; detrás del sprite en la mitad de arriba.
+        var a12 = t / 400, o12 = el('o12');
+        place(o12, 156 + Math.cos(a12) * 110 - 24, 88 + Math.sin(a12) * 24 - 24);
+        o12.style.zIndex = Math.sin(a12) < 0 ? '1' : '3';
+
+        requestAnimationFrame(frame);
+      }
+
+      if (window.requestAnimationFrame) {
+        requestAnimationFrame(frame);
+      } else {
+        status.textContent = 'Script: SIN requestAnimationFrame';
+      }
+
+      setInterval(function () {
+        fps = frames; frames = 0;
+        status.textContent = 'Script: en marcha · fps totales: ' + fps;
+        el('l7').textContent = 'E7: muchas partículas · N=' + shownN + ' · fps=' + fps;
+      }, 1000);
+    })();
+
+  </script>
 </body>
 </html>
