@@ -1,7 +1,7 @@
 {
     "id": "com.jorgeportoh.pokemonshowdowndev",
     "name": "pokemon-showdown-dev",
-    "version": "0.1.176",
+    "version": "0.1.177",
     "description": "<p>This is a development test application for a pokemon showdown app on the future.</p>",
     "logo": "assets/appbanner.jpg",
     "entry": "index.html",
@@ -30,8 +30,8 @@
     "hideMouseUndocked": true,
     "freshProcessOnExit": true,
     "minBrewserVersion": "0.1.131",
-    "publishedAt": "2026-09-30T13:40:26Z",
-    "updatedAt": "2026-09-30T13:40:26Z",
+    "publishedAt": "2026-09-30T13:55:14Z",
+    "updatedAt": "2026-09-30T13:55:14Z",
     "summary": "Test app",
     "features": [
         "Gamepad"
