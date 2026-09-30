@@ -196,21 +196,6 @@
   --color-tab: #2a3b58;
   --color-tab-hover: #3b5176;
   --color-card: #22304a;
-  --color-retro-bg: #0a1620;
-  --color-retro-bar: #050e16;
-  --color-retro-panel: #102332;
-  --color-retro-outline: #3f88ad;
-  --color-retro-rim: #1b3a50;
-  --color-retro-select: #1a4562;
-  --color-retro-button: #153246;
-  --color-retro-input: #071118;
-  --color-retro-ink: #e3f2fa;
-  --color-retro-muted: #9ec3d5;
-  --color-retro-accent: #0b76a0;
-  --color-retro-accent-hover: #085f82;
-  --color-retro-accent-text: #6fd3ff;
-  --color-retro-danger: #ff8a80;
-  --color-retro-teal: #ffc46b;
 }
 
 * {
@@ -2883,19 +2868,19 @@ button {
 }
 
 .border-retro-accent-text {
-  border-color: var(--color-retro-accent-text);
+  border-color: var(--retro-accent-text);
 }
 
 .border-retro-bar {
-  border-color: var(--color-retro-bar);
+  border-color: var(--retro-bar);
 }
 
 .border-retro-outline {
-  border-color: var(--color-retro-outline);
+  border-color: var(--retro-outline);
 }
 
 .border-retro-rim {
-  border-color: var(--color-retro-rim);
+  border-color: var(--retro-rim);
 }
 
 .border-sky-300 {
@@ -3043,43 +3028,43 @@ button {
 }
 
 .bg-retro-accent {
-  background-color: var(--color-retro-accent);
+  background-color: var(--retro-accent);
 }
 
 .bg-retro-accent-hover {
-  background-color: var(--color-retro-accent-hover);
+  background-color: var(--retro-accent-hover);
 }
 
 .bg-retro-bar {
-  background-color: var(--color-retro-bar);
+  background-color: var(--retro-bar);
 }
 
 .bg-retro-bg {
-  background-color: var(--color-retro-bg);
+  background-color: var(--retro-bg);
 }
 
 .bg-retro-button {
-  background-color: var(--color-retro-button);
+  background-color: var(--retro-button);
 }
 
 .bg-retro-input {
-  background-color: var(--color-retro-input);
+  background-color: var(--retro-input);
 }
 
 .bg-retro-outline {
-  background-color: var(--color-retro-outline);
+  background-color: var(--retro-outline);
 }
 
 .bg-retro-panel {
-  background-color: var(--color-retro-panel);
+  background-color: var(--retro-panel);
 }
 
 .bg-retro-select {
-  background-color: var(--color-retro-select);
+  background-color: var(--retro-select);
 }
 
 .bg-retro-teal {
-  background-color: var(--color-retro-teal);
+  background-color: var(--retro-teal);
 }
 
 .bg-stage {
@@ -3091,15 +3076,15 @@ button {
 }
 
 .fill-retro-accent-text {
-  fill: var(--color-retro-accent-text);
+  fill: var(--retro-accent-text);
 }
 
 .fill-retro-ink {
-  fill: var(--color-retro-ink);
+  fill: var(--retro-ink);
 }
 
 .fill-retro-muted {
-  fill: var(--color-retro-muted);
+  fill: var(--retro-muted);
 }
 
 .p-0 {
@@ -3504,35 +3489,35 @@ button {
 }
 
 .text-retro-accent-text {
-  color: var(--color-retro-accent-text);
+  color: var(--retro-accent-text);
 }
 
 .text-retro-bg {
-  color: var(--color-retro-bg);
+  color: var(--retro-bg);
 }
 
 .text-retro-danger {
-  color: var(--color-retro-danger);
+  color: var(--retro-danger);
 }
 
 .text-retro-ink {
-  color: var(--color-retro-ink);
+  color: var(--retro-ink);
 }
 
 .text-retro-input {
-  color: var(--color-retro-input);
+  color: var(--retro-input);
 }
 
 .text-retro-muted {
-  color: var(--color-retro-muted);
+  color: var(--retro-muted);
 }
 
 .text-retro-rim {
-  color: var(--color-retro-rim);
+  color: var(--retro-rim);
 }
 
 .text-retro-teal {
-  color: var(--color-retro-teal);
+  color: var(--retro-teal);
 }
 
 .text-rose-400 {
@@ -3627,11 +3612,11 @@ button {
   }
 
   .bw-cfk:hover {
-    background-color: var(--color-retro-accent-hover);
+    background-color: var(--retro-accent-hover);
   }
 
   .bw-cfl:hover {
-    background-color: var(--color-retro-select);
+    background-color: var(--retro-select);
   }
 
   .bw-cfm:hover {
@@ -3640,11 +3625,11 @@ button {
 }
 
 .bw-cfn:focus-visible {
-  border-color: var(--color-retro-accent-text);
+  border-color: var(--retro-accent-text);
 }
 
 .bw-cfo:focus-visible {
-  background-color: var(--color-retro-select);
+  background-color: var(--retro-select);
 }
 
 .bw-cfp:focus-visible {
@@ -3683,11 +3668,11 @@ button {
   }
 
   .bw-cfx:enabled:hover {
-    background-color: var(--color-retro-accent-hover);
+    background-color: var(--retro-accent-hover);
   }
 
   .bw-cfy:enabled:hover {
-    background-color: var(--color-retro-select);
+    background-color: var(--retro-select);
   }
 }
 
@@ -3700,7 +3685,7 @@ button {
 }
 
 .bw-cg1:disabled {
-  border-color: var(--color-retro-rim);
+  border-color: var(--retro-rim);
 }
 
 .bw-cg2:disabled {
@@ -3712,7 +3697,7 @@ button {
 }
 
 .bw-cg4:disabled {
-  background-color: var(--color-retro-bg);
+  background-color: var(--retro-bg);
 }
 
 .bw-cg5:disabled {
@@ -3720,97 +3705,115 @@ button {
 }
 
 .bw-cg6:disabled {
-  color: var(--color-retro-muted);
+  color: var(--retro-muted);
+}
+
+body {
+  --retro-bg: #0a1620;
+  --retro-bar: #050e16;
+  --retro-panel: #102332;
+  --retro-outline: #3f88ad;
+  --retro-rim: #1b3a50;
+  --retro-select: #1a4562;
+  --retro-button: #153246;
+  --retro-input: #071118;
+  --retro-ink: #e3f2fa;
+  --retro-muted: #9ec3d5;
+  --retro-accent: #0b76a0;
+  --retro-accent-hover: #085f82;
+  --retro-accent-text: #6fd3ff;
+  --retro-danger: #ff8a80;
+  --retro-teal: #ffc46b;
 }
 
 body.theme-noche {
-  --color-retro-bg: #121821;
-  --color-retro-bar: #0b1016;
-  --color-retro-panel: #1c2632;
-  --color-retro-outline: #5b7690;
-  --color-retro-rim: #2b3a4a;
-  --color-retro-select: #2c4157;
-  --color-retro-button: #26374a;
-  --color-retro-input: #0f151c;
-  --color-retro-ink: #e8eef3;
-  --color-retro-muted: #a9b8c6;
-  --color-retro-accent: #c94e39;
-  --color-retro-accent-hover: #a83e2c;
-  --color-retro-accent-text: #ff9a85;
-  --color-retro-danger: #ff8a80;
-  --color-retro-teal: #7fd1b9;
+  --retro-bg: #121821;
+  --retro-bar: #0b1016;
+  --retro-panel: #1c2632;
+  --retro-outline: #5b7690;
+  --retro-rim: #2b3a4a;
+  --retro-select: #2c4157;
+  --retro-button: #26374a;
+  --retro-input: #0f151c;
+  --retro-ink: #e8eef3;
+  --retro-muted: #a9b8c6;
+  --retro-accent: #c94e39;
+  --retro-accent-hover: #a83e2c;
+  --retro-accent-text: #ff9a85;
+  --retro-danger: #ff8a80;
+  --retro-teal: #7fd1b9;
 }
 
 body.theme-ciruela {
-  --color-retro-bg: #16111e;
-  --color-retro-bar: #0d0913;
-  --color-retro-panel: #221a2e;
-  --color-retro-outline: #8467b0;
-  --color-retro-rim: #352946;
-  --color-retro-select: #3c2d55;
-  --color-retro-button: #2d2240;
-  --color-retro-input: #110c17;
-  --color-retro-ink: #f1ebf8;
-  --color-retro-muted: #bcb0cf;
-  --color-retro-accent: #b8336a;
-  --color-retro-accent-hover: #982955;
-  --color-retro-accent-text: #ff8cc0;
-  --color-retro-danger: #ff8a80;
-  --color-retro-teal: #f3c56b;
+  --retro-bg: #16111e;
+  --retro-bar: #0d0913;
+  --retro-panel: #221a2e;
+  --retro-outline: #8467b0;
+  --retro-rim: #352946;
+  --retro-select: #3c2d55;
+  --retro-button: #2d2240;
+  --retro-input: #110c17;
+  --retro-ink: #f1ebf8;
+  --retro-muted: #bcb0cf;
+  --retro-accent: #b8336a;
+  --retro-accent-hover: #982955;
+  --retro-accent-text: #ff8cc0;
+  --retro-danger: #ff8a80;
+  --retro-teal: #f3c56b;
 }
 
 body.theme-esmeralda {
-  --color-retro-bg: #0e1915;
-  --color-retro-bar: #08110d;
-  --color-retro-panel: #15261e;
-  --color-retro-outline: #4f8f6d;
-  --color-retro-rim: #22392d;
-  --color-retro-select: #23432f;
-  --color-retro-button: #1d3427;
-  --color-retro-input: #0a130f;
-  --color-retro-ink: #e5f3ea;
-  --color-retro-muted: #a5c4b2;
-  --color-retro-accent: #b8432b;
-  --color-retro-accent-hover: #963522;
-  --color-retro-accent-text: #ff9f80;
-  --color-retro-danger: #ff8a80;
-  --color-retro-teal: #f0d36b;
+  --retro-bg: #0e1915;
+  --retro-bar: #08110d;
+  --retro-panel: #15261e;
+  --retro-outline: #4f8f6d;
+  --retro-rim: #22392d;
+  --retro-select: #23432f;
+  --retro-button: #1d3427;
+  --retro-input: #0a130f;
+  --retro-ink: #e5f3ea;
+  --retro-muted: #a5c4b2;
+  --retro-accent: #b8432b;
+  --retro-accent-hover: #963522;
+  --retro-accent-text: #ff9f80;
+  --retro-danger: #ff8a80;
+  --retro-teal: #f0d36b;
 }
 
 body.theme-pokeball {
-  --color-retro-bg: #151313;
-  --color-retro-bar: #0c0b0b;
-  --color-retro-panel: #221e1e;
-  --color-retro-outline: #7a6f6f;
-  --color-retro-rim: #342e2e;
-  --color-retro-select: #403434;
-  --color-retro-button: #2d2727;
-  --color-retro-input: #0f0e0e;
-  --color-retro-ink: #f3efef;
-  --color-retro-muted: #c0b6b6;
-  --color-retro-accent: #c62a2a;
-  --color-retro-accent-hover: #a32121;
-  --color-retro-accent-text: #ff8f85;
-  --color-retro-danger: #ffa24d;
-  --color-retro-teal: #ffd35c;
+  --retro-bg: #151313;
+  --retro-bar: #0c0b0b;
+  --retro-panel: #221e1e;
+  --retro-outline: #7a6f6f;
+  --retro-rim: #342e2e;
+  --retro-select: #403434;
+  --retro-button: #2d2727;
+  --retro-input: #0f0e0e;
+  --retro-ink: #f3efef;
+  --retro-muted: #c0b6b6;
+  --retro-accent: #c62a2a;
+  --retro-accent-hover: #a32121;
+  --retro-accent-text: #ff8f85;
+  --retro-danger: #ffa24d;
+  --retro-teal: #ffd35c;
 }
 
 body.theme-ocaso {
-  --color-retro-bg: #12122a;
-  --color-retro-bar: #0a0a1b;
-  --color-retro-panel: #1c1c3c;
-  --color-retro-outline: #6f6fc0;
-  --color-retro-rim: #2b2b55;
-  --color-retro-select: #30305f;
-  --color-retro-button: #24244a;
-  --color-retro-input: #0c0c1f;
-  --color-retro-ink: #eceaff;
-  --color-retro-muted: #b4b2de;
-  --color-retro-accent: #c0400f;
-  --color-retro-accent-hover: #9e340c;
-  --color-retro-accent-text: #ffa577;
-  --color-retro-danger: #ff8a9a;
-  --color-retro-teal: #7de3cf;
+  --retro-bg: #12122a;
+  --retro-bar: #0a0a1b;
+  --retro-panel: #1c1c3c;
+  --retro-outline: #6f6fc0;
+  --retro-rim: #2b2b55;
+  --retro-select: #30305f;
+  --retro-button: #24244a;
+  --retro-input: #0c0c1f;
+  --retro-ink: #eceaff;
+  --retro-muted: #b4b2de;
+  --retro-accent: #c0400f;
+  --retro-accent-hover: #9e340c;
+  --retro-accent-text: #ffa577;
+  --retro-danger: #ff8a9a;
+  --retro-teal: #7de3cf;
 }
 
 html {
@@ -3835,13 +3838,13 @@ body {
 [data-kb-focus] [data-slot-card] {
   outline-offset: -3px;
   outline: 3px solid #facc15;
-  background-color: var(--color-retro-select) !important;
+  background-color: var(--retro-select) !important;
   border-color: #facc15 !important;
 }
 
 [data-kb-focus][data-menu-item] {
-  border-color: var(--color-retro-accent-text) !important;
-  background-color: var(--color-retro-select) !important;
+  border-color: var(--retro-accent-text) !important;
+  background-color: var(--retro-select) !important;
   outline: none !important;
 }
 
