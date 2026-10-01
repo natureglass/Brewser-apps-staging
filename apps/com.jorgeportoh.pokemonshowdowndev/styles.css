@@ -3563,6 +3563,10 @@ button {
   white-space: nowrap;
 }
 
+.tab-0 {
+  tab-size: 0;
+}
+
 .bw-cfy {
   color: #8fb8ee;
 }
