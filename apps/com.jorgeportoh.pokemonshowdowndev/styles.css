@@ -3020,10 +3020,6 @@ button {
   border-color: var(--retro-bar);
 }
 
-.border-retro-danger {
-  border-color: var(--retro-danger);
-}
-
 .border-retro-outline {
   border-color: var(--retro-outline);
 }
