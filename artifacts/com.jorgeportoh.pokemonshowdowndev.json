@@ -1,15 +1,14 @@
 {
   "id": "com.jorgeportoh.pokemonshowdowndev",
-  "sizeBytes": 3268758,
+  "sizeBytes": 2272564,
   "files": [
     "README.md",
-    "app.js",
     "assets/appbanner.jpg",
+    "assets/blip.wav",
+    "assets/cry.mp3",
+    "assets/cry.ogg",
+    "assets/music.mp3",
     "brewser-sw.js",
-    "categories/physical.png",
-    "categories/special.png",
-    "categories/status.png",
-    "favicon.ico",
     "index.html",
     "manifest.json",
     "pwa/app.webmanifest",
@@ -17,9 +16,6 @@
     "pwa/brewser-pwa.js",
     "pwa/icon-192.png",
     "pwa/icon-512.png",
-    "pwa/icon-maskable.png",
-    "sprites/champions-0.png",
-    "sprites/champions-1.png",
-    "styles.css"
+    "pwa/icon-maskable.png"
   ]
 }

@@ -1,12 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="utf-8">
-  <title>PokemonShowdownBrewser</title>
-  <base href="./">
+  <title>Test S1</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <link rel="stylesheet" href="styles.css">
 
 <!-- brewser-pwa:start -->
 <link rel="manifest" href="pwa/app.webmanifest">
@@ -17,8 +14,350 @@
 <script src="pwa/brewser-pwa.js" defer></script>
 <!-- brewser-pwa:end -->
 </head>
-<body>
-  <app-root></app-root>
-  <script src="app.js"></script>
+<body style="width:1280px;height:720px;margin:0;overflow:hidden;background:#000000;color:#ffffff;font-family:sans-serif;font-size:15px;">
+  <div style="position:absolute;left:0;top:0;width:1280px;height:52px;background:#1e293b;">
+    <p style="margin:0;padding:6px 10px;">TEST S1 SONIDO. Cruceta arriba/abajo elige, A ejecuta, B para todo. Escribe si OYES algo en cada prueba y haz foto del registro.</p>
+    <p id="s-status" style="margin:0;padding:0 10px;color:#ffcc00;">Script: no ejecutado</p>
+  </div>
+  <div id="s-menu" style="position:absolute;left:0;top:56px;width:470px;height:664px;background:#111827;font-size:14px;"></div>
+  <div id="s-log" style="position:absolute;left:476px;top:56px;width:800px;height:660px;overflow:hidden;background:#222222;font-family:monospace;font-size:13px;">
+    <p style="margin:0;">Registro (lo mas nuevo arriba)</p>
+  </div>
+  <script>
+    (function () {
+      var status = document.getElementById('s-status');
+      status.textContent = 'Script: ejecutandose';
+      var logBox = document.getElementById('s-log');
+      var menuBox = document.getElementById('s-menu');
+      function now() { return (window.performance && performance.now) ? performance.now() : Date.now(); }
+      var t0 = now();
+      function log(message, color) {
+        var node = document.createElement('p');
+        node.style.margin = '0';
+        node.style.padding = '1px 4px';
+        if (color) node.style.color = color;
+        node.textContent = ((now() - t0) / 1000).toFixed(1) + 's ' + message;
+        logBox.insertBefore(node, logBox.firstChild);
+        while (logBox.childNodes.length > 46) logBox.removeChild(logBox.lastChild);
+      }
+      function ok(m) { log('OK ' + m, '#86efac'); }
+      function bad(m) { log('FALLO ' + m, '#fca5a5'); }
+      window.onerror = function (msg, src, line) { bad('onerror: ' + msg + ' @' + line); };
+      window.addEventListener('unhandledrejection', function (e) { bad('promesa rechazada: ' + (e && e.reason)); });
+      function errText(e) { return e ? ((e.name ? e.name + ': ' : '') + (e.message || String(e))) : String(e); }
+
+      var REMOTE_CRY = 'https://play.pokemonshowdown.com/audio/cries/garchomp.mp3';
+      var REMOTE_MUSIC = 'https://play.pokemonshowdown.com/audio/bw-trainer.mp3';
+
+      // ---------- Web Audio context ----------
+      var Ctx = window.AudioContext || window.webkitAudioContext;
+      var ctx = null;
+      var master = null;
+      function ensureCtx() {
+        if (ctx) return ctx;
+        if (!Ctx) { bad('no hay AudioContext'); return null; }
+        try {
+          ctx = new Ctx();
+          master = ctx.createGain ? ctx.createGain() : null;
+          if (master) master.connect(ctx.destination);
+          log('AudioContext creado: state=' + ctx.state + ' sampleRate=' + ctx.sampleRate +
+            ' baseLatency=' + ctx.baseLatency + ' outputLatency=' + ctx.outputLatency);
+          if (ctx.addEventListener) ctx.addEventListener('statechange', function () { log('AudioContext statechange -> ' + ctx.state); });
+        } catch (e) { bad('new AudioContext: ' + errText(e)); ctx = null; }
+        return ctx;
+      }
+      function out() { return master || ctx.destination; }
+      function resumeCtx(label) {
+        if (!ensureCtx()) return Promise.resolve();
+        var before = ctx.state;
+        if (!ctx.resume) { log(label + ': ctx.resume no existe (state ' + before + ')'); return Promise.resolve(); }
+        var p;
+        try { p = ctx.resume(); } catch (e) { bad(label + ': resume lanzo ' + errText(e)); return Promise.resolve(); }
+        if (!p || !p.then) { log(label + ': resume sin promesa, state ' + before + ' -> ' + ctx.state); return Promise.resolve(); }
+        return p.then(function () { log(label + ': resume ok, state ' + before + ' -> ' + ctx.state); },
+          function (e) { bad(label + ': resume rechazado ' + errText(e) + ', state ' + ctx.state); });
+      }
+      function clockCheck(label) {
+        if (!ctx) return;
+        var a = ctx.currentTime;
+        setTimeout(function () { log(label + ': currentTime ' + a.toFixed(2) + ' -> ' + ctx.currentTime.toFixed(2) + ' en 1 s (state ' + ctx.state + ')'); }, 1000);
+      }
+
+      // ---------- loading ----------
+      function loadBytes(url) {
+        var start = now();
+        function viaXhr(reason) {
+          return new Promise(function (resolve, reject) {
+            log('fetch fallo (' + reason + '), probando XHR: ' + url);
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', url, true);
+            xhr.responseType = 'arraybuffer';
+            xhr.onload = function () {
+              if (xhr.response && xhr.response.byteLength) { ok('XHR ' + xhr.response.byteLength + ' B en ' + Math.round(now() - start) + ' ms'); resolve(xhr.response); }
+              else reject(new Error('XHR status ' + xhr.status + ' sin datos'));
+            };
+            xhr.onerror = function () { reject(new Error('XHR onerror status ' + xhr.status)); };
+            xhr.send();
+          });
+        }
+        if (!window.fetch) return viaXhr('no hay fetch');
+        return fetch(url).then(function (r) {
+          if (!r.ok && r.status !== 0) throw new Error('HTTP ' + r.status);
+          return r.arrayBuffer();
+        }).then(function (b) {
+          log('descargado ' + b.byteLength + ' B en ' + Math.round(now() - start) + ' ms: ' + url);
+          return b;
+        }, function (e) { return viaXhr(errText(e)); });
+      }
+      function decode(bytes) {
+        var start = now();
+        return new Promise(function (resolve, reject) {
+          var settled = false;
+          function done(buffer) {
+            if (settled) return; settled = true;
+            log('decodificado en ' + Math.round(now() - start) + ' ms: ' + buffer.duration.toFixed(2) + ' s, ' + buffer.numberOfChannels + ' canales, ' + buffer.sampleRate + ' Hz');
+            resolve(buffer);
+          }
+          function fail(e) { if (settled) return; settled = true; reject(e || new Error('decodeAudioData error sin detalle')); }
+          try {
+            var p = ctx.decodeAudioData(bytes, done, fail);
+            if (p && p.then) p.then(done, fail);
+          } catch (e) { fail(e); }
+        });
+      }
+      var buffers = {};
+      function webAudioFile(label, url, loop) {
+        if (!ensureCtx()) return Promise.resolve(null);
+        return resumeCtx(label).then(function () {
+          if (buffers[url]) return buffers[url];
+          return loadBytes(url).then(decode).then(function (b) { buffers[url] = b; return b; });
+        }).then(function (buffer) {
+          var src = ctx.createBufferSource();
+          src.buffer = buffer;
+          src.loop = !!loop;
+          src.connect(out());
+          src.onended = function () { log(label + ': onended'); };
+          src.start(0);
+          ok(label + ': start() llamado. SE OYE?');
+          clockCheck(label);
+          return src;
+        }).catch(function (e) { bad(label + ': ' + errText(e)); return null; });
+      }
+
+      // ---------- <audio> ----------
+      var elements = [];
+      function audioEl(label, url, loop, volume) {
+        if (!window.Audio) { bad(label + ': no hay window.Audio'); return null; }
+        var a;
+        try { a = new Audio(); } catch (e) { bad(label + ': new Audio lanzo ' + errText(e)); return null; }
+        elements.push(a);
+        var start = now();
+        ['loadstart', 'loadedmetadata', 'canplay', 'canplaythrough', 'playing', 'pause', 'ended', 'stalled', 'suspend', 'waiting'].forEach(function (type) {
+          a.addEventListener(type, function () { log(label + ': <audio> ' + type + ' (' + Math.round(now() - start) + ' ms)'); });
+        });
+        a.addEventListener('error', function () {
+          var err = a.error;
+          bad(label + ': <audio> error code=' + (err && err.code) + ' ' + (err && err.message || ''));
+        });
+        a.loop = !!loop;
+        if (volume != null) a.volume = volume;
+        a.src = url;
+        var p;
+        try { p = a.play(); } catch (e) { bad(label + ': play() lanzo ' + errText(e)); return a; }
+        if (p && p.then) p.then(function () { ok(label + ': play() resuelto. SE OYE?'); }, function (e) { bad(label + ': play() rechazado ' + errText(e)); });
+        else log(label + ': play() sin promesa (paused=' + a.paused + '). SE OYE?');
+        return a;
+      }
+
+      // ---------- tests ----------
+      var music = null;     // { kind: 'web'|'el', node }
+      var clickBuffer = null;
+      var clickEl = null;
+      var clickPool = [];
+      function stopMusic() {
+        if (!music) return;
+        try { if (music.kind === 'web') music.node.stop(); else { music.node.pause(); } } catch (e) {}
+        music = null;
+      }
+      function stopAll() {
+        stopMusic();
+        elements.forEach(function (a) { try { a.pause(); } catch (e) {} });
+        log('B: todo parado');
+      }
+
+      var tests = [
+        { name: 'Info: APIs y formatos', run: info },
+        { name: 'Desbloquear AudioContext (resume)', run: function () { resumeCtx('desbloquear').then(function () { clockCheck('desbloquear'); }); } },
+        { name: 'Pitido oscilador 440 Hz (Web Audio)', run: function () {
+          if (!ensureCtx()) return;
+          resumeCtx('oscilador').then(function () {
+            try {
+              var osc = ctx.createOscillator();
+              var g = ctx.createGain();
+              osc.type = 'square';
+              osc.frequency.value = 440;
+              g.gain.value = 0.15;
+              osc.connect(g); g.connect(out());
+              osc.start(ctx.currentTime);
+              osc.stop(ctx.currentTime + 0.3);
+              ok('oscilador: sonando 0,3 s. SE OYE?');
+              clockCheck('oscilador');
+            } catch (e) { bad('oscilador: ' + errText(e)); }
+          });
+        } },
+        { name: 'Clic Web Audio (pulsa A varias veces: retraso?)', run: function () {
+          if (!ensureCtx()) return;
+          if (ctx.state !== 'running') resumeCtx('clic');
+          try {
+            if (!clickBuffer) {
+              var n = Math.floor(ctx.sampleRate * 0.04);
+              clickBuffer = ctx.createBuffer(1, n, ctx.sampleRate);
+              var d = clickBuffer.getChannelData(0);
+              for (var i = 0; i < n; i++) d[i] = (i % 40 < 20 ? 0.3 : -0.3) * (1 - i / n);
+            }
+            var s = ctx.createBufferSource();
+            s.buffer = clickBuffer;
+            s.connect(out());
+            s.start(0);
+            log('clic Web Audio (state ' + ctx.state + ')');
+          } catch (e) { bad('clic: ' + errText(e)); }
+        } },
+        { name: 'WAV local por Web Audio', run: function () { webAudioFile('wav web', 'assets/blip.wav'); } },
+        { name: 'MP3 local por Web Audio (grito)', run: function () { webAudioFile('mp3 web', 'assets/cry.mp3'); } },
+        { name: 'OGG local por Web Audio (grito)', run: function () { webAudioFile('ogg web', 'assets/cry.ogg'); } },
+        { name: 'MP3 REMOTO por Web Audio (sin CORS)', run: function () { webAudioFile('mp3 remoto web', REMOTE_CRY); } },
+        { name: '<audio> WAV local', run: function () { audioEl('wav el', 'assets/blip.wav'); } },
+        { name: '<audio> MP3 local (grito)', run: function () { audioEl('mp3 el', 'assets/cry.mp3'); } },
+        { name: '<audio> OGG local (grito)', run: function () { audioEl('ogg el', 'assets/cry.ogg'); } },
+        { name: '<audio> MP3 REMOTO (grito Garchomp)', run: function () { audioEl('mp3 remoto el', REMOTE_CRY); } },
+        { name: 'Clic <audio> (pulsa A varias veces: retraso?)', run: function () {
+          if (!window.Audio) { bad('no hay Audio'); return; }
+          if (!clickEl) { clickEl = new Audio('assets/blip.wav'); clickEl.preload = 'auto'; try { clickEl.load(); } catch (e) {} }
+          // Round robin over 4 copies so quick presses can overlap.
+          var a = clickPool.length < 4 ? clickEl.cloneNode() : clickPool.shift();
+          clickPool.push(a);
+          try { a.currentTime = 0; } catch (e) {}
+          var p = a.play();
+          if (p && p.catch) p.catch(function (e) { bad('clic el: ' + errText(e)); });
+          log('clic <audio>');
+        } },
+        { name: 'Musica <audio> REMOTA en bucle (bw-trainer)', run: function () {
+          stopMusic();
+          var a = audioEl('musica el remota', REMOTE_MUSIC, true, 0.6);
+          if (a) music = { kind: 'el', node: a };
+        } },
+        { name: 'Musica <audio> LOCAL en bucle (xy-trainer)', run: function () {
+          stopMusic();
+          var a = audioEl('musica el local', 'assets/music.mp3', true, 0.6);
+          if (a) music = { kind: 'el', node: a };
+        } },
+        { name: 'Musica Web Audio LOCAL (decodifica 2 MB)', run: function () {
+          stopMusic();
+          webAudioFile('musica web local', 'assets/music.mp3', true).then(function (src) { if (src) music = { kind: 'web', node: src }; });
+        } },
+        { name: 'Volumen: alterna 100% / 20%', run: function () {
+          var low = !window.__lowVol;
+          window.__lowVol = low;
+          if (master) { try { master.gain.value = low ? 0.2 : 1; } catch (e) { bad('gain: ' + errText(e)); } }
+          elements.forEach(function (a) { try { a.volume = low ? 0.12 : 0.6; } catch (e) { bad('volume: ' + errText(e)); } });
+          log('volumen ' + (low ? '20%' : '100%') + ' (gain web + volume <audio>). CAMBIA?');
+        } },
+        { name: 'Parar todo (igual que B)', run: stopAll }
+      ];
+
+      function info() {
+        log('UA: ' + navigator.userAgent);
+        log('AudioContext=' + typeof window.AudioContext + ' webkitAudioContext=' + typeof window.webkitAudioContext +
+          ' OfflineAudioContext=' + typeof window.OfflineAudioContext + ' Audio=' + typeof window.Audio +
+          ' HTMLAudioElement=' + typeof window.HTMLAudioElement + ' MediaSource=' + typeof window.MediaSource);
+        log('userActivation=' + (navigator.userActivation ? ('isActive ' + navigator.userActivation.isActive + ' hasBeenActive ' + navigator.userActivation.hasBeenActive) : 'no existe') +
+          ' | fetch=' + typeof window.fetch + ' XHR=' + typeof window.XMLHttpRequest);
+        if (window.Audio) {
+          try {
+            var probe = new Audio();
+            var types = ['audio/mpeg', 'audio/ogg; codecs="vorbis"', 'audio/ogg; codecs="opus"', 'audio/wav', 'audio/mp4; codecs="mp4a.40.2"', 'audio/webm'];
+            log('canPlayType: ' + types.map(function (t) { return t + '=' + JSON.stringify(probe.canPlayType(t)); }).join(' '));
+          } catch (e) { bad('canPlayType: ' + errText(e)); }
+        }
+        var sw = globalThis.Switch;
+        if (sw) {
+          var keys = [];
+          for (var k in sw) keys.push(k);
+          try { Object.getOwnPropertyNames(sw).forEach(function (k2) { if (keys.indexOf(k2) < 0) keys.push(k2); }); } catch (e) {}
+          log('globalThis.Switch (' + keys.length + ' claves): ' + keys.join(','));
+        } else log('globalThis.Switch: no existe');
+        var extra = [];
+        for (var g in window) { if (/audio|sound|media/i.test(g)) extra.push(g); }
+        log('globales con audio/sound/media: ' + (extra.join(',') || 'ninguno'));
+        if (ctx) log('ctx ahora: state=' + ctx.state + ' currentTime=' + ctx.currentTime.toFixed(2));
+      }
+
+      // ---------- menu ----------
+      var selected = 0;
+      var rows = [];
+      tests.forEach(function (t, i) {
+        var row = document.createElement('p');
+        row.style.margin = '0';
+        row.style.padding = '8px 10px';
+        row.style.height = '20px';
+        row.textContent = (i < 10 ? ' ' : '') + i + '  ' + t.name;
+        menuBox.appendChild(row);
+        rows.push(row);
+      });
+      function paintMenu() {
+        rows.forEach(function (row, i) {
+          row.style.background = i === selected ? '#a16207' : '#111827';
+          row.style.color = i === selected ? '#ffffff' : '#cbd5e1';
+        });
+      }
+      paintMenu();
+      function press(action) {
+        if (action === 'up') { selected = (selected + tests.length - 1) % tests.length; paintMenu(); }
+        else if (action === 'down') { selected = (selected + 1) % tests.length; paintMenu(); }
+        else if (action === 'a') {
+          log('> A: ' + tests[selected].name, '#93c5fd');
+          try { tests[selected].run(); } catch (e) { bad(tests[selected].name + ': ' + errText(e)); }
+        } else if (action === 'b') stopAll();
+      }
+
+      // Gamepad (console) and keyboard (web; ignored once a pad has been seen, the console d-pad also sends keys).
+      var padSeen = false;
+      var held = {};
+      var MAP = { 12: 'up', 13: 'down', 0: 'a', 1: 'b' };
+      function poll() {
+        var pads = null;
+        try { pads = navigator.getGamepads ? navigator.getGamepads() : null; } catch (e) {}
+        for (var i = 0; pads && i < pads.length; i++) {
+          var pad = pads[i];
+          if (!pad) continue;
+          padSeen = true;
+          for (var b in MAP) {
+            var btn = pad.buttons[b];
+            var down = !!(btn && (btn.pressed || btn.value > 0.5));
+            if (down && !held[b]) press(MAP[b]);
+            held[b] = down;
+          }
+          break;
+        }
+      }
+      setInterval(poll, 30);
+      var KEYS = { ArrowUp: 'up', ArrowDown: 'down', Enter: 'a', Escape: 'b', w: 'up', s: 'down', j: 'a', k: 'b' };
+      document.addEventListener('keydown', function (e) {
+        if (padSeen) return;
+        var action = KEYS[e.key];
+        if (action) { if (e.preventDefault) e.preventDefault(); press(action); }
+      }, true);
+
+      // ---------- at load, before any button press ----------
+      info();
+      setTimeout(function () {
+        log('--- arranque sin pulsar nada ---', '#93c5fd');
+        if (ensureCtx()) clockCheck('arranque');
+        audioEl('autoplay al cargar', 'assets/blip.wav');
+      }, 500);
+
+      status.textContent = 'Script: OK';
+    })();
+  </script>
 </body>
 </html>
