@@ -1,6 +1,6 @@
 # pokemon-showdown-dev
 
-_v0.2.35_
+_v0.2.36_
 
 This is a development test application for a pokemon showdown app on the future.
 
