@@ -1,10 +1,15 @@
 {
   "id": "com.jorgeportoh.pokemonshowdowndev",
-  "sizeBytes": 3338389,
+  "sizeBytes": 3265714,
   "files": [
     "README.md",
     "app.js",
     "assets/appbanner.jpg",
+    "audio/hit-super.wav",
+    "audio/hit-weak.wav",
+    "audio/hit.wav",
+    "audio/stat-down.mp3",
+    "audio/stat-up.mp3",
     "brewser-sw.js",
     "categories/physical.png",
     "categories/special.png",
