@@ -1,10 +1,14 @@
 {
   "id": "com.jorgeportoh.pokemonshowdowndev",
-  "sizeBytes": 3958177,
+  "sizeBytes": 6135042,
   "files": [
     "README.md",
     "app.js",
     "assets/appbanner.jpg",
+    "audio/battle/bw-trainer.ogg",
+    "audio/battle/hgss-johto-trainer.ogg",
+    "audio/battle/sm-trainer.ogg",
+    "audio/battle/xy-trainer.ogg",
     "audio/hit-super.wav",
     "audio/hit-weak.wav",
     "audio/hit.wav",
