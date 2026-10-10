@@ -1,0 +1,40 @@
+{
+    "id": "com.laun8der.citadelportalsupport",
+    "name": "Citadel Portal Support",
+    "version": "1.0.0",
+    "description": "Rick And Morty inspired game about portal travelling with citadel portal support\r\n\r\nFINDED WORLD CODES:\r\n\r\n314\r\n\r\n139\r\n\r\n602",
+    "logo": "assets/appbanner.jpg",
+    "entry": "index.html",
+    "categories": [
+        "Apps"
+    ],
+    "permissions": [
+        "system"
+    ],
+    "compatibility": [
+        "mobile",
+        "switch",
+        "web"
+    ],
+    "allowed_origins": [],
+    "developer": "Олег Бевз",
+    "license": "Third-party licenses apply",
+    "exitGame": "PLUS",
+    "fullscreen": true,
+    "hideMouseDocked": false,
+    "hideMouseUndocked": false,
+    "freshProcessOnExit": false,
+    "minBrewserVersion": "0.1.131",
+    "publishedAt": "2026-10-10T17:04:57Z",
+    "updatedAt": "2026-10-10T17:04:57Z",
+    "summary": "Rick And Morty inspired game about portal travelling",
+    "buttonMapping": {
+        "up": "LSTICK",
+        "down": "LSTICK",
+        "left": "LSTICK",
+        "right": "LSTICK",
+        "enter": "ZR",
+        "space": "ZL",
+        "escape": "HOME"
+    }
+}
