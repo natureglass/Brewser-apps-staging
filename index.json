@@ -10,6 +10,16 @@
     "description": "<p>This is a development test application for a pokemon showdown app on the future.</p>"
   },
   {
+    "id": "com.laun8der.citadelportalsupport",
+    "name": "Citadel Portal Support",
+    "version": "1.0.0",
+    "owner": "fb66b4255fa497f772f013a55ddd46d26e9702c21140c645211f60f3ab527727",
+    "updated_at": "2026-10-10T17:05:35Z",
+    "entry": "index.html",
+    "logo": "assets/appbanner.jpg",
+    "description": "Rick And Morty inspired game about portal travelling with citadel portal support\r\n\r\nFINDED WORLD CODES:\r\n\r\n314\r\n\r\n139\r\n\r\n602"
+  },
+  {
     "id": "com.natureglass.aether",
     "name": "Aether",
     "version": "1.0.2",
