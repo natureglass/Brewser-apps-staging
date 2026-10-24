@@ -8,7 +8,7 @@
  */
 'use strict';
 
-var CACHE    = 'brewser-app-com-civcivyt-turboarena-8a57dad1e1e6';
+var CACHE    = 'brewser-app-com-civcivyt-turboarena-b6cd44aecf4a';
 var PRECACHE = [".\/","pwa\/app.webmanifest","pwa\/brewser-pwa.js","pwa\/icon-192.png","pwa\/icon-512.png","pwa\/icon-maskable.png","pwa\/apple-touch-icon.png","index.html","README_TR.txt"];   // JSON array of app-relative URLs
 var START    = 'index.html';    // navigation fallback (the app entry)
 
