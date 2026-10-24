@@ -1,9 +1,9 @@
 {
   "verdict": "GOOD",
   "score": 1,
-  "scanned_at": "2026-10-24T09:46:58Z",
+  "scanned_at": "2026-10-24T10:04:40Z",
   "scanner_version": "1.3.2",
-  "package_hash": "0f73e61d6c77b14ea8fc907a2f66ce742d8a1ba573d1a008620fed327091c6cf",
+  "package_hash": "e26c568b08dffb3ce6c94e1c3d8a67b4317da68f3abbae8436c5fd6e866274d7",
   "counts": {
     "info": 1,
     "suspicious": 0,
@@ -18,8 +18,8 @@
       "title": "A source file could not be parsed",
       "detail": "Could not parse as JS (SyntaxError); ran regex backstop only.",
       "file": "index.html <inline script>",
-      "line": 10,
-      "evidence": "Unexpected token (1:2853160)"
+      "line": 21,
+      "evidence": "Unexpected token (13:1)"
     }
   ],
   "capabilities": [],
