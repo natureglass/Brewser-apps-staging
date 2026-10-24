@@ -8,8 +8,8 @@
  */
 'use strict';
 
-var CACHE    = 'brewser-app-com-civcivyt-turboarena-8a79674efe1d';
-var PRECACHE = [".\/","pwa\/app.webmanifest","pwa\/brewser-pwa.js","pwa\/icon-192.png","pwa\/icon-512.png","pwa\/icon-maskable.png","pwa\/apple-touch-icon.png","index.html","Turbo_Arena_4.1.html","README.txt"];   // JSON array of app-relative URLs
+var CACHE    = 'brewser-app-com-civcivyt-turboarena-8adbd6d0b8bb';
+var PRECACHE = [".\/","pwa\/app.webmanifest","pwa\/brewser-pwa.js","pwa\/icon-192.png","pwa\/icon-512.png","pwa\/icon-maskable.png","pwa\/apple-touch-icon.png","index.html","README.txt","Turbo_Arena_4.1.html"];   // JSON array of app-relative URLs
 var START    = 'index.html';    // navigation fallback (the app entry)
 
 self.addEventListener('install', function (event) {
