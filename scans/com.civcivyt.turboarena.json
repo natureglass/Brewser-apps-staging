@@ -1,17 +1,26 @@
 {
   "verdict": "SUSPICIOUS",
-  "score": 10,
-  "scanned_at": "2026-10-24T17:45:11Z",
+  "score": 22,
+  "scanned_at": "2026-10-24T18:42:15Z",
   "scanner_version": "1.3.2",
-  "package_hash": "0c57aba845af705511d4624d5144aa78fdfbca5ccfa08956fabf160df91ca926",
+  "package_hash": "f176177d7a3bfa26ef193f57a853c19ea9ba171cde3874377e966ae7f2e37120",
   "counts": {
-    "info": 0,
-    "suspicious": 1,
+    "info": 2,
+    "suspicious": 2,
     "dangerous": 0
   },
-  "rationale": "Suspicious: 1 signal(s) needing review; e.g. network request to an off-package external origin.",
+  "rationale": "Suspicious: 2 signal(s) needing review; e.g. network request to an off-package external origin.",
   "truncated": false,
   "findings": [
+    {
+      "rule_id": "external-egress",
+      "severity": "SUSPICIOUS",
+      "title": "Network request to an off-package external origin",
+      "detail": "<script src> loads code from external origin https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js.",
+      "file": "Turbo_Arena_4.1.html",
+      "line": 40,
+      "evidence": "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
+    },
     {
       "rule_id": "external-egress",
       "severity": "SUSPICIOUS",
@@ -20,8 +29,29 @@
       "file": "index.html",
       "line": 49,
       "evidence": "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
+    },
+    {
+      "rule_id": "file-parse-error",
+      "severity": "INFO",
+      "title": "A source file could not be parsed",
+      "detail": "Could not parse as JS (SyntaxError); ran regex backstop only.",
+      "file": "index.html <inline script>",
+      "line": 49,
+      "evidence": "Unexpected token (398:1)"
+    },
+    {
+      "rule_id": "file-parse-error",
+      "severity": "INFO",
+      "title": "A source file could not be parsed",
+      "detail": "Could not parse as JS (SyntaxError); ran regex backstop only.",
+      "file": "index.html <inline script>",
+      "line": 451,
+      "evidence": "Unexpected token (37:1)"
     }
   ],
-  "capabilities": [],
+  "capabilities": [
+    "webaudio",
+    "webgl"
+  ],
   "limitations": "Static heuristic scan. A GOOD verdict means no known-bad pattern matched, NOT proof of safety. Human review is still required for every submission."
 }
