@@ -1,6 +1,6 @@
 # Turbo arena
 
-_v1.0.5_
+_v1.0.6_
 
 Turbo Arena 4.0 — Nintendo Switch / Brewser Edition
 
