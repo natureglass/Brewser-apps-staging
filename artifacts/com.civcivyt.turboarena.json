@@ -1,10 +1,11 @@
 {
   "id": "com.civcivyt.turboarena",
-  "sizeBytes": 4122100,
+  "sizeBytes": 5702368,
   "files": [
     "README.md",
     "README_TR.txt",
     "assets/appbanner.jpg",
+    "assets/screenshots/1.png",
     "brewser-sw.js",
     "index.html",
     "manifest.json",
