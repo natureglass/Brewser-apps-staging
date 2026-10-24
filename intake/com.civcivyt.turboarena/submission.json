@@ -1,0 +1,16 @@
+{
+    "id": "com.civcivyt.turboarena",
+    "name": "Turbo arena",
+    "version": "1.0.7",
+    "owner": "6c1dfa7e950df660972f3b52b1a9ee7395bd7ace9633353205d9c9a8d9043724",
+    "zip_sha256": "19ffd211eb73692d628b305c80075e181c48e5b11a6150e07925eec664236c28",
+    "attestation": {
+        "ts": "2026-10-24T16:04:03+00:00",
+        "platforms": [
+            "mobile",
+            "web"
+        ],
+        "zip_sha256": "19ffd211eb73692d628b305c80075e181c48e5b11a6150e07925eec664236c28"
+    },
+    "submitted_at": "2026-10-24T16:04:03+00:00"
+}
