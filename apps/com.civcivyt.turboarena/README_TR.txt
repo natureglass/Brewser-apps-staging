@@ -1,19 +1,18 @@
-TURBO ARENA 4.0 — BREWSER / SWITCH WEB PACKAGE
+TURBO ARENA 4.0 — BREWSER / NINTENDO SWITCH RESPONSIVE BUILD
 
-İÇERİK
-- index.html: mevcut Turbo Arena 4.0 Mega Sürüm Koleksiyonu ana oyunu.
+İçerik:
+- index.html: Turbo Arena 4.0 ana koleksiyonu ve mevcut gömülü oyun sürümleri.
+- Bu güncellemede dokunmatik joystick ve aksiyon tuşları için ekran ölçüsüne duyarlı CSS eklendi.
 
-ÖNEMLİ UYUMLULUK NOTU
-Bu ZIP, gerçek mevcut HTML oyununu index.html adıyla içerir; boş başlangıç taslağı değildir. Oyun içindeki sürüm seçici ve dokunmatik kontroller kaynak dosyadan korunmuştur.
+Ekran uyumu:
+- Tuşlar ekranın genişlik/yükseklik ölçülerine göre ölçeklenir.
+- Yatay ve kısa ekranlarda kontrol boyutları yeniden ayarlanır.
+- Mevcut dokunmatik kontrol davranışı korunmaya çalışılmıştır.
 
-Joy-Con / kontrolcü desteği bu pakette ayrıca tamamlanmış veya gerçek Switch donanımında test edilmiş olarak iddia edilmez. Kontrolcü girişlerinin oyunun sürüş, kamera, nitro, fren, zıplama ve drift eylemlerine bağlanması ve Brewser üzerinde test edilmesi gerekir.
-
-Grafik motoru Three.js'i CDN üzerinden yükleyen sürümler için internet bağlantısı gerekebilir. Brewser çevrimdışı çalıştırma, oyunun bütün harici bağımlılıklarının yerel olmasına bağlıdır.
-
-Brewser bir web runtime'dır; katalog yayımlama süreci bu ZIP'i doğrudan seçmekten farklı olabilir. Brewser belgeleri uygulama gönderimi için GitHub tabanlı bir süreç anlatır.
-
-LİSANS
-Bu pakete yeni bir açık kaynak lisansı atanmadı. Turbo Arena kodu ve içindeki tüm sürümlerin/varlıkların hakları kontrol edilmeden MPL-2.0, MIT veya başka bir lisans seçilmemelidir. Brewser'ın lisansı oyunun lisansı değildir.
-
-BAĞIMSIZLIK NOTU
-Bu, Nintendo tarafından yayımlanmış veya onaylanmış bir ürün değildir.
+ÖNEMLİ SINIRLAR:
+- Bu paket gerçek Nintendo Switch donanımında test edilmedi.
+- Joy-Con/gamepad desteği bu güncellemede eklenmedi veya doğrulanmadı.
+- Oyun sürümlerinin Three.js gibi harici kaynakları internet bağlantısı isteyebilir.
+- Brewser kataloğundaki inceleme/yayınlama durumu, ZIP'in hazırlanmasından ayrı bir süreçtir.
+- Lisans, kaynak kodu ve varlıkların hakları kontrol edilmeden belirlenmemiştir.
+- Nintendo tarafından onaylanmış bir ürün değildir.
