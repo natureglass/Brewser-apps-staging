@@ -1,25 +1,25 @@
 {
-  "verdict": "GOOD",
-  "score": 1,
-  "scanned_at": "2026-10-24T16:28:38Z",
+  "verdict": "SUSPICIOUS",
+  "score": 10,
+  "scanned_at": "2026-10-24T17:45:11Z",
   "scanner_version": "1.3.2",
-  "package_hash": "fbf03dd7a2df6da6b94e978cfe948d166d9de391ffbaa52e7081d5f967557822",
+  "package_hash": "0c57aba845af705511d4624d5144aa78fdfbca5ccfa08956fabf160df91ca926",
   "counts": {
-    "info": 1,
-    "suspicious": 0,
+    "info": 0,
+    "suspicious": 1,
     "dangerous": 0
   },
-  "rationale": "No known-bad pattern matched (1 informational note(s)). Not proof of safety — human review still required.",
+  "rationale": "Suspicious: 1 signal(s) needing review; e.g. network request to an off-package external origin.",
   "truncated": false,
   "findings": [
     {
-      "rule_id": "file-parse-error",
-      "severity": "INFO",
-      "title": "A source file could not be parsed",
-      "detail": "Could not parse as JS (SyntaxError); ran regex backstop only.",
-      "file": "index.html <inline script>",
-      "line": 21,
-      "evidence": "Unterminated string constant. (1:2773643)"
+      "rule_id": "external-egress",
+      "severity": "SUSPICIOUS",
+      "title": "Network request to an off-package external origin",
+      "detail": "<script src> loads code from external origin https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js.",
+      "file": "index.html",
+      "line": 49,
+      "evidence": "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
     }
   ],
   "capabilities": [],

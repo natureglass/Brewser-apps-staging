@@ -1,8 +1,9 @@
 {
   "id": "com.civcivyt.turboarena",
-  "sizeBytes": 7282783,
+  "sizeBytes": 4589952,
   "files": [
     "README.md",
+    "README.txt",
     "assets/appbanner.jpg",
     "assets/screenshots/1.png",
     "assets/screenshots/2.png",
