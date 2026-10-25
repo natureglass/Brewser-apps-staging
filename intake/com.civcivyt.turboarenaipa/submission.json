@@ -1,0 +1,15 @@
+{
+    "id": "com.civcivyt.turboarenaipa",
+    "name": "Turbo arena ipa",
+    "version": "1.0.0",
+    "owner": "6c1dfa7e950df660972f3b52b1a9ee7395bd7ace9633353205d9c9a8d9043724",
+    "zip_sha256": "b897ce1dbe9da2de8ff4e1b21fcf74467fc2e926286197bba4435e25a8556a46",
+    "attestation": {
+        "ts": "2026-10-25T13:52:10+00:00",
+        "platforms": [
+            "web"
+        ],
+        "zip_sha256": "b897ce1dbe9da2de8ff4e1b21fcf74467fc2e926286197bba4435e25a8556a46"
+    },
+    "submitted_at": "2026-10-25T13:52:10+00:00"
+}
