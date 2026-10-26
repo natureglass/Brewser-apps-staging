@@ -12,9 +12,9 @@
   {
     "id": "com.jorgeportoh.pokemonshowdowndev",
     "name": "pokemon-showdown-dev",
-    "version": "0.2.98",
+    "version": "0.2.99",
     "owner": "9c62ed3db670bc404293f4cc080f4e4873999e1e597735adf6c583db95b2e2fa",
-    "updated_at": "2026-10-14T00:22:18Z",
+    "updated_at": "2026-10-26T12:56:05Z",
     "entry": "index.html",
     "logo": "assets/appbanner.jpg",
     "description": "<p>This is a development test application for a pokemon showdown app on the future.</p>"
