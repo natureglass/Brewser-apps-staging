@@ -1,15 +1,15 @@
 {
   "verdict": "SUSPICIOUS",
-  "score": 24,
-  "scanned_at": "2026-10-26T15:57:57Z",
+  "score": 12,
+  "scanned_at": "2026-10-28T08:16:16Z",
   "scanner_version": "1.3.2",
-  "package_hash": "2e8cf8789a9309e7a1d37227587ad34f69cd74a4613112766c3dbd59249599b1",
+  "package_hash": "33ab0814aa1107b98e2899e55812f1384ad1e32856dbd8f1cac488ef6414b87a",
   "counts": {
-    "info": 4,
-    "suspicious": 2,
+    "info": 2,
+    "suspicious": 1,
     "dangerous": 0
   },
-  "rationale": "Suspicious: 2 signal(s) needing review; e.g. network request to an off-package external origin.",
+  "rationale": "Suspicious: 1 signal(s) needing review; e.g. network request to an off-package external origin.",
   "truncated": false,
   "findings": [
     {
@@ -17,17 +17,8 @@
       "severity": "SUSPICIOUS",
       "title": "Network request to an off-package external origin",
       "detail": "<script src> loads code from external origin https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js.",
-      "file": "Turbo_Arena.html",
-      "line": 41,
-      "evidence": "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
-    },
-    {
-      "rule_id": "external-egress",
-      "severity": "SUSPICIOUS",
-      "title": "Network request to an off-package external origin",
-      "detail": "<script src> loads code from external origin https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js.",
       "file": "index.html",
-      "line": 50,
+      "line": 49,
       "evidence": "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
     },
     {
@@ -35,18 +26,9 @@
       "severity": "INFO",
       "title": "A source file could not be parsed",
       "detail": "Could not parse as JS (SyntaxError); ran regex backstop only.",
-      "file": "Turbo_Arena.html <inline script>",
-      "line": 41,
-      "evidence": "Unexpected token (403:1)"
-    },
-    {
-      "rule_id": "file-parse-error",
-      "severity": "INFO",
-      "title": "A source file could not be parsed",
-      "detail": "Could not parse as JS (SyntaxError); ran regex backstop only.",
-      "file": "Turbo_Arena.html <inline script>",
-      "line": 448,
-      "evidence": "Unexpected token (41:1)"
+      "file": "index.html <inline script>",
+      "line": 49,
+      "evidence": "Unexpected token (399:1)"
     },
     {
       "rule_id": "file-parse-error",
@@ -54,16 +36,7 @@
       "title": "A source file could not be parsed",
       "detail": "Could not parse as JS (SyntaxError); ran regex backstop only.",
       "file": "index.html <inline script>",
-      "line": 50,
-      "evidence": "Unexpected token (403:1)"
-    },
-    {
-      "rule_id": "file-parse-error",
-      "severity": "INFO",
-      "title": "A source file could not be parsed",
-      "detail": "Could not parse as JS (SyntaxError); ran regex backstop only.",
-      "file": "index.html <inline script>",
-      "line": 457,
+      "line": 452,
       "evidence": "Unexpected token (41:1)"
     }
   ],
