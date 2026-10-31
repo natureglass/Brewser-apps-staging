@@ -1,6 +1,6 @@
 {
   "id": "com.civcivyt.turboarena",
-  "sizeBytes": 4606841,
+  "sizeBytes": 4745670,
   "files": [
     "README.md",
     "assets/appbanner.jpg",
@@ -8,6 +8,7 @@
     "assets/screenshots/2.png",
     "brewser-sw.js",
     "index.html",
+    "indexx.html",
     "manifest.json",
     "pwa/app.webmanifest",
     "pwa/apple-touch-icon.png",

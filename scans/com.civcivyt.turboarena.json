@@ -1,15 +1,15 @@
 {
   "verdict": "SUSPICIOUS",
-  "score": 12,
-  "scanned_at": "2026-10-28T08:16:16Z",
+  "score": 22,
+  "scanned_at": "2026-10-31T09:16:57Z",
   "scanner_version": "1.3.2",
-  "package_hash": "33ab0814aa1107b98e2899e55812f1384ad1e32856dbd8f1cac488ef6414b87a",
+  "package_hash": "c8f228398266ff28690daf2a781f56dbc9ad234a0a5db5cfa851399444496e36",
   "counts": {
     "info": 2,
-    "suspicious": 1,
+    "suspicious": 2,
     "dangerous": 0
   },
-  "rationale": "Suspicious: 1 signal(s) needing review; e.g. network request to an off-package external origin.",
+  "rationale": "Suspicious: 2 signal(s) needing review; e.g. network request to an off-package external origin.",
   "truncated": false,
   "findings": [
     {
@@ -18,7 +18,16 @@
       "title": "Network request to an off-package external origin",
       "detail": "<script src> loads code from external origin https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js.",
       "file": "index.html",
-      "line": 49,
+      "line": 53,
+      "evidence": "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
+    },
+    {
+      "rule_id": "external-egress",
+      "severity": "SUSPICIOUS",
+      "title": "Network request to an off-package external origin",
+      "detail": "<script src> loads code from external origin https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js.",
+      "file": "indexx.html",
+      "line": 44,
       "evidence": "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
     },
     {
@@ -27,22 +36,19 @@
       "title": "A source file could not be parsed",
       "detail": "Could not parse as JS (SyntaxError); ran regex backstop only.",
       "file": "index.html <inline script>",
-      "line": 49,
-      "evidence": "Unexpected token (399:1)"
+      "line": 510,
+      "evidence": "Unexpected token (58:1)"
     },
     {
       "rule_id": "file-parse-error",
       "severity": "INFO",
       "title": "A source file could not be parsed",
       "detail": "Could not parse as JS (SyntaxError); ran regex backstop only.",
-      "file": "index.html <inline script>",
-      "line": 452,
-      "evidence": "Unexpected token (41:1)"
+      "file": "indexx.html <inline script>",
+      "line": 501,
+      "evidence": "Unexpected token (58:1)"
     }
   ],
-  "capabilities": [
-    "webaudio",
-    "webgl"
-  ],
+  "capabilities": [],
   "limitations": "Static heuristic scan. A GOOD verdict means no known-bad pattern matched, NOT proof of safety. Human review is still required for every submission."
 }
