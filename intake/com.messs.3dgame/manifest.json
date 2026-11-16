@@ -1,0 +1,37 @@
+{
+    "id": "com.messs.3dgame",
+    "name": "3dgame",
+    "version": "1.0.0",
+    "description": "yes",
+    "logo": "assets/appbanner.jpg",
+    "entry": "index.html",
+    "categories": [
+        "Games"
+    ],
+    "permissions": [],
+    "compatibility": [
+        "switch",
+        "web"
+    ],
+    "allowed_origins": [],
+    "developer": "Imjust Anoob",
+    "license": "Proprietary",
+    "exitGame": "PLUS",
+    "fullscreen": true,
+    "hideMouseDocked": false,
+    "hideMouseUndocked": false,
+    "freshProcessOnExit": false,
+    "minBrewserVersion": "0.1.131",
+    "publishedAt": "2026-11-16T21:44:41Z",
+    "updatedAt": "2026-11-16T21:44:41Z",
+    "summary": "me",
+    "genre": [
+        "Action"
+    ],
+    "features": [
+        "Gamepad"
+    ],
+    "tags": [
+        "Demoscene"
+    ]
+}
