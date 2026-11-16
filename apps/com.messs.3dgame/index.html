@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#091426">
+  <title>City Walk</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="viewport">
+    <canvas id="gameCanvas" width="1280" height="720" aria-label="3D city game"></canvas>
+    <div id="startScreen" class="start-screen">
+      <h2>City Walk</h2>
+      <p>WASD / left stick to move · mouse / right stick to look · Space / A to jump · click / X or Y to punch</p>
+      <button id="startButton" type="button">Enter city</button>
+    </div>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

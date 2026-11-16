@@ -1,0 +1,12 @@
+{
+  "id": "com.messs.3dgame",
+  "sizeBytes": 30281,
+  "files": [
+    "README.md",
+    "app.js",
+    "assets/appbanner.jpg",
+    "index.html",
+    "manifest.json",
+    "style.css"
+  ]
+}

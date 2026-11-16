@@ -1,0 +1,36 @@
+{
+  "verdict": "SUSPICIOUS",
+  "score": 11,
+  "scanned_at": "2026-11-16T21:45:12Z",
+  "scanner_version": "1.3.2",
+  "package_hash": "49576816d0c8ca3f0205c3c0722445a41604366215f0417e5c8e992e8fbf4381",
+  "counts": {
+    "info": 1,
+    "suspicious": 1,
+    "dangerous": 0
+  },
+  "rationale": "Suspicious: 1 signal(s) needing review; e.g. network request to an off-package external origin.",
+  "truncated": false,
+  "findings": [
+    {
+      "rule_id": "external-egress",
+      "severity": "SUSPICIOUS",
+      "title": "Network request to an off-package external origin",
+      "detail": "<script src> loads code from external origin https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js.",
+      "file": "index.html",
+      "line": 19,
+      "evidence": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"
+    },
+    {
+      "rule_id": "file-parse-error",
+      "severity": "INFO",
+      "title": "A source file could not be parsed",
+      "detail": "Could not parse as JS (SyntaxError); ran regex backstop only.",
+      "file": "__MACOSX/._app.js",
+      "line": 0,
+      "evidence": "Unexpected character '\u0000'. (1:0)"
+    }
+  ],
+  "capabilities": [],
+  "limitations": "Static heuristic scan. A GOOD verdict means no known-bad pattern matched, NOT proof of safety. Human review is still required for every submission."
+}
